@@ -1,0 +1,16 @@
+﻿  stdafx.cpp
+  BitmapObj.cpp
+  DrawManager.cpp
+  FrameManager.cpp
+  GdiObj.cpp
+  InputManager.cpp
+  ObjectPool.cpp
+  SceneManager.cpp
+  Scene_Ingame.cpp
+  Scene_Title.cpp
+  SystemObj.cpp
+  ButtonObj.cpp
+  System.cpp
+  main.cpp
+  코드를 생성하고 있습니다...
+  Win32APIGameBase.vcxproj -> C:\Users\hp\Documents\Visual Studio 2017\Projects\Win32APIGameBase\Debug\Win32APIGameBase.exe

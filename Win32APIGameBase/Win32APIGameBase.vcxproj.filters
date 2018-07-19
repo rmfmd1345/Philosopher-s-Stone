@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Etc">
+      <UniqueIdentifier>{5ea22292-a3bb-4cf1-b5e0-25007922a466}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Main">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Draw">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="System">
+      <UniqueIdentifier>{69e7c7e0-ebc1-40ea-acd3-77cd3a1017ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{f0663aa0-0565-4926-b8ad-18634f14ea2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ObjectPool">
+      <UniqueIdentifier>{e33ffcc4-3e1a-4272-9a0f-aec29622e309}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ObjectPool\Obj">
+      <UniqueIdentifier>{ce2de781-c0fc-4cf8-84eb-257fa498198f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{e59febe5-00e3-4576-b659-4e8785a115b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\SceneScript">
+      <UniqueIdentifier>{c54980fb-8da8-4c38-8e44-e16d99c10c4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Frame">
+      <UniqueIdentifier>{eaaf3bbd-115c-4820-968d-0a4b7fec85ec}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Resource.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Etc</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Etc</Filter>
+    </ClInclude>
+    <ClInclude Include="System.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="DrawManager.h">
+      <Filter>Draw</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectPool.h">
+      <Filter>ObjectPool</Filter>
+    </ClInclude>
+    <ClInclude Include="SystemObj.h">
+      <Filter>ObjectPool\Obj</Filter>
+    </ClInclude>
+    <ClInclude Include="GdiObj.h">
+      <Filter>ObjectPool\Obj</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Scene\SceneScript</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameManager.h">
+      <Filter>Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="ButtonObj.h">
+      <Filter>ObjectPool\Obj</Filter>
+    </ClInclude>
+    <ClInclude Include="BitmapObj.h">
+      <Filter>ObjectPool\Obj</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Etc</Filter>
+    </ClCompile>
+    <ClCompile Include="System.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="DrawManager.cpp">
+      <Filter>Draw</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectPool.cpp">
+      <Filter>ObjectPool</Filter>
+    </ClCompile>
+    <ClCompile Include="SystemObj.cpp">
+      <Filter>ObjectPool\Obj</Filter>
+    </ClCompile>
+    <ClCompile Include="GdiObj.cpp">
+      <Filter>ObjectPool\Obj</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene_Ingame.cpp">
+      <Filter>Scene\SceneScript</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene_Title.cpp">
+      <Filter>Scene\SceneScript</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameManager.cpp">
+      <Filter>Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="ButtonObj.cpp">
+      <Filter>ObjectPool\Obj</Filter>
+    </ClCompile>
+    <ClCompile Include="BitmapObj.cpp">
+      <Filter>ObjectPool\Obj</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="small.ico">
+      <Filter>Resource</Filter>
+    </Image>
+    <Image Include="Win32APIGameBase.ico">
+      <Filter>Resource</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Win32APIGameBase.rc">
+      <Filter>Resource</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>
