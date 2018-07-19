@@ -1,4 +1,5 @@
 #pragma once
+#include "Sprite.h"
 #include "GdiObj.h"
 #include "SystemObj.h"
 #include "ButtonObj.h"
@@ -31,5 +32,6 @@ public:
 public:
 	Button titleBtn;	//버튼 (Rectangle로 그리지만 위치나 버튼 상태를 체크해야하므로 객체로 만듬)
 	Bitmap titleBg;		//비트맵
+	SpriteHelper Mermaid;
 
 };
