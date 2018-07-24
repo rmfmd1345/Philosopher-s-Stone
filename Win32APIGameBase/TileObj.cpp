@@ -1,16 +1,33 @@
 #include "stdafx.h"
 #include "TileObj.h"
 
-void CMap::InitMap()
+void CTile::InitTile(HWND hwnd, int ID, LPCWSTR szFileName, std::function<void()> Tile_Function)
 {
-	None = None.InitTile(NONE, L"./Image/", [&] {});
-	Floor = Floor.InitTile(FLOOR, L"./Image/", [&] {});
-	Wall = Wall.InitTile(WALL, L"./Image/", [&] {});
-	Trap_Niddle = Trap_Niddle.InitTile(TRAP_Niddle, L"./Image/", [&] {});
-	Trap_Hole = Trap_Hole.InitTile(TRAP_Hole, L"./Image/", [&] {});
-	Trap_ScareCrow = Trap_ScareCrow.InitTile(TRAP_ScareCrow, L"./Image/", [&] {});
-	Trap_Cunfution = Trap_Cunfution.InitTile(TRAP_Cunfution, L"./Image/", [&] {});
-	Trap_Grap = Trap_Grap.InitTile(TRAP_Grap, L"./Image/", [&] {});
+	Tile_ID = ID;
+	Tile_On = true;
+
+	WCHAR str[128];
+	wsprintf(str, szFileName);
+	Tile_Bitmap.Init(hwnd, 0, 0, 80, 80, szFileName);
+
+	Tile_Func = Tile_Function;
+}
+
+void CTile::DestroyTile(CTile Tile)
+{
+	Tile.Tile_Bitmap.Ternimate();
+}
+
+void CMap::InitMap(HWND hwnd)
+{
+	None.InitTile(hwnd, NONE, L"./Image/", [&] {});
+	Floor.InitTile(hwnd, FLOOR, L"./Image/", [&] {});
+	Wall.InitTile(hwnd, WALL, L"./Image/", [&] {});
+	Trap_Niddle.InitTile(hwnd, TRAP_Niddle, L"./Image/", [&] {});
+	Trap_Hole.InitTile(hwnd, TRAP_Hole, L"./Image/", [&] {});
+	Trap_ScareCrow.InitTile(hwnd, TRAP_ScareCrow, L"./Image/", [&] {});
+	Trap_Cunfution.InitTile(hwnd, TRAP_Cunfution, L"./Image/", [&] {});
+	Trap_Grap.InitTile(hwnd, TRAP_Grap, L"./Image/", [&] {});
 }
 
 void CMap::ResetMap()
@@ -35,28 +52,28 @@ void CMap::ActiveTile()
 			switch (Map[i][j].Tile_ID)
 			{
 			case NONE:
-
+				None.Tile_Func();
 				break;
 			case FLOOR:
-
+				Floor.Tile_Func();
 				break;
 			case WALL:
-
+				Wall.Tile_Func();
 				break;
 			case TRAP_Niddle:
-
+				Trap_Niddle.Tile_Func();
 				break;
 			case TRAP_Hole:
-
+				Trap_Hole.Tile_Func();
 				break;
 			case TRAP_ScareCrow:
-
+				Trap_ScareCrow.Tile_Func();
 				break;
 			case TRAP_Cunfution:
-
+				Trap_Cunfution.Tile_Func();
 				break;
 			case TRAP_Grap:
-
+				Trap_Grap.Tile_Func();
 				break;
 			}
 		}
@@ -65,24 +82,19 @@ void CMap::ActiveTile()
 
 void CMap::SetTileOnMap(CTile Tile, int x, int y)
 {
-	Map[x][y].Tile_ID = Tile.Tile_ID;
-	Map[x][y].Tile_On = Tile.Tile_On;
-
-	Map[x][y].hBitMap = Tile.hBitMap;
-
-	Map[x][y].btn_Func = Tile.btn_Func;
+	Map[x][y] = Tile;
 }
 
-void CMap::SetMap()
+void CMap::DrawMap()
 {
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 20; i++)
 	{
-		for (int j = 0; j < 10; j++)
+		for (int j = 0; j < 20; j++)
 		{
 			switch (Map[i][j].Tile_ID)
 			{
 			case NONE:
-
+				
 				break;
 			case FLOOR:
 
@@ -110,33 +122,21 @@ void CMap::SetMap()
 	}
 }
 
-void CMap::DrawMap()
+void CMap::DrawBrick()
 {
-
+	// 벽 위에 벽돌 출력
+	// 바닥 아래에 벽돌 출력
+	// 길 양 옆에 벽돌 출력
 }
 
-void CMap::DistroyMap()
+void CMap::DestroyMap()
 {
-
-}
-
-CTile CTile::InitTile(int ID, LPCWSTR szFileName, std::function<void()> btn_Function)
-{
-	CTile Temp;
-
-	Temp.Tile_ID = ID;
-	Temp.Tile_On = true;
-
-	WCHAR str[128];
-	wsprintf(str, szFileName);
-	Temp.hBitMap = (HBITMAP)LoadImage(NULL, str, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
-	if (Temp.hBitMap == NULL)
-	{
-		MessageBox(NULL, L"이미지가 없습니다.", L"에러!!!", MB_OK);	//이미지불러오기 실패
-		exit(0);
-	}
-
-	Temp.btn_Func = btn_Function;
-
-	return Temp;
+	None.DestroyTile(None);
+	Floor.DestroyTile(Floor);
+	Wall.DestroyTile(Wall);
+	Trap_Niddle.DestroyTile(Trap_Niddle);
+	Trap_Hole.DestroyTile(Trap_Hole);
+	Trap_ScareCrow.DestroyTile(Trap_ScareCrow);
+	Trap_Cunfution.DestroyTile(Trap_Cunfution);
+	Trap_Grap.DestroyTile(Trap_Grap);
 }
