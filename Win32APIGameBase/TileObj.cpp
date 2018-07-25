@@ -28,6 +28,11 @@ void CMap::InitMap(HWND hwnd)
 	Trap_ScareCrow.InitTile(hwnd, TRAP_ScareCrow, L"./Image/", [&] {});
 	Trap_Cunfution.InitTile(hwnd, TRAP_Cunfution, L"./Image/", [&] {});
 	Trap_Grap.InitTile(hwnd, TRAP_Grap, L"./Image/", [&] {});
+
+	Brick[UP].Init(hwnd, 0, 0, 80, 80, L"./Image/");
+	Brick[DOWN].Init(hwnd, 0, 0, 80, 80, L"./Image/");
+	Brick[LEFT].Init(hwnd, 0, 0, 80, 80, L"./Image/");
+	Brick[RIGHT].Init(hwnd, 0, 0, 80, 80, L"./Image/");
 }
 
 void CMap::ResetMap()
@@ -85,7 +90,7 @@ void CMap::SetTileOnMap(CTile Tile, int x, int y)
 	Map[x][y] = Tile;
 }
 
-void CMap::DrawMap()
+void CMap::DrawMap() // 플레이어 기준으로 일정 타일만 출력
 {
 	for (int i = 0; i < 20; i++)
 	{
