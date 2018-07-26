@@ -51,9 +51,9 @@ void CMap::ResetMap()
 	//플레이어 위치에 바닥 설정
 }
 
-void CMap::ActiveTile(/*캐릭터 위치*/)
+void CMap::ActiveTile(int Character_x, int Character_y)
 {
-	switch (Map[x][y].Tile_ID)
+	switch (Map[Character_x][Character_y].Tile_ID)
 	{
 	case NONE:
 		None.Tile_Func();
