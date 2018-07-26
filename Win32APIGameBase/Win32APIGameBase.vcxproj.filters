@@ -125,6 +125,9 @@
     <ClCompile Include="BitmapObj.cpp">
       <Filter>ObjectPool\Obj</Filter>
     </ClCompile>
+    <ClCompile Include="Test.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
