@@ -6,7 +6,7 @@ public:
 	int Tile_ID; // 타일 식별 번호
 	bool Tile_On; // 함정 재장전 여부
 
-	Bitmap Tile_Bitmap;
+	Bitmap Tile_Bitmap; // -> 스프라이트로 변경
 
 	std::function<void()> Tile_Func; // 람다식
 
