@@ -52,7 +52,7 @@ public:
 
 	void InitMap(HWND hwnd); // 타일 이미지 초기화
 	void ResetMap(); // 스테이지 넘어갈 때 맵을 초기화
-	void ActiveTile(/*현재 플레이어의 좌표*/); // 해당 타일의 기능을 실행 (람다 사용)
+	void ActiveTile(int Character_x, int Character_y); // 해당 타일의 기능을 실행 (람다 사용)
 	void SetTileOnMap(CTile Tile, int x, int y); // 타일을 맵에 배치
 	void DrawMap(HDC hMemDC); //  플레이어를 기준으로 화면에 나오는 타일을 계산하여 출력
 	void DrawBrick(HDC hMemDC); // 벽을 그려냄
