@@ -6,11 +6,12 @@ public:
 	Bitmap() { }
 	~Bitmap() { }
 
+	POINT pos;				//좌표
+
 private:
 	HDC hdcImg;				//미리 그려둘 비트맵의 DC
 	HBITMAP hBitmap;		//비트맵
 	COLORREF SpriteColor;	//투명화 컬러 (마젠타가 기본)
-	POINT pos;				//좌표
 	int w;					//너비
 	int h;					//높이
 
