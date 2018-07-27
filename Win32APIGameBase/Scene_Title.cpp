@@ -10,7 +10,7 @@ void Title::Draw(HDC hMemDC)
 	ObjPool->Gdi.Text(hMemDC, 0, 0, str, 36);
 	//fps확인
 
-	ObjPool->Mermaid.Draw(hMemDC);
+	ObjPool->Mermaid.ReverseDraw(hMemDC);
 }
 
 void Title::OnTimer(HWND hWnd, int timer)
@@ -38,5 +38,26 @@ void Title::OnMouseMove(HWND hWnd, int x, int y)
 
 void Title::OnKeyborad()
 {
+	static float x = 0, y = 0; // 테스트
 
+	if (GetAsyncKeyState(VK_LEFT))
+	{
+		x -= 0.001;
+		ObjPool->Mermaid.SetPosition(x, y);
+	}
+	if (GetAsyncKeyState(VK_RIGHT))
+	{
+		x += 0.001;
+		ObjPool->Mermaid.SetPosition(x, y);
+	}
+	if (GetAsyncKeyState(VK_UP))
+	{
+		y -= 0.001;
+		ObjPool->Mermaid.SetPosition(x, y);
+	}
+	if (GetAsyncKeyState(VK_DOWN))
+	{
+		y += 0.001;
+		ObjPool->Mermaid.SetPosition(x, y);
+	}
 }

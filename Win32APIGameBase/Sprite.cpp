@@ -34,6 +34,14 @@ void SpriteHelper::Draw(HDC hMemDC)
 	TransparentBlt(hMemDC, pos.x, pos.y, rtImg.right, h, hdcImg, rtImg.left, rtImg.top, rtImg.right, rtImg.bottom, SpriteColor);	//받아온 후면DC에 비트맵을 불러온 DC를 복사
 }
 
+void SpriteHelper::ReverseDraw(HDC hMemDC)
+{
+	SelectObject(hdcImg, hBitmap);
+	StretchBlt(hdcImg, 0, 0, rtImg.right, h, hdcImg, rtImg.left, rtImg.top, rtImg.right, rtImg.bottom, SRCCOPY);
+	StretchBlt(hdcImg, 0 + rtImg.right - 1, 0, -rtImg.right, h, hdcImg, 0, 0, rtImg.right, rtImg.bottom, SRCCOPY);
+	TransparentBlt(hMemDC, pos.x, pos.y, rtImg.right, h, hdcImg, 0, 0, rtImg.right, rtImg.bottom, SpriteColor);
+}
+
 void SpriteHelper::Ternimate()
 {
 	if (hBitmap != nullptr)

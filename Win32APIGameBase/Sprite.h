@@ -18,6 +18,7 @@ private:
 public:
 	void Init(HWND hWnd, int x, int y, int w, int h, int f, LPCWSTR szFileName, COLORREF sprite = RGB(255, 0, 255));
 	void Draw(HDC hMemDC);
+	void ReverseDraw(HDC hMemDC);
 	void Ternimate();
 
 	void SetPosition(int x, int y);
