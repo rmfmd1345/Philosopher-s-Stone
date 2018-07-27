@@ -147,6 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Sprite.h" />
     <ClInclude Include="BitmapObj.h" />
     <ClInclude Include="DrawManager.h" />
     <ClInclude Include="FrameManager.h" />
@@ -164,6 +165,7 @@
     <ClInclude Include="TileObj.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="BitmapObj.cpp" />
     <ClCompile Include="DrawManager.cpp" />
     <ClCompile Include="FrameManager.cpp" />
