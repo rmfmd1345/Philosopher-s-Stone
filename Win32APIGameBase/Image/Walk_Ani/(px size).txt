@@ -1,0 +1,21 @@
+파일 이름         파일크기                1/4 픽셀
+
+Dealer_Back      240px*122px            60px
+Dealer_Front     216px*122px            54px
+Dealer_Left       304px122px             76px
+Dealer_Right     336px122px             84px
+
+Hero_Back        248px*132px            62px
+Hero_Front       248px*132px            62px
+Hero_Left         232px*132px            58px
+Hero_Right       232px*132px            58px
+
+Tanker_Back       424px*138px            106px
+Tanker_Front      352px*138px            88px
+Tanker_Left        280px*138px            70px
+Tanker_Right      248px*138px            62px
+
+Wizard_Back       280px*102px            70px
+Wizard_Front      264px*102px            66px
+Wizard_Left        296px*102px            74px
+Wizard_Right      256px*102px            32px

@@ -29,34 +29,36 @@ void Button::Init(RECT rt, COLORREF pen, COLORREF brush, COLORREF click)
 
 void Button::Draw(HDC hMemDC)
 {
-	hPen = CreatePen(PS_INSIDEFRAME, 2, PenColor);
-	OldPen = (HPEN)SelectObject(hMemDC, hPen);
+	//hPen = CreatePen(PS_INSIDEFRAME, 2, PenColor);
+	//OldPen = (HPEN)SelectObject(hMemDC, hPen);
 
-	if (!bIsOn)	//온 여부에 따라서 어떤 브러쉬를 적용 할 것인지 체크
-	{
-		hBrush = CreateSolidBrush(BrushColor);
-		OldBrush = (HBRUSH)SelectObject(hMemDC, hBrush);
-	}
-	else
-	{
-		hBrush = CreateSolidBrush(ClickColor);
-		OldBrush = (HBRUSH)SelectObject(hMemDC, hBrush);
-	}
+	//if (!bIsOn)	//온 여부에 따라서 어떤 브러쉬를 적용 할 것인지 체크
+	//{
+	//	hBrush = CreateSolidBrush(BrushColor);
+	//	OldBrush = (HBRUSH)SelectObject(hMemDC, hBrush);
+	//}
+	//else
+	//{
+	//	hBrush = CreateSolidBrush(ClickColor);
+	//	OldBrush = (HBRUSH)SelectObject(hMemDC, hBrush);
+	//}
 
-	//받은 후면DC에 그린다
-	Rectangle(hMemDC, rect.left, rect.top, rect.right, rect.bottom);
+	////받은 후면DC에 그린다
+	//Rectangle(hMemDC, rect.left, rect.top, rect.right, rect.bottom);
 
-	if (hPen != NULL)
-		DeleteObject(SelectObject(hMemDC, OldPen));
-	if (hBrush != NULL)
-		DeleteObject(SelectObject(hMemDC, OldBrush));
-	//잊지않게 지워주기
+	//if (hPen != NULL)
+	//	DeleteObject(SelectObject(hMemDC, OldPen));
+	//if (hBrush != NULL)
+	//	DeleteObject(SelectObject(hMemDC, OldBrush));
+	////잊지않게 지워주기
+	Btn_Bitmap[Button_State_Num].Draw(hMemDC);
 }
 
 bool Button::isOver(int x, int y)	//마우스오버 체크
 {
 	if ((rect.left <= x) && (x <= rect.right) && (rect.top <= y) && (y <= rect.bottom))
 	{
+		Button_State_Num = Over;
 		bIsOn = true;
 		return true;
 	}
@@ -68,6 +70,7 @@ bool Button::isClick(int x, int y)	//마우스오버와 같은 함수인데 또 만든이유는 함
 {									//아니면 마우스오버 색 외에 클릭 색도 추가하여 오버가 되었는지, 클릭이 되었는지 체크할 수 있음
 	if (this->isOver(x, y))
 	{
+		Button_State_Num = Down;
 		bIsOn = true;
 		return true;
 	}

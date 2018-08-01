@@ -6,11 +6,11 @@ public:
 	int Tile_ID; // 타일 식별 번호
 	bool Tile_On; // 함정 재장전 여부
 
-	Bitmap Tile_Bitmap; // -> 스프라이트로 변경
+	SpriteHelper Tile_Sprite; // 애니메이션 스프라이트 (정방향 출력 시 : 발동 애니메이션 / 역방향 출력 시 : 재장전 애니메이션)
 
-	std::function<void()> Tile_Func; // 람다식
+	std::function<void()> Tile_Func; // 람다식 (함정 발동 시 프레임 진행)
 
-	void InitTile(HWND hwnd, int ID, LPCWSTR szFileName_On, LPCWSTR szFileName_Off, std::function<void()> Tile_Function); //타일 초기화
+	void InitTile(HWND hwnd, int Frame, int ID, LPCWSTR szFileName, std::function<void()> Tile_Function); //타일 초기화
 	void DestroyTile(CTile Tile); // 타일 이미지 파괴
 };
 

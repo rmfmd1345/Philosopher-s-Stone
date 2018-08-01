@@ -5,12 +5,25 @@ ObjectPool* ObjectPool::pool = nullptr;
 
 void ObjectPool::CreateObject(HWND hWnd)	//객체의 초기 설정을 적는 곳
 {
-	titleBtn.Init({ (SCREEN_WIDTH / 2) - 175, (SCREEN_HEIGHT / 2) + 50, (SCREEN_WIDTH / 2) + 175, (SCREEN_HEIGHT / 2) + 200 }, 
-					RGB(0, 255, 0), 
-					RGB(0, 255, 0),
-					RGB(0, 200, 0));
+	titleBtn_Start.Btn_Bitmap[Button::Up].Init(hWnd, 1000, 468, 124, 34, L"./Image/UI/Main/ui_start.bmp");
+	titleBtn_Start.Btn_Bitmap[Button::Over].Init(hWnd, 1000, 468, 124, 34, L"./Image/UI/Main/ui_start_up.bmp");
+	titleBtn_Start.Btn_Bitmap[Button::Down].Init(hWnd, 1000, 468, 124, 34, L"./Image/UI/Main/ui_start_down.bmp");
 
-	titleBg.Init(hWnd, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, L"./Image/titleBg.bmp");
+	titleBtn_Start.Button_State_Num = Button::Up;
+
+	titleBtn_Credit.Btn_Bitmap[Button::Up].Init(hWnd, 1000, 528, 152, 46, L"./Image/UI/Main/ui_credit.bmp");
+	titleBtn_Credit.Btn_Bitmap[Button::Over].Init(hWnd, 1000, 528, 152, 46, L"./Image/UI/Main/ui_credit_up.bmp");
+	titleBtn_Credit.Btn_Bitmap[Button::Down].Init(hWnd, 1000, 528, 152, 46, L"./Image/UI/Main/ui_credit_down.bmp");
+
+	titleBtn_Credit.Button_State_Num = Button::Up;
+
+	titleBtn_Exit.Btn_Bitmap[Button::Up].Init(hWnd, 1000, 603, 104, 42, L"./Image/UI/Main/ui_exit.bmp");
+	titleBtn_Exit.Btn_Bitmap[Button::Over].Init(hWnd, 1000, 603, 104, 42, L"./Image/UI/Main/ui_exit_up.bmp");
+	titleBtn_Exit.Btn_Bitmap[Button::Down].Init(hWnd, 1000, 603, 104, 42, L"./Image/UI/Main/ui_exit_down.bmp");
+
+	titleBtn_Exit.Button_State_Num = Button::Up;
+
+	titleBg.Init(hWnd, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, L"./Image/Background/Main_Bg.bmp");
 	Mermaid.Init(hWnd, 0, 0, 800, 80, 10, L"./Image/mermaid.bmp", RGB(255, 0, 0));
 }
 
@@ -18,4 +31,7 @@ void ObjectPool::DeleteObject()				//비트맵객체는 반드시 종료해주기
 {
 	titleBg.Ternimate();
 	Mermaid.Ternimate();
+	titleBtn_Start.Btn_Bitmap->Ternimate();
+	titleBtn_Credit.Btn_Bitmap->Ternimate();
+	titleBtn_Exit.Btn_Bitmap->Ternimate();
 }

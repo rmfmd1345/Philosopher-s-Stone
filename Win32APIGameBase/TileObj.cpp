@@ -1,41 +1,36 @@
 #include "stdafx.h"
 #include "TileObj.h"
 
-void CTile::InitTile(HWND hwnd, int ID, LPCWSTR szFileName_On, LPCWSTR szFileName_Off, std::function<void()> Tile_Function)
+void CTile::InitTile(HWND hwnd, int Frame, int ID, LPCWSTR szFileName, std::function<void()> Tile_Function)
 {
 	Tile_ID = ID;
 	Tile_On = true;
 
-	WCHAR str[128];
-	wsprintf(str, szFileName_On);
-	Tile_Bitmap.Init(hwnd, 0, 0, 80, 80, szFileName_On);
-
-	wsprintf(str, szFileName_Off);
-	Tile_Bitmap.Init(hwnd, 0, 0, 80, 80, szFileName_Off);
+	Tile_Sprite.Init(hwnd, 0, 0, 80, 80, Frame, szFileName);
 
 	Tile_Func = Tile_Function;
 }
 
 void CTile::DestroyTile(CTile Tile)
 {
-	Tile.Tile_Bitmap.Ternimate();
+	Tile.Tile_Sprite.Ternimate();
 }
 
 void CMap::InitMap(HWND hwnd)
 {
-	None.InitTile(hwnd, NONE, L"./Image/", L"./Image/", [&] {});
-	Floor.InitTile(hwnd, FLOOR, L"./Image/", L"./Image/", [&] {});
-	Wall.InitTile(hwnd, WALL, L"./Image/", L"./Image/", [&] {});
-	Trap_Niddle.InitTile(hwnd, TRAP_Niddle, L"./Image/", L"./Image/", [&] {});
-	Trap_Hole.InitTile(hwnd, TRAP_Hole, L"./Image/", L"./Image/", [&] {});
-	Trap_ScareCrow.InitTile(hwnd, TRAP_ScareCrow, L"./Image/", L"./Image/", [&] {});
-	Trap_Cunfution.InitTile(hwnd, TRAP_Cunfution, L"./Image/", L"./Image/", [&] {});
-	Trap_Grap.InitTile(hwnd, TRAP_Grap, L"./Image/", L"./Image/", [&] {});
+	None.InitTile(hwnd, 0 /*Frame*/, NONE, L"./Image/Tile/", [&] {});
+	Floor.InitTile(hwnd, 0 /*Frame*/, FLOOR, L"./Image/Tile/Floor.bmp", [&] {});
+	Wall.InitTile(hwnd, 0 /*Frame*/, WALL, L"./Image/Tile/Wall.bmp", [&] {});
+	Trap_Niddle.InitTile(hwnd, 0 /*Frame*/, TRAP_Niddle, L"./Image/Tile/", [&] {});
+	Trap_Hole.InitTile(hwnd, 0 /*Frame*/, TRAP_Hole, L"./Image/Tile/", [&] {});
+	Trap_ScareCrow.InitTile(hwnd, 0 /*Frame*/, TRAP_ScareCrow, L"./Image/Tile/", [&] {});
+	Trap_Cunfution.InitTile(hwnd, 0 /*Frame*/, TRAP_Cunfution, L"./Image/Tile/", [&] {});
+	Trap_Grap.InitTile(hwnd, 0 /*Frame*/, TRAP_Grap, L"./Image/Tile/", [&] {});
 
-	Brick[UP].Init(hwnd, 0, 0, 80, 80, L"./Image/");
-	Brick[DOWN].Init(hwnd, 0, 0, 80, 80, L"./Image/");
-	Brick[LEFT].Init(hwnd, 0, 0, 80, 80, L"./Image/");
-	Brick[RIGHT].Init(hwnd, 0, 0, 80, 80, L"./Image/");
+	Brick[UP].Init(hwnd, 0, 0, 80, 80, L"./Image/Tile/Brick_Up.bmp");
+	Brick[DOWN].Init(hwnd, 0, 0, 80, 80, L"./Image/Tile/Brick_Down.bmp");
+	Brick[LEFT].Init(hwnd, 0, 0, 80, 80, L"./Image/Tile/Brick_Left.bmp");
+	Brick[RIGHT].Init(hwnd, 0, 0, 80, 80, L"./Image/Tile/Brick_Right.bmp");
 }
 
 void CMap::ResetMap()
@@ -96,28 +91,28 @@ void CMap::DrawMap(HDC hMemDC)
 			switch (Map[i][j].Tile_ID)
 			{
 			case NONE:
-				None.Tile_Bitmap.Draw(hMemDC);
+				None.Tile_Sprite.Draw(hMemDC);
 				break;
 			case FLOOR:
-				Floor.Tile_Bitmap.Draw(hMemDC);
+				Floor.Tile_Sprite.Draw(hMemDC);
 				break;
 			case WALL:
-				Wall.Tile_Bitmap.Draw(hMemDC);
+				Wall.Tile_Sprite.Draw(hMemDC);
 				break;
 			case TRAP_Niddle:
-				Trap_Niddle.Tile_Bitmap.Draw(hMemDC);
+				Trap_Niddle.Tile_Sprite.Draw(hMemDC);
 				break;
 			case TRAP_Hole:
-				Trap_Hole.Tile_Bitmap.Draw(hMemDC);
+				Trap_Hole.Tile_Sprite.Draw(hMemDC);
 				break;
 			case TRAP_ScareCrow:
-				Trap_ScareCrow.Tile_Bitmap.Draw(hMemDC);
+				Trap_ScareCrow.Tile_Sprite.Draw(hMemDC);
 				break;
 			case TRAP_Cunfution:
-				Trap_Cunfution.Tile_Bitmap.Draw(hMemDC);
+				Trap_Cunfution.Tile_Sprite.Draw(hMemDC);
 				break;
 			case TRAP_Grap:
-				Trap_Grap.Tile_Bitmap.Draw(hMemDC);
+				Trap_Grap.Tile_Sprite.Draw(hMemDC);
 				break;
 			}
 		}

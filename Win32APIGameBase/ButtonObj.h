@@ -10,6 +10,7 @@ private:
 	bool bIsOn = false;	//온이 되었는가?
 	RECT rect;
 
+	// GDI part
 	HPEN hPen;
 	HPEN OldPen;
 	HBRUSH hBrush;
@@ -18,6 +19,18 @@ private:
 	COLORREF PenColor;
 	COLORREF BrushColor;
 	COLORREF ClickColor;
+
+public:
+	// Bitmap part
+	Bitmap Btn_Bitmap[3]; // Up Over Down
+	int Button_State_Num;
+
+	enum Button_State
+	{
+		Up,
+		Over,
+		Down
+	};
 
 public:
 	void Init(RECT rt, COLORREF pen, COLORREF brush, COLORREF click);	//초기화
@@ -30,6 +43,4 @@ public:
 
 	bool isOver(int x, int y);	//마우스가 올라왔는지
 	bool isClick(int x, int y);	//클릭이 되었는지
-
-
 };

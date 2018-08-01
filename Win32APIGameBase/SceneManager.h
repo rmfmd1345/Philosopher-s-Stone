@@ -6,6 +6,7 @@ enum eSCENE	//æ¿ ¿Ã≥—
 {
 	SCENE_TITLE,
 	SCENE_INGAME,
+	SCENE_CREDIT,
 
 	SCENE_NULL = MAX_SCENENUM
 };

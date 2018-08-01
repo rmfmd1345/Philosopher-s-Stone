@@ -84,6 +84,9 @@
     <ClInclude Include="TileObj.h">
       <Filter>ObjectPool\Obj</Filter>
     </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>ObjectPool</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -130,6 +133,9 @@
     </ClCompile>
     <ClCompile Include="TileObj.cpp">
       <Filter>ObjectPool\Obj</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>ObjectPool</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
