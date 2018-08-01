@@ -1,18 +1,2 @@
-﻿  stdafx.cpp
-  Sprite.cpp
-  BitmapObj.cpp
-  DrawManager.cpp
-  FrameManager.cpp
-  GdiObj.cpp
-  InputManager.cpp
-  ObjectPool.cpp
-  SceneManager.cpp
-  Scene_Ingame.cpp
-  Scene_Title.cpp
-  SystemObj.cpp
-  ButtonObj.cpp
-  System.cpp
-  main.cpp
-  TileObj.cpp
-  코드를 생성하고 있습니다...
-  Win32APIGameBase.vcxproj -> C:\Users\hp\Documents\GitHub\Philosopher-s-Stone\Win32APIGameBase\Debug\Win32APIGameBase.exe
+﻿  ObjectPool.cpp
+  Win32APIGameBase.vcxproj -> C:\Users\Stauffen\Documents\GitHub\Philosopher-s-Stone\Win32APIGameBase\Debug\Win32APIGameBase.exe

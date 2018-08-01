@@ -22,9 +22,9 @@ void Button::SetBrushColor(COLORREF color)
 void Button::Init(RECT rt, COLORREF pen, COLORREF brush, COLORREF click)
 {
 	SetRect(rt);
-	SetPenColor(pen);
-	SetBrushColor(brush);
-	ClickColor = click;
+	//SetPenColor(pen);
+	//SetBrushColor(brush);
+	//ClickColor = click;
 }
 
 void Button::Draw(HDC hMemDC)
