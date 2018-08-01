@@ -34,6 +34,5 @@ public:
 	Button titleBtn_Credit;
 	Button titleBtn_Exit;
 	Bitmap titleBg;		//∫Ò∆Æ∏ 
-	SpriteHelper Mermaid;
 
 };
