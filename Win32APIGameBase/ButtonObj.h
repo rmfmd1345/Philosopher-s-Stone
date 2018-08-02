@@ -38,7 +38,7 @@ public:
 	int h;					//높이
 
 public:
-	void Init(int x, int y, int w, int h, COLORREF click);	//초기화
+	void Init(int x, int y, int w, int h, COLORREF click = RGB(255, 0, 255));	//초기화
 	void Draw(HDC hMemDC);	//그리기
 
 	void SetRect(RECT rt);	//위치 변경

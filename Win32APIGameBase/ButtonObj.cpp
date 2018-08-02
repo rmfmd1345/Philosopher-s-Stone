@@ -75,7 +75,6 @@ bool Button::isClick(int x, int y)	//마우스오버와 같은 함수인데 또 만든이유는 함
 {									//아니면 마우스오버 색 외에 클릭 색도 추가하여 오버가 되었는지, 클릭이 되었는지 체크할 수 있음
 	if (this->isOver(x, y))
 	{
-		Button_State_Num = Down;
 		bIsOn = true;
 		return true;
 	}
