@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "ButtonObj.h"
 
+//깃허브 동기화 되는지 확인용으로 주석
 void Button::SetRect(RECT rt)
 {
 	rect.left = rt.left;
