@@ -20,12 +20,15 @@ void Button::SetBrushColor(COLORREF color)
 	BrushColor = color;
 }
 
-void Button::Init(RECT rt, COLORREF pen, COLORREF brush, COLORREF click)
+void Button::Init(int x, int y, int w, int h, COLORREF click)
 {
-	SetRect(rt);
-	//SetPenColor(pen);
-	//SetBrushColor(brush);
-	//ClickColor = click;
+	SetRect({ x, y, x + w, y + h }); //LEFT와 RIGHT는 x값을 받고, TOP과 BOTTOM은 Y값을 받으므로
+	pos.x = x; //그림을 띄울 좌표와
+	pos.y = y;
+	this->w = w; //그림의 너비, 높이를 지정
+	this->h = h;
+
+	SpriteColor = click; //마젠타 빼주기
 }
 
 void Button::Draw(HDC hMemDC)
@@ -63,6 +66,7 @@ bool Button::isOver(int x, int y)	//마우스오버 체크
 		bIsOn = true;
 		return true;
 	}
+	Button_State_Num = Up; //평상시엔 버튼이 올라간 상태
 	bIsOn = false;
 	return false;
 }
