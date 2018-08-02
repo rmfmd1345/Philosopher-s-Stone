@@ -47,7 +47,7 @@ void Title::OnMouseLButtonUp(HWND hWnd, int x, int y)
 	}
 	if (ObjPool->titleBtn_Exit.isClickUp(x, y))	//버튼을 클릭했을 때
 	{
-		//게임 종료
+		exit(0);
 	}
 }
 
