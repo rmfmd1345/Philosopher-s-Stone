@@ -22,7 +22,7 @@ void Button::SetBrushColor(COLORREF color)
 
 void Button::Init(int x, int y, int w, int h, COLORREF click)
 {
-	SetRect({ x, y, x + w, y + h }); //LEFT와 RIGHT는 x값을 받고, TOP과 BOTTOM은 Y값을 받으므로.
+	SetRect({ x, y, x + w, y + h }); //LEFT와 RIGHT는 x값을 받고, TOP과 BOTTOM은 Y값을 받으므로
 	pos.x = x; //그림을 띄울 좌표와
 	pos.y = y;
 	this->w = w; //그림의 너비, 높이를 지정
@@ -66,7 +66,7 @@ bool Button::isOver(int x, int y)	//마우스오버 체크
 		bIsOn = true;
 		return true;
 	}
-	Button_State_Num = Up;
+	Button_State_Num = Up; //평상시엔 버튼이 올라간 상태
 	bIsOn = false;
 	return false;
 }
