@@ -22,29 +22,56 @@ int InputManager::OnTimer(HWND hWnd, WPARAM wParam, LPARAM lParam)
 	return 1;
 }
 
-int InputManager::OnMouseLButton(HWND hWnd, WPARAM wParam, LPARAM lParam)
+int InputManager::OnMouseLButtonDown(HWND hWnd, WPARAM wParam, LPARAM lParam)
 {
 	switch (ObjPool->System.GetScene())	//설명 생략
 	{
 	case SCENE_TITLE:
-		Title::OnMouseLButton(hWnd, LOWORD(lParam), HIWORD(lParam));	//마우스의 위치 값을 가진 lParam을 앞단어, 뒷단어로 분해해서 x,y가 됨 (?비트연산)
+		Title::OnMouseLButtonDown(hWnd, LOWORD(lParam), HIWORD(lParam));	//마우스의 위치 값을 가진 lParam을 앞단어, 뒷단어로 분해해서 x,y가 됨 (?비트연산)
 		break;
 	case SCENE_INGAME:
-		Ingame::OnMouseLButton(hWnd, LOWORD(lParam), HIWORD(lParam));
+		Ingame::OnMouseLButtonDown(hWnd, LOWORD(lParam), HIWORD(lParam));
 		break;
 	}
 	return 1;
 }
 
-int InputManager::OnMouseRButton(HWND hWnd, WPARAM wParam, LPARAM lParam)
+int InputManager::OnMouseLButtonUp(HWND hWnd, WPARAM wParam, LPARAM lParam)
+{
+	switch (ObjPool->System.GetScene())	//설명 생략
+	{
+	case SCENE_TITLE:
+		Title::OnMouseLButtonUp(hWnd, LOWORD(lParam), HIWORD(lParam));	//마우스의 위치 값을 가진 lParam을 앞단어, 뒷단어로 분해해서 x,y가 됨 (?비트연산)
+		break;
+	case SCENE_INGAME:
+		Ingame::OnMouseLButtonUp(hWnd, LOWORD(lParam), HIWORD(lParam));
+		break;
+	}
+	return 1;
+}
+int InputManager::OnMouseRButtonDown(HWND hWnd, WPARAM wParam, LPARAM lParam)
 {
 	switch (ObjPool->System.GetScene()) //설명 생략
 	{
 	case SCENE_TITLE:
-		Title::OnMouseRButton(hWnd, LOWORD(lParam), HIWORD(lParam));
+		Title::OnMouseRButtonDown(hWnd, LOWORD(lParam), HIWORD(lParam));
 		break;
 	case SCENE_INGAME:
-		Ingame::OnMouseRButton(hWnd, LOWORD(lParam), HIWORD(lParam));
+		Ingame::OnMouseRButtonDown(hWnd, LOWORD(lParam), HIWORD(lParam));
+		break;
+	}
+	return 1;
+}
+
+int InputManager::OnMouseRButtonUp(HWND hWnd, WPARAM wParam, LPARAM lParam)
+{
+	switch (ObjPool->System.GetScene())	//설명 생략
+	{
+	case SCENE_TITLE:
+		Title::OnMouseRButtonUp(hWnd, LOWORD(lParam), HIWORD(lParam));	//마우스의 위치 값을 가진 lParam을 앞단어, 뒷단어로 분해해서 x,y가 됨 (?비트연산)
+		break;
+	case SCENE_INGAME:
+		Ingame::OnMouseRButtonUp(hWnd, LOWORD(lParam), HIWORD(lParam));
 		break;
 	}
 	return 1;
@@ -99,10 +126,14 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
 		return InputManager::OnCreate(hWnd, wParam, lParam);
 	case WM_TIMER:
 		return InputManager::OnTimer(hWnd, wParam, lParam);
+	case WM_LBUTTONDOWN:
+		return InputManager::OnMouseLButtonDown(hWnd, wParam, lParam);
 	case WM_LBUTTONUP:
-		return InputManager::OnMouseLButton(hWnd, wParam, lParam);
+		return InputManager::OnMouseLButtonUp(hWnd, wParam, lParam);
+	case WM_RBUTTONDOWN:
+		return InputManager::OnMouseRButtonDown(hWnd, wParam, lParam);
 	case WM_RBUTTONUP:
-		return InputManager::OnMouseRButton(hWnd, wParam, lParam);
+		return InputManager::OnMouseLButtonUp(hWnd, wParam, lParam);
 	case WM_MOUSEMOVE:
 		return InputManager::OnMouseMove(hWnd, wParam, lParam);
 	case WM_DESTROY:

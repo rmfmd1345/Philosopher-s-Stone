@@ -4,8 +4,10 @@
 namespace Ingame {
 	void Draw(HDC hMemDC);
 	void OnTimer(HWND hWnd, int timer);
-	void OnMouseLButton(HWND hWnd, int x, int y);
-	void OnMouseRButton(HWND hWnd, int x, int y);
+	void OnMouseLButtonDown(HWND hWnd, int x, int y);
+	void OnMouseLButtonUp(HWND hWnd, int x, int y);
+	void OnMouseRButtonDown(HWND hWnd, int x, int y);
+	void OnMouseRButtonUp(HWND hWnd, int x, int y);
 	void OnMouseMove(HWND hWnd, int x, int y);
 	void OnKeyborad();
 }
@@ -13,8 +15,10 @@ namespace Ingame {
 namespace Title {
 	void Draw(HDC hMemDC);
 	void OnTimer(HWND hWnd, int timer);
-	void OnMouseLButton(HWND hWnd, int x, int y);
-	void OnMouseRButton(HWND hWnd, int x, int y);
+	void OnMouseLButtonDown(HWND hWnd, int x, int y);
+	void OnMouseLButtonUp(HWND hWnd, int x, int y);
+	void OnMouseRButtonDown(HWND hWnd, int x, int y);
+	void OnMouseRButtonUp(HWND hWnd, int x, int y);
 	void OnMouseMove(HWND hWnd, int x, int y);
 	void OnKeyborad();
 }

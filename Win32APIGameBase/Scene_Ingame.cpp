@@ -15,12 +15,22 @@ void Ingame::OnTimer(HWND hWnd, int timer)
 
 }
 
-void Ingame::OnMouseLButton(HWND hWnd, int x, int y)
+void Ingame::OnMouseLButtonDown(HWND hWnd, int x, int y)
 {
 
 }
 
-void Ingame::OnMouseRButton(HWND hWnd, int x, int y)
+void Ingame::OnMouseLButtonUp(HWND hWnd, int x, int y)
+{
+
+}
+
+void Ingame::OnMouseRButtonDown(HWND hWnd, int x, int y)
+{
+
+}
+
+void Ingame::OnMouseRButtonUp(HWND hWnd, int x, int y)
 {
 
 }

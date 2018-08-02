@@ -28,23 +28,35 @@ void Title::OnTimer(HWND hWnd, int timer)
 
 }
 
-void Title::OnMouseLButton(HWND hWnd, int x, int y)
+void Title::OnMouseLButtonDown(HWND hWnd, int x, int y)
 {
-	if (ObjPool->titleBtn_Start.isClick(x, y))	//버튼을 클릭했을 때
+	ObjPool->titleBtn_Start.isClickDown(x, y);
+	ObjPool->titleBtn_Credit.isClickDown(x, y);
+	ObjPool->titleBtn_Exit.isClickDown(x, y);
+}
+
+void Title::OnMouseLButtonUp(HWND hWnd, int x, int y)
+{
+	if (ObjPool->titleBtn_Start.isClickUp(x, y))	//버튼을 클릭했을 때
 	{
 		ObjPool->System.SetScene(SCENE_INGAME);	//씬을 바꾼다
 	}
-	if (ObjPool->titleBtn_Credit.isClick(x, y))	//버튼을 클릭했을 때
+	if (ObjPool->titleBtn_Credit.isClickUp(x, y))	//버튼을 클릭했을 때
 	{
 		ObjPool->System.SetScene(SCENE_CREDIT);	//씬을 바꾼다
 	}
-	if (ObjPool->titleBtn_Exit.isClick(x, y))	//버튼을 클릭했을 때
+	if (ObjPool->titleBtn_Exit.isClickUp(x, y))	//버튼을 클릭했을 때
 	{
 		//게임 종료
 	}
 }
 
-void Title::OnMouseRButton(HWND hWnd, int x, int y)
+void Title::OnMouseRButtonDown(HWND hWnd, int x, int y)
+{
+
+}
+
+void Title::OnMouseRButtonUp(HWND hWnd, int x, int y)
 {
 
 }
