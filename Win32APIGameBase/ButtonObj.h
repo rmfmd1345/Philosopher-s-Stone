@@ -24,7 +24,6 @@ public:
 	// Bitmap part
 	Bitmap Btn_Bitmap[3]; // Up Over Down
 	int Button_State_Num;
-
 	enum Button_State
 	{
 		Up,
@@ -32,8 +31,14 @@ public:
 		Down
 	};
 
+	HDC hdcImg;				//미리 그려둘 비트맵의 DC
+	COLORREF SpriteColor;	//투명화 컬러 (마젠타가 기본)
+	POINT pos;				//좌표
+	int w;					//너비
+	int h;					//높이
+
 public:
-	void Init(RECT rt, COLORREF pen, COLORREF brush, COLORREF click);	//초기화
+	void Init(int x, int y, int w, int h, COLORREF click);	//초기화
 	void Draw(HDC hMemDC);	//그리기
 
 	void SetRect(RECT rt);	//위치 변경
