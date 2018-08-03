@@ -25,7 +25,9 @@ void ObjectPool::CreateObject(HWND hWnd)	//객체의 초기 설정을 적는 곳
 	
 	ingameUI_Time.Init(hWnd, 475, 0, 320, 134, L"./Image/UI/Ingame/ui_time.bmp");
 
-	//Maps.InitMap(hWnd);
+	Maps.InitMap(hWnd);
+
+	Maps.ResetMap(5, 5);
 }
 
 void ObjectPool::DeleteObject()				//비트맵객체는 반드시 종료해주기

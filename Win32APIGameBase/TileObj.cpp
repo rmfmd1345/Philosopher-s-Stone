@@ -18,14 +18,14 @@ void CTile::DestroyTile(CTile Tile)
 
 void CMap::InitMap(HWND hwnd)
 {
-	None.InitTile(hwnd, 0 /*Frame*/, NONE, L"./Image/Tile/", [&] {});
-	Floor.InitTile(hwnd, 0 /*Frame*/, FLOOR, L"./Image/Tile/Floor.bmp", [&] {});
-	Wall.InitTile(hwnd, 0 /*Frame*/, WALL, L"./Image/Tile/Wall.bmp", [&] {});
-	Trap_Niddle.InitTile(hwnd, 0 /*Frame*/, TRAP_Niddle, L"./Image/Tile/", [&] {});
-	Trap_Hole.InitTile(hwnd, 0 /*Frame*/, TRAP_Hole, L"./Image/Tile/", [&] {});
-	Trap_ScareCrow.InitTile(hwnd, 0 /*Frame*/, TRAP_ScareCrow, L"./Image/Tile/", [&] {});
-	Trap_Cunfution.InitTile(hwnd, 0 /*Frame*/, TRAP_Cunfution, L"./Image/Tile/", [&] {});
-	Trap_Grap.InitTile(hwnd, 0 /*Frame*/, TRAP_Grap, L"./Image/Tile/", [&] {});
+	None.InitTile(hwnd, 1 /*Frame*/, NONE, L"./Image/Tile/None.bmp", [&] {});
+	Floor.InitTile(hwnd, 1 /*Frame*/, FLOOR, L"./Image/Tile/Floor.bmp", [&] {});
+	Wall.InitTile(hwnd, 1 /*Frame*/, WALL, L"./Image/Tile/Wall.bmp", [&] {});
+	Trap_Niddle.InitTile(hwnd, 1 /*Frame*/, TRAP_Niddle, L"./Image/Tile/Niddle.bmp", [&] {});
+	Trap_Hole.InitTile(hwnd, 1 /*Frame*/, TRAP_Hole, L"./Image/Tile/Hole.bmp", [&] {});
+	Trap_ScareCrow.InitTile(hwnd, 1 /*Frame*/, TRAP_ScareCrow, L"./Image/Tile/Scarecrow.bmp", [&] {});
+	Trap_Cunfusion.InitTile(hwnd, 1 /*Frame*/, TRAP_Cunfution, L"./Image/Tile/Cunfusion.bmp", [&] {});
+	Trap_Grap.InitTile(hwnd, 1 /*Frame*/, TRAP_Grap, L"./Image/Tile/Grap.bmp", [&] {});
 
 	Brick[UP].Init(hwnd, 0, 0, 80, 80, L"./Image/Tile/Brick_Up.bmp");
 	Brick[DOWN].Init(hwnd, 0, 0, 80, 80, L"./Image/Tile/Brick_Down.bmp");
@@ -33,17 +33,19 @@ void CMap::InitMap(HWND hwnd)
 	Brick[RIGHT].Init(hwnd, 0, 0, 80, 80, L"./Image/Tile/Brick_Right.bmp");
 }
 
-void CMap::ResetMap()
+void CMap::ResetMap(int Character_x, int Character_y)
 {
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 18; i++)
 	{
-		for (int j = 0; j < 10; j++)
+		for (int j = 0; j < 32; j++)
 		{
 			Map[i][j] = None;
+			Map[i][j].Tile_Sprite.SetPosition(i * 80, j * 80);
 		}
 	}
 
-	//플레이어 위치에 바닥 설정
+	Map[Character_x][Character_y] = Floor;
+	Map[Character_x][Character_y].Tile_Sprite.SetPosition(Character_x * 80, Character_y * 80);
 }
 
 void CMap::ActiveTile(int Character_x, int Character_y)
@@ -69,7 +71,7 @@ void CMap::ActiveTile(int Character_x, int Character_y)
 		Trap_ScareCrow.Tile_Func();
 		break;
 	case TRAP_Cunfution:
-		Trap_Cunfution.Tile_Func();
+		Trap_Cunfusion.Tile_Func();
 		break;
 	case TRAP_Grap:
 		Trap_Grap.Tile_Func();
@@ -80,6 +82,7 @@ void CMap::ActiveTile(int Character_x, int Character_y)
 void CMap::SetTileOnMap(CTile Tile, int x, int y)
 {
 	Map[x][y] = Tile;
+	Map[x][y].Tile_Sprite.SetPosition(x * 80, y * 80);
 }
 
 void CMap::DrawMap(HDC hMemDC)
@@ -88,35 +91,49 @@ void CMap::DrawMap(HDC hMemDC)
 	{
 		for (int j = 0; j < 32; j++)
 		{
+			if (Map[i][j].Tile_ID == Floor.Tile_ID && Map[i][j - 1].Tile_ID != Floor.Tile_ID)
+			{
+				Map[i][j - 1] = Wall;
+				Map[i][j - 1].Tile_Sprite.SetPosition(i * 80, (j - 1) * 80);
+			}
+		}
+	}
+
+	for (int i = 0; i < 18; i++)
+	{
+		for (int j = 0; j < 32; j++)
+		{
 			switch (Map[i][j].Tile_ID)
 			{
 			case NONE:
-				None.Tile_Sprite.Draw(hMemDC);
+				Map[i][j].Tile_Sprite.Draw(hMemDC);
 				break;
 			case FLOOR:
-				Floor.Tile_Sprite.Draw(hMemDC);
+				Map[i][j].Tile_Sprite.Draw(hMemDC);
 				break;
 			case WALL:
-				Wall.Tile_Sprite.Draw(hMemDC);
+				Map[i][j].Tile_Sprite.Draw(hMemDC);
 				break;
 			case TRAP_Niddle:
-				Trap_Niddle.Tile_Sprite.Draw(hMemDC);
+				Map[i][j].Tile_Sprite.Draw(hMemDC);
 				break;
 			case TRAP_Hole:
-				Trap_Hole.Tile_Sprite.Draw(hMemDC);
+				Map[i][j].Tile_Sprite.Draw(hMemDC);
 				break;
 			case TRAP_ScareCrow:
-				Trap_ScareCrow.Tile_Sprite.Draw(hMemDC);
+				Map[i][j].Tile_Sprite.Draw(hMemDC);
 				break;
 			case TRAP_Cunfution:
-				Trap_Cunfution.Tile_Sprite.Draw(hMemDC);
+				Map[i][j].Tile_Sprite.Draw(hMemDC);
 				break;
 			case TRAP_Grap:
-				Trap_Grap.Tile_Sprite.Draw(hMemDC);
+				Map[i][j].Tile_Sprite.Draw(hMemDC);
 				break;
 			}
 		}
 	}
+
+	DrawBrick(hMemDC);
 }
 
 void CMap::DrawBrick(HDC hMemDC)
@@ -128,7 +145,7 @@ void CMap::DrawBrick(HDC hMemDC)
 
 		switch (a)
 		{
-		case 0:
+		case UP:
 			Istart = 0;
 			Iend = 17;
 			Jstart = 0;
@@ -136,7 +153,7 @@ void CMap::DrawBrick(HDC hMemDC)
 
 			Brick_ID = UP;
 			break;
-		case 1:
+		case LEFT:
 			Istart = 0;
 			Iend = 18;
 			Jstart = 0;
@@ -144,7 +161,7 @@ void CMap::DrawBrick(HDC hMemDC)
 
 			Brick_ID = LEFT;
 			break;
-		case 2:
+		case RIGHT:
 			Istart = 0;
 			Iend = 18;
 			Jstart = 32;
@@ -152,7 +169,7 @@ void CMap::DrawBrick(HDC hMemDC)
 
 			Brick_ID = RIGHT;
 			break;
-		case 3:
+		case DOWN:
 			Istart = 18;
 			Iend = 1;
 			Jstart = 0;
@@ -162,38 +179,58 @@ void CMap::DrawBrick(HDC hMemDC)
 			break;
 		}
 
-		for (int i = Istart; i < Iend; i++)
+		for (int i = Istart; i != Iend;)
 		{
-			for (int j = Jstart; j < Jend; j++)
+			for (int j = Jstart; j != Jend;)
 			{
 				switch (a)
 				{
-				case 0:
-					if (Map[i][j].Tile_ID == WALL)
+				case UP:
+					if (Map[j][i].Tile_ID == WALL)
 					{
-						Brick[Brick_ID].SetPosition(80 * (j - 1), 80 * (i - 1));
+						Brick[Brick_ID].SetPosition(80 * j, 80 * i);
 						Brick[Brick_ID].Draw(hMemDC);
 					}
-					break;
-				case 1:
-					if (Map[i][j].Tile_ID != Map[i][j + 1].Tile_ID && Map[i][j].Tile_ID == NONE)
+					j++;
+					if (j == Jend)
 					{
-						Brick[Brick_ID].SetPosition(80 * (j - 1), 80 * (i - 1));
-						Brick[Brick_ID].Draw(hMemDC);
+						i++;
 					}
 					break;
-				case 2:
-					if (Map[i][j].Tile_ID != Map[i][j - 1].Tile_ID && Map[i][j].Tile_ID == NONE)
+				case LEFT:
+					if (Map[i][j].Tile_ID != Map[i + 1][j].Tile_ID && Map[i][j].Tile_ID == NONE)
 					{
-						Brick[Brick_ID].SetPosition(80 * (j - 1), 80 * (i - 1));
+						Brick[Brick_ID].SetPosition(80 * i, 80 * j);
 						Brick[Brick_ID].Draw(hMemDC);
 					}
+					j++;
+					if (j == Jend)
+					{
+						i++;
+					}
 					break;
-				case 3:
+				case RIGHT:
 					if (Map[i][j].Tile_ID != Map[i - 1][j].Tile_ID && Map[i][j].Tile_ID == NONE)
 					{
-						Brick[Brick_ID].SetPosition(80 * (j - 1), 80 * (i - 1));
+						Brick[Brick_ID].SetPosition(80 * i, 80 * j);
 						Brick[Brick_ID].Draw(hMemDC);
+					}
+					j--;
+					if (j == Jend)
+					{
+						i++;
+					}
+					break;
+				case DOWN:
+					if (Map[i][j].Tile_ID != Map[i][j - 1].Tile_ID && Map[i][j].Tile_ID == NONE)
+					{
+						Brick[Brick_ID].SetPosition(80 * i, 80 * (j - 1));
+						Brick[Brick_ID].Draw(hMemDC);
+					}
+					j++;
+					if (j == Jend)
+					{
+						i--;
 					}
 					break;
 				}
@@ -210,6 +247,6 @@ void CMap::DestroyMap()
 	Trap_Niddle.DestroyTile(Trap_Niddle);
 	Trap_Hole.DestroyTile(Trap_Hole);
 	Trap_ScareCrow.DestroyTile(Trap_ScareCrow);
-	Trap_Cunfution.DestroyTile(Trap_Cunfution);
+	Trap_Cunfusion.DestroyTile(Trap_Cunfusion);
 	Trap_Grap.DestroyTile(Trap_Grap);
 }
