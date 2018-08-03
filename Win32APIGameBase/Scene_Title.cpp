@@ -3,24 +3,13 @@
 
 void Title::Draw(HDC hMemDC)
 {
-
+	//배경 출력
 	ObjPool->titleBg.Draw(hMemDC);
-	////비트맵 출력
-	//
+	
+	//버튼 출력
 	ObjPool->titleBtn_Start.Draw(hMemDC);
 	ObjPool->titleBtn_Credit.Draw(hMemDC);
 	ObjPool->titleBtn_Exit.Draw(hMemDC);
-	////버튼 출력
-	//
-	//ObjPool->Gdi.SetTextsColor(RGB(255, 0, 0));
-	//ObjPool->Gdi.Text(hMemDC, SCREEN_WIDTH / 2 - 175, SCREEN_HEIGHT / 2 + 100, L"게임 시작");
-	//
-	//TCHAR str[20];
-	//wsprintf(str, L"FPS : %d", (int)ObjPool->System.GetFPS());
-	//ObjPool->Gdi.Text(hMemDC, 0, 0, str, 36);
-	////fps확인
-	//
-	//ObjPool->Gdi.Text(hMemDC, 100, 100, L"현자의 돌", 50);
 }
 
 void Title::OnTimer(HWND hWnd, int timer)

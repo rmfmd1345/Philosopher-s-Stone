@@ -11,8 +11,6 @@ private:
 	HBITMAP hBitmap;		//비트맵
 	COLORREF SpriteColor;	//투명화 컬러 (마젠타가 기본)
 	POINT pos;				//좌표
-
-public:
 	int w;					//너비
 	int h;					//높이
 
