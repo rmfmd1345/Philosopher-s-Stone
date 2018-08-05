@@ -5,6 +5,7 @@ ObjectPool* ObjectPool::pool = nullptr;
 
 void ObjectPool::CreateObject(HWND hWnd)	//객체의 초기 설정을 적는 곳
 {
+	//title Scene
 	titleBtn_Start.Init(hWnd, 1000, 468, 132, 34, L"./Image/UI/Main/ui_start.bmp", L"./Image/UI/Main/ui_start_down.bmp", L"./Image/UI/Main/ui_start_up.bmp"); //지정한 위치에 버튼 초기화
 
 	titleBtn_Credit.Init(hWnd ,1000, 528, 164, 46, L"./Image/UI/Main/ui_credit.bmp", L"./Image/UI/Main/ui_credit_down.bmp", L"./Image/UI/Main/ui_credit_up.bmp"); //지정한 위치에 버튼 초기화
@@ -13,6 +14,10 @@ void ObjectPool::CreateObject(HWND hWnd)	//객체의 초기 설정을 적는 곳
 
 	titleBg.Init(hWnd, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, L"./Image/Background/Main_Bg.bmp");
 
+	//credit Scene
+	creditBg.Init(hWnd, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, L"./Image/Background/Credit_Bg.bmp");
+
+	//ingame Scene
 	ingameBtn_Option.Init(hWnd, 1155, 30, 56, 56, L"./Image/UI/Ingame/ui_option.bmp", L"./Image/UI/Ingame/ui_option_down.bmp", L"./Image/UI/Ingame/ui_option_up.bmp");
 	
 	ingameUI_Stone.Init(hWnd, 870, 25, 224, 70, L"./Image/UI/Ingame/ui_stone.bmp");

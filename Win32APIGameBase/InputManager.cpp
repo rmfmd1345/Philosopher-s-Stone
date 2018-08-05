@@ -111,6 +111,9 @@ void InputManager::InputUpdate()		//메세지가 아닌 다른 인풋의 처리 (ex. 키보드)
 	case SCENE_TITLE:
 		Title::OnKeyborad();
 		break;
+	case SCENE_CREDIT:
+		Credit::OnKeyborad();
+		break;
 	case SCENE_INGAME:
 		Ingame::OnKeyborad();
 		break;

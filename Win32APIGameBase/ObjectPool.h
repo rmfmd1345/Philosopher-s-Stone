@@ -34,7 +34,12 @@ public:
 	Button titleBtn_Start;	//버튼
 	Button titleBtn_Credit;
 	Button titleBtn_Exit;
+
+
 	Bitmap titleBg;		//비트맵
+
+	//credit Scene
+	Bitmap creditBg;		
 
 	//ingame Scene
 	CMap Maps;
