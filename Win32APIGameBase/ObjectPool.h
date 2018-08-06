@@ -4,6 +4,7 @@
 #include "SystemObj.h"
 #include "BitmapObj.h"
 #include "ButtonObj.h"
+#include "TileObj.h"
 
 class ObjectPool		//오브젝트 풀 (전역변수같이 사용됨)
 {
@@ -28,11 +29,24 @@ public:
 	System System;	//시스템 변수를 넣어두는 곳 
 	Gdi Gdi;		//그리기 함수를 사용하는 곳
 
-	// title scene
 public:
-	Button titleBtn_Start;	//버튼 (Rectangle로 그리지만 위치나 버튼 상태를 체크해야하므로 객체로 만듬)
+	//title Scene
+	Button titleBtn_Start;	//버튼
 	Button titleBtn_Credit;
 	Button titleBtn_Exit;
+
+
 	Bitmap titleBg;		//비트맵
 
+	//credit Scene
+	Bitmap creditBg;		
+
+	//ingame Scene
+	CMap Maps;
+	Button ingameBtn_Option;
+	Bitmap ingameUI_Stone;
+	Bitmap ingameUI_Trap;
+	Bitmap ingameUI_Skill;
+	Bitmap ingameUI_Stage;
+	Bitmap ingameUI_Time;
 };

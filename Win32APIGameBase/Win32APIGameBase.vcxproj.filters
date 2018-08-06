@@ -137,6 +137,9 @@
     <ClCompile Include="Sprite.cpp">
       <Filter>ObjectPool</Filter>
     </ClCompile>
+    <ClCompile Include="Scene_Credit.cpp">
+      <Filter>Scene\SceneScript</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">

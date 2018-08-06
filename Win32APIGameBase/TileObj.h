@@ -17,7 +17,7 @@ public:
 class CMap
 {
 public:
-	CTile Map[32][18]; // 맵
+	CTile Map[18][32]; // 맵
 
 	CTile None; // 아무것도 없음
 	CTile Floor; // 바닥
@@ -25,7 +25,7 @@ public:
 	CTile Trap_Niddle; // 가시 함정
 	CTile Trap_Hole; // 구멍 함정
 	CTile Trap_ScareCrow; // 허수아비 함정
-	CTile Trap_Cunfution; // 혼란 함정
+	CTile Trap_Cunfusion; // 혼란 함정
 	CTile Trap_Grap; // 갈고리 함정
 
 	Bitmap Brick[4]; // 벽돌 이미지
@@ -45,16 +45,17 @@ public:
 	enum Brick_ID_List
 	{
 		UP,
-		DOWN,
 		LEFT,
-		RIGHT
+		RIGHT,
+		DOWN
 	};
 
 	void InitMap(HWND hwnd); // 타일 이미지 초기화
-	void ResetMap(); // 스테이지 넘어갈 때 맵을 초기화
+	void ResetMap(int Character_x, int Character_y); // 스테이지 넘어갈 때 맵을 초기화
 	void ActiveTile(int Character_x, int Character_y); // 해당 타일의 기능을 실행 (람다 사용)
 	void SetTileOnMap(CTile Tile, int x, int y); // 타일을 맵에 배치
-	void DrawMap(HDC hMemDC); //  플레이어를 기준으로 화면에 나오는 타일을 계산하여 출력
-	void DrawBrick(HDC hMemDC); // 벽을 그려냄
+	void DrawMap(HDC hMemDC, int x, int y); //  플레이어를 기준으로 화면에 나오는 타일을 계산하여 출력
+	void SetBrick(int x, int y); // 벽돌 위치를 설정
+	void DrawBrick(HDC hMemDC, int x, int y); // 벽돌을 그려냄
 	void DestroyMap(); // 맵 타일 파괴
 };
