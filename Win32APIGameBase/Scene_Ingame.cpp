@@ -35,14 +35,14 @@ void Ingame::OnMouseLButtonUp(HWND hWnd, int x, int y)
 	{
 		ObjPool->System.SetScene(SCENE_OPTION);
 	}
-	
+
 	//For test
 	ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, x / 80, y / 80);
 }
 
 void Ingame::OnMouseRButtonDown(HWND hWnd, int x, int y)
 {
-	
+
 }
 
 void Ingame::OnMouseRButtonUp(HWND hWnd, int x, int y)
@@ -56,22 +56,54 @@ void Ingame::OnMouseMove(HWND hWnd, int x, int y)
 	ObjPool->ingameBtn_Option.isOver(x, y);
 }
 
+enum eKeyInput
+{
+	UP,
+	DOWN,
+	LEFT,
+	RIGHT
+};
+
 void Ingame::OnKeyborad()
 {
-	if (GetAsyncKeyState(VK_LEFT) & 0x8000)
-	{
-		x--;
-	}
-	else if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
-	{
-		x++;
-	}
-	else if (GetAsyncKeyState(VK_UP))
+
+	DWORD lastBitState[4] = { 0,0,0,0 };
+	DWORD keyState[4];
+
+	keyState[0] = GetAsyncKeyState(VK_UP);
+	keyState[1] = GetAsyncKeyState(VK_DOWN);
+	keyState[2] = GetAsyncKeyState(VK_LEFT);
+	keyState[3] = GetAsyncKeyState(VK_RIGHT);
+
+	if (lastBitState[UP] == 0 && keyState[UP] & 0x0001) // 이전에 0x1 이 0 이면 실행(안 누르다가 눌렀을 때)
 	{
 		y--;
+		lastBitState[UP] = 1; // 누르는 중엔 실행되지 않도록 표시
 	}
-	else if (GetAsyncKeyState(VK_DOWN))
+
+	if (lastBitState[DOWN] == 0 && keyState[DOWN] & 0x0001)
 	{
 		y++;
+		lastBitState[DOWN] = 1;
+	}
+
+	if (lastBitState[LEFT] == 0 && keyState[LEFT] & 0x0001)
+	{
+		x--;
+		lastBitState[LEFT] = 1;
+	}
+
+	if (lastBitState[RIGHT] == 0 && keyState[RIGHT] & 0x0001)
+	{
+		x++;
+		lastBitState[RIGHT] = 1;
+	}
+
+	for (int i = 0; i < 4; i++)
+	{
+		if ((keyState[i] & 0x8000) == 0) // 완전히 뗐다면 다음 실행을 위해서 상태 초기화
+		{
+			lastBitState[i] = 0;
+		}
 	}
 }
