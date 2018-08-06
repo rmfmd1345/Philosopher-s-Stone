@@ -147,6 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="EntityObj.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="BitmapObj.h" />
     <ClInclude Include="DrawManager.h" />
@@ -165,6 +166,7 @@
     <ClInclude Include="TileObj.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="EntityObj.cpp" />
     <ClCompile Include="Scene_Credit.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="BitmapObj.cpp" />
