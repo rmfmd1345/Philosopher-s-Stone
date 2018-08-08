@@ -87,14 +87,14 @@ void Ingame::OnMouseMove(HWND hWnd, int x, int y)
 
 void Ingame::OnKeyborad()
 {
-<<<<<<< HEAD
+//<<<<<<< HEAD
 
 	DWORD lastBitState[5] = { 0,0,0,0,0 };
 	DWORD keyState[5];
-=======
-	DWORD lastBitState[4] = { 0,0,0,0 };
-	DWORD keyState[4];
->>>>>>> 14d9571db8af99a4928d9ea9f2405df9fece5cc0
+//=======
+//	DWORD lastBitState[4] = { 0,0,0,0 };
+//	DWORD keyState[4];
+//>>>>>>> 14d9571db8af99a4928d9ea9f2405df9fece5cc0
 
 	keyState[0] = GetAsyncKeyState(VK_UP);
 	keyState[1] = GetAsyncKeyState(VK_DOWN);
