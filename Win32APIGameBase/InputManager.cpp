@@ -135,7 +135,7 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
 	case WM_RBUTTONDOWN:
 		return InputManager::OnMouseRButtonDown(hWnd, wParam, lParam);
 	case WM_RBUTTONUP:
-		return InputManager::OnMouseLButtonUp(hWnd, wParam, lParam);
+		return InputManager::OnMouseRButtonUp(hWnd, wParam, lParam);
 	case WM_MOUSEMOVE:
 		return InputManager::OnMouseMove(hWnd, wParam, lParam);
 	case WM_DESTROY:

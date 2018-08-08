@@ -54,12 +54,25 @@ void Ingame::OnMouseLButtonUp(HWND hWnd, int x, int y)
 
 void Ingame::OnMouseRButtonDown(HWND hWnd, int x, int y)
 {
-
+	
 }
 
 void Ingame::OnMouseRButtonUp(HWND hWnd, int x, int y)
 {
-	
+	if (testC_x <= 9)
+		testC_x = 9;
+	if (testC_y <= 5)
+		testC_y = 5;
+	if (testC_x >= 23)
+		testC_x = 23;
+	if (testC_y >= 11)
+		testC_y = 11;
+
+	int Map_Start_x = testC_x - 9;
+	int Map_Start_y = testC_y - 5;
+
+	//For test
+	ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Trap_Niddle, (x / 80) + Map_Start_x, (y / 80) + Map_Start_y);
 }
 
 void Ingame::OnMouseMove(HWND hWnd, int x, int y)
@@ -77,7 +90,6 @@ enum eKeyInput
 
 void Ingame::OnKeyborad()
 {
-
 	DWORD lastBitState[4] = { 0,0,0,0 };
 	DWORD keyState[4];
 
