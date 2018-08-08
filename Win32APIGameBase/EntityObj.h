@@ -38,6 +38,8 @@ private:
 	SpriteHelper Ani_stand[4];
 	SpriteHelper Ani_walk[4];
 	SpriteHelper Ani_attack[4];
+	int nowFrame;
+	int maxFrame;
 
 	int health;
 
@@ -54,6 +56,7 @@ public:
 	void PlusHealth(int plus);
 
 	bool isDead();
+	bool isWalk();
 };
 
 class Monster

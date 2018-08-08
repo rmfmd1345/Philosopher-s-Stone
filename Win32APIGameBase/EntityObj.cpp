@@ -10,6 +10,9 @@ void Entity::Init(HWND hWnd, int x, int y, int type, COLORREF sprite)
 	nowAnimation = STAND;
 	nowDirection = DOWN;
 
+	nowFrame = 0;
+	maxFrame = 4;
+
 	health = 100;
 
 	switch (type)
@@ -124,6 +127,14 @@ void Entity::PlusHealth(int plus)
 bool Entity::isDead()
 {
 	return !(health);
+}
+
+bool Entity::isWalk()
+{
+	if (nowAnimation != WALK) return false;
+	if (nowFrame == (maxFrame * 4)) return false;
+
+	return true;
 }
 
 void Monster::Init(HWND hWnd)
