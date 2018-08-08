@@ -5,6 +5,7 @@
 #include "BitmapObj.h"
 #include "ButtonObj.h"
 #include "TileObj.h"
+#include "EntityObj.h"
 
 class ObjectPool		//오브젝트 풀 (전역변수같이 사용됨)
 {
@@ -29,6 +30,9 @@ public:
 	System System;	//시스템 변수를 넣어두는 곳 
 	Gdi Gdi;		//그리기 함수를 사용하는 곳
 
+	//Entity(Monster)
+	Monster MonsterPool;
+
 public:
 	//title Scene
 	Button titleBtn_Start;	//버튼
@@ -49,4 +53,5 @@ public:
 	Bitmap ingameUI_Skill;
 	Bitmap ingameUI_Stage;
 	Bitmap ingameUI_Time;
+
 };

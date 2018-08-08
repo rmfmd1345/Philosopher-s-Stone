@@ -1,4 +1,5 @@
 #pragma once
+using namespace std;
 
 enum eAnimation
 {
@@ -6,14 +7,6 @@ enum eAnimation
 	WALK,
 	ATTACK,
 	CLEAR
-};
-
-enum eDirection
-{
-	UP,
-	DOWN,
-	LEFT,
-	RIGHT
 };
 
 enum eEntity
@@ -25,10 +18,6 @@ enum eEntity
 
 class Entity	//:	protected Astar
 {
-public:
-	Entity() { };
-	~Entity() { };
-
 private:
 	int type;		//엔티티 타입
 	POINT pos;		//엔티티 위치
@@ -45,11 +34,12 @@ private:
 
 public:
 	void Init(HWND hWnd, int x, int y, int type, COLORREF sprite = RGB(255, 0, 255));
-	void Draw(HDC hMemDC);
+	void Draw(HDC hMemDC, int x, int y);
 	void Ternimate();
 
 	void Animaition();
 
+	void SetPosition(int x, int y);
 	void SetAnimation(int ani);
 	void SetDirection(int dire);
 
@@ -66,18 +56,23 @@ public:
 	~Monster() { };
 
 private:
-	vector<Entity> monsterPool;
+	Entity Dealer;
+	Entity Wizard;
+	Entity Tanker;
+	vector<Entity> pool;
 
-	POINT spawnPosition;
+	POINT spawnPosition = { 0,0 };
 
 public:
 	void Init(HWND hWnd);
 	void Ternimate();
 	
-	void Draw(HDC hMemDC);
+	void Draw(HDC hMemDC, int x, int y);
 	void Animation();
 
+	void AddMonster(HWND hWnd, int type, int x, int y);
 	void AddMonster(HWND hWnd, int type);
 	void CheckHealth();
 
+	void SetDirection(int dire);
 };
