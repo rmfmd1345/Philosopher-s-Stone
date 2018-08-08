@@ -6,6 +6,11 @@ void CTile::InitTile(HWND hwnd, int Frame, int ID, LPCWSTR szFileName, std::func
 	Tile_ID = ID;
 	Tile_On = true;
 
+	Brick_Up = false;
+	Brick_Down = false;
+	Brick_Left = false;
+	Brick_Right = false;
+
 	Tile_Sprite.Init(hwnd, 0, 0, 80, 80, Frame, szFileName);
 
 	Tile_Func = Tile_Function;
@@ -35,7 +40,7 @@ void CMap::InitMap(HWND hwnd)
 
 void CMap::ResetMap(int Character_x, int Character_y)
 {
-	for (int i = 0; i < 18; i++)
+	for (int i = 0; i < 16; i++)
 	{
 		for (int j = 0; j < 32; j++)
 		{
@@ -81,25 +86,24 @@ void CMap::ActiveTile(int Character_x, int Character_y)
 void CMap::SetTileOnMap(CTile Tile, int x, int y)
 {
 	Map[y][x] = Tile;
-	Map[y][x].Tile_Sprite.SetPosition(y * 80, x * 80);
+	Map[y][x].Tile_Sprite.SetPosition(x * 80, y * 80);
 }
 
 void CMap::DrawMap(HDC hMemDC, int x, int y)
 {
+	if (x <= 9)
+		x = 9;
+	if (y <= 5)
+		y = 5;
+	if (x >= 23)
+		x = 23;
+	if (y >= 11)
+		y = 11;
+
 	int Map_Start_x = x - 9;
 	int Map_End_x = x + 9;
 	int Map_Start_y = y - 5;
 	int Map_End_y = y + 5;
-
-	// TODO : 0에서 루프 종료로 수정
-	if (Map_Start_x < 0)
-		Map_Start_x = 0;
-	if (Map_Start_y < 0)
-		Map_Start_y = 0;
-	if (Map_End_x > 32)
-		Map_End_x = 32;
-	if (Map_End_y > 16)
-		Map_End_y = 16;
 
 	for (int i = Map_Start_y; i < Map_End_y; i++)
 	{
@@ -117,44 +121,75 @@ void CMap::DrawMap(HDC hMemDC, int x, int y)
 	{
 		for (int j = Map_Start_x; j < Map_End_x; j++)
 		{
-			Map[i][j].Tile_Sprite.SetPosition((j - Map_Start_y) * 80, (i - Map_Start_x) * 80);
+			Map[i][j].Tile_Sprite.SetPosition((j - Map_Start_x) * 80, (i - Map_Start_y) * 80);
 
 			Map[i][j].Tile_Sprite.Draw(hMemDC);
 		}
 	}
-
-	//DrawBrick(hMemDC, x, y);
 }
 
 void CMap::SetBrick(int x, int y)
 {
-	
+	if (Map[y][x].Tile_ID == WALL)
+		Map[y][x].Brick_Up = true;
+	if (Map[y][x].Tile_ID == FLOOR && (Map[y + 1][x].Tile_ID == NONE || Map[y + 1][x].Tile_ID == WALL))
+		Map[y][x].Brick_Down = true;
+	if (Map[y][x].Tile_ID == NONE && (Map[y][x + 1].Tile_ID == FLOOR || Map[y][x + 1].Tile_ID == WALL))
+		Map[y][x].Brick_Left = true;
+	if (Map[y][x].Tile_ID == NONE && (Map[y][x - 1].Tile_ID == FLOOR || Map[y][x - 1].Tile_ID == WALL))
+		Map[y][x].Brick_Right = true;
 }
 
 void CMap::DrawBrick(HDC hMemDC, int x, int y)
 {
+	if (x < 9)
+		x = 9;
+	if (y < 5)
+		y = 5;
+	if (x > 23)
+		x = 23;
+	if (y > 11)
+		y = 11;
+
 	int Map_Start_x = x - 9;
 	int Map_End_x = x + 9;
 	int Map_Start_y = y - 5;
 	int Map_End_y = y + 5;
 
 	// TODO : 0에서 루프 종료로 수정
-	if (Map_Start_x < 0)
+	/*if (Map_Start_x < 0)
 		Map_Start_x = 0;
 	if (Map_Start_y < 0)
 		Map_Start_y = 0;
 	if (Map_End_x > 32)
 		Map_End_x = 32;
 	if (Map_End_y > 16)
-		Map_End_y = 16;
-
-	int Brick_ID;
+		Map_End_y = 16;*/
 
 	for (int i = Map_Start_y; i < Map_End_y; i++)
 	{
 		for (int j = Map_Start_x; j < Map_End_x; j++)
 		{
-			
+			Map[i][j].Brick_Up = false;
+			Map[i][j].Brick_Down = false;
+			Map[i][j].Brick_Left = false;
+			Map[i][j].Brick_Right = false;
+
+			SetBrick(j, i);
+
+			Brick[UP].SetPosition((j - Map_Start_x) * 80, (i - Map_Start_y) * 80);
+			Brick[LEFT].SetPosition((j - Map_Start_x) * 80, (i - Map_Start_y) * 80);
+			Brick[RIGHT].SetPosition((j - Map_Start_x) * 80, (i - Map_Start_y) * 80);
+			Brick[DOWN].SetPosition((j - Map_Start_x) * 80, (i - Map_Start_y) * 80);
+
+			if (Map[i][j].Brick_Up)
+				Brick[UP].Draw(hMemDC);
+			if (Map[i][j].Brick_Left)
+				Brick[LEFT].Draw(hMemDC);
+			if (Map[i][j].Brick_Right)
+				Brick[RIGHT].Draw(hMemDC);
+			if (Map[i][j].Brick_Down)
+				Brick[DOWN].Draw(hMemDC);
 		}
 	}
 }

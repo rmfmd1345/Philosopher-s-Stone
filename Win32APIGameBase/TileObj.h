@@ -5,6 +5,10 @@ class CTile
 public:
 	int Tile_ID; // 타일 식별 번호
 	bool Tile_On; // 함정 재장전 여부
+	bool Brick_Up;
+	bool Brick_Down;
+	bool Brick_Left;
+	bool Brick_Right;
 
 	SpriteHelper Tile_Sprite; // 애니메이션 스프라이트 (정방향 출력 시 : 발동 애니메이션 / 역방향 출력 시 : 재장전 애니메이션)
 
@@ -17,7 +21,7 @@ public:
 class CMap
 {
 public:
-	CTile Map[18][32]; // 맵
+	CTile Map[16][32]; // 맵
 
 	CTile None; // 아무것도 없음
 	CTile Floor; // 바닥
