@@ -109,7 +109,7 @@ void CMap::DrawMap(HDC hMemDC, int x, int y)
 	{
 		for (int j = Map_Start_x; j < Map_End_x; j++)
 		{
-			if (Map[i][j].Tile_ID == Floor.Tile_ID && Map[i - 1][j].Tile_ID != Floor.Tile_ID)
+			if (Map[i][j].Tile_ID == FLOOR && Map[i - 1][j].Tile_ID == NONE)
 			{
 				Map[i - 1][j] = Wall;
 				Map[i - 1][j].Tile_Sprite.SetPosition((j - Map_Start_x) * 80, ((i - Map_Start_y) - 1) * 80);
@@ -130,14 +130,18 @@ void CMap::DrawMap(HDC hMemDC, int x, int y)
 
 void CMap::SetBrick(int x, int y)
 {
-	if (Map[y][x].Tile_ID == WALL)
+	if (Map[y][x].Tile_ID == WALL && Map[y - 1][x].Tile_ID == NONE)
 		Map[y][x].Brick_Up = true;
-	if (Map[y][x].Tile_ID == FLOOR && (Map[y + 1][x].Tile_ID == NONE || Map[y + 1][x].Tile_ID == WALL))
+	if (Map[y][x].Tile_ID != NONE && (Map[y + 1][x].Tile_ID == NONE || Map[y + 1][x].Tile_ID == WALL))
 		Map[y][x].Brick_Down = true;
-	if (Map[y][x].Tile_ID == NONE && (Map[y][x + 1].Tile_ID == FLOOR || Map[y][x + 1].Tile_ID == WALL))
+	if (Map[y][x].Tile_ID == NONE && Map[y][x + 1].Tile_ID != NONE)
 		Map[y][x].Brick_Left = true;
-	if (Map[y][x].Tile_ID == NONE && (Map[y][x - 1].Tile_ID == FLOOR || Map[y][x - 1].Tile_ID == WALL))
+	if (Map[y][x].Tile_ID == NONE && Map[y][x - 1].Tile_ID != NONE)
 		Map[y][x].Brick_Right = true;
+	if ((Map[y][x].Tile_ID != NONE && Map[y][x].Tile_ID != WALL) && (Map[y + 1][x].Tile_ID == WALL && Map[y][x - 1].Tile_ID == WALL))
+		Map[y][x - 1].Brick_Left = true;
+	if ((Map[y][x].Tile_ID != NONE && Map[y][x].Tile_ID != WALL) && (Map[y + 1][x].Tile_ID == WALL && Map[y][x + 1].Tile_ID == WALL))
+		Map[y][x + 1].Brick_Right = true;
 }
 
 void CMap::DrawBrick(HDC hMemDC, int x, int y)
@@ -156,16 +160,6 @@ void CMap::DrawBrick(HDC hMemDC, int x, int y)
 	int Map_Start_y = y - 5;
 	int Map_End_y = y + 5;
 
-	// TODO : 0에서 루프 종료로 수정
-	/*if (Map_Start_x < 0)
-		Map_Start_x = 0;
-	if (Map_Start_y < 0)
-		Map_Start_y = 0;
-	if (Map_End_x > 32)
-		Map_End_x = 32;
-	if (Map_End_y > 16)
-		Map_End_y = 16;*/
-
 	for (int i = Map_Start_y; i < Map_End_y; i++)
 	{
 		for (int j = Map_Start_x; j < Map_End_x; j++)
@@ -174,8 +168,20 @@ void CMap::DrawBrick(HDC hMemDC, int x, int y)
 			Map[i][j].Brick_Down = false;
 			Map[i][j].Brick_Left = false;
 			Map[i][j].Brick_Right = false;
+		}
+	}
 
+	for (int i = Map_Start_y; i < Map_End_y; i++)
+	{
+		for (int j = Map_Start_x; j < Map_End_x; j++)
+		{
 			SetBrick(j, i);
+		}
+	}
+	for (int i = Map_Start_y; i < Map_End_y; i++)
+	{
+		for (int j = Map_Start_x; j < Map_End_x; j++)
+		{
 
 			Brick[UP].SetPosition((j - Map_Start_x) * 80, (i - Map_Start_y) * 80);
 			Brick[LEFT].SetPosition((j - Map_Start_x) * 80, (i - Map_Start_y) * 80);

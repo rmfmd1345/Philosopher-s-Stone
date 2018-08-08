@@ -12,7 +12,6 @@ namespace InputManager {
 	int OnDestroy(HWND hWnd, WPARAM wParam, LPARAM lParam);
 
 	void InputUpdate();
-
 }
 
 LRESULT CALLBACK MainWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
