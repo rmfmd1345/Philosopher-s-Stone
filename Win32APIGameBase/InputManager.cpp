@@ -27,7 +27,7 @@ int InputManager::OnMouseLButtonDown(HWND hWnd, WPARAM wParam, LPARAM lParam)
 	switch (ObjPool->System.GetScene())	//설명 생략
 	{
 	case SCENE_TITLE:
-		Title::OnMouseLButtonDown(hWnd, LOWORD(lParam), HIWORD(lParam));	//마우스의 위치 값을 가진 lParam을 앞단어, 뒷단어로 분해해서 x,y가 됨 (?비트연산)
+		Title::OnMouseLButtonDown(hWnd, LOWORD(lParam), HIWORD(lParam));	//마우스의 위치 값을 가진 lParam을 앞단어, 뒷단어로 분해해서 testC_x,y가 됨 (?비트연산)
 		break;
 	case SCENE_INGAME:
 		Ingame::OnMouseLButtonDown(hWnd, LOWORD(lParam), HIWORD(lParam));
@@ -41,7 +41,7 @@ int InputManager::OnMouseLButtonUp(HWND hWnd, WPARAM wParam, LPARAM lParam)
 	switch (ObjPool->System.GetScene())	//설명 생략
 	{
 	case SCENE_TITLE:
-		Title::OnMouseLButtonUp(hWnd, LOWORD(lParam), HIWORD(lParam));	//마우스의 위치 값을 가진 lParam을 앞단어, 뒷단어로 분해해서 x,y가 됨 (?비트연산)
+		Title::OnMouseLButtonUp(hWnd, LOWORD(lParam), HIWORD(lParam));	//마우스의 위치 값을 가진 lParam을 앞단어, 뒷단어로 분해해서 testC_x,y가 됨 (?비트연산)
 		break;
 	case SCENE_INGAME:
 		Ingame::OnMouseLButtonUp(hWnd, LOWORD(lParam), HIWORD(lParam));
@@ -68,7 +68,7 @@ int InputManager::OnMouseRButtonUp(HWND hWnd, WPARAM wParam, LPARAM lParam)
 	switch (ObjPool->System.GetScene())	//설명 생략
 	{
 	case SCENE_TITLE:
-		Title::OnMouseRButtonUp(hWnd, LOWORD(lParam), HIWORD(lParam));	//마우스의 위치 값을 가진 lParam을 앞단어, 뒷단어로 분해해서 x,y가 됨 (?비트연산)
+		Title::OnMouseRButtonUp(hWnd, LOWORD(lParam), HIWORD(lParam));	//마우스의 위치 값을 가진 lParam을 앞단어, 뒷단어로 분해해서 testC_x,y가 됨 (?비트연산)
 		break;
 	case SCENE_INGAME:
 		Ingame::OnMouseRButtonUp(hWnd, LOWORD(lParam), HIWORD(lParam));
