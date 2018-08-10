@@ -27,6 +27,7 @@ void Ingame::Draw(HDC hMemDC)
 void Ingame::OnTimer(HWND hWnd, int timer)
 {
 	ObjPool->MonsterPool.Animation();
+	ObjPool->MonsterPool.UpdateState();
 }
 
 void Ingame::OnMouseLButtonDown(HWND hWnd, int x, int y)

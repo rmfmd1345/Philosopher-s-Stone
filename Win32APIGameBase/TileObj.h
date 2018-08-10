@@ -36,18 +36,6 @@ public:
 
 	Bitmap Brick[6]; // 벽돌 이미지
 
-	enum Tile_ID_List  // 식별 번호 리스트
-	{
-		NONE,
-		FLOOR,
-		WALL,
-		TRAP_Niddle,
-		TRAP_Hole,
-		TRAP_ScareCrow,
-		TRAP_Cunfution,
-		TRAP_Grap
-	};
-
 	enum Brick_ID_List
 	{
 		UP,
@@ -66,4 +54,6 @@ public:
 	void SetBrick(int x, int y); // 벽돌 위치를 설정
 	void DrawBrick(HDC hMemDC, int x, int y); // 벽돌을 그려냄
 	void DestroyMap(); // 맵 타일 파괴
+
+	int GetTileID(int x, int y);
 };

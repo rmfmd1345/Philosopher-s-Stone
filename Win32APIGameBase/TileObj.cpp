@@ -228,3 +228,8 @@ void CMap::DestroyMap()
 	Trap_Cunfusion.DestroyTile(Trap_Cunfusion);
 	Trap_Grap.DestroyTile(Trap_Grap);
 }
+
+int CMap::GetTileID(int x, int y)
+{
+	return Map[x][y].Tile_ID;
+}

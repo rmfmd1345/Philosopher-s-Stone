@@ -7,7 +7,10 @@ void Entity::Init(HWND hWnd, int x, int y, int type, COLORREF sprite)
 	this->type = type;
 	this->pos = { x, y };
 
-	nowAnimation = STAND;
+	nowState = WALK;
+	stateFrame = 0;
+
+	nowAnimation = WALK;
 	nowDirection = DOWN;
 
 	nowFrame = 0;
@@ -18,10 +21,10 @@ void Entity::Init(HWND hWnd, int x, int y, int type, COLORREF sprite)
 	switch (type)
 	{
 	case DEALER:
-		Ani_stand[UP].Init(hWnd, 0, 0, 240, 122, 4, L"./Image/Walk_Ani/Dealer_Back.bmp");
-		Ani_stand[DOWN].Init(hWnd, 0, 0, 216, 122, 4, L"./Image/Walk_Ani/Dealer_Front.bmp");
-		Ani_stand[LEFT].Init(hWnd, 0, 0, 304, 122, 4, L"./Image/Walk_Ani/Dealer_Left.bmp");
-		Ani_stand[RIGHT].Init(hWnd, 0, 0, 336, 122, 4, L"./Image/Walk_Ani/Dealer_Right.bmp");
+		Ani_stand[UP].Init(hWnd, 0, 0, 60, 122, 1, L"./Image/Walk_Ani/Dealer_Back.bmp");
+		Ani_stand[DOWN].Init(hWnd, 0, 0, 54, 122, 1, L"./Image/Walk_Ani/Dealer_Front.bmp");
+		Ani_stand[LEFT].Init(hWnd, 0, 0, 76, 122, 1, L"./Image/Walk_Ani/Dealer_Left.bmp");
+		Ani_stand[RIGHT].Init(hWnd, 0, 0, 84, 122, 1, L"./Image/Walk_Ani/Dealer_Right.bmp");
 
 		Ani_walk[UP].Init(hWnd, 0, 0, 240, 122, 4, L"./Image/Walk_Ani/Dealer_Back.bmp");
 		Ani_walk[DOWN].Init(hWnd, 0, 0, 216, 122, 4, L"./Image/Walk_Ani/Dealer_Front.bmp");
@@ -34,10 +37,10 @@ void Entity::Init(HWND hWnd, int x, int y, int type, COLORREF sprite)
 		Ani_attack[RIGHT].Init(hWnd, 0, 0, 336, 122, 4, L"./Image/Walk_Ani/Dealer_Right.bmp");
 		break;
 	case WIZARD:
-		Ani_stand[UP].Init(hWnd, 0, 0, 280, 102, 4, L"./Image/Walk_Ani/Wizard_Back.bmp");
-		Ani_stand[DOWN].Init(hWnd, 0, 0, 264, 102, 4, L"./Image/Walk_Ani/Wizard_Front.bmp");
-		Ani_stand[LEFT].Init(hWnd, 0, 0, 296, 102, 4, L"./Image/Walk_Ani/Wizard_Left.bmp");
-		Ani_stand[RIGHT].Init(hWnd, 0, 0, 256, 102, 4, L"./Image/Walk_Ani/Wizard_Right.bmp");
+		Ani_stand[UP].Init(hWnd, 0, 0, 70, 102, 1, L"./Image/Walk_Ani/Wizard_Back.bmp");
+		Ani_stand[DOWN].Init(hWnd, 0, 0, 66, 102, 1, L"./Image/Walk_Ani/Wizard_Front.bmp");
+		Ani_stand[LEFT].Init(hWnd, 0, 0, 74, 102, 1, L"./Image/Walk_Ani/Wizard_Left.bmp");
+		Ani_stand[RIGHT].Init(hWnd, 0, 0, 32, 102, 1, L"./Image/Walk_Ani/Wizard_Right.bmp");
 
 		Ani_walk[UP].Init(hWnd, 0, 0, 280, 102, 4, L"./Image/Walk_Ani/Wizard_Back.bmp");
 		Ani_walk[DOWN].Init(hWnd, 0, 0, 264, 102, 4, L"./Image/Walk_Ani/Wizard_Front.bmp");
@@ -50,10 +53,10 @@ void Entity::Init(HWND hWnd, int x, int y, int type, COLORREF sprite)
 		Ani_attack[RIGHT].Init(hWnd, 0, 0, 256, 102, 4, L"./Image/Walk_Ani/Wizard_Right.bmp");
 		break;
 	case TANKER:
-		Ani_stand[UP].Init(hWnd, 0, 0, 424, 138, 4, L"./Image/Walk_Ani/Tanker_Back.bmp");
-		Ani_stand[DOWN].Init(hWnd, 0, 0, 352, 138, 4, L"./Image/Walk_Ani/Tanker_Front.bmp");
-		Ani_stand[LEFT].Init(hWnd, 0, 0, 280, 138, 4, L"./Image/Walk_Ani/Tanker_Left.bmp");
-		Ani_stand[RIGHT].Init(hWnd, 0, 0, 248, 138, 4, L"./Image/Walk_Ani/Tanker_Right.bmp");
+		Ani_stand[UP].Init(hWnd, 0, 0, 106, 138, 1, L"./Image/Walk_Ani/Tanker_Back.bmp");
+		Ani_stand[DOWN].Init(hWnd, 0, 0, 88, 138, 1, L"./Image/Walk_Ani/Tanker_Front.bmp");
+		Ani_stand[LEFT].Init(hWnd, 0, 0, 70, 138, 1, L"./Image/Walk_Ani/Tanker_Left.bmp");
+		Ani_stand[RIGHT].Init(hWnd, 0, 0, 62, 138, 1, L"./Image/Walk_Ani/Tanker_Right.bmp");
 
 		Ani_walk[UP].Init(hWnd, 0, 0, 424, 138, 4, L"./Image/Walk_Ani/Tanker_Back.bmp");
 		Ani_walk[DOWN].Init(hWnd, 0, 0, 352, 138, 4, L"./Image/Walk_Ani/Tanker_Front.bmp");
@@ -153,6 +156,23 @@ void Entity::Draw(HDC hMemDC, int x, int y)
 		break;
 	}
 
+	if (nowState == WALK)
+		switch (nowDirection)
+		{
+		case UP:
+			Term_y -= (stateFrame * 8);
+			break;
+		case DOWN:
+			Term_y += (stateFrame * 8);
+			break;
+		case LEFT:
+			Term_x -= (stateFrame * 8);
+			break;
+		case RIGHT:
+			Term_x += (stateFrame * 8);
+			break;
+		}
+
 	switch (nowAnimation)
 	{
 	case STAND:
@@ -170,7 +190,7 @@ void Entity::Draw(HDC hMemDC, int x, int y)
 	}
 }
 
-void Entity::Animaition()
+void Entity::Animation()
 {
 	switch (nowAnimation)
 	{
@@ -183,6 +203,93 @@ void Entity::Animaition()
 	case ATTACK:
 		Ani_attack[nowDirection].NextFrameSprite();
 		break;
+	}
+}
+void Entity::UpdateState()
+{
+	if (nowState == WALK)
+	{
+		if (stateFrame < 10)
+		{
+			stateFrame++;
+		}
+		else
+		{
+			nowAnimation = STAND;
+			switch (nowDirection)
+			{
+			case UP:
+				pos.y--;
+				break;
+			case DOWN:
+				pos.y++;
+				break;
+			case LEFT:
+				pos.x--;
+				break;
+			case RIGHT:
+				pos.x++;
+				break;
+			}
+			nowState = FINDWAY;
+			stateFrame = 0;
+		}
+		return;
+	}
+
+	if (nowState == FINDWAY)
+	{
+		switch (nowDirection)
+		{
+		case UP:
+			if (ObjPool->Maps.GetTileID(pos.x, pos.y - 1) == FLOOR)
+			{
+				nowState = WALK;
+				nowAnimation = WALK;
+				return;
+			}
+			break;
+		case DOWN:
+			if (ObjPool->Maps.GetTileID(pos.x, pos.y + 1) == FLOOR)
+			{
+				nowState = WALK;
+				nowAnimation = WALK;
+				return;
+			}
+			break;
+		case LEFT:
+			if (ObjPool->Maps.GetTileID(pos.x - 1, pos.y) == FLOOR)
+			{
+				nowState = WALK;
+				nowAnimation = WALK;
+				return;
+			}
+			break;
+		case RIGHT:
+			if (ObjPool->Maps.GetTileID(pos.x + 1, pos.y) == FLOOR)
+			{
+				nowState = WALK;
+				nowAnimation = WALK;
+				return;
+			}
+			break;
+		}
+		switch (nowDirection)
+		{
+		case UP:
+			nowDirection = LEFT;
+			break;
+		case DOWN:
+			nowDirection = RIGHT;
+			break;
+		case LEFT:
+			nowDirection = DOWN;
+			break;
+		case RIGHT:
+			nowDirection = UP;
+			break;
+		}
+		return;
 	}
 }
 
@@ -223,10 +330,6 @@ void Monster::Init(HWND hWnd)
 	Dealer.Init(hWnd, 0, 0, DEALER);
 	Wizard.Init(hWnd, 0, 0, WIZARD);
 	Tanker.Init(hWnd, 0, 0, TANKER);
-
-	AddMonster(hWnd, DEALER, 5, 5);
-	AddMonster(hWnd, WIZARD, 7, 5);
-	AddMonster(hWnd, TANKER, 9, 5);
 }
 
 void Monster::Ternimate()
@@ -260,7 +363,16 @@ void Monster::Animation()
 
 	for (auto it = pool.begin(); it != pool.end(); it++)
 	{
-		it->Animaition();
+		it->Animation();
+	}
+}
+void Monster::UpdateState()
+{
+	if (pool.empty()) return;
+
+	for (auto it = pool.begin(); it != pool.end(); it++)
+	{
+		it->UpdateState();
 	}
 }
 

@@ -1,12 +1,13 @@
 #pragma once
 using namespace std;
 
-enum eAnimation
+enum eState
 {
 	STAND,
 	WALK,
 	ATTACK,
-	CLEAR
+	CLEAR,
+	FINDWAY
 };
 
 enum eEntity
@@ -21,6 +22,9 @@ class Entity	//:	protected Astar
 private:
 	int type;		//엔티티 타입
 	POINT pos;		//엔티티 위치
+
+	int nowState;
+	int stateFrame;
 
 	int nowAnimation;		//지금 엔티티 애니메이션 상태
 	int nowDirection;
@@ -37,7 +41,8 @@ public:
 	void Draw(HDC hMemDC, int x, int y);
 	void Ternimate();
 
-	void Animaition();
+	void Animation();
+	void UpdateState();
 
 	void SetPosition(int x, int y);
 	void SetAnimation(int ani);
@@ -69,6 +74,7 @@ public:
 	
 	void Draw(HDC hMemDC, int x, int y);
 	void Animation();
+	void UpdateState();
 
 	void AddMonster(HWND hWnd, int type, int x, int y);
 	void AddMonster(HWND hWnd, int type);

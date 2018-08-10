@@ -7,6 +7,26 @@
 #include "TileObj.h"
 #include "EntityObj.h"
 
+enum Tile_ID_List  // 식별 번호 리스트
+{
+	NONE,
+	FLOOR,
+	WALL,
+	TRAP_Niddle,
+	TRAP_Hole,
+	TRAP_ScareCrow,
+	TRAP_Cunfution,
+	TRAP_Grap
+};
+
+enum eDirection
+{
+	UP,
+	DOWN,
+	LEFT,
+	RIGHT
+};
+
 class ObjectPool		//오브젝트 풀 (전역변수같이 사용됨)
 {
 private:

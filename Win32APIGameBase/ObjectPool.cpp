@@ -33,10 +33,12 @@ void ObjectPool::CreateObject(HWND hWnd)	//객체의 초기 설정을 적는 곳
 	Maps.InitMap(hWnd);
 
 	Maps.ResetMap(5, 5);
-	Maps.SetTileOnMap(ObjPool->Maps.Floor, 7, 5);
-	Maps.SetTileOnMap(ObjPool->Maps.Floor, 9, 5);
+	for(int i = 0; i < 3; i++)
+		for(int j = 0; j < 3; j++)
+			Maps.SetTileOnMap(ObjPool->Maps.Floor, 4 + i, 4 + j);
 
 	MonsterPool.Init(hWnd);
+	MonsterPool.AddMonster(hWnd, DEALER, 4, 4);
 }
 
 void ObjectPool::DeleteObject()				//비트맵객체는 반드시 종료해주기
