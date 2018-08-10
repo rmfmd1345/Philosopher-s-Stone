@@ -126,12 +126,8 @@ void Ingame::OnKeyborad()
 		lastBitState[RIGHT] = 1;
 	}
 
-	static int dire = 0;
 	if (lastBitState[4] == 0 && keyState[4] & 0x0001)
 	{
-		dire++;
-		if (dire > RIGHT) dire = UP;
-		ObjPool->MonsterPool.SetDirection(dire);
 		lastBitState[4] = 1;
 	}
 
