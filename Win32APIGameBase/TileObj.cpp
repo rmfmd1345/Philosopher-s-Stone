@@ -231,5 +231,5 @@ void CMap::DestroyMap()
 
 int CMap::GetTileID(int x, int y)
 {
-	return Map[x][y].Tile_ID;
+	return Map[y][x].Tile_ID;
 }
