@@ -9,6 +9,8 @@ public:
 	bool Brick_Down;
 	bool Brick_Left;
 	bool Brick_Right;
+	bool SubWall_Left;
+	bool SubWall_Right;
 
 	SpriteHelper Tile_Sprite; // 애니메이션 스프라이트 (정방향 출력 시 : 발동 애니메이션 / 역방향 출력 시 : 재장전 애니메이션)
 
@@ -32,7 +34,7 @@ public:
 	CTile Trap_Cunfusion; // 혼란 함정
 	CTile Trap_Grap; // 갈고리 함정
 
-	Bitmap Brick[4]; // 벽돌 이미지
+	Bitmap Brick[6]; // 벽돌 이미지
 
 	enum Tile_ID_List  // 식별 번호 리스트
 	{
@@ -51,7 +53,9 @@ public:
 		UP,
 		LEFT,
 		RIGHT,
-		DOWN
+		DOWN,
+		SW_LEFT,
+		SW_RIGHT
 	};
 
 	void InitMap(HWND hwnd); // 타일 이미지 초기화

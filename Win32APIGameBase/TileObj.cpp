@@ -36,6 +36,8 @@ void CMap::InitMap(HWND hwnd)
 	Brick[DOWN].Init(hwnd, 0, 0, 80, 80, L"./Image/Tile/Brick_Down.bmp");
 	Brick[LEFT].Init(hwnd, 0, 0, 80, 80, L"./Image/Tile/Brick_Left.bmp");
 	Brick[RIGHT].Init(hwnd, 0, 0, 80, 80, L"./Image/Tile/Brick_Right.bmp");
+	Brick[SW_LEFT].Init(hwnd, 0, 0, 80, 80, L"./Image/Tile/SubWall_Left.bmp");
+	Brick[SW_RIGHT].Init(hwnd, 0, 0, 80, 80, L"./Image/Tile/SubWall_Right.bmp");
 }
 
 void CMap::ResetMap(int Character_x, int Character_y)
@@ -111,6 +113,8 @@ void CMap::DrawMap(HDC hMemDC, int x, int y)
 		{
 			if (Map[i][j].Tile_ID == FLOOR && Map[i - 1][j].Tile_ID == NONE)
 			{
+				if (i < 1)
+					continue;
 				Map[i - 1][j] = Wall;
 				Map[i - 1][j].Tile_Sprite.SetPosition((j - Map_Start_x) * 80, ((i - Map_Start_y) - 1) * 80);
 			}
@@ -139,9 +143,15 @@ void CMap::SetBrick(int x, int y)
 	if (Map[y][x].Tile_ID == NONE && Map[y][x - 1].Tile_ID != NONE)
 		Map[y][x].Brick_Right = true;
 	if ((Map[y][x].Tile_ID != NONE && Map[y][x].Tile_ID != WALL) && (Map[y + 1][x].Tile_ID == WALL && Map[y][x - 1].Tile_ID == WALL))
+	{
 		Map[y][x - 1].Brick_Left = true;
+		Map[y + 1][x - 1].SubWall_Left = true;
+	}
 	if ((Map[y][x].Tile_ID != NONE && Map[y][x].Tile_ID != WALL) && (Map[y + 1][x].Tile_ID == WALL && Map[y][x + 1].Tile_ID == WALL))
+	{
 		Map[y][x + 1].Brick_Right = true;
+		Map[y + 1][x + 1].SubWall_Right = true;
+	}
 }
 
 void CMap::DrawBrick(HDC hMemDC, int x, int y)
@@ -168,6 +178,8 @@ void CMap::DrawBrick(HDC hMemDC, int x, int y)
 			Map[i][j].Brick_Down = false;
 			Map[i][j].Brick_Left = false;
 			Map[i][j].Brick_Right = false;
+			Map[i][j].SubWall_Left = false;
+			Map[i][j].SubWall_Right = false;
 		}
 	}
 
@@ -182,11 +194,12 @@ void CMap::DrawBrick(HDC hMemDC, int x, int y)
 	{
 		for (int j = Map_Start_x; j < Map_End_x; j++)
 		{
-
 			Brick[UP].SetPosition((j - Map_Start_x) * 80, (i - Map_Start_y) * 80);
 			Brick[LEFT].SetPosition((j - Map_Start_x) * 80, (i - Map_Start_y) * 80);
 			Brick[RIGHT].SetPosition((j - Map_Start_x) * 80, (i - Map_Start_y) * 80);
 			Brick[DOWN].SetPosition((j - Map_Start_x) * 80, (i - Map_Start_y) * 80);
+			Brick[SW_LEFT].SetPosition((j - Map_Start_x) * 80, (i - Map_Start_y) * 80);
+			Brick[SW_RIGHT].SetPosition((j - Map_Start_x) * 80, (i - Map_Start_y) * 80);
 
 			if (Map[i][j].Brick_Up)
 				Brick[UP].Draw(hMemDC);
@@ -196,6 +209,10 @@ void CMap::DrawBrick(HDC hMemDC, int x, int y)
 				Brick[RIGHT].Draw(hMemDC);
 			if (Map[i][j].Brick_Down)
 				Brick[DOWN].Draw(hMemDC);
+			if (Map[i][j].SubWall_Left)
+				Brick[SW_LEFT].Draw(hMemDC);
+			if (Map[i][j].SubWall_Right)
+				Brick[SW_RIGHT].Draw(hMemDC);
 		}
 	}
 }
