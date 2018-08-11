@@ -5,6 +5,7 @@
 #include "BitmapObj.h"
 #include "ButtonObj.h"
 #include "TileObj.h"
+#include "HeroObj.h"
 #include "EntityObj.h"
 
 enum Tile_ID_List  // 식별 번호 리스트
@@ -52,6 +53,7 @@ public:
 
 	//Entity(Monster)
 	Monster MonsterPool;
+	Hero Player;
 
 public:
 	//title Scene
