@@ -133,7 +133,6 @@ void Hero::UpdateState()
 {
 	if (nowState == WALK)
 	{
-
 		if (stateFrame < 10)
 		{
 			stateFrame++;
@@ -169,6 +168,7 @@ void Hero::SetPosition(int x, int y)
 	this->pos.x = x;
 	this->pos.y = y;
 }
+
 void Hero::SetAnimation(int ani)
 {
 	nowAnimation = ani;

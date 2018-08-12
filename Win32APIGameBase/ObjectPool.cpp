@@ -38,10 +38,10 @@ void ObjectPool::CreateObject(HWND hWnd)	//객체의 초기 설정을 적는 곳
 			Maps.SetTileOnMap(ObjPool->Maps.Floor, 4 + i, 4 + j);
 
 	MonsterPool.Init(hWnd);
-	//MonsterPool.AddMonster(hWnd, DEALER, 4, 4);
+	MonsterPool.AddMonster(hWnd, DEALER, 4, 4);
 
 	Player.Init(hWnd, 0, 0);
-	Player.SetPosition(4, 4);
+	Player.SetPosition(5, 5);
 	//MonsterPool.AddMonster(hWnd, HERO, 4, 4);
 }
 
