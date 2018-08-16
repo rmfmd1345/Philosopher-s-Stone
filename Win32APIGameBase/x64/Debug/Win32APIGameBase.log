@@ -1,4 +1,23 @@
-﻿  EntityObj.cpp
+﻿  stdafx.cpp
+  EntityObj.cpp
+  Scene_Credit.cpp
+  Sprite.cpp
+  BitmapObj.cpp
+  DrawManager.cpp
+  FrameManager.cpp
+  GdiObj.cpp
+  InputManager.cpp
+c:\users\hp\documents\github\philosopher-s-stone\win32apigamebase\inputmanager.cpp(16): warning C4244: '인수': 'WPARAM'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\hp\documents\github\philosopher-s-stone\win32apigamebase\inputmanager.cpp(19): warning C4244: '인수': 'WPARAM'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  ObjectPool.cpp
+  SceneManager.cpp
   Scene_Ingame.cpp
+  Scene_Title.cpp
+  SystemObj.cpp
+  ButtonObj.cpp
+  System.cpp
+  main.cpp
+  TileObj.cpp
   코드를 생성하고 있습니다...
+  LINK : C:\Users\hp\Documents\GitHub\Philosopher-s-Stone\Win32APIGameBase\x64\Debug\Win32APIGameBase.exe을(를) 찾을 수 없거나 마지막 증분 링크에 의해 빌드되지 않았습니다. 전체 링크를 수행하고 있습니다.
   Win32APIGameBase.vcxproj -> C:\Users\hp\Documents\GitHub\Philosopher-s-Stone\Win32APIGameBase\x64\Debug\Win32APIGameBase.exe
