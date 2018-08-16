@@ -150,6 +150,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="EntityObj.h" />
+    <ClInclude Include="HeroObj.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="BitmapObj.h" />
     <ClInclude Include="DrawManager.h" />
@@ -169,6 +170,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EntityObj.cpp" />
+    <ClCompile Include="HeroObj.cpp" />
     <ClCompile Include="Scene_Credit.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="BitmapObj.cpp" />

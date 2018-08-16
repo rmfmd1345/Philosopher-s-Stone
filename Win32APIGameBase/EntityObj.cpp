@@ -40,7 +40,7 @@ void Entity::Init(HWND hWnd, int x, int y, int type, COLORREF sprite)
 		Ani_stand[UP].Init(hWnd, 0, 0, 70, 102, 1, L"./Image/Walk_Ani/Wizard_Back.bmp");
 		Ani_stand[DOWN].Init(hWnd, 0, 0, 66, 102, 1, L"./Image/Walk_Ani/Wizard_Front.bmp");
 		Ani_stand[LEFT].Init(hWnd, 0, 0, 74, 102, 1, L"./Image/Walk_Ani/Wizard_Left.bmp");
-		Ani_stand[RIGHT].Init(hWnd, 0, 0, 32, 102, 1, L"./Image/Walk_Ani/Wizard_Right.bmp");
+		Ani_stand[RIGHT].Init(hWnd, 0, 0, 64, 102, 1, L"./Image/Walk_Ani/Wizard_Right.bmp");
 
 		Ani_walk[UP].Init(hWnd, 0, 0, 280, 102, 4, L"./Image/Walk_Ani/Wizard_Back.bmp");
 		Ani_walk[DOWN].Init(hWnd, 0, 0, 264, 102, 4, L"./Image/Walk_Ani/Wizard_Front.bmp");
@@ -71,6 +71,7 @@ void Entity::Init(HWND hWnd, int x, int y, int type, COLORREF sprite)
 	}
 
 }
+
 void Entity::Ternimate()
 {
 	for (int i = 0; i < 4; i++)
@@ -205,6 +206,7 @@ void Entity::Animation()
 		break;
 	}
 }
+
 void Entity::UpdateState()
 {
 	if (nowState == WALK)
@@ -357,6 +359,7 @@ void Monster::Draw(HDC hMemDC, int x, int y)
 		it->Draw(hMemDC, x, y);
 	}
 }
+
 void Monster::Animation()
 {
 	if (pool.empty()) return;

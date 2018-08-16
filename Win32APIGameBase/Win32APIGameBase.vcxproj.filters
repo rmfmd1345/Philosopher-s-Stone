@@ -90,6 +90,9 @@
     <ClInclude Include="EntityObj.h">
       <Filter>ObjectPool\Obj</Filter>
     </ClInclude>
+    <ClInclude Include="HeroObj.h">
+      <Filter>ObjectPool\Obj</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -144,6 +147,9 @@
       <Filter>Scene\SceneScript</Filter>
     </ClCompile>
     <ClCompile Include="EntityObj.cpp">
+      <Filter>ObjectPool\Obj</Filter>
+    </ClCompile>
+    <ClCompile Include="HeroObj.cpp">
       <Filter>ObjectPool\Obj</Filter>
     </ClCompile>
   </ItemGroup>

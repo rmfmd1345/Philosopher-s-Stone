@@ -1,0 +1,235 @@
+#include "stdafx.h"
+#include "Sprite.h"
+#include "HeroObj.h"
+
+void Hero::Init(HWND hWnd, int x, int y, COLORREF sprite)
+{
+	this->type = type;
+	this->pos = { x, y };
+
+	nowState = STAND;
+	stateFrame = 0;
+
+	nowAnimation = WALK;
+	nowDirection = DOWN;
+
+	nowFrame = 0;
+	maxFrame = 4;
+
+	health = 100;
+
+	Ani_stand[UP].Init(hWnd, 0, 0, 64, 132, 1, L"./Image/Walk_Ani/Hero_Back.bmp");
+	Ani_stand[DOWN].Init(hWnd, 0, 0, 64, 132, 1, L"./Image/Walk_Ani/Hero_Front.bmp");
+	Ani_stand[LEFT].Init(hWnd, 0, 0, 58, 132, 1, L"./Image/Walk_Ani/Hero_Left.bmp");
+	Ani_stand[RIGHT].Init(hWnd, 0, 0, 58, 132, 1, L"./Image/Walk_Ani/Hero_Right.bmp");
+
+	Ani_walk[UP].Init(hWnd, 0, 0, 248, 132, 4, L"./Image/Walk_Ani/Hero_Back.bmp");
+	Ani_walk[DOWN].Init(hWnd, 0, 0, 248, 132, 4, L"./Image/Walk_Ani/Hero_Front.bmp");
+	Ani_walk[LEFT].Init(hWnd, 0, 0, 232, 132, 4, L"./Image/Walk_Ani/Hero_Left.bmp");
+	Ani_walk[RIGHT].Init(hWnd, 0, 0, 232, 132, 4, L"./Image/Walk_Ani/Hero_Right.bmp");
+
+	Ani_attack[UP].Init(hWnd, 0, 0, 240, 122, 4, L"./Image/Walk_Ani/Hero_Back.bmp");
+	Ani_attack[DOWN].Init(hWnd, 0, 0, 216, 122, 4, L"./Image/Walk_Ani/Hero_Front.bmp");
+	Ani_attack[LEFT].Init(hWnd, 0, 0, 304, 122, 4, L"./Image/Walk_Ani/Hero_Left.bmp");
+	Ani_attack[RIGHT].Init(hWnd, 0, 0, 336, 122, 4, L"./Image/Walk_Ani/Hero_Right.bmp");
+
+}
+
+void Hero::Ternimate()
+{
+	for (int i = 0; i < 4; i++)
+	{
+		Ani_stand[i].Ternimate();
+		Ani_walk[i].Ternimate();
+		Ani_attack[i].Ternimate();
+	}
+}
+
+void Hero::Draw(HDC hMemDC, int x, int y)
+{
+	if (x <= 9)
+		x = 9;
+	if (y <= 5)
+		y = 5;
+	if (x >= 23)
+		x = 23;
+	if (y >= 11)
+		y = 11;
+
+	int Map_x = x - 9;
+	int Map_y = y - 5;
+
+	int Term_x = 0;
+	int Term_y = 0;
+
+	switch (nowDirection)
+	{
+	case UP:
+		Term_x = 5;
+		break;
+	case DOWN:
+		Term_x = 15;
+		break;
+	case LEFT:
+		Term_x = -12;
+		break;
+	case RIGHT:
+		Term_x = 15;
+		break;
+	}
+	Term_y = -55;
+
+	if (nowState == WALK)
+		switch (nowDirection)
+		{
+		case UP:
+			Term_y -= (stateFrame * 8);
+			break;
+		case DOWN:
+			Term_y += (stateFrame * 8);
+			break;
+		case LEFT:
+			Term_x -= (stateFrame * 8);
+			break;
+		case RIGHT:
+			Term_x += (stateFrame * 8);
+			break;
+		}
+
+	switch (nowAnimation)
+	{
+	case STAND:
+		Ani_stand[nowDirection].SetPosition((pos.x - Map_x) * 80 + Term_x, (pos.y - Map_y) * 80 + Term_y);
+		Ani_stand[nowDirection].Draw(hMemDC);
+		break;
+	case WALK:
+		Ani_walk[nowDirection].SetPosition((pos.x - Map_x) * 80 + Term_x, (pos.y - Map_y) * 80 + Term_y);
+		Ani_walk[nowDirection].Draw(hMemDC);
+		break;
+	case ATTACK:
+		Ani_attack[nowDirection].SetPosition((pos.x - Map_x) * 80 + Term_x, (pos.y - Map_y) * 80 + Term_y);
+		Ani_attack[nowDirection].Draw(hMemDC);
+		break;
+	}
+}
+
+void Hero::Animation()
+{
+	switch (nowAnimation)
+	{
+	case STAND:
+		Ani_stand[nowDirection].NextFrameSprite();
+		break;
+	case WALK:
+		Ani_walk[nowDirection].NextFrameSprite();
+		break;
+	case ATTACK:
+		Ani_attack[nowDirection].NextFrameSprite();
+		break;
+	}
+}
+
+void Hero::UpdateState()
+{
+	if (nowState == WALK)
+	{
+		if (stateFrame < 10)
+		{
+			stateFrame++;
+		}
+		else
+		{
+			nowAnimation = STAND;
+			switch (nowDirection)
+			{
+			case UP:
+				pos.y--;
+				break;
+			case DOWN:
+				pos.y++;
+				break;
+			case LEFT:
+				pos.x--;
+				break;
+			case RIGHT:
+				pos.x++;
+				break;
+			}
+			nowState = STAND;
+			stateFrame = 0;
+		}
+		return;
+	}
+	return;
+}
+
+void Hero::SetPosition(int x, int y)
+{
+	this->pos.x = x;
+	this->pos.y = y;
+}
+
+void Hero::SetAnimation(int ani)
+{
+	nowAnimation = ani;
+}
+
+void Hero::SetDirection(int dire)
+{
+	if (nowState != WALK)
+		nowDirection = dire;
+
+	switch (nowDirection)
+	{
+	case UP:
+		if (ObjPool->Maps.GetTileID(pos.x, pos.y - 1) == FLOOR)
+		{
+			nowState = WALK;
+			nowAnimation = WALK;
+			return;
+		}
+		break;
+	case DOWN:
+		if (ObjPool->Maps.GetTileID(pos.x, pos.y + 1) == FLOOR)
+		{
+			nowState = WALK;
+			nowAnimation = WALK;
+			return;
+		}
+		break;
+	case LEFT:
+		if (ObjPool->Maps.GetTileID(pos.x - 1, pos.y) == FLOOR)
+		{
+			nowState = WALK;
+			nowAnimation = WALK;
+			return;
+		}
+		break;
+	case RIGHT:
+		if (ObjPool->Maps.GetTileID(pos.x + 1, pos.y) == FLOOR)
+		{
+			nowState = WALK;
+			nowAnimation = WALK;
+			return;
+		}
+		break;
+	}
+}
+
+void Hero::PlusHealth(int plus)
+{
+	health += plus;
+}
+
+bool Hero::isDead()
+{
+	return !(health);
+}
+
+bool Hero::isWalk()
+{
+	if (nowAnimation != WALK) return false;
+	if (nowFrame == (maxFrame * 4)) return false;
+
+	return true;
+}
