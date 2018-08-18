@@ -178,11 +178,11 @@ void Entity::Draw(HDC hMemDC, int x, int y)
 	{
 	case STAND:
 		Ani_stand[nowDirection].SetPosition((pos.x - Map_x) * 80 + Term_x, (pos.y - Map_y ) * 80 + Term_y);
-		Ani_stand[nowDirection].Draw(hMemDC);						 
+		Ani_stand[nowDirection].Draw(hMemDC);			 
 		break;														 
 	case WALK:														 
 		Ani_walk[nowDirection].SetPosition((pos.x - Map_x) * 80 + Term_x, (pos.y - Map_y) * 80 + Term_y);
-		Ani_walk[nowDirection].Draw(hMemDC);						 
+		Ani_walk[nowDirection].Draw(hMemDC);	 
 		break;														 
 	case ATTACK:													 
 		Ani_attack[nowDirection].SetPosition((pos.x - Map_x) * 80 + Term_x, (pos.y - Map_y) * 80 + Term_y);
@@ -369,6 +369,7 @@ void Monster::Animation()
 		it->Animation();
 	}
 }
+
 void Monster::UpdateState()
 {
 	if (pool.empty()) return;

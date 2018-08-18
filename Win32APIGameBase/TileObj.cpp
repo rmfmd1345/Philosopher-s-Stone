@@ -152,6 +152,10 @@ void CMap::SetBrick(int x, int y)
 		Map[y][x + 1].Brick_Right = true;
 		Map[y + 1][x + 1].SubWall_Right = true;
 	}
+	if ((Map[y][x].Tile_ID == WALL) && (Map[y + 1][x].Tile_ID == FLOOR && Map[y][x - 1].Tile_ID == FLOOR))
+		Map[y][x - 1].Brick_Left = true;
+	if ((Map[y][x].Tile_ID == WALL) && (Map[y + 1][x].Tile_ID == FLOOR && Map[y][x + 1].Tile_ID == FLOOR))
+		Map[y][x + 1].Brick_Right = true;
 }
 
 void CMap::DrawBrick(HDC hMemDC, int x, int y)
@@ -190,6 +194,7 @@ void CMap::DrawBrick(HDC hMemDC, int x, int y)
 			SetBrick(j, i);
 		}
 	}
+
 	for (int i = Map_Start_y; i < Map_End_y; i++)
 	{
 		for (int j = Map_Start_x; j < Map_End_x; j++)

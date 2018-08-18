@@ -10,9 +10,10 @@ void Ingame::Draw(HDC hMemDC)
 	ObjPool->Gdi.SetPenColor(RGB(10, 23, 55));
 	ObjPool->Gdi.SetBrushColor(RGB(10, 23, 55));
 	ObjPool->Gdi.Rect(hMemDC, { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT });
+
 	ObjPool->Maps.DrawMap(hMemDC, testC_x, testC_y);
 	ObjPool->Maps.DrawBrick(hMemDC, testC_x, testC_y);
-	
+
 	ObjPool->MonsterPool.Draw(hMemDC, testC_x, testC_y);
 	ObjPool->Player.Draw(hMemDC, testC_x, testC_y);
 

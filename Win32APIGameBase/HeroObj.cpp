@@ -10,7 +10,7 @@ void Hero::Init(HWND hWnd, int x, int y, COLORREF sprite)
 	nowState = STAND;
 	stateFrame = 0;
 
-	nowAnimation = WALK;
+	nowAnimation = STAND;
 	nowDirection = DOWN;
 
 	nowFrame = 0;
@@ -18,8 +18,8 @@ void Hero::Init(HWND hWnd, int x, int y, COLORREF sprite)
 
 	health = 100;
 
-	Ani_stand[UP].Init(hWnd, 0, 0, 64, 132, 1, L"./Image/Walk_Ani/Hero_Back.bmp");
-	Ani_stand[DOWN].Init(hWnd, 0, 0, 64, 132, 1, L"./Image/Walk_Ani/Hero_Front.bmp");
+	Ani_stand[UP].Init(hWnd, 0, 0, 62, 132, 1, L"./Image/Walk_Ani/Hero_Back.bmp");
+	Ani_stand[DOWN].Init(hWnd, 0, 0, 62, 132, 1, L"./Image/Walk_Ani/Hero_Front.bmp");
 	Ani_stand[LEFT].Init(hWnd, 0, 0, 58, 132, 1, L"./Image/Walk_Ani/Hero_Left.bmp");
 	Ani_stand[RIGHT].Init(hWnd, 0, 0, 58, 132, 1, L"./Image/Walk_Ani/Hero_Right.bmp");
 
@@ -32,7 +32,6 @@ void Hero::Init(HWND hWnd, int x, int y, COLORREF sprite)
 	Ani_attack[DOWN].Init(hWnd, 0, 0, 216, 122, 4, L"./Image/Walk_Ani/Hero_Front.bmp");
 	Ani_attack[LEFT].Init(hWnd, 0, 0, 304, 122, 4, L"./Image/Walk_Ani/Hero_Left.bmp");
 	Ani_attack[RIGHT].Init(hWnd, 0, 0, 336, 122, 4, L"./Image/Walk_Ani/Hero_Right.bmp");
-
 }
 
 void Hero::Ternimate()
@@ -71,7 +70,7 @@ void Hero::Draw(HDC hMemDC, int x, int y)
 		Term_x = 15;
 		break;
 	case LEFT:
-		Term_x = -12;
+		Term_x = 12;
 		break;
 	case RIGHT:
 		Term_x = 15;
