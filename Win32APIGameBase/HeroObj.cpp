@@ -46,16 +46,16 @@ void Hero::Ternimate()
 
 void Hero::Draw(HDC hMemDC, int x, int y)
 {
-	if (x <= 9)
-		x = 9;
+	if (x <= 8)
+		x = 8;
 	if (y <= 5)
 		y = 5;
-	if (x >= 23)
-		x = 23;
+	if (x >= 24)
+		x = 24;
 	if (y >= 11)
 		y = 11;
 
-	int Map_x = x - 9;
+	int Map_x = x - 8;
 	int Map_y = y - 5;
 
 	int Term_x = 0;
@@ -76,7 +76,7 @@ void Hero::Draw(HDC hMemDC, int x, int y)
 		Term_x = 15;
 		break;
 	}
-	Term_y = -55;
+	Term_y = -65;
 
 	if (nowState == WALK)
 		switch (nowDirection)
@@ -213,6 +213,11 @@ void Hero::SetDirection(int dire)
 		}
 		break;
 	}
+}
+
+POINT Hero::GetPosition()
+{
+	return pos;
 }
 
 void Hero::PlusHealth(int plus)

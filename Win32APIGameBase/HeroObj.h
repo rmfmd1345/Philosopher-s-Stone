@@ -32,6 +32,8 @@ public:
 	void SetAnimation(int ani);
 	void SetDirection(int dire);
 
+	POINT GetPosition();
+
 	void PlusHealth(int plus);
 
 	bool isDead();

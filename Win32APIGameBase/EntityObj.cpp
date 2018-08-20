@@ -84,16 +84,16 @@ void Entity::Ternimate()
 
 void Entity::Draw(HDC hMemDC, int x, int y)
 {
-	if (x <= 9)
-		x = 9;
+	if (x <= 8)
+		x = 8;
 	if (y <= 5)
 		y = 5;
-	if (x >= 23)
-		x = 23;
+	if (x >= 24)
+		x = 24;
 	if (y >= 11)
 		y = 11;
 
-	int Map_x = x - 9;
+	int Map_x = x - 8;
 	int Map_y = y - 5;
 
 	int Term_x = 0;
@@ -350,8 +350,10 @@ void Monster::Ternimate()
 	pool.clear();
 }
 
-void Monster::Draw(HDC hMemDC, int x, int y)
+void Monster::Draw(HDC hMemDC, int x, int y) // 플레이어 좌표를 받고, 그 위를 출력, 플레이어 출력, 그 아래를 출력..?
 {
+	// sort
+
 	if (pool.empty()) return;
 
 	for (auto it = pool.begin(); it != pool.end(); it++)

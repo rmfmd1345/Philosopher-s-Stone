@@ -93,17 +93,17 @@ void CMap::SetTileOnMap(CTile Tile, int x, int y)
 
 void CMap::DrawMap(HDC hMemDC, int x, int y)
 {
-	if (x <= 9)
-		x = 9;
+	if (x <= 8)
+		x = 8;
 	if (y <= 5)
 		y = 5;
-	if (x >= 23)
-		x = 23;
+	if (x >= 24)
+		x = 24;
 	if (y >= 11)
 		y = 11;
 
-	int Map_Start_x = x - 9;
-	int Map_End_x = x + 9;
+	int Map_Start_x = x - 8;
+	int Map_End_x = x + 8;
 	int Map_Start_y = y - 5;
 	int Map_End_y = y + 5;
 
@@ -152,25 +152,25 @@ void CMap::SetBrick(int x, int y)
 		Map[y][x + 1].Brick_Right = true;
 		Map[y + 1][x + 1].SubWall_Right = true;
 	}
-	if ((Map[y][x].Tile_ID == WALL) && (Map[y + 1][x].Tile_ID == FLOOR && Map[y][x - 1].Tile_ID == FLOOR))
-		Map[y][x - 1].Brick_Left = true;
-	if ((Map[y][x].Tile_ID == WALL) && (Map[y + 1][x].Tile_ID == FLOOR && Map[y][x + 1].Tile_ID == FLOOR))
-		Map[y][x + 1].Brick_Right = true;
+	if (Map[y][x].Tile_ID == WALL && (Map[y + 1][x].Tile_ID != NONE && Map[y + 1][x].Tile_ID != WALL) && Map[y][x - 1].Tile_ID == FLOOR && Map[y + 1][x - 1].Tile_ID == NONE)
+		Map[y][x].Brick_Right = true;
+	if (Map[y][x].Tile_ID == WALL && (Map[y + 1][x].Tile_ID != NONE && Map[y + 1][x].Tile_ID != WALL) && Map[y][x + 1].Tile_ID == FLOOR && Map[y + 1][x + 1].Tile_ID == NONE)
+		Map[y][x].Brick_Left = true;
 }
 
 void CMap::DrawBrick(HDC hMemDC, int x, int y)
 {
-	if (x < 9)
-		x = 9;
-	if (y < 5)
+	if (x <= 8)
+		x = 8;
+	if (y <= 5)
 		y = 5;
-	if (x > 23)
-		x = 23;
-	if (y > 11)
+	if (x >= 24)
+		x = 24;
+	if (y >= 11)
 		y = 11;
 
-	int Map_Start_x = x - 9;
-	int Map_End_x = x + 9;
+	int Map_Start_x = x - 8;
+	int Map_End_x = x + 8;
 	int Map_Start_y = y - 5;
 	int Map_End_y = y + 5;
 

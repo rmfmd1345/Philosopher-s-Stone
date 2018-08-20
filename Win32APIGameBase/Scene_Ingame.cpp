@@ -1,21 +1,21 @@
 #include "stdafx.h"
 #include "Scene.h"
 
-//For test
-static int testC_x = 5;
-static int testC_y = 5;
+POINT PlayerPos = ObjPool->Player.GetPosition();
 
 void Ingame::Draw(HDC hMemDC)
 {
+	PlayerPos = ObjPool->Player.GetPosition();
+
 	ObjPool->Gdi.SetPenColor(RGB(10, 23, 55));
 	ObjPool->Gdi.SetBrushColor(RGB(10, 23, 55));
 	ObjPool->Gdi.Rect(hMemDC, { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT });
 
-	ObjPool->Maps.DrawMap(hMemDC, testC_x, testC_y);
-	ObjPool->Maps.DrawBrick(hMemDC, testC_x, testC_y);
+	ObjPool->Maps.DrawMap(hMemDC, PlayerPos.x, PlayerPos.y);
+	ObjPool->Maps.DrawBrick(hMemDC, PlayerPos.x, PlayerPos.y);
 
-	ObjPool->MonsterPool.Draw(hMemDC, testC_x, testC_y);
-	ObjPool->Player.Draw(hMemDC, testC_x, testC_y);
+	ObjPool->MonsterPool.Draw(hMemDC, PlayerPos.x, PlayerPos.y);
+	ObjPool->Player.Draw(hMemDC, PlayerPos.x, PlayerPos.y);
 
 	ObjPool->ingameBtn_Option.Draw(hMemDC);
 	ObjPool->ingameUI_Stone.Draw(hMemDC);
@@ -46,17 +46,17 @@ void Ingame::OnMouseLButtonUp(HWND hWnd, int x, int y)
 		ObjPool->System.SetScene(SCENE_OPTION);
 	}
 
-	if (testC_x <= 9)
-		testC_x = 9;
-	if (testC_y <= 5)
-		testC_y = 5;
-	if (testC_x >= 23)
-		testC_x = 23;
-	if (testC_y >= 11)
-		testC_y = 11;
+	if (PlayerPos.x <= 8)
+		PlayerPos.x = 8;
+	if (PlayerPos.y <= 5)
+		PlayerPos.y = 5;
+	if (PlayerPos.x >= 24)
+		PlayerPos.x = 24;
+	if (PlayerPos.y >= 11)
+		PlayerPos.y = 11;
 
-	int Map_Start_x = testC_x - 9;
-	int Map_Start_y = testC_y - 5;
+	int Map_Start_x = PlayerPos.x - 8;
+	int Map_Start_y = PlayerPos.y - 5;
 
 	//For test
 	ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, (x / 80) + Map_Start_x, (y / 80) + Map_Start_y);
@@ -69,17 +69,17 @@ void Ingame::OnMouseRButtonDown(HWND hWnd, int x, int y)
 
 void Ingame::OnMouseRButtonUp(HWND hWnd, int x, int y)
 {
-	if (testC_x <= 9)
-		testC_x = 9;
-	if (testC_y <= 5)
-		testC_y = 5;
-	if (testC_x >= 23)
-		testC_x = 23;
-	if (testC_y >= 11)
-		testC_y = 11;
+	if (PlayerPos.x <= 8)
+		PlayerPos.x = 8;
+	if (PlayerPos.y <= 5)
+		PlayerPos.y = 5;
+	if (PlayerPos.x >= 24)
+		PlayerPos.x = 24;
+	if (PlayerPos.y >= 11)
+		PlayerPos.y = 11;
 
-	int Map_Start_x = testC_x - 9;
-	int Map_Start_y = testC_y - 5;
+	int Map_Start_x = PlayerPos.x - 8;
+	int Map_Start_y = PlayerPos.y - 5;
 
 	//For test
 	ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Trap_Niddle, (x / 80) + Map_Start_x, (y / 80) + Map_Start_y);
