@@ -2,6 +2,8 @@
 #include "Sprite.h"
 #include "EntityObj.h"
 
+vector<POINT> Entity::BanRoad[512];
+
 void Entity::Init(HWND hWnd, int x, int y, int type, COLORREF sprite)
 {
 	this->type = type;
@@ -209,6 +211,7 @@ void Entity::Animation()
 
 void Entity::UpdateState()
 {
+	//걷는중 건들 ㄴㄴ
 	if (nowState == WALK)
 	{
 		if (stateFrame < 10)
@@ -217,7 +220,6 @@ void Entity::UpdateState()
 		}
 		else
 		{
-			nowAnimation = STAND;
 			switch (nowDirection)
 			{
 			case UP:
@@ -233,66 +235,139 @@ void Entity::UpdateState()
 				pos.x++;
 				break;
 			}
+			nowAnimation = STAND;
 			nowState = FINDWAY;
 			stateFrame = 0;
 		}
 		return;
 	}
 
+	//길찾기
 	if (nowState == FINDWAY)
 	{
-		switch (nowDirection)
+		if (isRoadBlocked())
 		{
-		case UP:
-			if (ObjPool->Maps.GetTileID(pos.x, pos.y - 1) == FLOOR)
-			{
-				nowState = WALK;
-				nowAnimation = WALK;
-				return;
-			}
-			break;
-		case DOWN:
-			if (ObjPool->Maps.GetTileID(pos.x, pos.y + 1) == FLOOR)
-			{
-				nowState = WALK;
-				nowAnimation = WALK;
-				return;
-			}
-			break;
-		case LEFT:
-			if (ObjPool->Maps.GetTileID(pos.x - 1, pos.y) == FLOOR)
-			{
-				nowState = WALK;
-				nowAnimation = WALK;
-				return;
-			}
-			break;
-		case RIGHT:
-			if (ObjPool->Maps.GetTileID(pos.x + 1, pos.y) == FLOOR)
-			{
-				nowState = WALK;
-				nowAnimation = WALK;
-				return;
-			}
-			break;
+			RotateClockwise();
 		}
-		switch (nowDirection)
+		else
 		{
-		case UP:
-			nowDirection = LEFT;
-			break;
-		case DOWN:
-			nowDirection = RIGHT;
-			break;
-		case LEFT:
-			nowDirection = DOWN;
-			break;
-		case RIGHT:
-			nowDirection = UP;
-			break;
+			nowAnimation = WALK;
+			nowState = WALK;
 		}
+
 		return;
 	}
+}
+
+bool Entity::isRoadBlocked()
+{
+	return isRoadBlocked(nowDirection);
+}
+
+bool Entity::isRoadBlocked(int dire)
+{
+	switch (nowDirection)
+	{
+	case UP:
+		if (ObjPool->Maps.GetTileID(pos.x, pos.y - 1) == FLOOR)
+			return false;
+		
+		break;
+	case DOWN:
+		if (ObjPool->Maps.GetTileID(pos.x, pos.y + 1) == FLOOR)
+			return false;
+		
+		break;
+	case LEFT:
+		if (ObjPool->Maps.GetTileID(pos.x - 1, pos.y) == FLOOR)
+			return false;
+
+		break;
+	case RIGHT:
+		if (ObjPool->Maps.GetTileID(pos.x + 1, pos.y) == FLOOR)
+			return false;
+
+		break;
+	}
+
+	return true;
+}
+
+void Entity::RotateClockwise()
+{
+	switch (nowDirection)
+	{
+	case UP:
+		nowDirection = RIGHT;
+		break;
+	case DOWN:
+		nowDirection = LEFT;
+		break;
+	case LEFT:
+		nowDirection = UP;
+		break;
+	case RIGHT:
+		nowDirection = DOWN;
+		break;
+	}
+}
+
+void Entity::RotateCounterclockwise()
+{
+	switch (nowDirection)
+	{
+	case UP:
+		nowDirection = LEFT;
+		break;
+	case DOWN:
+		nowDirection = RIGHT;
+		break;
+	case LEFT:
+		nowDirection = DOWN;
+		break;
+	case RIGHT:
+		nowDirection = UP;
+		break;
+	}
+}
+
+void Entity::RotateReverse()
+{
+	switch (nowDirection)
+	{
+	case UP:
+		nowDirection = DOWN;
+		break;
+	case DOWN:
+		nowDirection = UP;
+		break;
+	case LEFT:
+		nowDirection = RIGHT;
+		break;
+	case RIGHT:
+		nowDirection = LEFT;
+		break;
+	}
+}
+
+void Entity::FindPlayer()
+{
+
+}
+
+void Entity::SetBanRoad(int x, int y)
+{
+
+}
+
+bool Entity::isBanRoad(int x, int y)
+{
+	return false;
+}
+
+POINT Entity::GetPosition()
+{
+	return pos;
 }
 
 void Entity::SetPosition(int x, int y)
@@ -350,15 +425,23 @@ void Monster::Ternimate()
 	pool.clear();
 }
 
-void Monster::Draw(HDC hMemDC, int x, int y) // 플레이어 좌표를 받고, 그 위를 출력, 플레이어 출력, 그 아래를 출력..?
+void Monster::Draw(HDC hMemDC, int x, int y)
 {
-	// sort
-
-	if (pool.empty()) return;
-
-	for (auto it = pool.begin(); it != pool.end(); it++)
+	if (pool.empty())	//몬스터가 없으면 플레이어만 생성
 	{
-		it->Draw(hMemDC, x, y);
+		ObjPool->Player.Draw(hMemDC, x, y);
+		return;
+	}
+
+	for (int i = 0; i < 16; i++)
+	{
+		for (int j = 0; j < 32; j++)
+		{
+			for (auto it = pool.begin(); it != pool.end(); it++)
+				if(it->GetPosition().y == i && it->GetPosition().x == j) it->Draw(hMemDC, x, y);
+
+			if (ObjPool->Player.GetPosition().y == i && ObjPool->Player.GetPosition().x == j) ObjPool->Player.Draw(hMemDC, x, y);
+		}
 	}
 }
 

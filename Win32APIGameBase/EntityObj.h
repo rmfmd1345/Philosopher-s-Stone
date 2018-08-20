@@ -44,6 +44,8 @@ public:
 	void Animation();
 	void UpdateState();
 
+	POINT GetPosition();
+
 	void SetPosition(int x, int y);
 	void SetAnimation(int ani);
 	void SetDirection(int dire);
@@ -52,6 +54,26 @@ public:
 
 	bool isDead();
 	bool isWalk();
+
+private:
+	static vector<POINT> BanRoad[512];		//막 다른 길
+	vector<POINT> SearchRoad[512];			//플레이어 서치 길(아스타)
+
+	bool isFindBanRoad = false;
+
+public:
+	bool isRoadBlocked();
+	bool isRoadBlocked(int dire);
+
+	void RotateClockwise();
+	void RotateCounterclockwise();
+	void RotateReverse();
+
+	void FindPlayer();
+
+	void SetBanRoad(int x, int y);
+	bool isBanRoad(int x, int y);
+
 };
 
 class Monster

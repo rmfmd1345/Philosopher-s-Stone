@@ -15,7 +15,8 @@ void Ingame::Draw(HDC hMemDC)
 	ObjPool->Maps.DrawBrick(hMemDC, PlayerPos.x, PlayerPos.y);
 
 	ObjPool->MonsterPool.Draw(hMemDC, PlayerPos.x, PlayerPos.y);
-	ObjPool->Player.Draw(hMemDC, PlayerPos.x, PlayerPos.y);
+	//ObjPool->Player.Draw(hMemDC, PlayerPos.x, PlayerPos.y);
+	//MonsterPool.Draw에서 플레이어와 몬스터의 좌표를 확인해 부자연스럽게 겹치지 않도록 함. 
 
 	ObjPool->ingameBtn_Option.Draw(hMemDC);
 	ObjPool->ingameUI_Stone.Draw(hMemDC);
