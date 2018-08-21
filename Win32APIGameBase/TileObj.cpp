@@ -107,6 +107,8 @@ void CMap::DrawMap(HDC hMemDC, int x, int y)
 	int Map_Start_y = y - 5;
 	int Map_End_y = y + 5;
 
+	int Term_x = ObjPool->Player.GetWalkTerm().x, Term_y = ObjPool->Player.GetWalkTerm().y;
+
 	for (int i = Map_Start_y; i < Map_End_y; i++)
 	{
 		for (int j = Map_Start_x; j < Map_End_x; j++)
@@ -116,7 +118,7 @@ void CMap::DrawMap(HDC hMemDC, int x, int y)
 				if (i < 1)
 					continue;
 				Map[i - 1][j] = Wall;
-				Map[i - 1][j].Tile_Sprite.SetPosition((j - Map_Start_x) * 80, ((i - Map_Start_y) - 1) * 80);
+				Map[i - 1][j].Tile_Sprite.SetPosition((j - Map_Start_x) * 80 + Term_x, ((i - Map_Start_y) - 1) * 80 + Term_y);
 			}
 		}
 	}
@@ -125,7 +127,7 @@ void CMap::DrawMap(HDC hMemDC, int x, int y)
 	{
 		for (int j = Map_Start_x; j < Map_End_x; j++)
 		{
-			Map[i][j].Tile_Sprite.SetPosition((j - Map_Start_x) * 80, (i - Map_Start_y) * 80);
+			Map[i][j].Tile_Sprite.SetPosition((j - Map_Start_x) * 80 + Term_x, (i - Map_Start_y) * 80 + Term_y);
 
 			Map[i][j].Tile_Sprite.Draw(hMemDC);
 		}
@@ -174,6 +176,8 @@ void CMap::DrawBrick(HDC hMemDC, int x, int y)
 	int Map_Start_y = y - 5;
 	int Map_End_y = y + 5;
 
+	int Term_x = ObjPool->Player.GetWalkTerm().x, Term_y = ObjPool->Player.GetWalkTerm().y;
+
 	for (int i = Map_Start_y; i < Map_End_y; i++)
 	{
 		for (int j = Map_Start_x; j < Map_End_x; j++)
@@ -199,12 +203,12 @@ void CMap::DrawBrick(HDC hMemDC, int x, int y)
 	{
 		for (int j = Map_Start_x; j < Map_End_x; j++)
 		{
-			Brick[UP].SetPosition((j - Map_Start_x) * 80, (i - Map_Start_y) * 80);
-			Brick[LEFT].SetPosition((j - Map_Start_x) * 80, (i - Map_Start_y) * 80);
-			Brick[RIGHT].SetPosition((j - Map_Start_x) * 80, (i - Map_Start_y) * 80);
-			Brick[DOWN].SetPosition((j - Map_Start_x) * 80, (i - Map_Start_y) * 80);
-			Brick[SW_LEFT].SetPosition((j - Map_Start_x) * 80, (i - Map_Start_y) * 80);
-			Brick[SW_RIGHT].SetPosition((j - Map_Start_x) * 80, (i - Map_Start_y) * 80);
+			Brick[UP].SetPosition((j - Map_Start_x) * 80 + Term_x, (i - Map_Start_y) * 80 + Term_y);
+			Brick[LEFT].SetPosition((j - Map_Start_x) * 80 + Term_x, (i - Map_Start_y) * 80 + Term_y);
+			Brick[RIGHT].SetPosition((j - Map_Start_x) * 80 + Term_x, (i - Map_Start_y) * 80 + Term_y);
+			Brick[DOWN].SetPosition((j - Map_Start_x) * 80 + Term_x, (i - Map_Start_y) * 80 + Term_y);
+			Brick[SW_LEFT].SetPosition((j - Map_Start_x) * 80 + Term_x, (i - Map_Start_y) * 80 + Term_y);
+			Brick[SW_RIGHT].SetPosition((j - Map_Start_x) * 80 + Term_x, (i - Map_Start_y) * 80 + Term_y);
 
 			if (Map[i][j].Brick_Up)
 				Brick[UP].Draw(hMemDC);

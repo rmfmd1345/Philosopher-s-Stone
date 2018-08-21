@@ -98,8 +98,7 @@ void Entity::Draw(HDC hMemDC, int x, int y)
 	int Map_x = x - 8;
 	int Map_y = y - 5;
 
-	int Term_x = 0;
-	int Term_y = 0;
+	int Term_x = 0, Term_y = 0;
 
 	switch (type)
 	{
@@ -175,6 +174,9 @@ void Entity::Draw(HDC hMemDC, int x, int y)
 			Term_x += (stateFrame * 8);
 			break;
 		}
+
+	Term_x += ObjPool->Player.GetWalkTerm().x;
+	Term_y += ObjPool->Player.GetWalkTerm().y;
 
 	switch (nowAnimation)
 	{

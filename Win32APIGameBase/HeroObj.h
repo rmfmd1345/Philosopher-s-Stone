@@ -33,6 +33,8 @@ public:
 	void SetDirection(int dire);
 
 	POINT GetPosition();
+	int GetWalkState();
+	POINT GetWalkTerm();
 
 	void PlusHealth(int plus);
 

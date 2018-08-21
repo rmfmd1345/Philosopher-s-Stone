@@ -78,22 +78,21 @@ void Hero::Draw(HDC hMemDC, int x, int y)
 	}
 	Term_y = -65;
 
-	if (nowState == WALK)
-		switch (nowDirection)
-		{
-		case UP:
+	if (nowDirection == UP)
+		if (!(5 < pos.y && pos.y <= 11))
 			Term_y -= (stateFrame * 8);
-			break;
-		case DOWN:
+
+	if (nowDirection == DOWN)
+		if (!(5 <= pos.y && pos.y < 11))
 			Term_y += (stateFrame * 8);
-			break;
-		case LEFT:
+
+	if (nowDirection == LEFT)
+		if (!(8 < pos.x && pos.x <= 24))
 			Term_x -= (stateFrame * 8);
-			break;
-		case RIGHT:
+
+	if (nowDirection == RIGHT)
+		if (!(8 <= pos.x && pos.x < 24))
 			Term_x += (stateFrame * 8);
-			break;
-		}
 
 	switch (nowAnimation)
 	{
@@ -218,6 +217,38 @@ void Hero::SetDirection(int dire)
 POINT Hero::GetPosition()
 {
 	return pos;
+}
+
+int Hero::GetWalkState()
+{
+	if (nowState == WALK)
+		return stateFrame;
+	else
+		return 0;
+}
+
+POINT Hero::GetWalkTerm()
+{
+	POINT Term = { 0, 0 };
+
+	if(nowDirection == UP)
+		if (5 < pos.y && pos.y <= 11)
+			Term.y += (stateFrame * 8);
+
+	if (nowDirection == DOWN)
+		if (5 <= pos.y && pos.y < 11)
+			Term.y -= (stateFrame * 8);
+
+	if (nowDirection == LEFT)
+		if (8 < pos.x && pos.x <= 24)
+			Term.x += (stateFrame * 8);
+
+	if (nowDirection == RIGHT)
+		if (8 <= pos.x && pos.x < 24)
+			Term.x -= (stateFrame * 8);
+
+
+	return Term;
 }
 
 void Hero::PlusHealth(int plus)
