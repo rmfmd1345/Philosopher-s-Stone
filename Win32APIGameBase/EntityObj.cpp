@@ -95,8 +95,8 @@ void Entity::Draw(HDC hMemDC, int x, int y)
 	if (y >= MAX_TILE_Y - 5)
 		y = 11;
 
-	int Map_x = x - 8;
-	int Map_y = y - 5;
+	int Map_x = x - 9;
+	int Map_y = y - 6;
 
 	int Term_x = 0, Term_y = 0;
 

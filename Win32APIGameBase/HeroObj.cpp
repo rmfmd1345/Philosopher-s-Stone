@@ -50,13 +50,13 @@ void Hero::Draw(HDC hMemDC, int x, int y)
 		x = 8;
 	if (y <= 5)
 		y = 5;
-	if (x >= 24)
+	if (x >= MAX_TILE_X - 8)
 		x = 24;
-	if (y >= 11)
+	if (y >= MAX_TILE_Y - 5)
 		y = 11;
 
-	int Map_x = x - 8;
-	int Map_y = y - 5;
+	int Map_x = x - 9;
+	int Map_y = y - 6;
 
 	int Term_x = 0;
 	int Term_y = 0;

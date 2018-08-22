@@ -51,12 +51,12 @@ void CMap::ResetMap(int Character_x, int Character_y)
 		}
 	}
 
-	Map[Character_x][Character_y] = Floor;
+	Map[Character_y][Character_x] = Floor;
 }
 
 void CMap::ActiveTile(int Character_x, int Character_y)
 {
-	switch (Map[Character_x][Character_y].Tile_ID)
+	switch (Map[Character_y][Character_x].Tile_ID)
 	{
 	case NONE:
 		None.Tile_Func();
@@ -102,10 +102,10 @@ void CMap::DrawMap(HDC hMemDC, int x, int y)
 	if (y >= MAX_TILE_Y - 5)
 		y = 11;
 
-	int Map_Start_x = x - 8;
-	int Map_End_x = x + 8;
-	int Map_Start_y = y - 5;
-	int Map_End_y = y + 5;
+	int Map_Start_x = x - 9;
+	int Map_End_x = x + 9;
+	int Map_Start_y = y - 6;
+	int Map_End_y = y + 6;
 
 	int Term_x = ObjPool->Player.GetWalkTerm().x, Term_y = ObjPool->Player.GetWalkTerm().y;
 
@@ -171,10 +171,10 @@ void CMap::DrawBrick(HDC hMemDC, int x, int y)
 	if (y >= MAX_TILE_Y - 5)
 		y = 11;
 
-	int Map_Start_x = x - 8;
-	int Map_End_x = x + 8;
-	int Map_Start_y = y - 5;
-	int Map_End_y = y + 5;
+	int Map_Start_x = x - 9;
+	int Map_End_x = x + 9;
+	int Map_Start_y = y - 6;
+	int Map_End_y = y + 6;
 
 	int Term_x = ObjPool->Player.GetWalkTerm().x, Term_y = ObjPool->Player.GetWalkTerm().y;
 
