@@ -56,8 +56,8 @@ public:
 	bool isWalk();
 
 private:
-	static vector<POINT> BanRoad[512];		//막 다른 길
-	vector<POINT> SearchRoad[512];			//플레이어 서치 길(아스타)
+	static vector<POINT> BanRoad;		//막 다른 길
+	vector<POINT> SearchRoad;			//플레이어 서치 길(아스타)
 
 	bool isFindBanRoad = false;
 

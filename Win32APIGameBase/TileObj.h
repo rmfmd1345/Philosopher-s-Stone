@@ -23,7 +23,7 @@ public:
 class CMap
 {
 public:
-	CTile Map[16][32]; // ¸Ê
+	CTile Map[MAX_TILE_Y][MAX_TILE_X]; // ¸Ê
 
 	CTile None; // ¾Æ¹«°Íµµ ¾øÀ½
 	CTile Floor; // ¹Ù´Ú

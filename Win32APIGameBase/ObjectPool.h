@@ -28,6 +28,11 @@ enum eDirection
 	RIGHT
 };
 
+enum eTimer
+{
+	ANIMATION
+};
+
 class ObjectPool		//오브젝트 풀 (전역변수같이 사용됨)
 {
 private:

@@ -4,7 +4,7 @@
 
 int InputManager::OnCreate(HWND hWnd, WPARAM wParam, LPARAM lParam)
 {
-	SetTimer(hWnd, 0, 50, NULL);
+	SetTimer(hWnd, ANIMATION, 50, NULL);
 	return 1;
 }
 

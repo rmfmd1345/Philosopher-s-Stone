@@ -42,9 +42,9 @@ void CMap::InitMap(HWND hwnd)
 
 void CMap::ResetMap(int Character_x, int Character_y)
 {
-	for (int i = 0; i < 16; i++)
+	for (int i = 0; i < MAX_TILE_Y; i++)
 	{
-		for (int j = 0; j < 32; j++)
+		for (int j = 0; j < MAX_TILE_X; j++)
 		{
 			Map[i][j] = None;
 			Map[i][j].Tile_Sprite.SetPosition(j * 80, i * 80);
@@ -97,9 +97,9 @@ void CMap::DrawMap(HDC hMemDC, int x, int y)
 		x = 8;
 	if (y <= 5)
 		y = 5;
-	if (x >= 24)
+	if (x >= MAX_TILE_X - 8)
 		x = 24;
-	if (y >= 11)
+	if (y >= MAX_TILE_Y - 5)
 		y = 11;
 
 	int Map_Start_x = x - 8;
@@ -166,9 +166,9 @@ void CMap::DrawBrick(HDC hMemDC, int x, int y)
 		x = 8;
 	if (y <= 5)
 		y = 5;
-	if (x >= 24)
+	if (x >= MAX_TILE_X - 8)
 		x = 24;
-	if (y >= 11)
+	if (y >= MAX_TILE_Y - 5)
 		y = 11;
 
 	int Map_Start_x = x - 8;

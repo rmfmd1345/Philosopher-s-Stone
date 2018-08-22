@@ -2,7 +2,7 @@
 #include "Sprite.h"
 #include "EntityObj.h"
 
-vector<POINT> Entity::BanRoad[512];
+vector<POINT> Entity::BanRoad;
 
 void Entity::Init(HWND hWnd, int x, int y, int type, COLORREF sprite)
 {
@@ -90,9 +90,9 @@ void Entity::Draw(HDC hMemDC, int x, int y)
 		x = 8;
 	if (y <= 5)
 		y = 5;
-	if (x >= 24)
+	if (x >= MAX_TILE_X - 8)
 		x = 24;
-	if (y >= 11)
+	if (y >= MAX_TILE_Y - 5)
 		y = 11;
 
 	int Map_x = x - 8;
@@ -435,14 +435,20 @@ void Monster::Draw(HDC hMemDC, int x, int y)
 		return;
 	}
 
-	for (int i = 0; i < 16; i++)
+	bool isPlayer = false;
+	for (int i = 0; i < MAX_TILE_Y; i++)
 	{
-		for (int j = 0; j < 32; j++)
+		for (int j = 0; j < MAX_TILE_Y; j++)
 		{
 			for (auto it = pool.begin(); it != pool.end(); it++)
 				if(it->GetPosition().y == i && it->GetPosition().x == j) it->Draw(hMemDC, x, y);
 
-			if (ObjPool->Player.GetPosition().y == i && ObjPool->Player.GetPosition().x == j) ObjPool->Player.Draw(hMemDC, x, y);
+			if (!isPlayer)
+				if (ObjPool->Player.GetPosition().y == i && ObjPool->Player.GetPosition().x == j)
+				{
+					ObjPool->Player.Draw(hMemDC, x, y);
+					isPlayer = true;
+				}
 		}
 	}
 }
