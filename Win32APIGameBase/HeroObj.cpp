@@ -247,7 +247,6 @@ POINT Hero::GetWalkTerm()
 		if (8 <= pos.x && pos.x < 24)
 			Term.x -= (stateFrame * 8);
 
-
 	return Term;
 }
 

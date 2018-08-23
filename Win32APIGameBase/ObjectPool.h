@@ -13,6 +13,7 @@ enum Tile_ID_List  // 식별 번호 리스트
 	NONE,
 	FLOOR,
 	WALL,
+	MENTLE,
 	TRAP_Niddle,
 	TRAP_Hole,
 	TRAP_ScareCrow,
