@@ -54,16 +54,16 @@ void Ingame::OnMouseLButtonUp(HWND hWnd, int x, int y)
 		PlayerPos.x = 8;
 	if (PlayerPos.y <= 5)
 		PlayerPos.y = 5;
-	if (PlayerPos.x >= 24)
-		PlayerPos.x = 24;
-	if (PlayerPos.y >= 11)
-		PlayerPos.y = 11;
+	if (PlayerPos.x >= 27)
+		PlayerPos.x = 27;
+	if (PlayerPos.y >= 17)
+		PlayerPos.y = 17;
 
 	int Map_Start_x = PlayerPos.x - 8;
 	int Map_Start_y = PlayerPos.y - 5;
 
-	//For test
-	ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, (x / 80) + Map_Start_x, (y / 80) + Map_Start_y);
+	if (ObjPool->Maps.Map[((x + 40) / 80) + Map_Start_x][(y / 80) + Map_Start_y].Tile_ID != MENTLE)
+		ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, ((x + 40) / 80) + Map_Start_x, (y / 80) + Map_Start_y);
 }
 
 void Ingame::OnMouseRButtonDown(HWND hWnd, int x, int y)
@@ -77,16 +77,16 @@ void Ingame::OnMouseRButtonUp(HWND hWnd, int x, int y)
 		PlayerPos.x = 8;
 	if (PlayerPos.y <= 5)
 		PlayerPos.y = 5;
-	if (PlayerPos.x >= 24)
-		PlayerPos.x = 24;
-	if (PlayerPos.y >= 11)
-		PlayerPos.y = 11;
+	if (PlayerPos.x >= 27)
+		PlayerPos.x = 27;
+	if (PlayerPos.y >= 17)
+		PlayerPos.y = 17;
 
 	int Map_Start_x = PlayerPos.x - 8;
 	int Map_Start_y = PlayerPos.y - 5;
 
-	//For test
-	ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Trap_Niddle, (x / 80) + Map_Start_x, (y / 80) + Map_Start_y);
+	if (ObjPool->Maps.Map[((x + 40) / 80) + Map_Start_x][(y / 80) + Map_Start_y].Tile_ID != MENTLE)
+		ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Trap_Niddle, (x / 80) + Map_Start_x, (y / 80) + Map_Start_y);
 }
 
 void Ingame::OnMouseMove(HWND hWnd, int x, int y)
