@@ -131,13 +131,13 @@ void CMap::DrawMap(HDC hMemDC, int x, int y)
 		y = 5;
 	if (x >= MAX_TILE_X - 10)
 		x = 26;
-	if (y >= MAX_TILE_Y - 5)
-		y = 17;
+	if (y >= MAX_TILE_Y - 4)
+		y = 18;
 
 	int Map_Start_x = x - 9;
 	int Map_End_x = x + 10;
 	int Map_Start_y = y - 6;
-	int Map_End_y = y + 6;
+	int Map_End_y = y + 4;
 
 	int Term_x = ObjPool->Player.GetWalkTerm().x, Term_y = ObjPool->Player.GetWalkTerm().y;
 
@@ -204,13 +204,13 @@ void CMap::DrawBrick(HDC hMemDC, int x, int y)
 		y = 5;
 	if (x >= MAX_TILE_X - 10)
 		x = 26;
-	if (y >= MAX_TILE_Y - 5)
-		y = 17;
+	if (y >= MAX_TILE_Y - 4)
+		y = 18;
 
 	int Map_Start_x = x - 9;
 	int Map_End_x = x + 10;
 	int Map_Start_y = y - 6;
-	int Map_End_y = y + 6;
+	int Map_End_y = y + 4;
 
 	int Term_x = ObjPool->Player.GetWalkTerm().x, Term_y = ObjPool->Player.GetWalkTerm().y;
 
