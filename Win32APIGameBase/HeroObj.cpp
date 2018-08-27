@@ -50,13 +50,13 @@ void Hero::Draw(HDC hMemDC, int x, int y)
 		x = 8;
 	if (y <= 5)
 		y = 5;
-	if (x >= MAX_TILE_X - 9)
-		x = 27;
+	if (x >= MAX_TILE_X - 10)
+		x = 26;
 	if (y >= MAX_TILE_Y - 5)
 		y = 17;
 
-	int Map_x = x - 8;
-	int Map_y = y - 5;
+	int Map_x = x - 9;
+	int Map_y = y - 6;
 
 	int Term_x = 0;
 	int Term_y = 0;
@@ -79,33 +79,33 @@ void Hero::Draw(HDC hMemDC, int x, int y)
 	Term_y = -65;
 
 	if (nowDirection == UP)
-		if (!(5 < pos.y && pos.y <= 11))
+		if (!(5 < pos.y && pos.y <= 17))
 			Term_y -= (stateFrame * 8);
 
 	if (nowDirection == DOWN)
-		if (!(5 <= pos.y && pos.y < 11))
+		if (!(5 <= pos.y && pos.y < 17))
 			Term_y += (stateFrame * 8);
 
 	if (nowDirection == LEFT)
-		if (!(8 < pos.x && pos.x <= 24))
+		if (!(8 < pos.x && pos.x <= 26))
 			Term_x -= (stateFrame * 8);
 
 	if (nowDirection == RIGHT)
-		if (!(8 <= pos.x && pos.x < 24))
+		if (!(8 <= pos.x && pos.x < 26))
 			Term_x += (stateFrame * 8);
 
 	switch (nowAnimation)
 	{
 	case STAND:
-		Ani_stand[nowDirection].SetPosition((pos.x - Map_x) * 80 + Term_x - 40, (pos.y - Map_y) * 80 + Term_y);
+		Ani_stand[nowDirection].SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y);
 		Ani_stand[nowDirection].Draw(hMemDC);
 		break;
 	case WALK:
-		Ani_walk[nowDirection].SetPosition((pos.x - Map_x) * 80 + Term_x - 40, (pos.y - Map_y) * 80 + Term_y);
+		Ani_walk[nowDirection].SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y);
 		Ani_walk[nowDirection].Draw(hMemDC);
 		break;
 	case ATTACK:
-		Ani_attack[nowDirection].SetPosition((pos.x - Map_x) * 80 + Term_x - 40, (pos.y - Map_y) * 80 + Term_y);
+		Ani_attack[nowDirection].SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y);
 		Ani_attack[nowDirection].Draw(hMemDC);
 		break;
 	}
