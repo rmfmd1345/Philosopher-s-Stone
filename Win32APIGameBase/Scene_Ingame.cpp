@@ -54,8 +54,8 @@ void Ingame::OnMouseLButtonUp(HWND hWnd, int x, int y)
 		PlayerPos.x = 8;
 	if (PlayerPos.y <= 5)
 		PlayerPos.y = 5;
-	if (PlayerPos.x >= 26)
-		PlayerPos.x = 26;
+	if (PlayerPos.x >= 27)
+		PlayerPos.x = 27;
 	if (PlayerPos.y >= 18)
 		PlayerPos.y = 18;
 
@@ -77,8 +77,8 @@ void Ingame::OnMouseRButtonUp(HWND hWnd, int x, int y)
 		PlayerPos.x = 8;
 	if (PlayerPos.y <= 5)
 		PlayerPos.y = 5;
-	if (PlayerPos.x >= 26)
-		PlayerPos.x = 26;
+	if (PlayerPos.x >= 27)
+		PlayerPos.x = 27;
 	if (PlayerPos.y >= 18)
 		PlayerPos.y = 18;
 

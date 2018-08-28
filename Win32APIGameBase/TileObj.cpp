@@ -129,8 +129,8 @@ void CMap::DrawMap(HDC hMemDC, int x, int y)
 		x = 8;
 	if (y <= 5)
 		y = 5;
-	if (x >= MAX_TILE_X - 10)
-		x = 26;
+	if (x >= MAX_TILE_X - 9)
+		x = 27;
 	if (y >= MAX_TILE_Y - 4)
 		y = 18;
 
@@ -147,7 +147,7 @@ void CMap::DrawMap(HDC hMemDC, int x, int y)
 		{
 			if (Map[i][j].Tile_ID == FLOOR && Map[i - 1][j].Tile_ID == NONE)
 			{
-				if (i < 1 || j < 1 || i > MAX_TILE_Y || j > MAX_TILE_X)
+				if (i < 1 || j < 1 || i >= MAX_TILE_Y || j >= MAX_TILE_X)
 					continue;
 
 				Map[i - 1][j] = Wall;
@@ -160,7 +160,7 @@ void CMap::DrawMap(HDC hMemDC, int x, int y)
 	{
 		for (int j = Map_Start_x; j < Map_End_x; j++)
 		{
-			if (i < 1 || j < 1 || i > MAX_TILE_Y || j > MAX_TILE_X)
+			if (i < 1 || j < 1 || i >= MAX_TILE_Y || j >= MAX_TILE_X)
 				continue;
 
 			Map[i][j].Tile_Sprite.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 1) * 80 + Term_y);
@@ -172,7 +172,7 @@ void CMap::DrawMap(HDC hMemDC, int x, int y)
 
 void CMap::SetBrick(int x, int y)
 {
-	if (Map[y][x].Tile_ID == WALL && Map[y - 1][x].Tile_ID == NONE)
+	if (Map[y][x].Tile_ID == WALL && (Map[y - 1][x].Tile_ID == NONE || Map[y - 1][x].Tile_ID == MENTLE))
 		Map[y][x].Brick_Up = true;
 	if (Map[y][x].Tile_ID != NONE && (Map[y + 1][x].Tile_ID == NONE || Map[y + 1][x].Tile_ID == WALL))
 		Map[y][x].Brick_Down = true;
@@ -194,6 +194,8 @@ void CMap::SetBrick(int x, int y)
 		Map[y][x].Brick_Right = true;
 	if (Map[y][x].Tile_ID == WALL && (Map[y + 1][x].Tile_ID != NONE && Map[y + 1][x].Tile_ID != WALL) && Map[y][x + 1].Tile_ID == FLOOR && Map[y + 1][x + 1].Tile_ID == NONE)
 		Map[y][x].Brick_Left = true;
+	if (Map[y][x].Tile_ID != MENTLE && Map[y + 1][x].Tile_ID == MENTLE)
+		Map[y][x].Brick_Down = true;
 }
 
 void CMap::DrawBrick(HDC hMemDC, int x, int y)
@@ -202,8 +204,8 @@ void CMap::DrawBrick(HDC hMemDC, int x, int y)
 		x = 8;
 	if (y <= 5)
 		y = 5;
-	if (x >= MAX_TILE_X - 10)
-		x = 26;
+	if (x >= MAX_TILE_X - 9)
+		x = 27;
 	if (y >= MAX_TILE_Y - 4)
 		y = 18;
 
@@ -218,7 +220,7 @@ void CMap::DrawBrick(HDC hMemDC, int x, int y)
 	{
 		for (int j = Map_Start_x; j < Map_End_x; j++)
 		{
-			if (i < 1 || j < 1 || i > MAX_TILE_Y || j > MAX_TILE_X)
+			if (i < 1 || j < 1 || i >= MAX_TILE_Y || j >= MAX_TILE_X)
 				continue;
 
 			Map[i][j].Brick_Up = false;
@@ -234,7 +236,7 @@ void CMap::DrawBrick(HDC hMemDC, int x, int y)
 	{
 		for (int j = Map_Start_x; j < Map_End_x; j++)
 		{
-			if (i < 1 || j < 1 || i > MAX_TILE_Y || j > MAX_TILE_X)
+			if (i < 1 || j < 1 || i >= MAX_TILE_Y - 1 || j >= MAX_TILE_X - 1)
 				continue;
 
 			SetBrick(j, i);
@@ -245,7 +247,7 @@ void CMap::DrawBrick(HDC hMemDC, int x, int y)
 	{
 		for (int j = Map_Start_x; j < Map_End_x; j++)
 		{
-			if (i < 1 || j < 1 || i > MAX_TILE_Y || j > MAX_TILE_X)
+			if (i < 1 || j < 1 || i >= MAX_TILE_Y || j >= MAX_TILE_X)
 				continue;
 
 			Brick[UP].SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 1) * 80 + Term_y);

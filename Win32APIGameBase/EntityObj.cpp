@@ -90,8 +90,8 @@ void Entity::Draw(HDC hMemDC, int x, int y)
 		x = 8;
 	if (y <= 5)
 		y = 5;
-	if (x >= MAX_TILE_X - 10)
-		x = 26;
+	if (x >= MAX_TILE_X - 9)
+		x = 27;
 	if (y >= MAX_TILE_Y - 4)
 		y = 18;
 
@@ -438,7 +438,7 @@ void Monster::Draw(HDC hMemDC, int x, int y)
 	bool isPlayer = false;
 	for (int i = 0; i < MAX_TILE_Y; i++)
 	{
-		for (int j = 0; j < MAX_TILE_Y; j++)
+		for (int j = 0; j < MAX_TILE_X; j++)
 		{
 			for (auto it = pool.begin(); it != pool.end(); it++)
 				if(it->GetPosition().y == i && it->GetPosition().x == j) it->Draw(hMemDC, x, y);

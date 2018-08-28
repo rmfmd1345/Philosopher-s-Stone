@@ -50,8 +50,8 @@ void Hero::Draw(HDC hMemDC, int x, int y)
 		x = 8;
 	if (y <= 5)
 		y = 5;
-	if (x >= MAX_TILE_X - 10)
-		x = 26;
+	if (x >= MAX_TILE_X - 9)
+		x = 27;
 	if (y >= MAX_TILE_Y - 4)
 		y = 18;
 
@@ -87,11 +87,11 @@ void Hero::Draw(HDC hMemDC, int x, int y)
 			Term_y += (stateFrame * 8);
 
 	if (nowDirection == LEFT)
-		if (!(8 < pos.x && pos.x <= 26))
+		if (!(8 < pos.x && pos.x <= 27))
 			Term_x -= (stateFrame * 8);
 
 	if (nowDirection == RIGHT)
-		if (!(8 <= pos.x && pos.x < 26))
+		if (!(8 <= pos.x && pos.x < 27))
 			Term_x += (stateFrame * 8);
 
 	switch (nowAnimation)
@@ -240,11 +240,11 @@ POINT Hero::GetWalkTerm()
 			Term.y -= (stateFrame * 8);
 
 	if (nowDirection == LEFT)
-		if (8 < pos.x && pos.x <= 26)
+		if (8 < pos.x && pos.x <= 27)
 			Term.x += (stateFrame * 8);
 
 	if (nowDirection == RIGHT)
-		if (8 <= pos.x && pos.x < 26)
+		if (8 <= pos.x && pos.x < 27)
 			Term.x -= (stateFrame * 8);
 
 	return Term;
