@@ -26,7 +26,8 @@ enum eDirection
 	UP,
 	DOWN,
 	LEFT,
-	RIGHT
+	RIGHT,
+	SPACE
 };
 
 enum eTimer
@@ -67,7 +68,6 @@ public:
 	Button titleBtn_Credit;
 	Button titleBtn_Exit;
 
-
 	Bitmap titleBg;		//∫Ò∆Æ∏ 
 
 	//credit Scene
@@ -81,5 +81,4 @@ public:
 	Bitmap ingameUI_Skill;
 	Bitmap ingameUI_Stage;
 	Bitmap ingameUI_Time;
-
 };

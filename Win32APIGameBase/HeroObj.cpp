@@ -255,6 +255,45 @@ void Hero::PlusHealth(int plus)
 	health += plus;
 }
 
+void Hero::DigMap()
+{
+	/*POINT TempPos = GetPosition();
+
+	if (TempPos.x <= 8)
+		TempPos.x = 8;
+	if (TempPos.y <= 5)
+		TempPos.y = 5;
+	if (TempPos.x >= 27)
+		TempPos.x = 27;
+	if (TempPos.y >= 18)
+		TempPos.y = 18;
+
+	int Map_Start_x = TempPos.x - 8;
+	int Map_Start_y = TempPos.y - 5;*/
+
+	switch (nowDirection)
+	{
+	case LEFT:
+		if (ObjPool->Maps.Map[pos.y][(pos.x - 1)].Tile_ID != MENTLE)
+			ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, (pos.x - 1), pos.y);
+		break;
+	case RIGHT:
+		if (ObjPool->Maps.Map[pos.y][(pos.x + 1)].Tile_ID != MENTLE)
+			ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, (pos.x + 1), pos.y);
+		break;
+	case UP:
+		if (ObjPool->Maps.Map[(pos.y - 1)][pos.x].Tile_ID != MENTLE)
+			ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, pos.x, (pos.y - 1));
+		break;
+	case DOWN:
+		if (ObjPool->Maps.Map[(pos.y + 1)][pos.x].Tile_ID != MENTLE)
+			ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, pos.x, (pos.y + 1));
+		break;
+	default:
+		break;
+	}
+}
+
 bool Hero::isDead()
 {
 	return !(health);

@@ -37,6 +37,7 @@ public:
 	POINT GetWalkTerm();
 
 	void PlusHealth(int plus);
+	void DigMap();
 
 	bool isDead();
 	bool isWalk();

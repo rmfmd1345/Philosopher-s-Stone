@@ -49,21 +49,6 @@ void Ingame::OnMouseLButtonUp(HWND hWnd, int x, int y)
 	{
 		ObjPool->System.SetScene(SCENE_OPTION);
 	}
-
-	if (PlayerPos.x <= 8)
-		PlayerPos.x = 8;
-	if (PlayerPos.y <= 5)
-		PlayerPos.y = 5;
-	if (PlayerPos.x >= 27)
-		PlayerPos.x = 27;
-	if (PlayerPos.y >= 18)
-		PlayerPos.y = 18;
-
-	int Map_Start_x = PlayerPos.x - 8;
-	int Map_Start_y = PlayerPos.y - 5;
-
-	if (ObjPool->Maps.Map[(y / 80) + Map_Start_y][((x + 40) / 80) + Map_Start_x].Tile_ID != MENTLE)
-		ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, ((x + 40) / 80) + Map_Start_x, (y / 80) + Map_Start_y);
 }
 
 void Ingame::OnMouseRButtonDown(HWND hWnd, int x, int y)
@@ -73,20 +58,7 @@ void Ingame::OnMouseRButtonDown(HWND hWnd, int x, int y)
 
 void Ingame::OnMouseRButtonUp(HWND hWnd, int x, int y)
 {
-	if (PlayerPos.x <= 8)
-		PlayerPos.x = 8;
-	if (PlayerPos.y <= 5)
-		PlayerPos.y = 5;
-	if (PlayerPos.x >= 27)
-		PlayerPos.x = 27;
-	if (PlayerPos.y >= 18)
-		PlayerPos.y = 18;
-
-	int Map_Start_x = PlayerPos.x - 8;
-	int Map_Start_y = PlayerPos.y - 5;
-
-	if (ObjPool->Maps.Map[(y / 80) + Map_Start_y][((x + 40) / 80) + Map_Start_x].Tile_ID != MENTLE)
-		ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Trap_Niddle, (x / 80) + Map_Start_x, (y / 80) + Map_Start_y);
+	
 }
 
 void Ingame::OnMouseMove(HWND hWnd, int x, int y)
@@ -134,9 +106,10 @@ void Ingame::OnKeyborad()
 		lastBitState[RIGHT] = 1;
 	}
 
-	if (lastBitState[4] == 0 && keyState[4] & 0x0001) //SPACE
+	if (lastBitState[SPACE] == 0 && keyState[4] & 0x0001) //SPACE
 	{
-		lastBitState[4] = 1;
+		ObjPool->Player.DigMap();
+		lastBitState[SPACE] = 1;
 	}
 
 	//플레이어 작동
