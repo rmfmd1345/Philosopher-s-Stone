@@ -257,41 +257,51 @@ void Hero::PlusHealth(int plus)
 
 void Hero::DigMap()
 {
-	/*POINT TempPos = GetPosition();
-
-	if (TempPos.x <= 8)
-		TempPos.x = 8;
-	if (TempPos.y <= 5)
-		TempPos.y = 5;
-	if (TempPos.x >= 27)
-		TempPos.x = 27;
-	if (TempPos.y >= 18)
-		TempPos.y = 18;
-
-	int Map_Start_x = TempPos.x - 8;
-	int Map_Start_y = TempPos.y - 5;*/
-
 	switch (nowDirection)
 	{
 	case LEFT:
-		if (ObjPool->Maps.Map[pos.y][(pos.x - 1)].Tile_ID != MENTLE)
-			ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, (pos.x - 1), pos.y);
+		if (ObjPool->Maps.Map[pos.y][(pos.x - 1)].Tile_ID != MENTLE && ObjPool->Maps.Map[pos.y][(pos.x - 1)].Tile_ID == NONE) //멘틀이 아니고 파려는 곳이 NONE이면
+			ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, (pos.x - 1), pos.y); //floor 로 바닥 설정
 		break;
 	case RIGHT:
-		if (ObjPool->Maps.Map[pos.y][(pos.x + 1)].Tile_ID != MENTLE)
+		if (ObjPool->Maps.Map[pos.y][(pos.x + 1)].Tile_ID != MENTLE && ObjPool->Maps.Map[pos.y][(pos.x + 1)].Tile_ID == NONE)
 			ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, (pos.x + 1), pos.y);
 		break;
 	case UP:
-		if (ObjPool->Maps.Map[(pos.y - 1)][pos.x].Tile_ID != MENTLE)
+		if (ObjPool->Maps.Map[(pos.y - 1)][pos.x].Tile_ID != MENTLE && ObjPool->Maps.Map[pos.y - 1][(pos.x)].Tile_ID == NONE)
 			ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, pos.x, (pos.y - 1));
 		break;
 	case DOWN:
-		if (ObjPool->Maps.Map[(pos.y + 1)][pos.x].Tile_ID != MENTLE)
+		if (ObjPool->Maps.Map[(pos.y + 1)][pos.x].Tile_ID != MENTLE && ObjPool->Maps.Map[pos.y + 1][(pos.x - 1)].Tile_ID == NONE)
 			ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, pos.x, (pos.y + 1));
 		break;
 	default:
 		break;
 	}
+}
+
+void Hero::SetTrap()
+{
+	switch (selectedTrap)
+	{
+	case NONE:
+		break;
+	case TRAP_Niddle:
+		ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Trap_Niddle, pos.x, pos.y);
+		break;
+	case TRAP_Hole:
+		ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Trap_Hole, pos.x, pos.y);
+		break;
+	case TRAP_ScareCrow:
+		ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Trap_ScareCrow, pos.x, pos.y);
+		break;
+	case TRAP_Grap:
+		ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Trap_Grap, pos.x, pos.y);
+		break;
+	default:
+		break;
+	}
+	selectedTrap = NONE; //선택된 함정이 없도록 초기화
 }
 
 bool Hero::isDead()

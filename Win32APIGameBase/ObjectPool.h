@@ -27,7 +27,11 @@ enum eDirection
 	DOWN,
 	LEFT,
 	RIGHT,
-	SPACE
+	SPACE,
+	KEY_1,
+	KEY_2,
+	KEY_3,
+	KEY_4
 };
 
 enum eTimer

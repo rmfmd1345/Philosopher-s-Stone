@@ -18,7 +18,9 @@ private:
 	int nowFrame;
 	int maxFrame;
 
+public:
 	int health;
+	int selectedTrap;
 
 public:
 	void Init(HWND hWnd, int x, int y, COLORREF sprite = RGB(255, 0, 255));
@@ -38,6 +40,7 @@ public:
 
 	void PlusHealth(int plus);
 	void DigMap();
+	void SetTrap();
 
 	bool isDead();
 	bool isWalk();

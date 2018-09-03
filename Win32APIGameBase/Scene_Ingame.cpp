@@ -77,10 +77,10 @@ void Ingame::OnKeyborad()
 	keyState[3] = GetAsyncKeyState(VK_RIGHT);
 	keyState[4] = GetAsyncKeyState(VK_SPACE);
 
-	//keyState[5] = GetAsyncKeyState(0x57); //W
-	//keyState[6] = GetAsyncKeyState(0x41); //A
-	//keyState[7] = GetAsyncKeyState(0x53); //S
-	//keyState[8] = GetAsyncKeyState(0x44); //D
+	keyState[5] = GetAsyncKeyState(0x31); //1
+	keyState[6] = GetAsyncKeyState(0x32); //2
+	keyState[7] = GetAsyncKeyState(0x33); //3
+	keyState[8] = GetAsyncKeyState(0x34); //4
 	
 	if (lastBitState[UP] == 0 && keyState[UP] & 0x0001) //UP //이전에 0x1 이 0 이면 실행(안 누르다가 눌렀을 때)
 	{
@@ -106,36 +106,37 @@ void Ingame::OnKeyborad()
 		lastBitState[RIGHT] = 1;
 	}
 
-	if (lastBitState[SPACE] == 0 && keyState[4] & 0x0001) //SPACE
+	if (lastBitState[SPACE] == 0 && keyState[SPACE] & 0x0001) //SPACE
 	{
 		ObjPool->Player.DigMap();
+		if (ObjPool->Player.selectedTrap != NONE) ObjPool->Player.SetTrap();
 		lastBitState[SPACE] = 1;
 	}
 
 	//플레이어 작동
-	//if (lastBitState[5] == 0 && keyState[5] & 0x0001) //W
-	//{
-	//	ObjPool->Player.SetDirection(UP);
-	//	lastBitState[5] = 1;
-	//}
+	if (lastBitState[KEY_1] == 0 && keyState[KEY_1] & 0x0001) //1번키
+	{
+		ObjPool->Player.selectedTrap = TRAP_Niddle;
+		lastBitState[KEY_1] = 1;
+	}
 
-	//if (lastBitState[6] == 0 && keyState[6] & 0x0001) //A
-	//{
-	//	ObjPool->Player.SetDirection(LEFT);
-	//	lastBitState[6] = 1;
-	//}
+	if (lastBitState[KEY_2] == 0 && keyState[KEY_2] & 0x0001) //2번키
+	{
+		ObjPool->Player.selectedTrap = TRAP_Hole;
+		lastBitState[KEY_2] = 1;
+	}
 
-	//if (lastBitState[7] == 0 && keyState[7] & 0x0001) //S
-	//{
-	//	ObjPool->Player.SetDirection(DOWN);
-	//	lastBitState[7] = 1;
-	//}
+	if (lastBitState[KEY_3] == 0 && keyState[KEY_3] & 0x0001) //3번키
+	{
+		ObjPool->Player.selectedTrap = TRAP_ScareCrow;
+		lastBitState[KEY_3] = 1;
+	}
 
-	//if (lastBitState[8] == 0 && keyState[8] & 0x0001) //D
-	//{
-	//	ObjPool->Player.SetDirection(RIGHT);
-	//	lastBitState[8] = 1;
-	//}
+	if (lastBitState[KEY_4] == 0 && keyState[KEY_4] & 0x0001) //4번키
+	{
+		ObjPool->Player.selectedTrap = TRAP_Grap;
+		lastBitState[KEY_4] = 1;
+	}
 
 	for (int i = 0; i < 4; i++)
 	{
