@@ -436,18 +436,24 @@ void Monster::Draw(HDC hMemDC, int x, int y)
 	}
 
 	bool isPlayer = false;
+
 	for (int i = 0; i < MAX_TILE_Y; i++)
 	{
 		for (int j = 0; j < MAX_TILE_X; j++)
 		{
 			for (auto it = pool.begin(); it != pool.end(); it++)
-				if(it->GetPosition().y == i && it->GetPosition().x == j) it->Draw(hMemDC, x, y);
+				if (it->GetPosition().y == i && it->GetPosition().x == j) it->Draw(hMemDC, x, y);
 
 			if (!isPlayer)
 				if (ObjPool->Player.GetPosition().y == i && ObjPool->Player.GetPosition().x == j)
 				{
 					ObjPool->Player.Draw(hMemDC, x, y);
 					isPlayer = true;
+				}
+
+				if (ObjPool->Maps.Map[i][j].Tile_ID == TRAP_ScareCrow)
+				{
+					ObjPool->Maps.Map[i][j].Tile_Sprite.Draw(hMemDC);
 				}
 		}
 	}

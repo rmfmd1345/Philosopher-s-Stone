@@ -11,7 +11,10 @@ void CTile::InitTile(HWND hwnd, int Frame, int ID, LPCWSTR szFileName, std::func
 	Brick_Left = false;
 	Brick_Right = false;
 
-	Tile_Sprite.Init(hwnd, 0, 0, 80, 80, Frame, szFileName);
+	if (Tile_ID == TRAP_ScareCrow)
+		Tile_Sprite.Init(hwnd, 0, 0, 80, 160, Frame, szFileName);
+	else
+		Tile_Sprite.Init(hwnd, 0, 0, 80, 80, Frame, szFileName);
 
 	Tile_Func = Tile_Function;
 }
@@ -163,10 +166,13 @@ void CMap::DrawMap(HDC hMemDC, int x, int y)
 			if (i < 1 || j < 1 || i >= MAX_TILE_Y || j >= MAX_TILE_X)
 				continue;
 
-			Map[i][j].Tile_Sprite.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 1) * 80 + Term_y);
-
 			if (Map[i][j].Tile_ID == TRAP_ScareCrow)
+			{
 				Map[i][j].Tile_Sprite.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 2) * 80 + Term_y);
+				continue;
+			}
+
+			Map[i][j].Tile_Sprite.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 1) * 80 + Term_y);
 
 			Map[i][j].Tile_Sprite.Draw(hMemDC);
 		}
