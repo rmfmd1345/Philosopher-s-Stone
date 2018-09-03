@@ -260,19 +260,19 @@ void Hero::DigMap()
 	switch (nowDirection)
 	{
 	case LEFT:
-		if (ObjPool->Maps.Map[pos.y][(pos.x - 1)].Tile_ID != MENTLE && ObjPool->Maps.Map[pos.y][(pos.x - 1)].Tile_ID == NONE) //멘틀이 아니고 파려는 곳이 NONE이면
+		if (ObjPool->Maps.Map[pos.y][(pos.x - 1)].Tile_ID != MENTLE && (ObjPool->Maps.Map[pos.y][(pos.x - 1)].Tile_ID == NONE || ObjPool->Maps.Map[pos.y][(pos.x - 1)].Tile_ID == WALL)) //멘틀이 아니고 파려는 곳이 NONE이면
 			ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, (pos.x - 1), pos.y); //floor 로 바닥 설정
 		break;
 	case RIGHT:
-		if (ObjPool->Maps.Map[pos.y][(pos.x + 1)].Tile_ID != MENTLE && ObjPool->Maps.Map[pos.y][(pos.x + 1)].Tile_ID == NONE)
+		if (ObjPool->Maps.Map[pos.y][(pos.x + 1)].Tile_ID != MENTLE && (ObjPool->Maps.Map[pos.y][(pos.x + 1)].Tile_ID == NONE || ObjPool->Maps.Map[pos.y][(pos.x + 1)].Tile_ID == WALL))
 			ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, (pos.x + 1), pos.y);
 		break;
 	case UP:
-		if (ObjPool->Maps.Map[(pos.y - 1)][pos.x].Tile_ID != MENTLE && ObjPool->Maps.Map[pos.y - 1][(pos.x)].Tile_ID == NONE)
+		if (ObjPool->Maps.Map[(pos.y - 1)][pos.x].Tile_ID != MENTLE && (ObjPool->Maps.Map[pos.y - 1][(pos.x)].Tile_ID == NONE || ObjPool->Maps.Map[pos.y - 1][(pos.x)].Tile_ID == WALL))
 			ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, pos.x, (pos.y - 1));
 		break;
 	case DOWN:
-		if (ObjPool->Maps.Map[(pos.y + 1)][pos.x].Tile_ID != MENTLE && ObjPool->Maps.Map[pos.y + 1][(pos.x - 1)].Tile_ID == NONE)
+		if (ObjPool->Maps.Map[(pos.y + 1)][pos.x].Tile_ID != MENTLE && (ObjPool->Maps.Map[pos.y + 1][(pos.x)].Tile_ID == NONE || ObjPool->Maps.Map[pos.y + 1][(pos.x)].Tile_ID == WALL))
 			ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, pos.x, (pos.y + 1));
 		break;
 	default:
@@ -282,6 +282,9 @@ void Hero::DigMap()
 
 void Hero::SetTrap()
 {
+	if (ObjPool->Maps.Map[pos.y][pos.x].Tile_ID != FLOOR)
+		return;
+
 	switch (selectedTrap)
 	{
 	case NONE:

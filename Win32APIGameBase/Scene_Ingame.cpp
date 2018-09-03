@@ -108,8 +108,8 @@ void Ingame::OnKeyborad()
 
 	if (lastBitState[SPACE] == 0 && keyState[SPACE] & 0x0001) //SPACE
 	{
-		ObjPool->Player.DigMap();
-		if (ObjPool->Player.selectedTrap != NONE) ObjPool->Player.SetTrap();
+		if (ObjPool->Player.selectedTrap == NONE) ObjPool->Player.DigMap();
+		else if (ObjPool->Player.selectedTrap != NONE) ObjPool->Player.SetTrap();
 		lastBitState[SPACE] = 1;
 	}
 

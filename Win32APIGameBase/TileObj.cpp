@@ -165,6 +165,9 @@ void CMap::DrawMap(HDC hMemDC, int x, int y)
 
 			Map[i][j].Tile_Sprite.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 1) * 80 + Term_y);
 
+			if (Map[i][j].Tile_ID == TRAP_ScareCrow)
+				Map[i][j].Tile_Sprite.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 2) * 80 + Term_y);
+
 			Map[i][j].Tile_Sprite.Draw(hMemDC);
 		}
 	}
