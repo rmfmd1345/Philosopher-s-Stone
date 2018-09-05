@@ -65,6 +65,8 @@ public:
 	bool isRoadBlocked();
 	bool isRoadBlocked(int dire);
 
+	bool isBanBlocked(int x, int y);
+
 	void RotateClockwise();
 	void RotateCounterclockwise();
 	void RotateReverse();
@@ -72,6 +74,8 @@ public:
 	void FindPlayer();
 
 	void SetBanRoad(int x, int y);
+	void SetBanRoad();
+
 	bool isBanRoad(int x, int y);
 
 };
@@ -103,4 +107,5 @@ public:
 	void CheckHealth();
 
 	void SetDirection(int dire);
+
 };

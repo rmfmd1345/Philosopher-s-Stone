@@ -249,7 +249,20 @@ void Entity::UpdateState()
 	{
 		if (isRoadBlocked())
 		{
-			RotateClockwise();
+			/*
+			int tempBlocked = 0;
+			for (int i = 0; i < 4; i++)
+				if (isRoadBlocked(i)) tempBlocked++;
+
+			if (tempBlocked >= 3) 
+				SetBanRoad();
+			*/
+
+			srand((unsigned)time(NULL));
+			if (rand() % 2)
+				RotateClockwise();
+			else 
+				RotateCounterclockwise();
 		}
 		else
 		{
@@ -271,28 +284,38 @@ bool Entity::isRoadBlocked(int dire)
 	switch (nowDirection)
 	{
 	case UP:
-		if (ObjPool->Maps.GetTileID(pos.x, pos.y - 1) == FLOOR)
+		if (ObjPool->Maps.GetTileID(pos.x, pos.y - 1) == FLOOR && !isBanBlocked(pos.x, pos.y - 1))
 			return false;
-		
+
 		break;
 	case DOWN:
-		if (ObjPool->Maps.GetTileID(pos.x, pos.y + 1) == FLOOR)
+		if (ObjPool->Maps.GetTileID(pos.x, pos.y + 1) == FLOOR && !isBanBlocked(pos.x, pos.y + 1))
 			return false;
-		
+
 		break;
 	case LEFT:
-		if (ObjPool->Maps.GetTileID(pos.x - 1, pos.y) == FLOOR)
+		if (ObjPool->Maps.GetTileID(pos.x - 1, pos.y) == FLOOR && !isBanBlocked(pos.x - 1, pos.y))
 			return false;
 
 		break;
 	case RIGHT:
-		if (ObjPool->Maps.GetTileID(pos.x + 1, pos.y) == FLOOR)
+		if (ObjPool->Maps.GetTileID(pos.x + 1, pos.y) == FLOOR && !isBanBlocked(pos.x + 1, pos.y))
 			return false;
 
 		break;
 	}
 
 	return true;
+}
+
+bool Entity::isBanBlocked(int x, int y)
+{
+	for (auto it = BanRoad.begin(); it != BanRoad.end(); it++)
+	{
+		if (it->x == x && it->y == y) return true;
+	}
+
+	return false;
 }
 
 void Entity::RotateClockwise()
@@ -359,7 +382,13 @@ void Entity::FindPlayer()
 
 void Entity::SetBanRoad(int x, int y)
 {
+	POINT tempBan = { x, y };
+	BanRoad.push_back(tempBan);
+}
 
+void Entity::SetBanRoad()
+{
+	SetBanRoad(pos.x, pos.y);
 }
 
 bool Entity::isBanRoad(int x, int y)
