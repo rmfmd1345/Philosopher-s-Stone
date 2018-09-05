@@ -435,12 +435,29 @@ void Monster::Draw(HDC hMemDC, int x, int y)
 		return;
 	}
 
+	if (x <= 8)
+		x = 8;
+	if (y <= 5)
+		y = 5;
+	if (x >= MAX_TILE_X - 9)
+		x = 27;
+	if (y >= MAX_TILE_Y - 4)
+		y = 18;
+
+	int Map_Start_x = x - 9;
+	int Map_End_x = x + 10;
+	int Map_Start_y = y - 6;
+	int Map_End_y = y + 5;
+
 	bool isPlayer = false;
 
-	for (int i = 0; i < MAX_TILE_Y; i++)
+	for (int i = Map_Start_y; i < Map_End_y; i++)
 	{
-		for (int j = 0; j < MAX_TILE_X; j++)
+		for (int j = Map_Start_x; j < Map_End_x; j++)
 		{
+			if (i < 1 || j < 1 || i >= MAX_TILE_Y || j >= MAX_TILE_X)
+				continue;
+
 			for (auto it = pool.begin(); it != pool.end(); it++)
 				if (it->GetPosition().y == i && it->GetPosition().x == j) it->Draw(hMemDC, x, y);
 
