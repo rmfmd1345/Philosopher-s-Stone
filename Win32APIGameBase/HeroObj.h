@@ -33,6 +33,8 @@ public:
 	void SetPosition(int x, int y);
 	void SetAnimation(int ani);
 	void SetDirection(int dire);
+	void SetState(int state);
+	int GetState();
 
 	POINT GetPosition();
 	int GetWalkState();

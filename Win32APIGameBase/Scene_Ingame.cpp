@@ -108,33 +108,73 @@ void Ingame::OnKeyborad()
 
 	if (lastBitState[SPACE] == 0 && keyState[SPACE] & 0x0001) //SPACE
 	{
-		if (ObjPool->Player.selectedTrap == NONE) ObjPool->Player.DigMap();
-		else if (ObjPool->Player.selectedTrap != NONE) ObjPool->Player.SetTrap();
+		if (ObjPool->Player.GetState() == STAND) //그냥 서있는 상태면 땅 파고
+			ObjPool->Player.DigMap();
+
+		else if (ObjPool->Player.GetState() == TRAPSETTING) //트랩 세팅중이면 설치
+		{
+			ObjPool->Player.SetTrap();
+			ObjPool->Player.SetState(STAND);
+		}
+
 		lastBitState[SPACE] = 1;
 	}
 
 	//플레이어 작동
 	if (lastBitState[KEY_1] == 0 && keyState[KEY_1] & 0x0001) //1번키
 	{
-		ObjPool->Player.selectedTrap = TRAP_Niddle;
+		/* 플레이어 이동 중에 1번키를 누르면, 일단 걸어간 후 다음 칸부터 TRAPSETTING 모드가 되게 하고 싶은데 방법 없나 */
+		if (ObjPool->Player.GetState() == STAND) //플레이어가 서 있는 상태면
+		{
+			ObjPool->Player.SetState(TRAPSETTING); //플레이어 고정상태로 만들기
+			ObjPool->Player.selectedTrap = TRAP_Niddle;
+		}
+
+		else if (ObjPool->Player.GetState() == TRAPSETTING) //고정상태에서 1번키를 한 번 더 누르면 고정해제
+			ObjPool->Player.SetState(STAND);
+
 		lastBitState[KEY_1] = 1;
 	}
 
 	if (lastBitState[KEY_2] == 0 && keyState[KEY_2] & 0x0001) //2번키
 	{
-		ObjPool->Player.selectedTrap = TRAP_Hole;
+		if (ObjPool->Player.GetState() == STAND)
+		{
+			ObjPool->Player.SetState(TRAPSETTING);
+			ObjPool->Player.selectedTrap = TRAP_Hole;
+		}
+
+		else if (ObjPool->Player.GetState() == TRAPSETTING)
+			ObjPool->Player.SetState(STAND);
+
 		lastBitState[KEY_2] = 1;
 	}
 
 	if (lastBitState[KEY_3] == 0 && keyState[KEY_3] & 0x0001) //3번키
 	{
-		ObjPool->Player.selectedTrap = TRAP_ScareCrow;
+		if (ObjPool->Player.GetState() == STAND)
+		{
+			ObjPool->Player.SetState(TRAPSETTING);
+			ObjPool->Player.selectedTrap = TRAP_ScareCrow;
+		}
+
+		else if (ObjPool->Player.GetState() == TRAPSETTING)
+			ObjPool->Player.SetState(STAND);
+
 		lastBitState[KEY_3] = 1;
 	}
 
 	if (lastBitState[KEY_4] == 0 && keyState[KEY_4] & 0x0001) //4번키
 	{
-		ObjPool->Player.selectedTrap = TRAP_Grap;
+		if (ObjPool->Player.GetState() == STAND)
+		{
+			ObjPool->Player.SetState(TRAPSETTING);
+			ObjPool->Player.selectedTrap = TRAP_Grap;
+		}
+
+		else if (ObjPool->Player.GetState() == TRAPSETTING)
+			ObjPool->Player.SetState(STAND);
+
 		lastBitState[KEY_4] = 1;
 	}
 

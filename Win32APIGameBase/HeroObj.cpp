@@ -177,6 +177,13 @@ void Hero::SetDirection(int dire)
 	if (nowState != WALK)
 		nowDirection = dire;
 
+	if (nowState == TRAPSETTING) //플레이어가 고정된 상태로 트랩 설치중이면
+	{
+		nowDirection = dire; //그 자리에서 방향만 바꾸가
+		return;
+	}
+
+
 	switch (nowDirection)
 	{
 	case UP:
@@ -212,6 +219,16 @@ void Hero::SetDirection(int dire)
 		}
 		break;
 	}
+}
+
+void Hero::SetState(int state)
+{
+	nowState = state;
+}
+
+int Hero::GetState()
+{
+	return nowState;
 }
 
 POINT Hero::GetPosition()
@@ -285,25 +302,46 @@ void Hero::SetTrap()
 	if (ObjPool->Maps.Map[pos.y][pos.x].Tile_ID != FLOOR)
 		return;
 
+	int Temp_X = pos.x;
+	int Temp_Y = pos.y;
+	switch (nowDirection)
+	{
+	case LEFT: Temp_X = pos.x - 1;
+		break;
+	case RIGHT: Temp_X = pos.x +  1;
+		break;
+	case UP: Temp_Y = pos.y - 1;
+		break;
+	case DOWN: Temp_Y = pos.y + 1;
+		break;
+	}
+
+
 	switch (selectedTrap)
 	{
 	case NONE:
 		break;
 	case TRAP_Niddle:
-		ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Trap_Niddle, pos.x, pos.y);
+		if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID != MENTLE)
+			ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Trap_Niddle, Temp_X, Temp_Y);
 		break;
 	case TRAP_Hole:
-		ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Trap_Hole, pos.x, pos.y);
+		if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID != MENTLE)
+		ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Trap_Hole, Temp_X, Temp_Y);
 		break;
 	case TRAP_ScareCrow:
-		ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Trap_ScareCrow, pos.x, pos.y);
+		if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID != MENTLE)
+		ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Trap_ScareCrow, Temp_X, Temp_Y);
 		break;
 	case TRAP_Grap:
-		ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Trap_Grap, pos.x, pos.y);
+		if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID != MENTLE)
+		ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Trap_Grap, Temp_X, Temp_Y);
 		break;
 	default:
 		break;
 	}
+	Temp_X = 0;
+	Temp_Y = 0;
 	selectedTrap = NONE; //선택된 함정이 없도록 초기화
 }
 

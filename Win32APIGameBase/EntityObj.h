@@ -7,7 +7,8 @@ enum eState
 	WALK,
 	ATTACK,
 	CLEAR,
-	FINDWAY
+	FINDWAY,
+	TRAPSETTING
 };
 
 enum eEntity
