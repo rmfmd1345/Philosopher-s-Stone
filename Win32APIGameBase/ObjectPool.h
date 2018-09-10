@@ -36,6 +36,7 @@ enum eDirection
 
 enum eTimer
 {
+	UPDATE,
 	ANIMATION
 };
 

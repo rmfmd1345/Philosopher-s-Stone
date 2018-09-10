@@ -322,19 +322,19 @@ void Hero::SetTrap()
 	case NONE:
 		break;
 	case TRAP_Niddle:
-		if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID != MENTLE)
+		if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == FLOOR)
 			ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Trap_Niddle, Temp_X, Temp_Y);
 		break;
 	case TRAP_Hole:
-		if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID != MENTLE)
+		if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == FLOOR)
 		ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Trap_Hole, Temp_X, Temp_Y);
 		break;
 	case TRAP_ScareCrow:
-		if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID != MENTLE)
+		if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == FLOOR)
 		ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Trap_ScareCrow, Temp_X, Temp_Y);
 		break;
 	case TRAP_Grap:
-		if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID != MENTLE)
+		if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == FLOOR)
 		ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Trap_Grap, Temp_X, Temp_Y);
 		break;
 	default:

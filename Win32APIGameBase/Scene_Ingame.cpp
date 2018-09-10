@@ -28,6 +28,10 @@ void Ingame::Draw(HDC hMemDC)
 
 void Ingame::OnTimer(HWND hWnd, int timer)
 {
+	if (timer == UPDATE)
+	{
+		ObjPool->Maps.ActiveTile(ObjPool->Player.GetPosition());
+	}
 	if (timer == ANIMATION)
 	{
 		ObjPool->MonsterPool.Animation();

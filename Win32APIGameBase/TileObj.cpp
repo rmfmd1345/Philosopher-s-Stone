@@ -26,14 +26,14 @@ void CTile::DestroyTile(CTile Tile)
 
 void CMap::InitMap(HWND hwnd)
 {
-	None.InitTile(hwnd, 1 /*Frame*/, NONE, L"./Image/Tile/None.bmp", [&] {});
-	Floor.InitTile(hwnd, 1 /*Frame*/, FLOOR, L"./Image/Tile/Floor.bmp", [&] {});
-	Wall.InitTile(hwnd, 1 /*Frame*/, WALL, L"./Image/Tile/Wall.bmp", [&] {});
-	Trap_Niddle.InitTile(hwnd, 1 /*Frame*/, TRAP_Niddle, L"./Image/Tile/Niddle.bmp", [&] {});
-	Trap_Hole.InitTile(hwnd, 1 /*Frame*/, TRAP_Hole, L"./Image/Tile/Hole.bmp", [&] {});
-	Trap_ScareCrow.InitTile(hwnd, 1 /*Frame*/, TRAP_ScareCrow, L"./Image/Tile/Scarecrow.bmp", [&] {});
-	Trap_Cunfusion.InitTile(hwnd, 1 /*Frame*/, TRAP_Cunfution, L"./Image/Tile/Cunfusion.bmp", [&] {});
-	Trap_Grap.InitTile(hwnd, 1 /*Frame*/, TRAP_Grap, L"./Image/Tile/Grap.bmp", [&] {});
+	None.InitTile(hwnd, 1 /*Frame*/, NONE, L"./Image/Tile/None.bmp", [&]() {});
+	Floor.InitTile(hwnd, 1 /*Frame*/, FLOOR, L"./Image/Tile/Floor.bmp", [&]() {});
+	Wall.InitTile(hwnd, 1 /*Frame*/, WALL, L"./Image/Tile/Wall.bmp", [&]() {});
+	Trap_Niddle.InitTile(hwnd, 1 /*Frame*/, TRAP_Niddle, L"./Image/Tile/Niddle.bmp", [&]() {NiddleActive();});
+	Trap_Hole.InitTile(hwnd, 1 /*Frame*/, TRAP_Hole, L"./Image/Tile/Hole.bmp", [&]() {});
+	Trap_ScareCrow.InitTile(hwnd, 1 /*Frame*/, TRAP_ScareCrow, L"./Image/Tile/Scarecrow.bmp", [&]() {});
+	Trap_Cunfusion.InitTile(hwnd, 1 /*Frame*/, TRAP_Cunfution, L"./Image/Tile/Cunfusion.bmp", [&]() {});
+	Trap_Grap.InitTile(hwnd, 1 /*Frame*/, TRAP_Grap, L"./Image/Tile/Grap.bmp", [&]() {});
 
 	Brick[UP].Init(hwnd, 0, 0, 80, 80, L"./Image/Tile/Brick_Up.bmp");
 	Brick[DOWN].Init(hwnd, 0, 0, 80, 80, L"./Image/Tile/Brick_Down.bmp");
@@ -41,6 +41,11 @@ void CMap::InitMap(HWND hwnd)
 	Brick[RIGHT].Init(hwnd, 0, 0, 80, 80, L"./Image/Tile/Brick_Right.bmp");
 	Brick[SW_LEFT].Init(hwnd, 0, 0, 80, 80, L"./Image/Tile/SubWall_Left.bmp");
 	Brick[SW_RIGHT].Init(hwnd, 0, 0, 80, 80, L"./Image/Tile/SubWall_Right.bmp");
+}
+
+void CMap::NiddleActive()
+{
+	
 }
 
 void CMap::ResetMap(int Character_x, int Character_y)
@@ -89,9 +94,9 @@ void CMap::ResetMap(int Character_x, int Character_y)
 	Map[Character_y][Character_x] = Floor;
 }
 
-void CMap::ActiveTile(int Character_x, int Character_y)
+void CMap::ActiveTile(POINT pos)
 {
-	switch (Map[Character_y][Character_x].Tile_ID)
+	switch (Map[pos.y][pos.x].Tile_ID)
 	{
 	case NONE:
 		None.Tile_Func();
