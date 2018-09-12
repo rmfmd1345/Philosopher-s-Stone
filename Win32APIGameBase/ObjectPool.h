@@ -2,6 +2,7 @@
 #include "Sprite.h"
 #include "GdiObj.h"
 #include "SystemObj.h"
+#include "SoundObj.h"
 #include "BitmapObj.h"
 #include "ButtonObj.h"
 #include "TileObj.h"

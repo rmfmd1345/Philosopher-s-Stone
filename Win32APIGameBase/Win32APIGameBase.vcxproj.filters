@@ -93,6 +93,9 @@
     <ClInclude Include="HeroObj.h">
       <Filter>ObjectPool\Obj</Filter>
     </ClInclude>
+    <ClInclude Include="SoundObj.h">
+      <Filter>ObjectPool\Obj</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -150,6 +153,9 @@
       <Filter>ObjectPool\Obj</Filter>
     </ClCompile>
     <ClCompile Include="HeroObj.cpp">
+      <Filter>ObjectPool\Obj</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundObj.cpp">
       <Filter>ObjectPool\Obj</Filter>
     </ClCompile>
   </ItemGroup>
