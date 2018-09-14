@@ -47,6 +47,8 @@ public:
 
 	POINT GetPosition();
 
+	Entity GetEntity();
+
 	void SetPosition(int x, int y);
 	void SetAnimation(int ani);
 	void SetDirection(int dire);
@@ -83,7 +85,7 @@ public:
 	Monster() { };
 	~Monster() { };
 
-private:
+//private: /*ActiveTile 접근하려고 풀어둠*/
 	Entity Dealer;
 	Entity Wizard;
 	Entity Tanker;

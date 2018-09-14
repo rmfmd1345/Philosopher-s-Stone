@@ -31,7 +31,8 @@ void Ingame::OnTimer(HWND hWnd, int timer)
 {
 	if (timer == UPDATE)
 	{
-		ObjPool->Maps.ActiveTile(ObjPool->Player.GetPosition());
+		for (auto it = ObjPool->MonsterPool.pool.begin(); it != ObjPool->MonsterPool.pool.end(); it++)
+			ObjPool->Maps.ActiveTile(it->GetEntity()); //딜러 몬스터에 대해 밟고 있는 타일 갱신
 	}
 	if (timer == ANIMATION)
 	{

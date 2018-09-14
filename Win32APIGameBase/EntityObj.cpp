@@ -271,22 +271,22 @@ bool Entity::isRoadBlocked(int dire)
 	switch (nowDirection)
 	{
 	case UP:
-		if (ObjPool->Maps.GetTileID(pos.x, pos.y - 1) == FLOOR)
+		if (ObjPool->Maps.GetTileID(pos.x, pos.y - 1) != NONE && ObjPool->Maps.GetTileID(pos.x, pos.y - 1) != WALL)
 			return false;
 		
 		break;
 	case DOWN:
-		if (ObjPool->Maps.GetTileID(pos.x, pos.y + 1) == FLOOR)
+		if (ObjPool->Maps.GetTileID(pos.x, pos.y + 1) != NONE && ObjPool->Maps.GetTileID(pos.x, pos.y + 1) != WALL)
 			return false;
 		
 		break;
 	case LEFT:
-		if (ObjPool->Maps.GetTileID(pos.x - 1, pos.y) == FLOOR)
+		if (ObjPool->Maps.GetTileID(pos.x - 1, pos.y) != NONE && ObjPool->Maps.GetTileID(pos.x - 1, pos.y) != WALL)
 			return false;
 
 		break;
 	case RIGHT:
-		if (ObjPool->Maps.GetTileID(pos.x + 1, pos.y) == FLOOR)
+		if (ObjPool->Maps.GetTileID(pos.x + 1, pos.y) != NONE && ObjPool->Maps.GetTileID(pos.x + 1, pos.y) != WALL)
 			return false;
 
 		break;
@@ -370,6 +370,11 @@ bool Entity::isBanRoad(int x, int y)
 POINT Entity::GetPosition()
 {
 	return pos;
+}
+
+Entity Entity::GetEntity()
+{
+	return *this;
 }
 
 void Entity::SetPosition(int x, int y)
