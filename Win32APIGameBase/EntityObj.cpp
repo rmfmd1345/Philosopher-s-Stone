@@ -181,15 +181,15 @@ void Entity::Draw(HDC hMemDC, int x, int y)
 	switch (nowAnimation)
 	{
 	case STAND:
-		Ani_stand[nowDirection].SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y);
+		Ani_stand[nowDirection].SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y - 40);
 		Ani_stand[nowDirection].Draw(hMemDC);
 		break;														 
 	case WALK:														 
-		Ani_walk[nowDirection].SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y);
+		Ani_walk[nowDirection].SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y - 40);
 		Ani_walk[nowDirection].Draw(hMemDC); 
 		break;														 
 	case ATTACK:													 
-		Ani_attack[nowDirection].SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y);
+		Ani_attack[nowDirection].SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y - 40);
 		Ani_attack[nowDirection].Draw(hMemDC);
 		break;
 	}
@@ -476,7 +476,7 @@ void Monster::Draw(HDC hMemDC, int x, int y)
 	int Map_Start_x = x - 9;
 	int Map_End_x = x + 10;
 	int Map_Start_y = y - 6;
-	int Map_End_y = y + 5;
+	int Map_End_y = y + 6;
 
 	bool isPlayer = false;
 

@@ -26,7 +26,7 @@ void ObjectPool::CreateObject(HWND hWnd)	//객체의 초기 설정을 적는 곳
 	
 	ingameUI_Skill.Init(hWnd, 20, 180, 104, 454, L"./Image/UI/Ingame/ui_skill.bmp");
 	
-	ingameUI_Stage.Init(hWnd, 0, 0, 400, 148, L"./Image/UI/Ingame/ui_stage_test.bmp");
+	ingameUI_Stage.Init(hWnd, 0, 0, 400, 156, L"./Image/UI/Ingame/ui_stage.bmp");
 	
 	ingameUI_Time.Init(hWnd, 475, 0, 320, 134, L"./Image/UI/Ingame/ui_time.bmp");
 
