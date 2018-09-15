@@ -148,7 +148,7 @@ void CMap::DrawMap(HDC hMemDC, int x, int y)
 	int Map_Start_x = x - 9;
 	int Map_End_x = x + 10;
 	int Map_Start_y = y - 6;
-	int Map_End_y = y + 5;
+	int Map_End_y = y + 6;
 
 	int Term_x = ObjPool->Player.GetWalkTerm().x, Term_y = ObjPool->Player.GetWalkTerm().y;
 
@@ -162,7 +162,7 @@ void CMap::DrawMap(HDC hMemDC, int x, int y)
 					continue;
 
 				Map[i - 1][j] = Wall;
-				Map[i - 1][j].Tile_Sprite.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 2) * 80 + Term_y);
+				Map[i - 1][j].Tile_Sprite.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 2) * 80 + Term_y - 40);
 			}
 		}
 	}
@@ -176,11 +176,11 @@ void CMap::DrawMap(HDC hMemDC, int x, int y)
 
 			if (Map[i][j].Tile_ID == TRAP_ScareCrow)
 			{
-				Map[i][j].Tile_Sprite.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 2) * 80 + Term_y);
+				Map[i][j].Tile_Sprite.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 2) * 80 + Term_y - 40);
 				continue;
 			}
 
-			Map[i][j].Tile_Sprite.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 1) * 80 + Term_y);
+			Map[i][j].Tile_Sprite.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 1) * 80 + Term_y - 40);
 
 			Map[i][j].Tile_Sprite.Draw(hMemDC);
 		}
@@ -229,7 +229,7 @@ void CMap::DrawBrick(HDC hMemDC, int x, int y)
 	int Map_Start_x = x - 9;
 	int Map_End_x = x + 10;
 	int Map_Start_y = y - 6;
-	int Map_End_y = y + 5;
+	int Map_End_y = y + 6;
 
 	int Term_x = ObjPool->Player.GetWalkTerm().x, Term_y = ObjPool->Player.GetWalkTerm().y;
 
@@ -267,12 +267,12 @@ void CMap::DrawBrick(HDC hMemDC, int x, int y)
 			if (i < 1 || j < 1 || i >= MAX_TILE_Y || j >= MAX_TILE_X)
 				continue;
 
-			Brick[UP].SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 1) * 80 + Term_y);
-			Brick[LEFT].SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 1) * 80 + Term_y);
-			Brick[RIGHT].SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 1) * 80 + Term_y);
-			Brick[DOWN].SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 1) * 80 + Term_y);
-			Brick[SW_LEFT].SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 1) * 80 + Term_y);
-			Brick[SW_RIGHT].SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 1) * 80 + Term_y);
+			Brick[UP].SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 1) * 80 + Term_y - 40);
+			Brick[LEFT].SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 1) * 80 + Term_y - 40);
+			Brick[RIGHT].SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 1) * 80 + Term_y - 40);
+			Brick[DOWN].SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 1) * 80 + Term_y - 40);
+			Brick[SW_LEFT].SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 1) * 80 + Term_y - 40);
+			Brick[SW_RIGHT].SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 1) * 80 + Term_y - 40);
 
 			if (Map[i][j].Brick_Up)
 				Brick[UP].Draw(hMemDC);
