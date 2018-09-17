@@ -93,6 +93,8 @@ public:
 
 	POINT spawnPosition = { 0,0 };
 
+	bool CheckMonsters;
+
 public:
 	void Init(HWND hWnd);
 	void Ternimate();
@@ -104,6 +106,9 @@ public:
 	void AddMonster(HWND hWnd, int type, int x, int y);
 	void AddMonster(HWND hWnd, int type);
 	void CheckHealth();
+
+	void SetMonsterTimer();
+	void DrawMonsterTimer();
 
 	void SetDirection(int dire);
 };
