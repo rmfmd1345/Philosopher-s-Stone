@@ -337,6 +337,10 @@ void Hero::SetTrap()
 		if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == FLOOR)
 		ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Trap_Grap, Temp_X, Temp_Y);
 		break;
+	case TRAP_Cunfusion:
+		if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == FLOOR)
+			ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Trap_Cunfusion, Temp_X, Temp_Y);
+		break;
 	default:
 		break;
 	}

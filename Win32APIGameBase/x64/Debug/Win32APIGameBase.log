@@ -1,26 +1,25 @@
 ﻿  stdafx.cpp
-  EntityObj.cpp
-  HeroObj.cpp
-  Scene_Credit.cpp
-  SoundObj.cpp
-c:\users\world famous star\desktop\프로젝트\api 팀 프로젝트\philosopher-s-stone\win32apigamebase\soundobj.cpp(99): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  Sprite.cpp
   BitmapObj.cpp
+  ButtonObj.cpp
   DrawManager.cpp
+  EntityObj.cpp
   FrameManager.cpp
   GdiObj.cpp
+  HeroObj.cpp
   InputManager.cpp
 c:\users\world famous star\desktop\프로젝트\api 팀 프로젝트\philosopher-s-stone\win32apigamebase\inputmanager.cpp(18): warning C4244: '인수': 'WPARAM'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
 c:\users\world famous star\desktop\프로젝트\api 팀 프로젝트\philosopher-s-stone\win32apigamebase\inputmanager.cpp(21): warning C4244: '인수': 'WPARAM'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   ObjectPool.cpp
   SceneManager.cpp
+  Scene_Credit.cpp
   Scene_Ingame.cpp
   Scene_Title.cpp
-  SystemObj.cpp
-  ButtonObj.cpp
+  SoundObj.cpp
+c:\users\world famous star\desktop\프로젝트\api 팀 프로젝트\philosopher-s-stone\win32apigamebase\soundobj.cpp(99): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  Sprite.cpp
   System.cpp
-  main.cpp
+  SystemObj.cpp
   TileObj.cpp
-  Timer.cpp
+  main.cpp
   코드를 생성하고 있습니다...
   Win32APIGameBase.vcxproj -> C:\Users\World Famous Star\Desktop\프로젝트\API 팀 프로젝트\Philosopher-s-Stone\Win32APIGameBase\x64\Debug\Win32APIGameBase.exe

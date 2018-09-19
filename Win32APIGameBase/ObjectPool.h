@@ -18,7 +18,7 @@ enum Tile_ID_List  // 식별 번호 리스트
 	TRAP_Niddle,
 	TRAP_Hole,
 	TRAP_ScareCrow,
-	TRAP_Cunfution,
+	TRAP_Cunfusion,
 	TRAP_Grap
 };
 
@@ -32,7 +32,8 @@ enum eDirection
 	KEY_1,
 	KEY_2,
 	KEY_3,
-	KEY_4
+	KEY_4,
+	KEY_5
 };
 
 enum eTimer

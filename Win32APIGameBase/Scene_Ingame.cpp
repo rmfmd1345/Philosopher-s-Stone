@@ -73,8 +73,8 @@ void Ingame::OnMouseMove(HWND hWnd, int x, int y)
 
 void Ingame::OnKeyborad()
 {
-	DWORD lastBitState[9] = {0, };
-	DWORD keyState[9];
+	DWORD lastBitState[10] = {0, };
+	DWORD keyState[10];
 
 	keyState[0] = GetAsyncKeyState(VK_UP);
 	keyState[1] = GetAsyncKeyState(VK_DOWN);
@@ -86,6 +86,7 @@ void Ingame::OnKeyborad()
 	keyState[6] = GetAsyncKeyState(0x32); //2
 	keyState[7] = GetAsyncKeyState(0x33); //3
 	keyState[8] = GetAsyncKeyState(0x34); //4
+	keyState[9] = GetAsyncKeyState(0x35); //5
 	
 	if (lastBitState[UP] == 0 && keyState[UP] & 0x0001) //UP //이전에 0x1 이 0 이면 실행(안 누르다가 눌렀을 때)
 	{
@@ -146,7 +147,7 @@ void Ingame::OnKeyborad()
 		if (ObjPool->Player.GetState() == STAND)
 		{
 			ObjPool->Player.SetState(TRAPSETTING);
-			ObjPool->Player.selectedTrap = TRAP_Hole;
+			ObjPool->Player.selectedTrap = TRAP_ScareCrow;
 		}
 
 		else if (ObjPool->Player.GetState() == TRAPSETTING)
@@ -160,7 +161,7 @@ void Ingame::OnKeyborad()
 		if (ObjPool->Player.GetState() == STAND)
 		{
 			ObjPool->Player.SetState(TRAPSETTING);
-			ObjPool->Player.selectedTrap = TRAP_ScareCrow;
+			ObjPool->Player.selectedTrap = TRAP_Grap;
 		}
 
 		else if (ObjPool->Player.GetState() == TRAPSETTING)
@@ -174,13 +175,27 @@ void Ingame::OnKeyborad()
 		if (ObjPool->Player.GetState() == STAND)
 		{
 			ObjPool->Player.SetState(TRAPSETTING);
-			ObjPool->Player.selectedTrap = TRAP_Grap;
+			ObjPool->Player.selectedTrap = TRAP_Cunfusion;
 		}
 
 		else if (ObjPool->Player.GetState() == TRAPSETTING)
 			ObjPool->Player.SetState(STAND);
 
 		lastBitState[KEY_4] = 1;
+	}
+
+	if (lastBitState[KEY_5] == 0 && keyState[KEY_5] & 0x0001) //4번키
+	{
+		if (ObjPool->Player.GetState() == STAND)
+		{
+			ObjPool->Player.SetState(TRAPSETTING);
+			ObjPool->Player.selectedTrap = TRAP_Hole;
+		}
+
+		else if (ObjPool->Player.GetState() == TRAPSETTING)
+			ObjPool->Player.SetState(STAND);
+
+		lastBitState[KEY_5] = 1;
 	}
 
 	for (int i = 0; i < 4; i++)

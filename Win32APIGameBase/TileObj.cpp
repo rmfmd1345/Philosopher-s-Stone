@@ -33,7 +33,7 @@ void CMap::InitMap(HWND hwnd)
 	Trap_Niddle.InitTile(hwnd, 1 /*Frame*/, TRAP_Niddle, L"./Image/Tile/Niddle.bmp", [&](Entity ent) {NiddleActive(ent);});
 	Trap_Hole.InitTile(hwnd, 1 /*Frame*/, TRAP_Hole, L"./Image/Tile/Hole.bmp", [&](Entity ent) {});
 	Trap_ScareCrow.InitTile(hwnd, 1 /*Frame*/, TRAP_ScareCrow, L"./Image/Tile/Scarecrow_test.bmp", [&](Entity ent) {});
-	Trap_Cunfusion.InitTile(hwnd, 1 /*Frame*/, TRAP_Cunfution, L"./Image/Tile/Cunfusion.bmp", [&](Entity ent) {});
+	Trap_Cunfusion.InitTile(hwnd, 1 /*Frame*/, TRAP_Cunfusion, L"./Image/Tile/Cunfusion.bmp", [&](Entity ent) {});
 	Trap_Grap.InitTile(hwnd, 1 /*Frame*/, TRAP_Grap, L"./Image/Tile/Grap.bmp", [&](Entity ent) {});
 
 	Brick[UP].Init(hwnd, 0, 0, 80, 80, L"./Image/Tile/Brick_Up.bmp");
@@ -119,7 +119,7 @@ void CMap::ActiveTile(Entity ent)
 	case TRAP_ScareCrow:
 		Trap_ScareCrow.Tile_Func(ent);
 		break;
-	case TRAP_Cunfution:
+	case TRAP_Cunfusion:
 		Trap_Cunfusion.Tile_Func(ent);
 		break;
 	case TRAP_Grap:
