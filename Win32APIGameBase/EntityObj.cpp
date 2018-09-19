@@ -524,6 +524,16 @@ void Monster::CheckHealth()
 	}
 }
 
+void Monster::SetMonsterTimer()
+{
+	
+}
+
+void Monster::DrawMonsterTimer()
+{
+
+}
+
 void Monster::SetDirection(int dire)
 {
 	if (pool.empty()) return;
