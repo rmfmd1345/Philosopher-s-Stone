@@ -46,12 +46,13 @@ public:
 	void UpdateState();
 
 	POINT GetPosition();
-
-	Entity GetEntity();
+	Entity* GetEntity();
+	int GetDirection();
 
 	void SetPosition(int x, int y);
 	void SetAnimation(int ani);
 	void SetDirection(int dire);
+	void SetState(int state);
 
 	void PlusHealth(int plus);
 
@@ -99,6 +100,8 @@ public:
 	void Init(HWND hWnd);
 	void Ternimate();
 	
+	Monster GetMonster();
+
 	void Draw(HDC hMemDC, int x, int y);
 	void Animation();
 	void UpdateState();

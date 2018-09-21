@@ -31,7 +31,14 @@ void Ingame::OnTimer(HWND hWnd, int timer)
 	if (timer == UPDATE)
 	{
 		for (auto it = ObjPool->MonsterPool.pool.begin(); it != ObjPool->MonsterPool.pool.end(); it++)
+		{
 			ObjPool->Maps.ActiveTile(it->GetEntity()); //몬스터에 대해 밟고 있는 타일 발동
+			//if (it->isDead()) //몬스터가 죽었는지 확인
+			//{
+			//	it->Ternimate();
+			//}
+		}
+
 	}
 	if (timer == ANIMATION)
 	{
@@ -161,7 +168,7 @@ void Ingame::OnKeyborad()
 		if (ObjPool->Player.GetState() == STAND)
 		{
 			ObjPool->Player.SetState(TRAPSETTING);
-			ObjPool->Player.selectedTrap = TRAP_Grap;
+			ObjPool->Player.selectedTrap = TRAP_Grab;
 		}
 
 		else if (ObjPool->Player.GetState() == TRAPSETTING)

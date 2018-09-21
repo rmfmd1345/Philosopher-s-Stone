@@ -2,7 +2,7 @@
 #include "TileObj.h"
 #include "EntityObj.h"
 
-void CTile::InitTile(HWND hwnd, int Frame, int ID, LPCWSTR szFileName, std::function<void(Entity ent)> Tile_Function)
+void CTile::InitTile(HWND hwnd, int Frame, int ID, LPCWSTR szFileName, std::function<void(Entity* ent)> Tile_Function)
 {
 	Tile_ID = ID;
 	Tile_On = true;
@@ -27,14 +27,14 @@ void CTile::DestroyTile(CTile Tile)
 
 void CMap::InitMap(HWND hwnd)
 {
-	None.InitTile(hwnd, 1 /*Frame*/, NONE, L"./Image/Tile/None.bmp", [&](Entity ent) {});
-	Floor.InitTile(hwnd, 1 /*Frame*/, FLOOR, L"./Image/Tile/Floor.bmp", [&](Entity ent) {});
-	Wall.InitTile(hwnd, 1 /*Frame*/, WALL, L"./Image/Tile/Wall.bmp", [&](Entity ent) {});
-	Trap_Niddle.InitTile(hwnd, 1 /*Frame*/, TRAP_Niddle, L"./Image/Tile/Niddle.bmp", [&](Entity ent) {NiddleActive(ent);});
-	Trap_Hole.InitTile(hwnd, 1 /*Frame*/, TRAP_Hole, L"./Image/Tile/Hole.bmp", [&](Entity ent) {});
-	Trap_ScareCrow.InitTile(hwnd, 1 /*Frame*/, TRAP_ScareCrow, L"./Image/Tile/Scarecrow_test.bmp", [&](Entity ent) {});
-	Trap_Cunfusion.InitTile(hwnd, 1 /*Frame*/, TRAP_Cunfusion, L"./Image/Tile/Cunfusion.bmp", [&](Entity ent) {});
-	Trap_Grap.InitTile(hwnd, 1 /*Frame*/, TRAP_Grap, L"./Image/Tile/Grap.bmp", [&](Entity ent) {});
+	None.InitTile(hwnd, 1 /*Frame*/, NONE, L"./Image/Tile/None.bmp", [&](Entity* ent) {});
+	Floor.InitTile(hwnd, 1 /*Frame*/, FLOOR, L"./Image/Tile/Floor.bmp", [&](Entity* ent) {});
+	Wall.InitTile(hwnd, 1 /*Frame*/, WALL, L"./Image/Tile/Wall.bmp", [&](Entity* ent) {});
+	Trap_Niddle.InitTile(hwnd, 1 /*Frame*/, TRAP_Niddle, L"./Image/Tile/Niddle.bmp", [&](Entity* ent) {NiddleActive(ent);});
+	Trap_ScareCrow.InitTile(hwnd, 1 /*Frame*/, TRAP_ScareCrow, L"./Image/Tile/Scarecrow_test.bmp", [&](Entity* ent) {ScareCrowActive(ent); });
+	Trap_Grab.InitTile(hwnd, 1 /*Frame*/, TRAP_Grab, L"./Image/Tile/Grap.bmp", [&](Entity* ent) {GrabActive(ent);});
+	Trap_Cunfusion.InitTile(hwnd, 1 /*Frame*/, TRAP_Cunfusion, L"./Image/Tile/Cunfusion.bmp", [&](Entity* ent) {ConfusionActive(ent); });
+	Trap_Hole.InitTile(hwnd, 1 /*Frame*/, TRAP_Hole, L"./Image/Tile/Hole.bmp", [&](Entity* ent) {HoleActive(ent);});
 
 	Brick[UP].Init(hwnd, 0, 0, 80, 80, L"./Image/Tile/Brick_Up.bmp");
 	Brick[DOWN].Init(hwnd, 0, 0, 80, 80, L"./Image/Tile/Brick_Down.bmp");
@@ -44,10 +44,29 @@ void CMap::InitMap(HWND hwnd)
 	Brick[SW_RIGHT].Init(hwnd, 0, 0, 80, 80, L"./Image/Tile/SubWall_Right.bmp");
 }
 
-void CMap::NiddleActive(Entity ent)
+void CMap::NiddleActive(Entity* ent)
 {
-	
+	//체력깎이는거 구현해야 함
 }
+void CMap::ScareCrowActive(Entity* ent)
+{
+
+}
+
+void CMap::GrabActive(Entity* ent)
+{
+
+}
+
+void CMap::ConfusionActive(Entity* ent)
+{
+
+}
+
+void CMap::HoleActive(Entity* ent)
+{
+}
+
 
 void CMap::ResetMap(int Character_x, int Character_y)
 {
@@ -95,10 +114,10 @@ void CMap::ResetMap(int Character_x, int Character_y)
 	Map[Character_y][Character_x] = Floor;
 }
 
-void CMap::ActiveTile(Entity ent)
+void CMap::ActiveTile(Entity* ent)
 {
 	POINT pos;
-	pos = ent.GetPosition();
+	pos = ent->GetPosition();
 	switch (Map[pos.y][pos.x].Tile_ID)
 	{
 	case NONE:
@@ -122,8 +141,8 @@ void CMap::ActiveTile(Entity ent)
 	case TRAP_Cunfusion:
 		Trap_Cunfusion.Tile_Func(ent);
 		break;
-	case TRAP_Grap:
-		Trap_Grap.Tile_Func(ent);
+	case TRAP_Grab:
+		Trap_Grab.Tile_Func(ent);
 		break;
 	}
 }
@@ -301,7 +320,7 @@ void CMap::DestroyMap()
 	Trap_Hole.DestroyTile(Trap_Hole);
 	Trap_ScareCrow.DestroyTile(Trap_ScareCrow);
 	Trap_Cunfusion.DestroyTile(Trap_Cunfusion);
-	Trap_Grap.DestroyTile(Trap_Grap);
+	Trap_Grab.DestroyTile(Trap_Grab);
 }
 
 int CMap::GetTileID(int x, int y)

@@ -372,9 +372,14 @@ POINT Entity::GetPosition()
 	return pos;
 }
 
-Entity Entity::GetEntity()
+Entity* Entity::GetEntity()
 {
-	return *this;
+	return this;
+}
+
+int Entity::GetDirection()
+{
+	return nowDirection;
 }
 
 void Entity::SetPosition(int x, int y)
@@ -382,13 +387,20 @@ void Entity::SetPosition(int x, int y)
 	this->pos.x = x;
 	this->pos.y = y;
 }
+
 void Entity::SetAnimation(int ani)
 {
 	nowAnimation = ani;
 }
+
 void Entity::SetDirection(int dire)
 {
 	nowDirection = dire;
+}
+
+void Entity::SetState(int state)
+{
+	nowState = state;
 }
 
 void Entity::PlusHealth(int plus)
@@ -414,6 +426,11 @@ void Monster::Init(HWND hWnd)
 	Dealer.Init(hWnd, 0, 0, DEALER);
 	Wizard.Init(hWnd, 0, 0, WIZARD);
 	Tanker.Init(hWnd, 0, 0, TANKER);
+}
+
+Monster Monster::GetMonster()
+{
+	return *this;
 }
 
 void Monster::Ternimate()
