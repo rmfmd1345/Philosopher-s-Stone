@@ -11,6 +11,11 @@ void Credit::OnTimer(HWND hWnd, int timer)
 
 }
 
+void Credit::Update()
+{
+
+}
+
 void Credit::OnMouseLButtonDown(HWND hWnd, int x, int y)
 {
 

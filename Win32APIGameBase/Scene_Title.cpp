@@ -17,6 +17,11 @@ void Title::OnTimer(HWND hWnd, int timer)
 
 }
 
+void Title::Update()
+{
+
+}
+
 void Title::OnMouseLButtonDown(HWND hWnd, int x, int y)
 {
 	ObjPool->titleBtn_Start.isClickDown(x, y);

@@ -27,6 +27,5 @@ protected:
 
 public:
 	void SetFramePerSec(float fps);
-
 };
 
