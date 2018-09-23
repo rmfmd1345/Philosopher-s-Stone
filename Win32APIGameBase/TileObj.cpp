@@ -17,6 +17,9 @@ void CTile::InitTile(HWND hwnd, int Frame, int ID, LPCWSTR szFileName, std::func
 	else
 		Tile_Sprite.Init(hwnd, 0, 0, 80, 80, Frame, szFileName);
 
+	damgeDelay = 0; 
+	SpinSpeed = 3;
+
 	Tile_Func = Tile_Function;
 }
 
@@ -46,7 +49,15 @@ void CMap::InitMap(HWND hwnd)
 
 void CMap::NiddleActive(Entity* ent)
 {
-	//체력깎이는거 구현해야 함
+	POINT pos = ent->GetPosition();
+
+	if (Map[pos.y][pos.x].Tile_On) //함정이 깔려있으면
+	{
+		printf("체력 : %d\n", ent->GetHealth());
+		ent->PlusHealth(-10);
+		printf("체력 : %d\n", ent->GetHealth());
+		Map[pos.y][pos.x].Tile_On = false; //재장전 필요한 상태로 변경
+	}
 }
 void CMap::ScareCrowActive(Entity* ent)
 {
@@ -65,6 +76,33 @@ void CMap::ConfusionActive(Entity* ent)
 
 void CMap::HoleActive(Entity* ent)
 {
+	POINT pos = ent->GetPosition();
+
+	if (Map[pos.y][pos.x].Tile_On) //함정이 깔려있으면
+	{
+		ent->SetState(INTRAP); //엔티티 상태 인트랩 상태로 변경
+		ent->SetAnimation(STAND); //엔티티 서있는 상태로 변경
+		Map[pos.y][pos.x].damgeDelay++;
+		printf("카운트 : %f\n 속도: %f\n", Map[pos.y][pos.x].damgeDelay, Map[pos.y][pos.x].SpinSpeed);
+		if (Map[pos.y][pos.x].damgeDelay >= Map[pos.y][pos.x].SpinSpeed)
+		{
+			if (ent->GetDirection() != DOWN) //엔티티 돌리기
+				ent->SetDirection(ent->GetDirection() + 1);
+			else
+				ent->SetDirection(UP);
+
+
+			Map[pos.y][pos.x].SpinSpeed += 0.2; //도는 속도 서서히 낮추기
+
+			if (Map[pos.y][pos.x].SpinSpeed >= 9) //충분히 엔티티가 돌았으면
+			{
+				ent->Ternimate(); //엔티티 삭제
+				Map[pos.y][pos.x].Tile_On = false; //재장전 필요한 상태로 변경
+			}
+			Map[pos.y][pos.x].damgeDelay = 0;
+		}
+	}
+
 }
 
 

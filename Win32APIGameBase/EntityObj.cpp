@@ -382,6 +382,11 @@ int Entity::GetDirection()
 	return nowDirection;
 }
 
+int Entity::GetHealth()
+{
+	return health;
+}
+
 void Entity::SetPosition(int x, int y)
 {
 	this->pos.x = x;

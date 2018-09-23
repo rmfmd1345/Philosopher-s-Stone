@@ -24,6 +24,19 @@ int InputManager::OnTimer(HWND hWnd, WPARAM wParam, LPARAM lParam)
 	return 1;
 }
 
+void InputManager::OnUpdate()
+{
+	switch (ObjPool->System.GetScene())	//옵젝풀에서 씬을 불러옴
+	{
+	case SCENE_TITLE:	//씬이 타이틀 이라면
+		Title::Update();
+		break;
+	case SCENE_INGAME:	//씬이 인게임 이라면
+		Ingame::Update();
+		break;
+	}
+}
+
 int InputManager::OnMouseLButtonDown(HWND hWnd, WPARAM wParam, LPARAM lParam)
 {
 	switch (ObjPool->System.GetScene())	//설명 생략

@@ -5,6 +5,10 @@ class CTile
 public:
 	int Tile_ID; // 타일 식별 번호
 	bool Tile_On; // 함정 재장전 여부
+
+	float damgeDelay; //함정 밟았을 때 연속해서 함수가 발동되기까지의 간격
+	float SpinSpeed; //구멍함정에서 엔티티가 도는 속도
+
 	bool Brick_Up;
 	bool Brick_Down;
 	bool Brick_Left;
@@ -22,6 +26,7 @@ public:
 
 class CMap
 {
+
 public:
 	CTile Map[MAX_TILE_Y][MAX_TILE_X]; // 맵
 

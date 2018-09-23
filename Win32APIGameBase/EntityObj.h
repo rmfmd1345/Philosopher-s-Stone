@@ -8,6 +8,7 @@ enum eState
 	ATTACK,
 	CLEAR,
 	FINDWAY,
+	INTRAP,
 	TRAPSETTING
 };
 
@@ -38,6 +39,7 @@ private:
 	int health;
 
 public:
+
 	void Init(HWND hWnd, int x, int y, int type, COLORREF sprite = RGB(255, 0, 255));
 	void Draw(HDC hMemDC, int x, int y);
 	void Ternimate();
@@ -48,6 +50,7 @@ public:
 	POINT GetPosition();
 	Entity* GetEntity();
 	int GetDirection();
+	int GetHealth();
 
 	void SetPosition(int x, int y);
 	void SetAnimation(int ani);

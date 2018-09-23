@@ -28,18 +28,6 @@ void Ingame::Draw(HDC hMemDC)
 
 void Ingame::OnTimer(HWND hWnd, int timer)
 {
-	if (timer == UPDATE)
-	{
-		for (auto it = ObjPool->MonsterPool.pool.begin(); it != ObjPool->MonsterPool.pool.end(); it++)
-		{
-			ObjPool->Maps.ActiveTile(it->GetEntity()); //몬스터에 대해 밟고 있는 타일 발동
-			//if (it->isDead()) //몬스터가 죽었는지 확인
-			//{
-			//	it->Ternimate();
-			//}
-		}
-
-	}
 	if (timer == ANIMATION)
 	{
 		ObjPool->MonsterPool.Animation();
@@ -47,6 +35,14 @@ void Ingame::OnTimer(HWND hWnd, int timer)
 
 		ObjPool->Player.Animation();
 		ObjPool->Player.UpdateState();
+	}
+}
+
+void Ingame::Update() //씬 업데이트
+{
+	for (auto it = ObjPool->MonsterPool.pool.begin(); it != ObjPool->MonsterPool.pool.end(); it++)
+	{
+		ObjPool->Maps.ActiveTile(it->GetEntity()); //몬스터에 대해 밟고 있는 타일 발동
 	}
 }
 
@@ -65,7 +61,7 @@ void Ingame::OnMouseLButtonUp(HWND hWnd, int x, int y)
 
 void Ingame::OnMouseRButtonDown(HWND hWnd, int x, int y)
 {
-	
+	system("cls");
 }
 
 void Ingame::OnMouseRButtonUp(HWND hWnd, int x, int y)
@@ -191,7 +187,7 @@ void Ingame::OnKeyborad()
 		lastBitState[KEY_4] = 1;
 	}
 
-	if (lastBitState[KEY_5] == 0 && keyState[KEY_5] & 0x0001) //4번키
+	if (lastBitState[KEY_5] == 0 && keyState[KEY_5] & 0x0001) //5번키
 	{
 		if (ObjPool->Player.GetState() == STAND)
 		{
@@ -205,9 +201,9 @@ void Ingame::OnKeyborad()
 		lastBitState[KEY_5] = 1;
 	}
 
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 6; i++)
 	{
-		if ((keyState[i] & 0x8000) == 0) // 완전히 뗐다면 다음 실행을 위해서 상태 초기화
+		if ((keyState[10] & 0x8000) == 0) // 완전히 뗐다면 다음 실행을 위해서 상태 초기화
 		{
 			lastBitState[i] = 0;
 		}
