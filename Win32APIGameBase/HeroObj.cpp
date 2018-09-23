@@ -18,20 +18,20 @@ void Hero::Init(HWND hWnd, int x, int y, COLORREF sprite)
 
 	health = 100;
 
-	Ani_stand[UP].Init(hWnd, 0, 0, 62, 132, 1, L"./Image/Walk_Ani/Hero_Back.bmp");
-	Ani_stand[DOWN].Init(hWnd, 0, 0, 62, 132, 1, L"./Image/Walk_Ani/Hero_Front.bmp");
-	Ani_stand[LEFT].Init(hWnd, 0, 0, 58, 132, 1, L"./Image/Walk_Ani/Hero_Left.bmp");
-	Ani_stand[RIGHT].Init(hWnd, 0, 0, 58, 132, 1, L"./Image/Walk_Ani/Hero_Right.bmp");
+	Ani_stand[UP].Init(hWnd, 0, 0, 80, 132, 1, L"./Image/Walk_Ani/hero_walk_back.bmp");
+	Ani_stand[DOWN].Init(hWnd, 0, 0, 80, 132, 1, L"./Image/Walk_Ani/hero_walk_front.bmp");
+	Ani_stand[LEFT].Init(hWnd, 0, 0, 80, 132, 1, L"./Image/Walk_Ani/hero_walk_left.bmp");
+	Ani_stand[RIGHT].Init(hWnd, 0, 0, 80, 132, 1, L"./Image/Walk_Ani/hero_walk_right.bmp");
 
-	Ani_walk[UP].Init(hWnd, 0, 0, 248, 132, 4, L"./Image/Walk_Ani/Hero_Back.bmp");
-	Ani_walk[DOWN].Init(hWnd, 0, 0, 248, 132, 4, L"./Image/Walk_Ani/Hero_Front.bmp");
-	Ani_walk[LEFT].Init(hWnd, 0, 0, 232, 132, 4, L"./Image/Walk_Ani/Hero_Left.bmp");
-	Ani_walk[RIGHT].Init(hWnd, 0, 0, 232, 132, 4, L"./Image/Walk_Ani/Hero_Right.bmp");
+	Ani_walk[UP].Init(hWnd, 0, 0, 480, 132, 6, L"./Image/Walk_Ani/hero_walk_back.bmp");
+	Ani_walk[DOWN].Init(hWnd, 0, 0, 480, 132, 6, L"./Image/Walk_Ani/hero_walk_front.bmp");
+	Ani_walk[LEFT].Init(hWnd, 0, 0, 480, 132, 6, L"./Image/Walk_Ani/hero_walk_left.bmp");
+	Ani_walk[RIGHT].Init(hWnd, 0, 0, 480, 132, 6, L"./Image/Walk_Ani/hero_walk_right.bmp");
 
-	Ani_attack[UP].Init(hWnd, 0, 0, 240, 122, 4, L"./Image/Walk_Ani/Hero_Back.bmp");
+	/*Ani_attack[UP].Init(hWnd, 0, 0, 240, 122, 4, L"./Image/Walk_Ani/Hero_Back.bmp");
 	Ani_attack[DOWN].Init(hWnd, 0, 0, 216, 122, 4, L"./Image/Walk_Ani/Hero_Front.bmp");
 	Ani_attack[LEFT].Init(hWnd, 0, 0, 304, 122, 4, L"./Image/Walk_Ani/Hero_Left.bmp");
-	Ani_attack[RIGHT].Init(hWnd, 0, 0, 336, 122, 4, L"./Image/Walk_Ani/Hero_Right.bmp");
+	Ani_attack[RIGHT].Init(hWnd, 0, 0, 336, 122, 4, L"./Image/Walk_Ani/Hero_Right.bmp");*/
 }
 
 void Hero::Ternimate()
@@ -61,7 +61,7 @@ void Hero::Draw(HDC hMemDC, int x, int y)
 	int Term_x = 0;
 	int Term_y = 0;
 
-	switch (nowDirection)
+	/*switch (nowDirection)
 	{
 	case UP:
 		Term_x = 5;
@@ -75,7 +75,7 @@ void Hero::Draw(HDC hMemDC, int x, int y)
 	case RIGHT:
 		Term_x = 15;
 		break;
-	}
+	}*/
 	Term_y = -65;
 
 	if (nowDirection == UP)
@@ -179,10 +179,9 @@ void Hero::SetDirection(int dire)
 
 	if (nowState == TRAPSETTING) //플레이어가 고정된 상태로 트랩 설치중이면
 	{
-		nowDirection = dire; //그 자리에서 방향만 바꾸가
+		nowDirection = dire; //그 자리에서 방향만 바꾸기
 		return;
 	}
-
 
 	switch (nowDirection)
 	{

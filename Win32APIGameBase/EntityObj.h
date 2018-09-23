@@ -107,8 +107,5 @@ public:
 	void AddMonster(HWND hWnd, int type);
 	void CheckHealth();
 
-	void SetMonsterTimer();
-	void DrawMonsterTimer();
-
 	void SetDirection(int dire);
 };

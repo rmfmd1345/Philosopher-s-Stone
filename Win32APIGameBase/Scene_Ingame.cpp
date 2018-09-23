@@ -24,6 +24,9 @@ void Ingame::Draw(HDC hMemDC)
 	ObjPool->ingameUI_Skill.Draw(hMemDC);
 	ObjPool->ingameUI_Stage.Draw(hMemDC);
 	ObjPool->ingameUI_Time.Draw(hMemDC);
+
+	ObjPool->Gdi.SetTextsColor(RGB(0, 124, 255));
+	ObjPool->Gdi.Text(hMemDC, 560, 45, ObjPool->TIMER, 60);
 }
 
 void Ingame::OnTimer(HWND hWnd, int timer)
@@ -40,6 +43,38 @@ void Ingame::OnTimer(HWND hWnd, int timer)
 
 		ObjPool->Player.Animation();
 		ObjPool->Player.UpdateState();
+	}
+	if (timer == MONSTERTM)
+	{
+		if (ObjPool->MonsterPool.pool.empty())
+		{
+			int Temp = 0;
+
+			for (int i = 0; i < 3; i++)
+			{
+				Temp = rand() % 3;
+
+				switch (Temp)
+				{
+				case DEALER:
+					ObjPool->MonsterPool.AddMonster(hWnd, DEALER);
+				case WIZARD:
+					ObjPool->MonsterPool.AddMonster(hWnd, WIZARD);
+				case TANKER:
+					ObjPool->MonsterPool.AddMonster(hWnd, TANKER);
+				}
+			}
+			
+			ObjPool->MonsterTimer = 100;
+			return;
+		}
+
+		if (ObjPool->MonsterTimer > 0)
+		{
+			ObjPool->MonsterTimer--;
+		}
+
+		wsprintf(ObjPool->TIMER, L"%02d:%02d", ObjPool->MonsterTimer / 60, ObjPool->MonsterTimer % 60);
 	}
 }
 

@@ -33,6 +33,7 @@ void ObjectPool::CreateObject(HWND hWnd)	//객체의 초기 설정을 적는 곳
 	Maps.InitMap(hWnd);
 
 	Maps.ResetMap(5, 5);
+
 	for(int i = 0; i < 3; i++)
 		for(int j = 0; j < 3; j++)
 			Maps.SetTileOnMap(ObjPool->Maps.Floor, 4 + i, 4 + j);
