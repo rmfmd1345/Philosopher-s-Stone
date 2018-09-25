@@ -27,6 +27,9 @@ void Ingame::Draw(HDC hMemDC)
 
 	ObjPool->Gdi.SetTextsColor(RGB(0, 124, 255));
 	ObjPool->Gdi.Text(hMemDC, 560, 45, ObjPool->TIMER, 60);
+
+	ObjPool->Gdi.SetTextsColor(RGB(255, 255, 255));
+	ObjPool->Gdi.Text(hMemDC, 930, 30, ObjPool->Player.Rock_Num_UI, 52);
 }
 
 void Ingame::OnTimer(HWND hWnd, int timer)
@@ -78,6 +81,7 @@ void Ingame::Update() //씬 업데이트
 	for (auto it = ObjPool->MonsterPool.pool.begin(); it != ObjPool->MonsterPool.pool.end(); it++)
 	{
 		ObjPool->Maps.ActiveTile(it->GetEntity()); //몬스터에 대해 밟고 있는 타일 발동
+		ObjPool->MonsterPool.CheckHealth();
 	}
 }
 
@@ -152,6 +156,7 @@ void Ingame::OnKeyborad()
 
 	if (lastBitState[SPACE] == 0 && keyState[SPACE] & 0x0001) //SPACE
 	{
+		//보고 있는게 함정이면 수리
 		if (ObjPool->Player.GetState() == STAND) //그냥 서있는 상태면 땅 파고
 			ObjPool->Player.DigMap();
 

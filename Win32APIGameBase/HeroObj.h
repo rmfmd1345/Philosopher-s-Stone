@@ -20,6 +20,8 @@ private:
 
 public:
 	int health;
+	int Rock_Num;
+	TCHAR Rock_Num_UI[10];
 	int selectedTrap;
 
 public:
