@@ -14,7 +14,7 @@ void Title::Draw(HDC hMemDC)
 
 void Title::OnTimer(HWND hWnd, int timer)
 {
-
+	
 }
 
 void Title::Update()
