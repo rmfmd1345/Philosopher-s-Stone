@@ -387,6 +387,11 @@ int Entity::GetHealth()
 	return health;
 }
 
+int Entity::GetState()
+{
+	return nowState;
+}
+
 void Entity::SetPosition(int x, int y)
 {
 	this->pos.x = x;

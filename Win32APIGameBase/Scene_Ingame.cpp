@@ -83,6 +83,13 @@ void Ingame::Update() //씬 업데이트
 		ObjPool->Maps.ActiveTile(it->GetEntity()); //몬스터에 대해 밟고 있는 타일 발동
 		ObjPool->MonsterPool.CheckHealth();
 	}
+
+	if (ObjPool->Player.GetState() == STAND && ObjPool->Player.isWatingTrapSet == true) //이동중에 트랩 세팅을 명령했으면 그 다음 칸에 멈춰서서 함정설치
+	{
+		ObjPool->Player.SetState(TRAPSETTING); //플레이어 고정상태로 만들기
+		ObjPool->Player.isWatingTrapSet = false;
+	}
+
 }
 
 void Ingame::OnMouseLButtonDown(HWND hWnd, int x, int y)
@@ -179,8 +186,15 @@ void Ingame::OnKeyborad()
 			ObjPool->Player.selectedTrap = TRAP_Niddle;
 		}
 
+		else if (ObjPool->Player.GetState() == WALK) //이동중에 누르면 다 걸어갈때까지 대기
+		{
+			ObjPool->Player.selectedTrap = TRAP_Niddle;
+			ObjPool->Player.isWatingTrapSet = true;
+		}
+
 		else if (ObjPool->Player.GetState() == TRAPSETTING) //고정상태에서 1번키를 한 번 더 누르면 고정해제
 			ObjPool->Player.SetState(STAND);
+
 
 		lastBitState[KEY_1] = 1;
 	}
@@ -191,6 +205,12 @@ void Ingame::OnKeyborad()
 		{
 			ObjPool->Player.SetState(TRAPSETTING);
 			ObjPool->Player.selectedTrap = TRAP_ScareCrow;
+		}
+
+		else if (ObjPool->Player.GetState() == WALK) //이동중에 누르면 다 걸어갈때까지 대기
+		{
+			ObjPool->Player.selectedTrap = TRAP_ScareCrow;
+			ObjPool->Player.isWatingTrapSet = true;
 		}
 
 		else if (ObjPool->Player.GetState() == TRAPSETTING)
@@ -207,6 +227,12 @@ void Ingame::OnKeyborad()
 			ObjPool->Player.selectedTrap = TRAP_Grab;
 		}
 
+		else if (ObjPool->Player.GetState() == WALK) //이동중에 누르면 다 걸어갈때까지 대기
+		{
+			ObjPool->Player.selectedTrap = TRAP_Grab;
+			ObjPool->Player.isWatingTrapSet = true;
+		}
+
 		else if (ObjPool->Player.GetState() == TRAPSETTING)
 			ObjPool->Player.SetState(STAND);
 
@@ -221,6 +247,12 @@ void Ingame::OnKeyborad()
 			ObjPool->Player.selectedTrap = TRAP_Cunfusion;
 		}
 
+		else if (ObjPool->Player.GetState() == WALK) //이동중에 누르면 다 걸어갈때까지 대기
+		{
+			ObjPool->Player.selectedTrap = TRAP_Cunfusion;
+			ObjPool->Player.isWatingTrapSet = true;
+		}
+
 		else if (ObjPool->Player.GetState() == TRAPSETTING)
 			ObjPool->Player.SetState(STAND);
 
@@ -233,6 +265,12 @@ void Ingame::OnKeyborad()
 		{
 			ObjPool->Player.SetState(TRAPSETTING);
 			ObjPool->Player.selectedTrap = TRAP_Hole;
+		}
+
+		else if (ObjPool->Player.GetState() == WALK) //이동중에 누르면 다 걸어갈때까지 대기
+		{
+			ObjPool->Player.selectedTrap = TRAP_Hole;
+			ObjPool->Player.isWatingTrapSet = true;
 		}
 
 		else if (ObjPool->Player.GetState() == TRAPSETTING)

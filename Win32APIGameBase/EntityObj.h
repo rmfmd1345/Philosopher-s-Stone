@@ -51,6 +51,7 @@ public:
 	Entity* GetEntity();
 	int GetDirection();
 	int GetHealth();
+	int GetState();
 
 	void SetPosition(int x, int y);
 	void SetAnimation(int ani);

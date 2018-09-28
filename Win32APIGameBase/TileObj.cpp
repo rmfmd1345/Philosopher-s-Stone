@@ -77,13 +77,14 @@ void CMap::ConfusionActive(Entity* ent)
 void CMap::HoleActive(Entity* ent)
 {
 	POINT pos = ent->GetPosition();
-
-	if (Map[pos.y][pos.x].Tile_On) //함정이 깔려있으면
+	
+	if (Map[pos.y][pos.x].Tile_On && ent->GetState() != WALK) //함정이 깔려있으면 //엔티티가 걷는 중이 아니면
 	{
 		ent->SetState(INTRAP); //엔티티 상태 인트랩 상태로 변경
 		ent->SetAnimation(STAND); //엔티티 서있는 상태로 변경
 		Map[pos.y][pos.x].damgeDelay++;
 		printf("카운트 : %f\n 속도: %f\n", Map[pos.y][pos.x].damgeDelay, Map[pos.y][pos.x].SpinSpeed);
+	//	printf("STATE : %d\n", ent->nowAnimation);
 		if (Map[pos.y][pos.x].damgeDelay >= Map[pos.y][pos.x].SpinSpeed)
 		{
 			if (ent->GetDirection() != DOWN) //엔티티 돌리기
