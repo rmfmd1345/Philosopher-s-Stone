@@ -43,14 +43,13 @@ public:
 
 	enum Brick_ID_List
 	{
-		UP,
-		LEFT,
-		RIGHT,
-		DOWN,
+		B_UP,
+		B_LEFT,
+		B_RIGHT,
+		B_DOWN,
 		SW_LEFT,
 		SW_RIGHT
 	};
-
 
 	void InitMap(HWND hwnd); // 타일 이미지 초기화
 	void NiddleActive(Entity* ent);
@@ -67,4 +66,5 @@ public:
 	void DestroyMap(); // 맵 타일 파괴
 
 	int GetTileID(int x, int y);
+	bool CheckTrap(int diraction, POINT pos);
 };

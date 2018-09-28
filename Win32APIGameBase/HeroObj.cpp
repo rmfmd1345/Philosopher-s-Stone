@@ -29,10 +29,10 @@ void Hero::Init(HWND hWnd, int x, int y, COLORREF sprite)
 	Ani_walk[LEFT].Init(hWnd, 0, 0, 480, 132, 6, L"./Image/Walk_Ani/hero_walk_left.bmp");
 	Ani_walk[RIGHT].Init(hWnd, 0, 0, 480, 132, 6, L"./Image/Walk_Ani/hero_walk_right.bmp");
 
-	/*Ani_attack[UP].Init(hWnd, 0, 0, 240, 122, 4, L"./Image/Walk_Ani/Hero_Back.bmp");
-	Ani_attack[DOWN].Init(hWnd, 0, 0, 216, 122, 4, L"./Image/Walk_Ani/Hero_Front.bmp");
-	Ani_attack[LEFT].Init(hWnd, 0, 0, 304, 122, 4, L"./Image/Walk_Ani/Hero_Left.bmp");
-	Ani_attack[RIGHT].Init(hWnd, 0, 0, 336, 122, 4, L"./Image/Walk_Ani/Hero_Right.bmp");*/
+	/*Ani_attack[B_UP].Init(hWnd, 0, 0, 240, 122, 4, L"./Image/Walk_Ani/Hero_Back.bmp");
+	Ani_attack[B_DOWN].Init(hWnd, 0, 0, 216, 122, 4, L"./Image/Walk_Ani/Hero_Front.bmp");
+	Ani_attack[B_LEFT].Init(hWnd, 0, 0, 304, 122, 4, L"./Image/Walk_Ani/Hero_Left.bmp");
+	Ani_attack[B_RIGHT].Init(hWnd, 0, 0, 336, 122, 4, L"./Image/Walk_Ani/Hero_Right.bmp");*/
 }
 
 void Hero::Ternimate()
@@ -64,16 +64,16 @@ void Hero::Draw(HDC hMemDC, int x, int y)
 
 	/*switch (nowDirection)
 	{
-	case UP:
+	case B_UP:
 		Term_x = 5;
 		break;
-	case DOWN:
+	case B_DOWN:
 		Term_x = 15;
 		break;
-	case LEFT:
+	case B_LEFT:
 		Term_x = 12;
 		break;
-	case RIGHT:
+	case B_RIGHT:
 		Term_x = 15;
 		break;
 	}*/
@@ -231,6 +231,11 @@ int Hero::GetState()
 	return nowState;
 }
 
+int Hero::GetDiraction()
+{
+	return nowDirection;
+}
+
 POINT Hero::GetPosition()
 {
 	return pos;
@@ -335,24 +340,39 @@ void Hero::SetTrap()
 	case NONE:
 		break;
 	case TRAP_Niddle:
-		if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == FLOOR)
+		if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == FLOOR && ObjPool->Player.Rock_Num >= 10)
+		{
+			ObjPool->Player.Rock_Num -= 10;
 			ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Trap_Niddle, Temp_X, Temp_Y);
+		}
 		break;
 	case TRAP_Hole:
-		if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == FLOOR)
-		ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Trap_Hole, Temp_X, Temp_Y);
+		if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == FLOOR && ObjPool->Player.Rock_Num >= 30)
+		{
+			ObjPool->Player.Rock_Num -= 30;
+			ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Trap_Hole, Temp_X, Temp_Y);
+		}
 		break;
 	case TRAP_ScareCrow:
-		if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == FLOOR)
-		ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Trap_ScareCrow, Temp_X, Temp_Y);
+		if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == FLOOR && ObjPool->Player.Rock_Num >= 15)
+		{
+			ObjPool->Player.Rock_Num -= 15;
+			ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Trap_ScareCrow, Temp_X, Temp_Y);
+		}
 		break;
 	case TRAP_Grab:
-		if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == FLOOR)
-		ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Trap_Grab, Temp_X, Temp_Y);
+		if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == FLOOR && ObjPool->Player.Rock_Num >= 20)
+		{
+			ObjPool->Player.Rock_Num -= 20;
+			ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Trap_Grab, Temp_X, Temp_Y);
+		}
 		break;
 	case TRAP_Cunfusion:
-		if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == FLOOR)
+		if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == FLOOR && ObjPool->Player.Rock_Num >= 25)
+		{
+			ObjPool->Player.Rock_Num -= 25;
 			ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Trap_Cunfusion, Temp_X, Temp_Y);
+		}
 		break;
 	default:
 		break;
@@ -360,6 +380,26 @@ void Hero::SetTrap()
 	Temp_X = 0;
 	Temp_Y = 0;
 	selectedTrap = NONE; //선택된 함정이 없도록 초기화
+}
+
+void Hero::RepairTrap()
+{
+	switch (nowDirection)
+	{
+	case LEFT:
+		ObjPool->Maps.Map[pos.y][pos.x - 1].Tile_On = true;
+			
+		break;
+	case RIGHT:
+		ObjPool->Maps.Map[pos.y][pos.x + 1].Tile_On = true;
+		break;
+	case UP:
+		ObjPool->Maps.Map[pos.y - 1][pos.x].Tile_On = true;
+		break;
+	case DOWN:
+		ObjPool->Maps.Map[pos.y + 1][pos.x].Tile_On = true;
+		break;
+	}
 }
 
 bool Hero::isDead()

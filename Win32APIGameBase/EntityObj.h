@@ -51,6 +51,7 @@ public:
 	Entity* GetEntity();
 	int GetDirection();
 	int GetHealth();
+	int GetState();
 
 	void SetPosition(int x, int y);
 	void SetAnimation(int ani);
@@ -95,7 +96,7 @@ public:
 	Entity Tanker;
 	vector<Entity> pool;
 
-	POINT spawnPosition = { 0,0 };
+	POINT spawnPosition = { 3, 5 };
 
 	bool CheckMonsters;
 

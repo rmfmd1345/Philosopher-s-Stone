@@ -33,10 +33,10 @@ void Entity::Init(HWND hWnd, int x, int y, int type, COLORREF sprite)
 		Ani_walk[LEFT].Init(hWnd, 0, 0, 480, 120, 6, L"./Image/Walk_Ani/dealer_walk_left.bmp");
 		Ani_walk[RIGHT].Init(hWnd, 0, 0, 480, 120, 6, L"./Image/Walk_Ani/dealer_walk_right.bmp");
 		
-		/*Ani_attack[UP].Init(hWnd, 0, 0, 240, 122, 4, L"./Image/Walk_Ani/Dealer_Back.bmp");
-		Ani_attack[DOWN].Init(hWnd, 0, 0, 216, 122, 4, L"./Image/Walk_Ani/Dealer_Front.bmp");
-		Ani_attack[LEFT].Init(hWnd, 0, 0, 304, 122, 4, L"./Image/Walk_Ani/Dealer_Left.bmp");
-		Ani_attack[RIGHT].Init(hWnd, 0, 0, 336, 122, 4, L"./Image/Walk_Ani/Dealer_Right.bmp");*/
+		/*Ani_attack[B_UP].Init(hWnd, 0, 0, 240, 122, 4, L"./Image/Walk_Ani/Dealer_Back.bmp");
+		Ani_attack[B_DOWN].Init(hWnd, 0, 0, 216, 122, 4, L"./Image/Walk_Ani/Dealer_Front.bmp");
+		Ani_attack[B_LEFT].Init(hWnd, 0, 0, 304, 122, 4, L"./Image/Walk_Ani/Dealer_Left.bmp");
+		Ani_attack[B_RIGHT].Init(hWnd, 0, 0, 336, 122, 4, L"./Image/Walk_Ani/Dealer_Right.bmp");*/
 		break;
 	case WIZARD:
 		Ani_stand[UP].Init(hWnd, 0, 0, 70, 102, 1, L"./Image/Walk_Ani/Wizard_Back.bmp");
@@ -105,16 +105,16 @@ void Entity::Draw(HDC hMemDC, int x, int y)
 	case DEALER:
 		/*switch (nowDirection)
 		{
-		case UP:
+		case B_UP:
 			Term_x = 5;
 			break;
-		case DOWN:
+		case B_DOWN:
 			Term_x = 15;
 			break;
-		case LEFT:
+		case B_LEFT:
 			Term_x = -12;
 			break;
-		case RIGHT:
+		case B_RIGHT:
 			Term_x = 15;
 			break;
 		}*/
@@ -387,6 +387,11 @@ int Entity::GetHealth()
 	return health;
 }
 
+int Entity::GetState()
+{
+	return nowState;
+}
+
 void Entity::SetPosition(int x, int y)
 {
 	this->pos.x = x;
@@ -534,14 +539,18 @@ void Monster::CheckHealth()
 {
 	if (pool.empty()) return;
 
-	for (auto it = pool.begin(); it != pool.end(); it++)
+	for (auto it = pool.begin(); it != pool.end();)
 	{
 		if (it->isDead())
 		{
-			it->Ternimate();
+   			it->Ternimate();
 			it = pool.erase(it);
 
 			if (pool.empty()) return;
+		}
+		else
+		{
+			it++;
 		}
 	}
 }

@@ -17,12 +17,12 @@ private:
 	SpriteHelper Ani_attack[4];
 	int nowFrame;
 	int maxFrame;
-
-public:
 	int health;
+public:
 	int Rock_Num;
 	TCHAR Rock_Num_UI[10];
 	int selectedTrap;
+	bool isWatingTrapSet;
 
 public:
 	void Init(HWND hWnd, int x, int y, COLORREF sprite = RGB(255, 0, 255));
@@ -37,6 +37,7 @@ public:
 	void SetDirection(int dire);
 	void SetState(int state);
 	int GetState();
+	int GetDiraction();
 
 	POINT GetPosition();
 	int GetWalkState();
@@ -45,6 +46,7 @@ public:
 	void PlusHealth(int plus);
 	void DigMap();
 	void SetTrap();
+	void RepairTrap();
 
 	bool isDead();
 	bool isWalk();
