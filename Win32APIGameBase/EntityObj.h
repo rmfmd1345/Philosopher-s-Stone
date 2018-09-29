@@ -10,11 +10,8 @@ enum eState
 	ATTACK,
 	CLEAR,
 	FINDWAY,
-<<<<<<< HEAD
 	MARKFORFIND,
-=======
 	INTRAP,
->>>>>>> 03c2574cc853778e0e6192347a15cbd10c81ab21
 	TRAPSETTING
 };
 
@@ -56,14 +53,11 @@ public:
 	void UpdateState();
 
 	POINT GetPosition();
-<<<<<<< HEAD
 	POINT GetSpawnPosition();
-=======
 	Entity* GetEntity();
 	int GetDirection();
 	int GetHealth();
 	int GetState();
->>>>>>> 03c2574cc853778e0e6192347a15cbd10c81ab21
 
 	void SetPosition(int x, int y);
 	void SetSpawnPosition(int x, int y);
@@ -119,13 +113,10 @@ public:
 	Entity Tanker;
 	vector<Entity> pool;
 
-<<<<<<< HEAD
-=======
 	POINT spawnPosition = { 2, 5 };
 
 	bool CheckMonsters;
 
->>>>>>> 03c2574cc853778e0e6192347a15cbd10c81ab21
 public:
 	void Init(HWND hWnd);
 	void Ternimate();

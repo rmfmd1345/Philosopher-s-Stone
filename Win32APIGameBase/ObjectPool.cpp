@@ -39,16 +39,13 @@ void ObjectPool::CreateObject(HWND hWnd)	//객체의 초기 설정을 적는 곳
 		for(int j = 0; j < 3; j++)
 			Maps.SetTileOnMap(ObjPool->Maps.Floor, 4 + i, 4 + j);
 
-<<<<<<< HEAD
 	MonsterPool.Init(hWnd);
 	//MonsterPool.AddMonster(DEALER, 4, 4);
 	//MonsterPool.AddMonster(WIZARD, 5, 4);
 	//MonsterPool.AddMonster(TANKER, 6, 4);
-=======
 	Maps.SetTileOnMap(ObjPool->Maps.Floor, 2, 5);
 	Maps.SetTileOnMap(ObjPool->Maps.Floor, 3, 5);
 	// for test
->>>>>>> 03c2574cc853778e0e6192347a15cbd10c81ab21
 
 	MonsterPool.Init(hWnd);
 	Player.Init(hWnd, 3, 5);

@@ -25,18 +25,16 @@ void Ingame::Draw(HDC hMemDC)
 	ObjPool->ingameUI_Stage.Draw(hMemDC);
 	ObjPool->ingameUI_Time.Draw(hMemDC);
 
-<<<<<<< HEAD
 	TCHAR str[16];
 	wsprintf(str, L"%d", ObjPool->debug);
 	ObjPool->Gdi.SetTextsColor(RGB(255, 255, 255));
 	ObjPool->Gdi.Text(hMemDC, 150, 170, str, 36);
-=======
+
 	ObjPool->Gdi.SetTextsColor(RGB(0, 124, 255));
 	ObjPool->Gdi.Text(hMemDC, 560, 45, ObjPool->TIMER, 60);
 
 	ObjPool->Gdi.SetTextsColor(RGB(255, 255, 255));
 	ObjPool->Gdi.Text(hMemDC, 1020, 30, ObjPool->Player.Rock_Num_UI, 48);
->>>>>>> 03c2574cc853778e0e6192347a15cbd10c81ab21
 }
 
 void Ingame::OnTimer(HWND hWnd, int timer)
@@ -60,13 +58,13 @@ void Ingame::OnTimer(HWND hWnd, int timer)
 			switch (Temp)
 			{
 			case DEALER:
-				ObjPool->MonsterPool.AddMonster(hWnd, DEALER);
+				ObjPool->MonsterPool.AddMonster(DEALER);
 				break;
 			case WIZARD:
-				ObjPool->MonsterPool.AddMonster(hWnd, WIZARD);
+				ObjPool->MonsterPool.AddMonster(WIZARD);
 				break;
 			case TANKER:
-				ObjPool->MonsterPool.AddMonster(hWnd, TANKER);
+				ObjPool->MonsterPool.AddMonster(TANKER);
 				break;
 			}
 
@@ -130,7 +128,6 @@ void Ingame::OnMouseMove(HWND hWnd, int x, int y)
 
 void Ingame::OnKeyborad()
 {
-<<<<<<< HEAD
 	DWORD exlastBitState = 0;
 	DWORD exkeyState;
 	exkeyState = GetAsyncKeyState(VK_F1);
@@ -145,12 +142,8 @@ void Ingame::OnKeyborad()
 		exlastBitState = 0;
 	}
 
-	DWORD lastBitState[9] = {0, };
-	DWORD keyState[9];
-=======
 	DWORD lastBitState[10] = { 0, };
 	DWORD keyState[10];
->>>>>>> 03c2574cc853778e0e6192347a15cbd10c81ab21
 
 	keyState[0] = GetAsyncKeyState(VK_UP);
 	keyState[1] = GetAsyncKeyState(VK_DOWN);

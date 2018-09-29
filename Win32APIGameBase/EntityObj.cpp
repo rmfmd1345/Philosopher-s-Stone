@@ -2,7 +2,7 @@
 #include "Sprite.h"
 #include "EntityObj.h"
 
-POINT Entity::spawnPosition = { 0,0 };
+POINT Entity::spawnPosition = { 2, 5 };
 
 vector<POINT> Entity::BanRoad;
 int Entity::StackRoad[MAX_TILE_Y][MAX_TILE_X] = { 0 };
@@ -28,22 +28,7 @@ void Entity::Init(HWND hWnd, int x, int y, int type, COLORREF sprite)
 	switch (type)
 	{
 	case DEALER:
-<<<<<<< HEAD
-		Ani_stand[UP].Init(hWnd, 0, 0, 60, 122, 1, L"./Image/Walk_Ani/Dealer_Back.bmp");
-		Ani_stand[DOWN].Init(hWnd, 0, 0, 54, 122, 1, L"./Image/Walk_Ani/Dealer_Front.bmp");
-		Ani_stand[LEFT].Init(hWnd, 0, 0, 76, 122, 1, L"./Image/Walk_Ani/Dealer_Left.bmp");
-		Ani_stand[RIGHT].Init(hWnd, 0, 0, 84, 122, 1, L"./Image/Walk_Ani/Dealer_Right.bmp");
 
-		Ani_walk[UP].Init(hWnd, 0, 0, 240, 122, 4, L"./Image/Walk_Ani/Dealer_Back.bmp");
-		Ani_walk[DOWN].Init(hWnd, 0, 0, 216, 122, 4, L"./Image/Walk_Ani/Dealer_Front.bmp");
-		Ani_walk[LEFT].Init(hWnd, 0, 0, 304, 122, 4, L"./Image/Walk_Ani/Dealer_Left.bmp");
-		Ani_walk[RIGHT].Init(hWnd, 0, 0, 336, 122, 4, L"./Image/Walk_Ani/Dealer_Right.bmp");
-
-		Ani_attack[UP].Init(hWnd, 0, 0, 240, 122, 4, L"./Image/Walk_Ani/Dealer_Back.bmp");
-		Ani_attack[DOWN].Init(hWnd, 0, 0, 216, 122, 4, L"./Image/Walk_Ani/Dealer_Front.bmp");
-		Ani_attack[LEFT].Init(hWnd, 0, 0, 304, 122, 4, L"./Image/Walk_Ani/Dealer_Left.bmp");
-		Ani_attack[RIGHT].Init(hWnd, 0, 0, 336, 122, 4, L"./Image/Walk_Ani/Dealer_Right.bmp");
-=======
 		Ani_stand[UP].Init(hWnd, 0, 0, 80, 120, 1, L"./Image/Walk_Ani/dealer_walk_back.bmp");
 		Ani_stand[DOWN].Init(hWnd, 0, 0, 80, 120, 1, L"./Image/Walk_Ani/dealer_walk_front.bmp");
 		Ani_stand[LEFT].Init(hWnd, 0, 0, 80, 120, 1, L"./Image/Walk_Ani/dealer_walk_left.bmp");
@@ -58,7 +43,6 @@ void Entity::Init(HWND hWnd, int x, int y, int type, COLORREF sprite)
 		Ani_attack[B_DOWN].Init(hWnd, 0, 0, 216, 122, 4, L"./Image/Walk_Ani/Dealer_Front.bmp");
 		Ani_attack[B_LEFT].Init(hWnd, 0, 0, 304, 122, 4, L"./Image/Walk_Ani/Dealer_Left.bmp");
 		Ani_attack[B_RIGHT].Init(hWnd, 0, 0, 336, 122, 4, L"./Image/Walk_Ani/Dealer_Right.bmp");*/
->>>>>>> 03c2574cc853778e0e6192347a15cbd10c81ab21
 		break;
 	case WIZARD:
 		Ani_stand[UP].Init(hWnd, 0, 0, 70, 102, 1, L"./Image/Walk_Ani/Wizard_Back.bmp");
@@ -205,23 +189,13 @@ void Entity::Draw(HDC hMemDC, int x, int y)
 	case STAND:
 		Ani_stand[nowDirection].SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y - 40);
 		Ani_stand[nowDirection].Draw(hMemDC);
-<<<<<<< HEAD
-		break;
-	case WALK:
-		Ani_walk[nowDirection].SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y);
-		Ani_walk[nowDirection].Draw(hMemDC);
-		break;
-	case ATTACK:
-		Ani_attack[nowDirection].SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y);
-=======
-		break;														 
+		break;													 
 	case WALK:														 
 		Ani_walk[nowDirection].SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y - 40);
 		Ani_walk[nowDirection].Draw(hMemDC); 
 		break;														 
 	case ATTACK:													 
 		Ani_attack[nowDirection].SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y - 40);
->>>>>>> 03c2574cc853778e0e6192347a15cbd10c81ab21
 		Ani_attack[nowDirection].Draw(hMemDC);
 		break;
 	case MARKFORFIND:
@@ -586,13 +560,17 @@ void Entity::UpdateState()
 						BlockedRoadNum++;
 					}
 				}
-				srand((unsigned)time(NULL));
-				SetDirection(BlockedRoad[rand() % BlockedRoadNum]);
 
-				nowAnimation = WALK;
-				nowState = WALK;
-				ObjPool->debug = 3;
-				return;
+				if (BlockedRoadNum > 0)
+				{
+					srand((unsigned)time(NULL));
+					SetDirection(BlockedRoad[rand() % BlockedRoadNum]);
+
+					nowAnimation = WALK;
+					nowState = WALK;
+					ObjPool->debug = 3;
+					return;
+				}
 			}
 		}
 		//자신이 왔던 길이 벤되어있다면 반대 방향으로 걸어감
@@ -649,24 +627,22 @@ bool Entity::isRoadBlocked(int dire)
 {
 	switch (dire)
 	{
-	case UP:
-<<<<<<< HEAD
-		return isRoadBlocked(pos.x, pos.y - 1);
+	//case UP:
+	//	return isRoadBlocked(pos.x, pos.y - 1);
 
-		break;
-	case DOWN:
-		return isRoadBlocked(pos.x, pos.y + 1);
+	//	break;
+	//case DOWN:
+	//	return isRoadBlocked(pos.x, pos.y + 1);
 
-		break;
-	case LEFT:
-		return isRoadBlocked(pos.x - 1, pos.y);
+	//	break;
+	//case LEFT:
+	//	return isRoadBlocked(pos.x - 1, pos.y);
 
-		break;
-	case RIGHT:
-		return isRoadBlocked(pos.x + 1, pos.y);
-=======
-		if (ObjPool->Maps.GetTileID(pos.x, pos.y - 1) != NONE && ObjPool->Maps.GetTileID(pos.x, pos.y - 1) != WALL && ObjPool->Maps.GetTileID(pos.x, pos.y - 1) != MENTLE)
-			return false;
+	//	break;
+	//case RIGHT:
+	//	return isRoadBlocked(pos.x + 1, pos.y);
+	//	if (ObjPool->Maps.GetTileID(pos.x, pos.y - 1) != NONE && ObjPool->Maps.GetTileID(pos.x, pos.y - 1) != WALL && ObjPool->Maps.GetTileID(pos.x, pos.y - 1) != MENTLE)
+	//		return false;
 		
 		break;
 	case DOWN:
@@ -682,7 +658,6 @@ bool Entity::isRoadBlocked(int dire)
 	case RIGHT:
 		if (ObjPool->Maps.GetTileID(pos.x + 1, pos.y) != NONE && ObjPool->Maps.GetTileID(pos.x + 1, pos.y) != WALL && ObjPool->Maps.GetTileID(pos.x + 1, pos.y) != MENTLE)
 			return false;
->>>>>>> 03c2574cc853778e0e6192347a15cbd10c81ab21
 
 		break;
 	}
@@ -793,11 +768,11 @@ POINT Entity::GetPosition()
 	return pos;
 }
 
-<<<<<<< HEAD
 POINT Entity::GetSpawnPosition()
 {
 	return spawnPosition;
-=======
+}
+
 Entity* Entity::GetEntity()
 {
 	return this;
@@ -816,7 +791,6 @@ int Entity::GetHealth()
 int Entity::GetState()
 {
 	return nowState;
->>>>>>> 03c2574cc853778e0e6192347a15cbd10c81ab21
 }
 
 void Entity::SetPosition(int x, int y)
@@ -825,14 +799,11 @@ void Entity::SetPosition(int x, int y)
 	this->pos.y = y;
 }
 
-<<<<<<< HEAD
 void Entity::SetSpawnPosition(int x, int y)
 {
 	spawnPosition = { x,y };
 }
 
-=======
->>>>>>> 03c2574cc853778e0e6192347a15cbd10c81ab21
 void Entity::SetAnimation(int ani)
 {
 	nowAnimation = ani;
@@ -843,18 +814,14 @@ void Entity::SetDirection(int dire)
 	nowDirection = dire;
 }
 
-<<<<<<< HEAD
 void Entity::AddHealth(int plus)
-=======
+{
+	health += plus;
+}
+
 void Entity::SetState(int state)
 {
 	nowState = state;
-}
-
-void Entity::PlusHealth(int plus)
->>>>>>> 03c2574cc853778e0e6192347a15cbd10c81ab21
-{
-	health += plus;
 }
 
 bool Entity::isDead()
