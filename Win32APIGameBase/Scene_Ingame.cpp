@@ -25,6 +25,11 @@ void Ingame::Draw(HDC hMemDC)
 	ObjPool->ingameUI_Skill.Draw(hMemDC);
 	ObjPool->ingameUI_Stage.Draw(hMemDC);
 	ObjPool->ingameUI_Time.Draw(hMemDC);
+
+	TCHAR str[16];
+	wsprintf(str, L"%d", ObjPool->debug);
+	ObjPool->Gdi.SetTextsColor(RGB(255, 255, 255));
+	ObjPool->Gdi.Text(hMemDC, 150, 170, str, 36);
 }
 
 void Ingame::OnTimer(HWND hWnd, int timer)
@@ -73,6 +78,20 @@ void Ingame::OnMouseMove(HWND hWnd, int x, int y)
 
 void Ingame::OnKeyborad()
 {
+	DWORD exlastBitState = 0;
+	DWORD exkeyState;
+	exkeyState = GetAsyncKeyState(VK_F1);
+
+	if (exlastBitState == 0 && exkeyState & 0x0001) //UP //이전에 0x1 이 0 이면 실행(안 누르다가 눌렀을 때)
+	{
+		ObjPool->MonsterPool.AddMonster(DEALER, 4, 4);
+		exlastBitState = 1; // 누르는 중엔 실행되지 않도록 표시
+	}
+	if ((exkeyState & 0x8000) == 0) // 완전히 뗐다면 다음 실행을 위해서 상태 초기화
+	{
+		exlastBitState = 0;
+	}
+
 	DWORD lastBitState[9] = {0, };
 	DWORD keyState[9];
 

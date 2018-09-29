@@ -96,6 +96,9 @@
     <ClInclude Include="SoundObj.h">
       <Filter>ObjectPool\Obj</Filter>
     </ClInclude>
+    <ClInclude Include="A_Star.h">
+      <Filter>ObjectPool</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -157,6 +160,9 @@
     </ClCompile>
     <ClCompile Include="SoundObj.cpp">
       <Filter>ObjectPool\Obj</Filter>
+    </ClCompile>
+    <ClCompile Include="A_Star.cpp">
+      <Filter>ObjectPool</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

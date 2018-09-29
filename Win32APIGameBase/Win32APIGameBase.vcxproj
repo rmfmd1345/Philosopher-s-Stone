@@ -149,6 +149,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="A_Star.h" />
     <ClInclude Include="EntityObj.h" />
     <ClInclude Include="HeroObj.h" />
     <ClInclude Include="SoundObj.h" />
@@ -170,6 +171,7 @@
     <ClInclude Include="TileObj.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="A_Star.cpp" />
     <ClCompile Include="EntityObj.cpp" />
     <ClCompile Include="HeroObj.cpp" />
     <ClCompile Include="Scene_Credit.cpp" />

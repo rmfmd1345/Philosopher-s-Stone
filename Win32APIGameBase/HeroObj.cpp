@@ -267,9 +267,9 @@ POINT Hero::GetWalkTerm()
 	return Term;
 }
 
-void Hero::PlusHealth(int plus)
+void Hero::AddHealth(int a)
 {
-	health += plus;
+	health += a;
 }
 
 void Hero::DigMap()

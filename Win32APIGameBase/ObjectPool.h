@@ -1,5 +1,6 @@
 #pragma once
 #include "Sprite.h"
+#include "A_Star.h"
 #include "GdiObj.h"
 #include "SystemObj.h"
 #include "SoundObj.h"
@@ -66,6 +67,8 @@ public:
 
 	//Entity(Monster)
 	Monster MonsterPool;
+	int debug = 0;
+
 	Hero Player;
 
 public:

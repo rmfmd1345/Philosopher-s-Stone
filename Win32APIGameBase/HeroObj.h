@@ -40,7 +40,7 @@ public:
 	int GetWalkState();
 	POINT GetWalkTerm();
 
-	void PlusHealth(int plus);
+	void AddHealth(int a);
 	void DigMap();
 	void SetTrap();
 

@@ -22,8 +22,6 @@ public:
 	void Reset();
 	void Restart();
 
-	void SetScore(int score);
-	void SetCombo(int combo);
 	void SetPlaytime(int time);
 	void SetVolume(int vol);
 
