@@ -44,23 +44,26 @@ void Ingame::OnTimer(HWND hWnd, int timer)
 	}
 	if (timer == MONSTERTM)
 	{
-		if (ObjPool->MonsterPool.pool.empty())
+		if (ObjPool->MonsterPool.pool.empty() && ObjPool->MonsterTimer <= 0)
 		{
 			int Temp = 0;
 
-				Temp = rand() % 3;
+			Temp = rand() % 3;
 
-				switch (Temp)
-				{
-				case DEALER:
-					ObjPool->MonsterPool.AddMonster(hWnd, DEALER);
-				case WIZARD:
-					ObjPool->MonsterPool.AddMonster(hWnd, WIZARD);
-				case TANKER:
-					ObjPool->MonsterPool.AddMonster(hWnd, TANKER);
-				}
-			
-			ObjPool->MonsterTimer = 100;
+			switch (Temp)
+			{
+			case DEALER:
+				ObjPool->MonsterPool.AddMonster(hWnd, DEALER);
+				break;
+			case WIZARD:
+				ObjPool->MonsterPool.AddMonster(hWnd, WIZARD);
+				break;
+			case TANKER:
+				ObjPool->MonsterPool.AddMonster(hWnd, TANKER);
+				break;
+			}
+
+			ObjPool->MonsterTimer = 30;
 			return;
 		}
 
@@ -110,7 +113,7 @@ void Ingame::OnMouseRButtonDown(HWND hWnd, int x, int y)
 
 void Ingame::OnMouseRButtonUp(HWND hWnd, int x, int y)
 {
-	
+
 }
 
 void Ingame::OnMouseMove(HWND hWnd, int x, int y)
@@ -120,7 +123,7 @@ void Ingame::OnMouseMove(HWND hWnd, int x, int y)
 
 void Ingame::OnKeyborad()
 {
-	DWORD lastBitState[10] = {0, };
+	DWORD lastBitState[10] = { 0, };
 	DWORD keyState[10];
 
 	keyState[0] = GetAsyncKeyState(VK_UP);
@@ -134,7 +137,7 @@ void Ingame::OnKeyborad()
 	keyState[7] = GetAsyncKeyState(0x33); //3
 	keyState[8] = GetAsyncKeyState(0x34); //4
 	keyState[9] = GetAsyncKeyState(0x35); //5
-	
+
 	if (lastBitState[UP] == 0 && keyState[UP] & 0x0001) //B_UP //이전에 0x1 이 0 이면 실행(안 누르다가 눌렀을 때)
 	{
 		ObjPool->Player.SetDirection(UP);

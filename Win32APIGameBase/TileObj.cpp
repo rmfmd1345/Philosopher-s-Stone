@@ -97,7 +97,7 @@ void CMap::HoleActive(Entity* ent)
 
 			if (Map[pos.y][pos.x].SpinSpeed >= 9) //충분히 엔티티가 돌았으면
 			{
-				ent->Ternimate(); //엔티티 삭제
+				ent->PlusHealth(-100); //엔티티 삭제
 				Map[pos.y][pos.x].Tile_On = false; //재장전 필요한 상태로 변경
 			}
 			Map[pos.y][pos.x].damgeDelay = 0;

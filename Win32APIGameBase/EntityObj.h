@@ -96,7 +96,7 @@ public:
 	Entity Tanker;
 	vector<Entity> pool;
 
-	POINT spawnPosition = { 3, 5 };
+	POINT spawnPosition = { 2, 5 };
 
 	bool CheckMonsters;
 

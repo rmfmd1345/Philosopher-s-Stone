@@ -71,7 +71,7 @@ public:
 	Hero Player;
 	TCHAR TIMER[10];
 
-	int MonsterTimer = 100;
+	int MonsterTimer = 30;
 
 public:
 	//title Scene

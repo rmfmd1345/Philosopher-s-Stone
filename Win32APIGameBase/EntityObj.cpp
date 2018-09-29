@@ -13,7 +13,7 @@ void Entity::Init(HWND hWnd, int x, int y, int type, COLORREF sprite)
 	stateFrame = 0;
 
 	nowAnimation = WALK;
-	nowDirection = DOWN;
+	nowDirection = RIGHT;
 
 	nowFrame = 0;
 	maxFrame = 4;
@@ -271,22 +271,22 @@ bool Entity::isRoadBlocked(int dire)
 	switch (nowDirection)
 	{
 	case UP:
-		if (ObjPool->Maps.GetTileID(pos.x, pos.y - 1) != NONE && ObjPool->Maps.GetTileID(pos.x, pos.y - 1) != WALL)
+		if (ObjPool->Maps.GetTileID(pos.x, pos.y - 1) != NONE && ObjPool->Maps.GetTileID(pos.x, pos.y - 1) != WALL && ObjPool->Maps.GetTileID(pos.x, pos.y - 1) != MENTLE)
 			return false;
 		
 		break;
 	case DOWN:
-		if (ObjPool->Maps.GetTileID(pos.x, pos.y + 1) != NONE && ObjPool->Maps.GetTileID(pos.x, pos.y + 1) != WALL)
+		if (ObjPool->Maps.GetTileID(pos.x, pos.y + 1) != NONE && ObjPool->Maps.GetTileID(pos.x, pos.y + 1) != WALL && ObjPool->Maps.GetTileID(pos.x, pos.y + 1) != MENTLE)
 			return false;
 		
 		break;
 	case LEFT:
-		if (ObjPool->Maps.GetTileID(pos.x - 1, pos.y) != NONE && ObjPool->Maps.GetTileID(pos.x - 1, pos.y) != WALL)
+		if (ObjPool->Maps.GetTileID(pos.x - 1, pos.y) != NONE && ObjPool->Maps.GetTileID(pos.x - 1, pos.y) != WALL && ObjPool->Maps.GetTileID(pos.x - 1, pos.y) != MENTLE)
 			return false;
 
 		break;
 	case RIGHT:
-		if (ObjPool->Maps.GetTileID(pos.x + 1, pos.y) != NONE && ObjPool->Maps.GetTileID(pos.x + 1, pos.y) != WALL)
+		if (ObjPool->Maps.GetTileID(pos.x + 1, pos.y) != NONE && ObjPool->Maps.GetTileID(pos.x + 1, pos.y) != WALL && ObjPool->Maps.GetTileID(pos.x + 1, pos.y) != MENTLE)
 			return false;
 
 		break;
@@ -420,7 +420,7 @@ void Entity::PlusHealth(int plus)
 
 bool Entity::isDead()
 {
-	return !(health);
+	return !(health > 0);
 }
 
 bool Entity::isWalk()
