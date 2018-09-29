@@ -18,33 +18,40 @@ void ObjectPool::CreateObject(HWND hWnd)	//객체의 초기 설정을 적는 곳
 	creditBg.Init(hWnd, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, L"./Image/Background/Credit_Bg.bmp");
 
 	//ingame Scene
-	ingameBtn_Option.Init(hWnd, 1155, 30, 56, 56, L"./Image/UI/Ingame/ui_option.bmp", L"./Image/UI/Ingame/ui_option_down.bmp", L"./Image/UI/Ingame/ui_option_up.bmp");
+	ingameBtn_Option.Init(hWnd, 1200, 30, 56, 56, L"./Image/UI/Ingame/ui_option.bmp", L"./Image/UI/Ingame/ui_option_down.bmp", L"./Image/UI/Ingame/ui_option_up.bmp");
 	
-	ingameUI_Stone.Init(hWnd, 870, 25, 224, 70, L"./Image/UI/Ingame/ui_stone.bmp");
+	ingameUI_Stone.Init(hWnd, 950, 25, 224, 70, L"./Image/UI/Ingame/ui_stone.bmp");
 	
 	ingameUI_Trap.Init(hWnd, 330, 585, 616, 136, L"./Image/UI/Ingame/ui_trap.bmp");
 	
 	ingameUI_Skill.Init(hWnd, 20, 180, 104, 454, L"./Image/UI/Ingame/ui_skill.bmp");
 	
-	ingameUI_Stage.Init(hWnd, 0, 0, 400, 148, L"./Image/UI/Ingame/ui_stage_test.bmp");
+	ingameUI_Stage.Init(hWnd, 0, 0, 400, 156, L"./Image/UI/Ingame/ui_stage.bmp");
 	
 	ingameUI_Time.Init(hWnd, 475, 0, 320, 134, L"./Image/UI/Ingame/ui_time.bmp");
 
 	Maps.InitMap(hWnd);
 
 	Maps.ResetMap(5, 5);
+
+	// for test
 	for(int i = 0; i < 3; i++)
 		for(int j = 0; j < 3; j++)
 			Maps.SetTileOnMap(ObjPool->Maps.Floor, 4 + i, 4 + j);
 
+<<<<<<< HEAD
 	MonsterPool.Init(hWnd);
 	//MonsterPool.AddMonster(DEALER, 4, 4);
 	//MonsterPool.AddMonster(WIZARD, 5, 4);
 	//MonsterPool.AddMonster(TANKER, 6, 4);
+=======
+	Maps.SetTileOnMap(ObjPool->Maps.Floor, 2, 5);
+	Maps.SetTileOnMap(ObjPool->Maps.Floor, 3, 5);
+	// for test
+>>>>>>> 03c2574cc853778e0e6192347a15cbd10c81ab21
 
-	Player.Init(hWnd, 5, 5);
-	//Player.SetPosition(5, 5);
-	//MonsterPool.AddMonster(hWnd, HERO, 4, 4);
+	MonsterPool.Init(hWnd);
+	Player.Init(hWnd, 3, 5);
 }
 
 void ObjectPool::DeleteObject()				//비트맵객체는 반드시 종료해주기

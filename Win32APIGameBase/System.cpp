@@ -56,7 +56,11 @@ void ApiSystem::Update()	//갱신
 	InputManager::InputUpdate();	//메세지가 아닌 인풋을 갱신 (ex. 키보드)
 
 	if (FrameManager::Update())		//프레임이 60이 넘지 않게 false와 true를 반환해서 그리기 프레임 스킵
-		DrawManager::Drawing(m_hWnd);	
+	{
+		DrawManager::Drawing(m_hWnd);
+		InputManager::OnUpdate();
+	}
+
 }
 
 void ApiSystem::CreateApiWindow()	//윈도우 생성.. 생략

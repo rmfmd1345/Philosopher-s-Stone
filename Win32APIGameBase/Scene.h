@@ -4,6 +4,7 @@
 namespace Ingame {
 	void Draw(HDC hMemDC);
 	void OnTimer(HWND hWnd, int timer);
+	void Update();
 	void OnMouseLButtonDown(HWND hWnd, int x, int y);
 	void OnMouseLButtonUp(HWND hWnd, int x, int y);
 	void OnMouseRButtonDown(HWND hWnd, int x, int y);
@@ -15,6 +16,7 @@ namespace Ingame {
 namespace Title {
 	void Draw(HDC hMemDC);
 	void OnTimer(HWND hWnd, int timer);
+	void Update();
 	void OnMouseLButtonDown(HWND hWnd, int x, int y);
 	void OnMouseLButtonUp(HWND hWnd, int x, int y);
 	void OnMouseRButtonDown(HWND hWnd, int x, int y);
@@ -26,6 +28,7 @@ namespace Title {
 namespace Credit {
 	void Draw(HDC hMemDC);
 	void OnTimer(HWND hWnd, int timer);
+	void Update();
 	void OnMouseLButtonDown(HWND hWnd, int x, int y);
 	void OnMouseLButtonUp(HWND hWnd, int x, int y);
 	void OnMouseRButtonDown(HWND hWnd, int x, int y);

@@ -19,8 +19,8 @@ enum Tile_ID_List  // 식별 번호 리스트
 	TRAP_Niddle,
 	TRAP_Hole,
 	TRAP_ScareCrow,
-	TRAP_Cunfution,
-	TRAP_Grap
+	TRAP_Cunfusion,
+	TRAP_Grab
 };
 
 enum eDirection
@@ -33,13 +33,15 @@ enum eDirection
 	KEY_1,
 	KEY_2,
 	KEY_3,
-	KEY_4
+	KEY_4,
+	KEY_5
 };
 
 enum eTimer
 {
 	UPDATE,
-	ANIMATION
+	ANIMATION,
+	MONSTERTM
 };
 
 class ObjectPool		//오브젝트 풀 (전역변수같이 사용됨)
@@ -70,6 +72,9 @@ public:
 	int debug = 0;
 
 	Hero Player;
+	TCHAR TIMER[10];
+
+	int MonsterTimer = 30;
 
 public:
 	//title Scene

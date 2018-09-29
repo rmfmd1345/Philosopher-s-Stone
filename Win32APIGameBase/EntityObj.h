@@ -10,7 +10,11 @@ enum eState
 	ATTACK,
 	CLEAR,
 	FINDWAY,
+<<<<<<< HEAD
 	MARKFORFIND,
+=======
+	INTRAP,
+>>>>>>> 03c2574cc853778e0e6192347a15cbd10c81ab21
 	TRAPSETTING
 };
 
@@ -43,6 +47,7 @@ private:
 	int health;
 
 public:
+
 	void Init(HWND hWnd, int x, int y, int type, COLORREF sprite = RGB(255, 0, 255));
 	void Draw(HDC hMemDC, int x, int y);
 	void Ternimate();
@@ -51,12 +56,20 @@ public:
 	void UpdateState();
 
 	POINT GetPosition();
+<<<<<<< HEAD
 	POINT GetSpawnPosition();
+=======
+	Entity* GetEntity();
+	int GetDirection();
+	int GetHealth();
+	int GetState();
+>>>>>>> 03c2574cc853778e0e6192347a15cbd10c81ab21
 
 	void SetPosition(int x, int y);
 	void SetSpawnPosition(int x, int y);
 	void SetAnimation(int ani);
 	void SetDirection(int dire);
+	void SetState(int state);
 
 	void AddHealth(int plus);
 
@@ -100,16 +113,25 @@ public:
 	Monster() { };
 	~Monster() { };
 
-private:
+//private: /*ActiveTile 접근하려고 풀어둠*/
 	Entity Dealer;
 	Entity Wizard;
 	Entity Tanker;
 	vector<Entity> pool;
 
+<<<<<<< HEAD
+=======
+	POINT spawnPosition = { 2, 5 };
+
+	bool CheckMonsters;
+
+>>>>>>> 03c2574cc853778e0e6192347a15cbd10c81ab21
 public:
 	void Init(HWND hWnd);
 	void Ternimate();
 	
+	Monster GetMonster();
+
 	void Draw(HDC hMemDC, int x, int y);
 	void Animation();
 	void UpdateState();

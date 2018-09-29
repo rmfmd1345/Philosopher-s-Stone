@@ -18,7 +18,7 @@ void Entity::Init(HWND hWnd, int x, int y, int type, COLORREF sprite)
 	stateFrame = 0;
 
 	nowAnimation = WALK;
-	nowDirection = DOWN;
+	nowDirection = RIGHT;
 
 	nowFrame = 0;
 	maxFrame = 4;
@@ -28,6 +28,7 @@ void Entity::Init(HWND hWnd, int x, int y, int type, COLORREF sprite)
 	switch (type)
 	{
 	case DEALER:
+<<<<<<< HEAD
 		Ani_stand[UP].Init(hWnd, 0, 0, 60, 122, 1, L"./Image/Walk_Ani/Dealer_Back.bmp");
 		Ani_stand[DOWN].Init(hWnd, 0, 0, 54, 122, 1, L"./Image/Walk_Ani/Dealer_Front.bmp");
 		Ani_stand[LEFT].Init(hWnd, 0, 0, 76, 122, 1, L"./Image/Walk_Ani/Dealer_Left.bmp");
@@ -42,6 +43,22 @@ void Entity::Init(HWND hWnd, int x, int y, int type, COLORREF sprite)
 		Ani_attack[DOWN].Init(hWnd, 0, 0, 216, 122, 4, L"./Image/Walk_Ani/Dealer_Front.bmp");
 		Ani_attack[LEFT].Init(hWnd, 0, 0, 304, 122, 4, L"./Image/Walk_Ani/Dealer_Left.bmp");
 		Ani_attack[RIGHT].Init(hWnd, 0, 0, 336, 122, 4, L"./Image/Walk_Ani/Dealer_Right.bmp");
+=======
+		Ani_stand[UP].Init(hWnd, 0, 0, 80, 120, 1, L"./Image/Walk_Ani/dealer_walk_back.bmp");
+		Ani_stand[DOWN].Init(hWnd, 0, 0, 80, 120, 1, L"./Image/Walk_Ani/dealer_walk_front.bmp");
+		Ani_stand[LEFT].Init(hWnd, 0, 0, 80, 120, 1, L"./Image/Walk_Ani/dealer_walk_left.bmp");
+		Ani_stand[RIGHT].Init(hWnd, 0, 0, 80, 120, 1, L"./Image/Walk_Ani/dealer_walk_right.bmp");
+
+		Ani_walk[UP].Init(hWnd, 0, 0, 480, 120, 6, L"./Image/Walk_Ani/dealer_walk_back.bmp");
+		Ani_walk[DOWN].Init(hWnd, 0, 0, 480, 120, 6, L"./Image/Walk_Ani/dealer_walk_front.bmp");
+		Ani_walk[LEFT].Init(hWnd, 0, 0, 480, 120, 6, L"./Image/Walk_Ani/dealer_walk_left.bmp");
+		Ani_walk[RIGHT].Init(hWnd, 0, 0, 480, 120, 6, L"./Image/Walk_Ani/dealer_walk_right.bmp");
+		
+		/*Ani_attack[B_UP].Init(hWnd, 0, 0, 240, 122, 4, L"./Image/Walk_Ani/Dealer_Back.bmp");
+		Ani_attack[B_DOWN].Init(hWnd, 0, 0, 216, 122, 4, L"./Image/Walk_Ani/Dealer_Front.bmp");
+		Ani_attack[B_LEFT].Init(hWnd, 0, 0, 304, 122, 4, L"./Image/Walk_Ani/Dealer_Left.bmp");
+		Ani_attack[B_RIGHT].Init(hWnd, 0, 0, 336, 122, 4, L"./Image/Walk_Ani/Dealer_Right.bmp");*/
+>>>>>>> 03c2574cc853778e0e6192347a15cbd10c81ab21
 		break;
 	case WIZARD:
 		Ani_stand[UP].Init(hWnd, 0, 0, 70, 102, 1, L"./Image/Walk_Ani/Wizard_Back.bmp");
@@ -108,21 +125,21 @@ void Entity::Draw(HDC hMemDC, int x, int y)
 	switch (type)
 	{
 	case DEALER:
-		switch (nowDirection)
+		/*switch (nowDirection)
 		{
-		case UP:
+		case B_UP:
 			Term_x = 5;
 			break;
-		case DOWN:
+		case B_DOWN:
 			Term_x = 15;
 			break;
-		case LEFT:
+		case B_LEFT:
 			Term_x = -12;
 			break;
-		case RIGHT:
+		case B_RIGHT:
 			Term_x = 15;
 			break;
-		}
+		}*/
 		Term_y = -55;
 		break;
 	case WIZARD:
@@ -186,8 +203,9 @@ void Entity::Draw(HDC hMemDC, int x, int y)
 	switch (nowAnimation)
 	{
 	case STAND:
-		Ani_stand[nowDirection].SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y);
+		Ani_stand[nowDirection].SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y - 40);
 		Ani_stand[nowDirection].Draw(hMemDC);
+<<<<<<< HEAD
 		break;
 	case WALK:
 		Ani_walk[nowDirection].SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y);
@@ -195,6 +213,15 @@ void Entity::Draw(HDC hMemDC, int x, int y)
 		break;
 	case ATTACK:
 		Ani_attack[nowDirection].SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y);
+=======
+		break;														 
+	case WALK:														 
+		Ani_walk[nowDirection].SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y - 40);
+		Ani_walk[nowDirection].Draw(hMemDC); 
+		break;														 
+	case ATTACK:													 
+		Ani_attack[nowDirection].SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y - 40);
+>>>>>>> 03c2574cc853778e0e6192347a15cbd10c81ab21
 		Ani_attack[nowDirection].Draw(hMemDC);
 		break;
 	case MARKFORFIND:
@@ -623,6 +650,7 @@ bool Entity::isRoadBlocked(int dire)
 	switch (dire)
 	{
 	case UP:
+<<<<<<< HEAD
 		return isRoadBlocked(pos.x, pos.y - 1);
 
 		break;
@@ -636,6 +664,25 @@ bool Entity::isRoadBlocked(int dire)
 		break;
 	case RIGHT:
 		return isRoadBlocked(pos.x + 1, pos.y);
+=======
+		if (ObjPool->Maps.GetTileID(pos.x, pos.y - 1) != NONE && ObjPool->Maps.GetTileID(pos.x, pos.y - 1) != WALL && ObjPool->Maps.GetTileID(pos.x, pos.y - 1) != MENTLE)
+			return false;
+		
+		break;
+	case DOWN:
+		if (ObjPool->Maps.GetTileID(pos.x, pos.y + 1) != NONE && ObjPool->Maps.GetTileID(pos.x, pos.y + 1) != WALL && ObjPool->Maps.GetTileID(pos.x, pos.y + 1) != MENTLE)
+			return false;
+		
+		break;
+	case LEFT:
+		if (ObjPool->Maps.GetTileID(pos.x - 1, pos.y) != NONE && ObjPool->Maps.GetTileID(pos.x - 1, pos.y) != WALL && ObjPool->Maps.GetTileID(pos.x - 1, pos.y) != MENTLE)
+			return false;
+
+		break;
+	case RIGHT:
+		if (ObjPool->Maps.GetTileID(pos.x + 1, pos.y) != NONE && ObjPool->Maps.GetTileID(pos.x + 1, pos.y) != WALL && ObjPool->Maps.GetTileID(pos.x + 1, pos.y) != MENTLE)
+			return false;
+>>>>>>> 03c2574cc853778e0e6192347a15cbd10c81ab21
 
 		break;
 	}
@@ -746,9 +793,30 @@ POINT Entity::GetPosition()
 	return pos;
 }
 
+<<<<<<< HEAD
 POINT Entity::GetSpawnPosition()
 {
 	return spawnPosition;
+=======
+Entity* Entity::GetEntity()
+{
+	return this;
+}
+
+int Entity::GetDirection()
+{
+	return nowDirection;
+}
+
+int Entity::GetHealth()
+{
+	return health;
+}
+
+int Entity::GetState()
+{
+	return nowState;
+>>>>>>> 03c2574cc853778e0e6192347a15cbd10c81ab21
 }
 
 void Entity::SetPosition(int x, int y)
@@ -757,11 +825,14 @@ void Entity::SetPosition(int x, int y)
 	this->pos.y = y;
 }
 
+<<<<<<< HEAD
 void Entity::SetSpawnPosition(int x, int y)
 {
 	spawnPosition = { x,y };
 }
 
+=======
+>>>>>>> 03c2574cc853778e0e6192347a15cbd10c81ab21
 void Entity::SetAnimation(int ani)
 {
 	nowAnimation = ani;
@@ -772,14 +843,23 @@ void Entity::SetDirection(int dire)
 	nowDirection = dire;
 }
 
+<<<<<<< HEAD
 void Entity::AddHealth(int plus)
+=======
+void Entity::SetState(int state)
+{
+	nowState = state;
+}
+
+void Entity::PlusHealth(int plus)
+>>>>>>> 03c2574cc853778e0e6192347a15cbd10c81ab21
 {
 	health += plus;
 }
 
 bool Entity::isDead()
 {
-	return !(health);
+	return !(health > 0);
 }
 
 bool Entity::isWalk()
@@ -818,6 +898,11 @@ void Monster::Init(HWND hWnd)
 	Dealer.Init(hWnd, 0, 0, DEALER);
 	Wizard.Init(hWnd, 0, 0, WIZARD);
 	Tanker.Init(hWnd, 0, 0, TANKER);
+}
+
+Monster Monster::GetMonster()
+{
+	return *this;
 }
 
 void Monster::Ternimate()
@@ -930,14 +1015,18 @@ void Monster::CheckHealth()
 {
 	if (pool.empty()) return;
 
-	for (auto it = pool.begin(); it != pool.end(); it++)
+	for (auto it = pool.begin(); it != pool.end();)
 	{
 		if (it->isDead())
 		{
-			it->Ternimate();
+   			it->Ternimate();
 			it = pool.erase(it);
 
 			if (pool.empty()) return;
+		}
+		else
+		{
+			it++;
 		}
 	}
 }
