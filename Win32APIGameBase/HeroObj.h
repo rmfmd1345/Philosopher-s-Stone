@@ -37,6 +37,7 @@ public:
 	void SetDirection(int dire);
 	void SetState(int state);
 	int GetState();
+	int GetDiraction();
 
 	POINT GetPosition();
 	int GetWalkState();
@@ -45,6 +46,7 @@ public:
 	void PlusHealth(int plus);
 	void DigMap();
 	void SetTrap();
+	void RepairTrap();
 
 	bool isDead();
 	bool isWalk();
