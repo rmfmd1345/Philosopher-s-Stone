@@ -1030,7 +1030,7 @@ void Monster::DrawMap(HDC hMemDC, int x, int y)
 
 	int Term_x = ObjPool->Player.GetWalkTerm().x, Term_y = ObjPool->Player.GetWalkTerm().y;
 
-	for (int i = Map_Start_y; i < Map_End_y; i++)
+	/*for (int i = Map_Start_y; i < Map_End_y; i++)
 	{
 		for (int j = Map_Start_x; j < Map_End_x; j++)
 		{
@@ -1047,5 +1047,5 @@ void Monster::DrawMap(HDC hMemDC, int x, int y)
 
 			ObjPool->Gdi.Text(hMemDC, ((j - Map_Start_x) - 1) * 80 + Term_x - 40 + 30, ((i - Map_Start_y) - 2) * 80 + Term_y + 40, str, 36);
 		}
-	}
+	}*/
 }

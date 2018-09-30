@@ -103,7 +103,6 @@ void CMap::HoleActive(Entity* ent)
 			Map[pos.y][pos.x].damgeDelay = 0;
 		}
 	}
-
 }
 
 

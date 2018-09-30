@@ -25,10 +25,10 @@ void Ingame::Draw(HDC hMemDC)
 	ObjPool->ingameUI_Stage.Draw(hMemDC);
 	ObjPool->ingameUI_Time.Draw(hMemDC);
 
-	TCHAR str[16];
+	/*TCHAR str[16];
 	wsprintf(str, L"%d", ObjPool->debug);
 	ObjPool->Gdi.SetTextsColor(RGB(255, 255, 255));
-	ObjPool->Gdi.Text(hMemDC, 150, 170, str, 36);
+	ObjPool->Gdi.Text(hMemDC, 150, 170, str, 36);*/
 
 	ObjPool->Gdi.SetTextsColor(RGB(0, 124, 255));
 	ObjPool->Gdi.Text(hMemDC, 560, 45, ObjPool->TIMER, 60);
