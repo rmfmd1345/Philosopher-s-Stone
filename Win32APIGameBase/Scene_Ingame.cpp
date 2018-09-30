@@ -188,8 +188,6 @@ void Ingame::OnKeyborad()
 			ObjPool->Player.SetState(TRAPSETTING); //플레이어 고정상태로 만들기
 			ObjPool->Player.selectedTrap = TRAP_Niddle;
 		}
-<<<<<<< HEAD
-=======
 
 		else if (ObjPool->Player.GetState() == WALK) //이동중에 누르면 다 걸어갈때까지 대기
 		{
@@ -197,7 +195,6 @@ void Ingame::OnKeyborad()
 			ObjPool->Player.isWatingTrapSet = true;
 		}
 
->>>>>>> 33781a3e582143d9fd947c39b7cb4526933669c9
 		else if (ObjPool->Player.GetState() == TRAPSETTING) //고정상태에서 1번키를 한 번 더 누르면 고정해제
 			ObjPool->Player.SetState(STAND);
 
