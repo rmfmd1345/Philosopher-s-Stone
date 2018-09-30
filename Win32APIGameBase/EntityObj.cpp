@@ -109,21 +109,21 @@ void Entity::Draw(HDC hMemDC, int x, int y)
 	switch (type)
 	{
 	case DEALER:
-		/*switch (nowDirection)
+		switch (nowDirection)
 		{
-		case B_UP:
+		case UP:
 			Term_x = 5;
 			break;
-		case B_DOWN:
+		case DOWN:
 			Term_x = 15;
 			break;
-		case B_LEFT:
+		case LEFT:
 			Term_x = -12;
 			break;
-		case B_RIGHT:
+		case RIGHT:
 			Term_x = 15;
 			break;
-		}*/
+		}
 		Term_y = -55;
 		break;
 	case WIZARD:
@@ -643,7 +643,11 @@ bool Entity::isRoadBlocked(int dire)
 	//	return isRoadBlocked(pos.x + 1, pos.y);
 	//	if (ObjPool->Maps.GetTileID(pos.x, pos.y - 1) != NONE && ObjPool->Maps.GetTileID(pos.x, pos.y - 1) != WALL && ObjPool->Maps.GetTileID(pos.x, pos.y - 1) != MENTLE)
 	//		return false;
-		
+
+	case UP:
+		if (ObjPool->Maps.GetTileID(pos.x, pos.y - 1) != NONE && ObjPool->Maps.GetTileID(pos.x, pos.y - 1) != WALL && ObjPool->Maps.GetTileID(pos.x, pos.y - 1) != MENTLE)
+			return false;
+
 		break;
 	case DOWN:
 		if (ObjPool->Maps.GetTileID(pos.x, pos.y + 1) != NONE && ObjPool->Maps.GetTileID(pos.x, pos.y + 1) != WALL && ObjPool->Maps.GetTileID(pos.x, pos.y + 1) != MENTLE)
@@ -1041,7 +1045,7 @@ void Monster::DrawMap(HDC hMemDC, int x, int y)
 			else
 				wsprintf(str, L" ");
 
-			ObjPool->Gdi.Text(hMemDC, ((j - Map_Start_x) - 1) * 80 + Term_x - 40 + 30, ((i - Map_Start_y) - 2) * 80 + Term_y + 90, str, 36);
+			ObjPool->Gdi.Text(hMemDC, ((j - Map_Start_x) - 1) * 80 + Term_x - 40 + 30, ((i - Map_Start_y) - 2) * 80 + Term_y + 40, str, 36);
 		}
 	}
 }
