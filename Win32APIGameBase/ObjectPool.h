@@ -20,7 +20,8 @@ enum Tile_ID_List  // 식별 번호 리스트
 	TRAP_Hole,
 	TRAP_ScareCrow,
 	TRAP_Cunfusion,
-	TRAP_Grab
+	TRAP_Grab,
+	TRAP_GrabArea
 };
 
 enum eDirection

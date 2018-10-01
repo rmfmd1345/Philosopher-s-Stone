@@ -84,9 +84,11 @@ void Ingame::OnTimer(HWND hWnd, int timer)
 void Ingame::Update() //씬 업데이트
 {
 	for (auto it = ObjPool->MonsterPool.pool.begin(); it != ObjPool->MonsterPool.pool.end(); it++)
-	{
+	{	
+		//monsterID를 만들어서, 함정 발동중인 몬스터의 ID에 대해서만 함수가 발동되게 해야하나?
 		ObjPool->Maps.ActiveTile(it->GetEntity()); //몬스터에 대해 밟고 있는 타일 발동
 		ObjPool->MonsterPool.CheckHealth();
+
 		if (ObjPool->MonsterPool.pool.empty()) return;
 	}
 

@@ -37,7 +37,8 @@ public:
 	CTile Trap_Hole; // 구멍 함정
 	CTile Trap_ScareCrow; // 허수아비 함정
 	CTile Trap_Cunfusion; // 혼란 함정
-	CTile Trap_Grab; // 갈고리 함정
+	CTile Trap_Grab; // 갈고리함정
+	CTile Trap_GrabArea; // 갈고리함정 영향권
 
 	Bitmap Brick[6]; // 벽돌 이미지
 
@@ -60,6 +61,7 @@ public:
 	void ResetMap(int Character_x, int Character_y); // 스테이지 넘어갈 때 맵을 초기화
 	void ActiveTile(Entity* ent); // 해당 타일의 기능을 실행 (람다 사용)
 	void SetTileOnMap(CTile Tile, int x, int y); // 타일을 맵에 배치
+	void SetTrapOnMap(CTile Tile, int x, int y); // 함정을 맵에 배치
 	void DrawMap(HDC hMemDC, int x, int y); //  플레이어를 기준으로 화면에 나오는 타일을 계산하여 출력
 	void SetBrick(int x, int y); // 벽돌 위치를 설정
 	void DrawBrick(HDC hMemDC, int x, int y); // 벽돌을 그려냄

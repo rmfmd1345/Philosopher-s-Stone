@@ -35,7 +35,8 @@ void CMap::InitMap(HWND hwnd)
 	Wall.InitTile(hwnd, 1 /*Frame*/, WALL, L"./Image/Tile/Wall.bmp", [&](Entity* ent) {});
 	Trap_Niddle.InitTile(hwnd, 1 /*Frame*/, TRAP_Niddle, L"./Image/Tile/Niddle.bmp", [&](Entity* ent) {NiddleActive(ent);});
 	Trap_ScareCrow.InitTile(hwnd, 1 /*Frame*/, TRAP_ScareCrow, L"./Image/Tile/Scarecrow_test.bmp", [&](Entity* ent) {ScareCrowActive(ent); });
-	Trap_Grab.InitTile(hwnd, 1 /*Frame*/, TRAP_Grab, L"./Image/Tile/Grap.bmp", [&](Entity* ent) {GrabActive(ent);});
+	Trap_Grab.InitTile(hwnd, 1 /*Frame*/, TRAP_Grab, L"./Image/Tile/Grap.bmp", [&](Entity* ent) {});
+	Trap_GrabArea.InitTile(hwnd, 1 /*Frame*/, TRAP_GrabArea, L"./Image/Tile/GrapArea.bmp", [&](Entity* ent) {GrabActive(ent); });
 	Trap_Cunfusion.InitTile(hwnd, 1 /*Frame*/, TRAP_Cunfusion, L"./Image/Tile/Cunfusion.bmp", [&](Entity* ent) {ConfusionActive(ent); });
 	Trap_Hole.InitTile(hwnd, 1 /*Frame*/, TRAP_Hole, L"./Image/Tile/Hole.bmp", [&](Entity* ent) {HoleActive(ent);});
 
@@ -84,10 +85,10 @@ void CMap::HoleActive(Entity* ent)
 		ent->SetAnimation(STAND); //엔티티 서있는 상태로 변경
 		Map[pos.y][pos.x].damgeDelay++;
 		printf("카운트 : %f\n 속도: %f\n", Map[pos.y][pos.x].damgeDelay, Map[pos.y][pos.x].SpinSpeed);
-	//	printf("STATE : %d\n", ent->nowAnimation);
+
 		if (Map[pos.y][pos.x].damgeDelay >= Map[pos.y][pos.x].SpinSpeed)
 		{
-			if (ent->GetDirection() != DOWN) //엔티티 돌리기
+			if (ent->GetDirection() != RIGHT) //엔티티 돌리기
 				ent->SetDirection(ent->GetDirection() + 1);
 			else
 				ent->SetDirection(UP);
@@ -99,6 +100,7 @@ void CMap::HoleActive(Entity* ent)
 			{
 				ent->AddHealth(-100); //엔티티 삭제
 				Map[pos.y][pos.x].Tile_On = false; //재장전 필요한 상태로 변경
+				Map[pos.y][pos.x].SpinSpeed = 3;
 			}
 			Map[pos.y][pos.x].damgeDelay = 0;
 		}
@@ -187,6 +189,14 @@ void CMap::ActiveTile(Entity* ent)
 
 void CMap::SetTileOnMap(CTile Tile, int x, int y)
 {
+	Map[y][x] = Tile;
+	Map[y][x].Tile_Sprite.SetPosition(x * 80, y * 80);
+}
+
+void CMap::SetTrapOnMap(CTile Tile, int x, int y)
+{
+	if (Map[y][x].Tile_ID != FLOOR) return;
+
 	Map[y][x] = Tile;
 	Map[y][x].Tile_Sprite.SetPosition(x * 80, y * 80);
 }

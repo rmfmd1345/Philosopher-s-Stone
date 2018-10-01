@@ -17,7 +17,7 @@ void Hero::Init(HWND hWnd, int x, int y, COLORREF sprite)
 	maxFrame = 4;
 
 	health = 100;
-	Rock_Num = 0;
+	Rock_Num = 99999;
 
 	Ani_stand[UP].Init(hWnd, 0, 0, 80, 132, 1, L"./Image/Walk_Ani/hero_walk_back.bmp");
 	Ani_stand[DOWN].Init(hWnd, 0, 0, 80, 132, 1, L"./Image/Walk_Ani/hero_walk_front.bmp");
@@ -340,38 +340,43 @@ void Hero::SetTrap()
 	case NONE:
 		break;
 	case TRAP_Niddle:
-		if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == FLOOR && ObjPool->Player.Rock_Num >= 10)
+		if (ObjPool->Player.Rock_Num >= 10)
 		{
 			ObjPool->Player.Rock_Num -= 10;
-			ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Trap_Niddle, Temp_X, Temp_Y);
+			ObjPool->Maps.SetTrapOnMap(ObjPool->Maps.Trap_Niddle, Temp_X, Temp_Y);
 		}
 		break;
 	case TRAP_Hole:
-		if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == FLOOR && ObjPool->Player.Rock_Num >= 30)
+		if (ObjPool->Player.Rock_Num >= 30)
 		{
 			ObjPool->Player.Rock_Num -= 30;
-			ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Trap_Hole, Temp_X, Temp_Y);
+			ObjPool->Maps.SetTrapOnMap(ObjPool->Maps.Trap_Hole, Temp_X, Temp_Y);
 		}
 		break;
 	case TRAP_ScareCrow:
-		if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == FLOOR && ObjPool->Player.Rock_Num >= 15)
+		if (ObjPool->Player.Rock_Num >= 15)
 		{
 			ObjPool->Player.Rock_Num -= 15;
-			ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Trap_ScareCrow, Temp_X, Temp_Y);
+			ObjPool->Maps.SetTrapOnMap(ObjPool->Maps.Trap_ScareCrow, Temp_X, Temp_Y);
 		}
 		break;
 	case TRAP_Grab:
-		if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == FLOOR && ObjPool->Player.Rock_Num >= 20)
+		if (ObjPool->Player.Rock_Num >= 20)
 		{
 			ObjPool->Player.Rock_Num -= 20;
-			ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Trap_Grab, Temp_X, Temp_Y);
+			ObjPool->Maps.SetTrapOnMap(ObjPool->Maps.Trap_Grab, Temp_X, Temp_Y);
+
+			ObjPool->Maps.SetTrapOnMap(ObjPool->Maps.Trap_GrabArea, Temp_X + 1, Temp_Y); //갈고리함정 영역 설정
+			ObjPool->Maps.SetTrapOnMap(ObjPool->Maps.Trap_GrabArea, Temp_X - 1, Temp_Y);
+			ObjPool->Maps.SetTrapOnMap(ObjPool->Maps.Trap_GrabArea, Temp_X, Temp_Y + 1);
+			ObjPool->Maps.SetTrapOnMap(ObjPool->Maps.Trap_GrabArea, Temp_X, Temp_Y - 1);
 		}
 		break;
 	case TRAP_Cunfusion:
-		if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == FLOOR && ObjPool->Player.Rock_Num >= 25)
+		if (ObjPool->Player.Rock_Num >= 25)
 		{
 			ObjPool->Player.Rock_Num -= 25;
-			ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Trap_Cunfusion, Temp_X, Temp_Y);
+			ObjPool->Maps.SetTrapOnMap(ObjPool->Maps.Trap_Cunfusion, Temp_X, Temp_Y);
 		}
 		break;
 	default:

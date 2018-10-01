@@ -57,8 +57,8 @@ void ApiSystem::Update()	//갱신
 
 	if (FrameManager::Update())		//프레임이 60이 넘지 않게 false와 true를 반환해서 그리기 프레임 스킵
 	{
-		DrawManager::Drawing(m_hWnd);
 		InputManager::OnUpdate();
+		DrawManager::Drawing(m_hWnd);
 	}
 
 }
