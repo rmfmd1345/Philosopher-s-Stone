@@ -14,10 +14,10 @@ void Entity::Init(HWND hWnd, int x, int y, int type, COLORREF sprite)
 	this->type = type;
 	this->pos = { x, y };
 
-	nowState = WALK;
+	nowState = FINDWAY;
 	stateFrame = 0;
 
-	nowAnimation = WALK;
+	nowAnimation = STAND;
 	nowDirection = RIGHT;
 
 	nowFrame = 0;
@@ -39,10 +39,10 @@ void Entity::Init(HWND hWnd, int x, int y, int type, COLORREF sprite)
 		Ani_walk[LEFT].Init(hWnd, 0, 0, 480, 120, 6, L"./Image/Walk_Ani/dealer_walk_left.bmp");
 		Ani_walk[RIGHT].Init(hWnd, 0, 0, 480, 120, 6, L"./Image/Walk_Ani/dealer_walk_right.bmp");
 		
-		/*Ani_attack[B_UP].Init(hWnd, 0, 0, 240, 122, 4, L"./Image/Walk_Ani/Dealer_Back.bmp");
-		Ani_attack[B_DOWN].Init(hWnd, 0, 0, 216, 122, 4, L"./Image/Walk_Ani/Dealer_Front.bmp");
-		Ani_attack[B_LEFT].Init(hWnd, 0, 0, 304, 122, 4, L"./Image/Walk_Ani/Dealer_Left.bmp");
-		Ani_attack[B_RIGHT].Init(hWnd, 0, 0, 336, 122, 4, L"./Image/Walk_Ani/Dealer_Right.bmp");*/
+		Ani_attack[UP].Init(hWnd, 0, 0, 240, 122, 4, L"./Image/Walk_Ani/dealer_walk_back.bmp");
+		Ani_attack[DOWN].Init(hWnd, 0, 0, 216, 122, 4, L"./Image/Walk_Ani/dealer_walk_front.bmp");
+		Ani_attack[LEFT].Init(hWnd, 0, 0, 304, 122, 4, L"./Image/Walk_Ani/dealer_walk_left.bmp");
+		Ani_attack[RIGHT].Init(hWnd, 0, 0, 336, 122, 4, L"./Image/Walk_Ani/dealer_walk_right.bmp");
 		break;
 	case WIZARD:
 		Ani_stand[UP].Init(hWnd, 0, 0, 70, 102, 1, L"./Image/Walk_Ani/Wizard_Back.bmp");
@@ -280,12 +280,14 @@ void Entity::UpdateState()
 	if (nowState == FINDWAY)
 	{
 		{
+			/*
 			StackRoad[pos.y][pos.x]++;
 
 			if (StackRoad[pos.y][pos.x] > FirstSpawnMonsterNum)
 			{
 				SetBanRoad(pos.x, pos.y);
 			}
+			*/
 
 			int BlockedRoadNum = 0;
 			for (int i = 0; i < 4; i++)
@@ -513,6 +515,8 @@ void Entity::UpdateState()
 		//서치중이면 플레이어에게 간다
 
 		{
+			{
+
 			int BlockedRoadNum = 0;
 			int BlockedRoad[4] = { 0 };
 			for (int i = 0; i < 4; i++)
@@ -540,6 +544,7 @@ void Entity::UpdateState()
 				nowState = WALK;
 				ObjPool->debug = 1;
 				return;
+			}
 			}
 		}
 		//갈림길에서 어디로 갈지 랜덤으로 체크
@@ -655,23 +660,6 @@ bool Entity::isRoadBlocked(int dire)
 {
 	switch (dire)
 	{
-	//case UP:
-	//	return isRoadBlocked(pos.x, pos.y - 1);
-
-	//	break;
-	//case DOWN:
-	//	return isRoadBlocked(pos.x, pos.y + 1);
-
-	//	break;
-	//case LEFT:
-	//	return isRoadBlocked(pos.x - 1, pos.y);
-
-	//	break;
-	//case RIGHT:
-	//	return isRoadBlocked(pos.x + 1, pos.y);
-	//	if (ObjPool->Maps.GetTileID(pos.x, pos.y - 1) != NONE && ObjPool->Maps.GetTileID(pos.x, pos.y - 1) != WALL && ObjPool->Maps.GetTileID(pos.x, pos.y - 1) != MENTLE)
-	//		return false;
-
 	case UP:
 		if (ObjPool->Maps.GetTileID(pos.x, pos.y - 1) != NONE && ObjPool->Maps.GetTileID(pos.x, pos.y - 1) != WALL && ObjPool->Maps.GetTileID(pos.x, pos.y - 1) != MENTLE)
 			return false;
@@ -770,42 +758,6 @@ bool Entity::isBanRoad(int x, int y)
 	return false;
 }
 
-bool Entity::isMonsterRoadOverlap(int x, int y)
-{
-	for (auto it = ObjPool->MonsterPool.pool.begin(); it != ObjPool->MonsterPool.pool.end(); it++)
-	{
-		if (it->nowState == WALK)
-		{
-			switch (it->nowDirection)
-			{
-			case UP:
-				if (pos.x == x && pos.y - 1 == y) return true;
-
-				break;
-			case DOWN:
-				if (pos.x == x && pos.y + 1 == y) return true;
-
-				break;
-			case LEFT:
-				if (pos.x - 1 == x && pos.y == y) return true;
-
-				break;
-			case RIGHT:
-				if (pos.x + 1 == x && pos.y == y) return true;
-
-				break;
-			}
-		}
-		else
-		{
-			if (it->pos.x == x && it->pos.y == y)
-				return true;
-		}
-	}
-
-	return false;
-}
-
 bool Entity::isBanRoad(int dire)
 {
 	switch (dire)
@@ -829,6 +781,42 @@ bool Entity::isBanRoad(int dire)
 	}
 
 	return true;
+}
+
+bool Entity::isMonsterRoadOverlap(int x, int y)
+{
+	for (auto it = ObjPool->MonsterPool.pool.begin(); it != ObjPool->MonsterPool.pool.end(); it++)
+	{
+		if (it->nowState == WALK)
+		{
+			switch (it->nowDirection)
+			{
+			case UP:
+				if ((it->pos.x == x && it->pos.y - 1 == y) || (it->pos.x == x && it->pos.y == y)) return true;
+
+				break;
+			case DOWN:
+				if ((it->pos.x == x && it->pos.y + 1 == y) || (it->pos.x == x && it->pos.y == y)) return true;
+
+				break;
+			case LEFT:
+				if ((it->pos.x - 1 == x && it->pos.y == y) || (it->pos.x == x && it->pos.y == y)) return true;
+
+				break;
+			case RIGHT:
+				if ((it->pos.x + 1 == x && it->pos.y == y) || (it->pos.x == x && it->pos.y == y)) return true;
+
+				break;
+			}
+		}
+		else
+		{
+			if (it->pos.x == x && it->pos.y == y)
+				return true;
+		}
+	}
+
+	return false;
 }
 
 bool Entity::isMonsterRoadOverlap(int dire)
@@ -1117,7 +1105,7 @@ void Monster::DrawMap(HDC hMemDC, int x, int y)
 
 	int Term_x = ObjPool->Player.GetWalkTerm().x, Term_y = ObjPool->Player.GetWalkTerm().y;
 
-	/*for (int i = Map_Start_y; i < Map_End_y; i++)
+	for (int i = Map_Start_y; i < Map_End_y; i++)
 	{
 		for (int j = Map_Start_x; j < Map_End_x; j++)
 		{
@@ -1134,5 +1122,5 @@ void Monster::DrawMap(HDC hMemDC, int x, int y)
 
 			ObjPool->Gdi.Text(hMemDC, ((j - Map_Start_x) - 1) * 80 + Term_x - 40 + 30, ((i - Map_Start_y) - 2) * 80 + Term_y + 40, str, 36);
 		}
-	}*/
+	}
 }

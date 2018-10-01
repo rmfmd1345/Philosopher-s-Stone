@@ -3,8 +3,10 @@
 class Gdi //그리기 도구 (폰트부분 관련 텍스트를 제외하고 설명 생략)
 {
 public:
-	Gdi(void) { }
-	~Gdi(void) { }
+	Gdi(void) { 
+	}
+	~Gdi(void) {
+	}
 
 private:
 	HPEN hPen;

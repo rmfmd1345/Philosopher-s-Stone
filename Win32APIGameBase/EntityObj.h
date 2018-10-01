@@ -1,7 +1,7 @@
 #pragma once
 using namespace std;
 
-#define FirstSpawnMonsterNum 5
+#define FirstSpawnMonsterNum 50
 
 enum eState
 {
