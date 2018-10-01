@@ -65,7 +65,7 @@ public:
 	void SetDirection(int dire);
 	void SetState(int state);
 
-	void AddHealth(int plus);
+	void AddHealth(int a);
 
 	bool isDead();
 	bool isWalk();
@@ -91,6 +91,9 @@ public:
 	void SetBanRoad(int x, int y);
 	bool isBanRoad(int x, int y);
 	bool isBanRoad(int dire);
+
+	bool isMonsterRoadOverlap(int x, int y);
+	bool isMonsterRoadOverlap(int dire);
 
 	int returnReverseDirection(int dire);
 

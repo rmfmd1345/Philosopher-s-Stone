@@ -529,6 +529,13 @@ void Entity::UpdateState()
 				srand((unsigned)time(NULL));
 				SetDirection(BlockedRoad[rand() % BlockedRoadNum]);
 
+				if (isMonsterRoadOverlap(nowDirection))
+				{
+					nowAnimation = STAND;
+					nowState = FINDWAY;
+					ObjPool->debug = 0;
+					return;
+				}
 				nowAnimation = WALK;
 				nowState = WALK;
 				ObjPool->debug = 1;
@@ -543,6 +550,13 @@ void Entity::UpdateState()
 				if (!(!isRoadBlocked(nowDirection) && isBanRoad(pos.x, pos.y)))
 					SetDirection(returnReverseDirection(nowDirection));
 
+				if (isMonsterRoadOverlap(nowDirection))
+				{
+					nowAnimation = STAND;
+					nowState = FINDWAY;
+					ObjPool->debug = 0;
+					return;
+				}
 				nowAnimation = WALK;
 				nowState = WALK;
 				ObjPool->debug = 2;
@@ -566,6 +580,13 @@ void Entity::UpdateState()
 					srand((unsigned)time(NULL));
 					SetDirection(BlockedRoad[rand() % BlockedRoadNum]);
 
+					if (isMonsterRoadOverlap(nowDirection))
+					{
+						nowAnimation = STAND;
+						nowState = FINDWAY;
+						ObjPool->debug = 0;
+						return;
+					}
 					nowAnimation = WALK;
 					nowState = WALK;
 					ObjPool->debug = 3;
@@ -587,6 +608,13 @@ void Entity::UpdateState()
 		}
 		else
 		{
+			if (isMonsterRoadOverlap(nowDirection))
+			{
+				nowAnimation = STAND;
+				nowState = FINDWAY;
+				ObjPool->debug = 0;
+				return;
+			}
 			nowAnimation = WALK;
 			nowState = WALK;
 			stateFrame = 0;
@@ -742,6 +770,42 @@ bool Entity::isBanRoad(int x, int y)
 	return false;
 }
 
+bool Entity::isMonsterRoadOverlap(int x, int y)
+{
+	for (auto it = ObjPool->MonsterPool.pool.begin(); it != ObjPool->MonsterPool.pool.end(); it++)
+	{
+		if (it->nowState == WALK)
+		{
+			switch (it->nowDirection)
+			{
+			case UP:
+				if (pos.x == x && pos.y - 1 == y) return true;
+
+				break;
+			case DOWN:
+				if (pos.x == x && pos.y + 1 == y) return true;
+
+				break;
+			case LEFT:
+				if (pos.x - 1 == x && pos.y == y) return true;
+
+				break;
+			case RIGHT:
+				if (pos.x + 1 == x && pos.y == y) return true;
+
+				break;
+			}
+		}
+		else
+		{
+			if (it->pos.x == x && it->pos.y == y)
+				return true;
+		}
+	}
+
+	return false;
+}
+
 bool Entity::isBanRoad(int dire)
 {
 	switch (dire)
@@ -765,6 +829,29 @@ bool Entity::isBanRoad(int dire)
 	}
 
 	return true;
+}
+
+bool Entity::isMonsterRoadOverlap(int dire)
+{
+	switch (dire)
+	{
+	case UP:
+		return isMonsterRoadOverlap(pos.x, pos.y - 1);
+
+		break;
+	case DOWN:
+		return isMonsterRoadOverlap(pos.x, pos.y + 1);
+
+		break;
+	case LEFT:
+		return isMonsterRoadOverlap(pos.x - 1, pos.y);
+
+		break;
+	case RIGHT:
+		return isMonsterRoadOverlap(pos.x + 1, pos.y);
+
+		break;
+	}
 }
 
 POINT Entity::GetPosition()
@@ -818,9 +905,9 @@ void Entity::SetDirection(int dire)
 	nowDirection = dire;
 }
 
-void Entity::AddHealth(int plus)
+void Entity::AddHealth(int a)
 {
-	health += plus;
+	health += a;
 }
 
 void Entity::SetState(int state)
