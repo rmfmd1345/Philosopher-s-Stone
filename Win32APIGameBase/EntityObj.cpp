@@ -521,7 +521,7 @@ void Entity::UpdateState()
 			int BlockedRoad[4] = { 0 };
 			for (int i = 0; i < 4; i++)
 			{
-				if (!isRoadBlocked(i) && !isBanRoad(i) && returnReverseDirection(nowDirection) != i)
+				if (!isRoadBlocked(i) && !isBanRoad(i) && !isMonsterRoadOverlap(i) && returnReverseDirection(nowDirection) != i)
 				{
 					BlockedRoad[BlockedRoadNum] = { i };
 					BlockedRoadNum++;
@@ -533,13 +533,6 @@ void Entity::UpdateState()
 				srand((unsigned)time(NULL));
 				SetDirection(BlockedRoad[rand() % BlockedRoadNum]);
 
-				if (isMonsterRoadOverlap(nowDirection))
-				{
-					nowAnimation = STAND;
-					nowState = FINDWAY;
-					ObjPool->debug = 0;
-					return;
-				}
 				nowAnimation = WALK;
 				nowState = WALK;
 				ObjPool->debug = 1;
@@ -550,52 +543,47 @@ void Entity::UpdateState()
 		//갈림길에서 어디로 갈지 랜덤으로 체크
 
 		{
-			if (!isRoadBlocked(returnReverseDirection(nowDirection)))
+			if (isBanRoad(pos.x, pos.y))
 			{
-				if (!(!isRoadBlocked(nowDirection) && isBanRoad(pos.x, pos.y)))
-					SetDirection(returnReverseDirection(nowDirection));
-
-				if (isMonsterRoadOverlap(nowDirection))
+				if (!isRoadBlocked(nowDirection) && !isMonsterRoadOverlap(nowDirection))
 				{
-					nowAnimation = STAND;
-					nowState = FINDWAY;
-					ObjPool->debug = 0;
+					nowAnimation = WALK;
+					nowState = WALK;
+					ObjPool->debug = 2;
 					return;
 				}
-				nowAnimation = WALK;
-				nowState = WALK;
-				ObjPool->debug = 2;
-				return;
-			}
-			else
-			{
-				int BlockedRoadNum = 0;
-				int BlockedRoad[4] = { 0 };
-				for (int i = 0; i < 4; i++)
+				else if (isRoadBlocked(nowDirection) && !isMonsterRoadOverlap(returnReverseDirection(nowDirection)))
 				{
-					if (!isRoadBlocked(i))
-					{
-						BlockedRoad[BlockedRoadNum] = { i };
-						BlockedRoadNum++;
-					}
-				}
+					SetDirection(returnReverseDirection(nowDirection));
 
-				if (BlockedRoadNum > 0)
-				{
-					srand((unsigned)time(NULL));
-					SetDirection(BlockedRoad[rand() % BlockedRoadNum]);
-
-					if (isMonsterRoadOverlap(nowDirection))
-					{
-						nowAnimation = STAND;
-						nowState = FINDWAY;
-						ObjPool->debug = 0;
-						return;
-					}
 					nowAnimation = WALK;
 					nowState = WALK;
 					ObjPool->debug = 3;
 					return;
+				}
+				else
+				{
+					int BlockedRoadNum = 0;
+					int BlockedRoad[4] = { 0 };
+					for (int i = 0; i < 4; i++)
+					{
+						if (!isRoadBlocked(i) && !isMonsterRoadOverlap(i))
+						{
+							BlockedRoad[BlockedRoadNum] = { i };
+							BlockedRoadNum++;
+						}
+					}
+
+					if (BlockedRoadNum > 0)
+					{
+						srand((unsigned)time(NULL));
+						SetDirection(BlockedRoad[rand() % BlockedRoadNum]);
+
+						nowAnimation = WALK;
+						nowState = WALK;
+						ObjPool->debug = 4;
+						return;
+					}
 				}
 			}
 		}
