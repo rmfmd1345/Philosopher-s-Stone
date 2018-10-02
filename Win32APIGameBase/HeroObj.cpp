@@ -187,7 +187,7 @@ void Hero::SetDirection(int dire)
 	switch (nowDirection)
 	{
 	case UP:
-		if (ObjPool->Maps.GetTileID(pos.x, pos.y - 1) == FLOOR)
+		if (ObjPool->Maps.GetTileMoveID(pos.x, pos.y - 1) && ObjPool->Maps.Map[pos.y - 1][pos.x].Tile_On)
 		{
 			nowState = WALK;
 			nowAnimation = WALK;
@@ -195,7 +195,7 @@ void Hero::SetDirection(int dire)
 		}
 		break;
 	case DOWN:
-		if (ObjPool->Maps.GetTileID(pos.x, pos.y + 1) == FLOOR)
+		if (ObjPool->Maps.GetTileMoveID(pos.x, pos.y + 1) && ObjPool->Maps.Map[pos.y + 1][pos.x].Tile_On)
 		{
 			nowState = WALK;
 			nowAnimation = WALK;
@@ -203,7 +203,7 @@ void Hero::SetDirection(int dire)
 		}
 		break;
 	case LEFT:
-		if (ObjPool->Maps.GetTileID(pos.x - 1, pos.y) == FLOOR)
+		if (ObjPool->Maps.GetTileMoveID(pos.x - 1, pos.y) && ObjPool->Maps.Map[pos.y][pos.x - 1].Tile_On)
 		{
 			nowState = WALK;
 			nowAnimation = WALK;
@@ -211,7 +211,7 @@ void Hero::SetDirection(int dire)
 		}
 		break;
 	case RIGHT:
-		if (ObjPool->Maps.GetTileID(pos.x + 1, pos.y) == FLOOR)
+		if (ObjPool->Maps.GetTileMoveID(pos.x + 1, pos.y) && ObjPool->Maps.Map[pos.y][pos.x + 1].Tile_On)
 		{
 			nowState = WALK;
 			nowAnimation = WALK;

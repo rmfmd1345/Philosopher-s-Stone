@@ -649,22 +649,22 @@ bool Entity::isRoadBlocked(int dire)
 	switch (dire)
 	{
 	case UP:
-		if (ObjPool->Maps.GetTileID(pos.x, pos.y - 1) != NONE && ObjPool->Maps.GetTileID(pos.x, pos.y - 1) != WALL && ObjPool->Maps.GetTileID(pos.x, pos.y - 1) != MENTLE)
+		if (ObjPool->Maps.GetTileMoveID(pos.x, pos.y - 1))
 			return false;
 
 		break;
 	case DOWN:
-		if (ObjPool->Maps.GetTileID(pos.x, pos.y + 1) != NONE && ObjPool->Maps.GetTileID(pos.x, pos.y + 1) != WALL && ObjPool->Maps.GetTileID(pos.x, pos.y + 1) != MENTLE)
+		if (ObjPool->Maps.GetTileMoveID(pos.x, pos.y + 1))
 			return false;
 		
 		break;
 	case LEFT:
-		if (ObjPool->Maps.GetTileID(pos.x - 1, pos.y) != NONE && ObjPool->Maps.GetTileID(pos.x - 1, pos.y) != WALL && ObjPool->Maps.GetTileID(pos.x - 1, pos.y) != MENTLE)
+		if (ObjPool->Maps.GetTileMoveID(pos.x - 1, pos.y ))
 			return false;
 
 		break;
 	case RIGHT:
-		if (ObjPool->Maps.GetTileID(pos.x + 1, pos.y) != NONE && ObjPool->Maps.GetTileID(pos.x + 1, pos.y) != WALL && ObjPool->Maps.GetTileID(pos.x + 1, pos.y) != MENTLE)
+		if (ObjPool->Maps.GetTileMoveID(pos.x + 1, pos.y))
 			return false;
 
 		break;

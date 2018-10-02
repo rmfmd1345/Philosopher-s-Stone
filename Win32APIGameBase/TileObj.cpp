@@ -2,9 +2,10 @@
 #include "TileObj.h"
 #include "EntityObj.h"
 
-void CTile::InitTile(HWND hwnd, int Frame, int ID, LPCWSTR szFileName, std::function<void(Entity* ent)> Tile_Function)
+void CTile::InitTile(HWND hwnd, int Frame, int ID, int MoveID, LPCWSTR szFileName, std::function<void(Entity* ent)> Tile_Function)
 {
 	Tile_ID = ID;
+	Tile_isCanMove = MoveID;
 	Tile_On = true;
 
 	Brick_Up = false;
@@ -30,15 +31,15 @@ void CTile::DestroyTile(CTile Tile)
 
 void CMap::InitMap(HWND hwnd)
 {
-	None.InitTile(hwnd, 1 /*Frame*/, NONE, L"./Image/Tile/None.bmp", [&](Entity* ent) {});
-	Floor.InitTile(hwnd, 1 /*Frame*/, FLOOR, L"./Image/Tile/Floor.bmp", [&](Entity* ent) {});
-	Wall.InitTile(hwnd, 1 /*Frame*/, WALL, L"./Image/Tile/Wall.bmp", [&](Entity* ent) {});
-	Trap_Niddle.InitTile(hwnd, 1 /*Frame*/, TRAP_Niddle, L"./Image/Tile/Niddle.bmp", [&](Entity* ent) {NiddleActive(ent);});
-	Trap_ScareCrow.InitTile(hwnd, 1 /*Frame*/, TRAP_ScareCrow, L"./Image/Tile/Scarecrow_test.bmp", [&](Entity* ent) {ScareCrowActive(ent); });
-	Trap_Grab.InitTile(hwnd, 1 /*Frame*/, TRAP_Grab, L"./Image/Tile/Grap.bmp", [&](Entity* ent) {});
-	Trap_GrabArea.InitTile(hwnd, 1 /*Frame*/, TRAP_GrabArea, L"./Image/Tile/GrapArea.bmp", [&](Entity* ent) {GrabActive(ent); });
-	Trap_Cunfusion.InitTile(hwnd, 1 /*Frame*/, TRAP_Cunfusion, L"./Image/Tile/Cunfusion.bmp", [&](Entity* ent) {ConfusionActive(ent); });
-	Trap_Hole.InitTile(hwnd, 1 /*Frame*/, TRAP_Hole, L"./Image/Tile/Hole.bmp", [&](Entity* ent) {HoleActive(ent);});
+	None.InitTile(hwnd, 1 /*Frame*/, NONE, false, L"./Image/Tile/None.bmp", [&](Entity* ent) {});
+	Floor.InitTile(hwnd, 1 /*Frame*/, FLOOR, true, L"./Image/Tile/Floor.bmp", [&](Entity* ent) {});
+	Wall.InitTile(hwnd, 1 /*Frame*/, WALL, false, L"./Image/Tile/Wall.bmp", [&](Entity* ent) {});
+	Trap_Niddle.InitTile(hwnd, 1 /*Frame*/,TRAP_Niddle, true, L"./Image/Tile/Niddle.bmp", [&](Entity* ent) {NiddleActive(ent);});
+	Trap_ScareCrow.InitTile(hwnd, 1 /*Frame*/, TRAP_ScareCrow, false, L"./Image/Tile/Scarecrow_test.bmp", [&](Entity* ent) {ScareCrowActive(ent); });
+	Trap_Grab.InitTile(hwnd, 1 /*Frame*/, TRAP_Grab, false, L"./Image/Tile/Grap.bmp", [&](Entity* ent) {});
+	Trap_GrabArea.InitTile(hwnd, 1 /*Frame*/, TRAP_GrabArea, true, L"./Image/Tile/GrapArea.bmp", [&](Entity* ent) {GrabActive(ent); });
+	Trap_Cunfusion.InitTile(hwnd, 1 /*Frame*/, TRAP_Cunfusion, true, L"./Image/Tile/Cunfusion.bmp", [&](Entity* ent) {ConfusionActive(ent); });
+	Trap_Hole.InitTile(hwnd, 1 /*Frame*/, TRAP_Hole, true, L"./Image/Tile/Hole.bmp", [&](Entity* ent) {HoleActive(ent);});
 
 	Brick[B_UP].Init(hwnd, 0, 0, 80, 80, L"./Image/Tile/Brick_Up.bmp");
 	Brick[B_DOWN].Init(hwnd, 0, 0, 80, 80, L"./Image/Tile/Brick_Down.bmp");
@@ -374,6 +375,11 @@ void CMap::DestroyMap()
 int CMap::GetTileID(int x, int y)
 {
 	return Map[y][x].Tile_ID;
+}
+
+int CMap::GetTileMoveID(int x, int y)
+{
+	return Map[y][x].Tile_isCanMove;
 }
 
 bool CMap::CheckTrap(int diraction, POINT pos)
