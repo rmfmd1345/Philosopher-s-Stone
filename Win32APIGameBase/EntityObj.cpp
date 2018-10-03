@@ -614,13 +614,6 @@ void Entity::UpdateState()
 		}
 		return;
 	}
-
-	//혼란 디버프
-	if (nowState == CONFUSE)
-	{
-		//TODO : 혼란 상태 추가
-	}
-	
 }
 
 bool Entity::GetAllSearch()
