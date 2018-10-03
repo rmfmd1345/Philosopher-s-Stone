@@ -7,6 +7,7 @@
 #include "BitmapObj.h"
 #include "ButtonObj.h"
 #include "TileObj.h"
+#include "Skill.h"
 #include "HeroObj.h"
 #include "EntityObj.h"
 

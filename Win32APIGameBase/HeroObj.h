@@ -21,6 +21,10 @@ private:
 public:
 	int Rock_Num;
 	TCHAR Rock_Num_UI[10];
+	Skill ATK_Skill;
+	Skill AGGRO_Skill;
+	Skill PUSH_Skill;
+	Skill BARRICADE_Skill;
 	int selectedTrap;
 	bool isWatingTrapSet;
 

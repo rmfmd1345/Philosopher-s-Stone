@@ -99,6 +99,9 @@
     <ClInclude Include="A_Star.h">
       <Filter>ObjectPool</Filter>
     </ClInclude>
+    <ClInclude Include="Skill.h">
+      <Filter>ObjectPool\Obj</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -163,6 +166,9 @@
     </ClCompile>
     <ClCompile Include="A_Star.cpp">
       <Filter>ObjectPool</Filter>
+    </ClCompile>
+    <ClCompile Include="Skill.cpp">
+      <Filter>ObjectPool\Obj</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
