@@ -38,7 +38,7 @@ void Entity::Init(HWND hWnd, int x, int y, int type, COLORREF sprite)
 		Ani_walk[DOWN].Init(hWnd, 0, 0, 480, 120, 6, L"./Image/Walk_Ani/dealer_walk_front.bmp");
 		Ani_walk[LEFT].Init(hWnd, 0, 0, 480, 120, 6, L"./Image/Walk_Ani/dealer_walk_left.bmp");
 		Ani_walk[RIGHT].Init(hWnd, 0, 0, 480, 120, 6, L"./Image/Walk_Ani/dealer_walk_right.bmp");
-		
+
 		Ani_attack[UP].Init(hWnd, 0, 0, 240, 122, 4, L"./Image/Walk_Ani/dealer_walk_back.bmp");
 		Ani_attack[DOWN].Init(hWnd, 0, 0, 216, 122, 4, L"./Image/Walk_Ani/dealer_walk_front.bmp");
 		Ani_attack[LEFT].Init(hWnd, 0, 0, 304, 122, 4, L"./Image/Walk_Ani/dealer_walk_left.bmp");
@@ -189,12 +189,12 @@ void Entity::Draw(HDC hMemDC, int x, int y)
 	case STAND:
 		Ani_stand[nowDirection].SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y - 40);
 		Ani_stand[nowDirection].Draw(hMemDC);
-		break;													 
-	case WALK:														 
+		break;
+	case WALK:
 		Ani_walk[nowDirection].SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y - 40);
-		Ani_walk[nowDirection].Draw(hMemDC); 
-		break;														 
-	case ATTACK:													 
+		Ani_walk[nowDirection].Draw(hMemDC);
+		break;
+	case ATTACK:
 		Ani_attack[nowDirection].SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y - 40);
 		Ani_attack[nowDirection].Draw(hMemDC);
 		break;
@@ -374,7 +374,7 @@ void Entity::UpdateState()
 				break;
 			}
 
-			//여기서부터 
+			//여기서부터
 			if (!isAllSearch)
 			{
 				if (SearchDirection != -1)
@@ -517,27 +517,27 @@ void Entity::UpdateState()
 		{
 			{
 
-			int BlockedRoadNum = 0;
-			int BlockedRoad[4] = { 0 };
-			for (int i = 0; i < 4; i++)
-			{
-				if (!isRoadBlocked(i) && !isBanRoad(i) && !isMonsterRoadOverlap(i) && returnReverseDirection(nowDirection) != i)
+				int BlockedRoadNum = 0;
+				int BlockedRoad[4] = { 0 };
+				for (int i = 0; i < 4; i++)
 				{
-					BlockedRoad[BlockedRoadNum] = { i };
-					BlockedRoadNum++;
+					if (!isRoadBlocked(i) && !isBanRoad(i) && !isMonsterRoadOverlap(i) && returnReverseDirection(nowDirection) != i)
+					{
+						BlockedRoad[BlockedRoadNum] = { i };
+						BlockedRoadNum++;
+					}
 				}
-			}
 
-			if (BlockedRoadNum > 0)
-			{
-				srand((unsigned)time(NULL));
-				SetDirection(BlockedRoad[rand() % BlockedRoadNum]);
+				if (BlockedRoadNum > 0)
+				{
+					srand((unsigned)time(NULL));
+					SetDirection(BlockedRoad[rand() % BlockedRoadNum]);
 
-				nowAnimation = WALK;
-				nowState = WALK;
-				ObjPool->debug = 1;
-				return;
-			}
+					nowAnimation = WALK;
+					nowState = WALK;
+					ObjPool->debug = 1;
+					return;
+				}
 			}
 		}
 		//갈림길에서 어디로 갈지 랜덤으로 체크
@@ -656,10 +656,10 @@ bool Entity::isRoadBlocked(int dire)
 	case DOWN:
 		if (ObjPool->Maps.GetTileMoveID(pos.x, pos.y + 1))
 			return false;
-		
+
 		break;
 	case LEFT:
-		if (ObjPool->Maps.GetTileMoveID(pos.x - 1, pos.y ))
+		if (ObjPool->Maps.GetTileMoveID(pos.x - 1, pos.y))
 			return false;
 
 		break;
@@ -957,6 +957,16 @@ void Monster::Ternimate()
 
 void Monster::Draw(HDC hMemDC, int x, int y)
 {
+	for (int i = 0; i < MAX_TILE_Y; i++)
+	{
+		for (int j = 0; j < MAX_TILE_X; j++)
+		{
+			if (ObjPool->Maps.Map[i][j].Tile_ID == TRAP_ScareCrow)
+			{
+				ObjPool->Maps.Map[i][j].Tile_Sprite.Draw(hMemDC);
+			}
+		}
+	}
 
 	if (pool.empty())	//몬스터가 없으면 플레이어만 생성
 	{
@@ -979,14 +989,8 @@ void Monster::Draw(HDC hMemDC, int x, int y)
 					ObjPool->Player.Draw(hMemDC, x, y);
 					isPlayer = true;
 				}
-
-			if (ObjPool->Maps.Map[i][j].Tile_ID == TRAP_ScareCrow)
-			{
-				ObjPool->Maps.Map[i][j].Tile_Sprite.Draw(hMemDC);
-			}
 		}
 	}
-
 
 	DrawMap(hMemDC, x, y);
 }
@@ -1053,7 +1057,7 @@ void Monster::CheckHealth()
 	{
 		if (it->isDead())
 		{
-   			it->Ternimate();
+			it->Ternimate();
 			it = pool.erase(it);
 
 			if (pool.empty()) return;
