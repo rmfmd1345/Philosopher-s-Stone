@@ -340,28 +340,28 @@ void Hero::SetTrap()
 	case NONE:
 		break;
 	case TRAP_Niddle:
-		if (ObjPool->Player.Rock_Num >= 10)
+		if (ObjPool->Player.Rock_Num >= 10) //코스트 10
 		{
 			ObjPool->Player.Rock_Num -= 10;
 			ObjPool->Maps.SetTrapOnMap(ObjPool->Maps.Trap_Niddle, Temp_X, Temp_Y);
 		}
 		break;
 	case TRAP_Hole:
-		if (ObjPool->Player.Rock_Num >= 30)
+		if (ObjPool->Player.Rock_Num >= 30) //코스트 30
 		{
 			ObjPool->Player.Rock_Num -= 30;
 			ObjPool->Maps.SetTrapOnMap(ObjPool->Maps.Trap_Hole, Temp_X, Temp_Y);
 		}
 		break;
 	case TRAP_ScareCrow:
-		if (ObjPool->Player.Rock_Num >= 15)
+		if (ObjPool->Player.Rock_Num >= 15) //코스트 15
 		{
 			ObjPool->Player.Rock_Num -= 15;
 			ObjPool->Maps.SetTrapOnMap(ObjPool->Maps.Trap_ScareCrow, Temp_X, Temp_Y);
 		}
 		break;
 	case TRAP_Grab:
-		if (ObjPool->Player.Rock_Num >= 20)
+		if (ObjPool->Player.Rock_Num >= 20) //코스트 20
 		{
 			ObjPool->Player.Rock_Num -= 20;
 			ObjPool->Maps.SetTrapOnMap(ObjPool->Maps.Trap_Grab, Temp_X, Temp_Y);
@@ -370,10 +370,18 @@ void Hero::SetTrap()
 			ObjPool->Maps.SetTrapOnMap(ObjPool->Maps.Trap_GrabArea, Temp_X - 1, Temp_Y);
 			ObjPool->Maps.SetTrapOnMap(ObjPool->Maps.Trap_GrabArea, Temp_X, Temp_Y + 1);
 			ObjPool->Maps.SetTrapOnMap(ObjPool->Maps.Trap_GrabArea, Temp_X, Temp_Y - 1);
+
+			POINT grabPos;
+			grabPos.x = Temp_X;
+			grabPos.y = Temp_Y;
+			ObjPool->Maps.Map[Temp_Y + 1][Temp_X].Grab_POS = grabPos; //끌려갈 영역의 좌표 저장
+			ObjPool->Maps.Map[Temp_Y - 1][Temp_X].Grab_POS = grabPos;
+			ObjPool->Maps.Map[Temp_Y][Temp_X + 1].Grab_POS = grabPos;
+			ObjPool->Maps.Map[Temp_Y][Temp_X - 1].Grab_POS = grabPos;
 		}
 		break;
 	case TRAP_Cunfusion:
-		if (ObjPool->Player.Rock_Num >= 25)
+		if (ObjPool->Player.Rock_Num >= 25) //코스트 25
 		{
 			ObjPool->Player.Rock_Num -= 25;
 			ObjPool->Maps.SetTrapOnMap(ObjPool->Maps.Trap_Cunfusion, Temp_X, Temp_Y);
@@ -393,7 +401,6 @@ void Hero::RepairTrap()
 	{
 	case LEFT:
 		ObjPool->Maps.Map[pos.y][pos.x - 1].Tile_On = true;
-			
 		break;
 	case RIGHT:
 		ObjPool->Maps.Map[pos.y][pos.x + 1].Tile_On = true;
