@@ -375,6 +375,15 @@ void Hero::SetTrap()
 			ObjPool->Maps.SetTrapOnMap(ObjPool->Maps.Trap_GrabArea, Temp_X - 1, Temp_Y);
 			ObjPool->Maps.SetTrapOnMap(ObjPool->Maps.Trap_GrabArea, Temp_X, Temp_Y + 1);
 			ObjPool->Maps.SetTrapOnMap(ObjPool->Maps.Trap_GrabArea, Temp_X, Temp_Y - 1);
+
+			POINT grabPos;
+			grabPos.x = Temp_X;
+			grabPos.y = Temp_Y;
+			ObjPool->Maps.Map[Temp_Y + 1][Temp_X].Grab_POS = grabPos; //²ø·Á°¥ ¿µ¿ªÀÇ ÁÂÇ¥ ÀúÀå
+			ObjPool->Maps.Map[Temp_Y - 1][Temp_X].Grab_POS = grabPos;
+			ObjPool->Maps.Map[Temp_Y][Temp_X + 1].Grab_POS = grabPos;
+			ObjPool->Maps.Map[Temp_Y][Temp_X - 1].Grab_POS = grabPos;
+
 		}
 		break;
 	case TRAP_Cunfusion:
@@ -394,11 +403,11 @@ void Hero::SetTrap()
 
 void Hero::RepairTrap()
 {
+	ObjPool->Player.SetState(TRAPREPAIRING);
 	switch (nowDirection)
 	{
 	case LEFT:
 		ObjPool->Maps.Map[pos.y][pos.x - 1].Tile_On = true;
-			
 		break;
 	case RIGHT:
 		ObjPool->Maps.Map[pos.y][pos.x + 1].Tile_On = true;

@@ -7,9 +7,6 @@ public:
 	bool Tile_On; // 함정 재장전 여부
 	bool Tile_isCanMove; //지나갈 수 있는 타일인가
 
-	float damgeDelay; //함정 밟았을 때 연속해서 함수가 발동되기까지의 간격
-	float SpinSpeed; //구멍함정에서 엔티티가 도는 속도
-
 	bool Brick_Up;
 	bool Brick_Down;
 	bool Brick_Left;
@@ -23,6 +20,15 @@ public:
 
 	void InitTile(HWND hwnd, int Frame, int ID, int MoveID, LPCWSTR szFileName, std::function<void(Entity* ent)> Tile_Function); //타일 초기화
 	void DestroyTile(CTile Tile); // 타일 이미지 파괴
+
+public:
+	//구멍함정
+	float damgeDelay; //함정 밟았을 때 연속해서 함수가 발동되기까지의 간격
+	float SpinSpeed; //구멍함정에서 엔티티가 도는 속도
+
+	//갈고리함정
+	POINT Grab_POS; //갈고리 함정을 밟으면 끌려갈 위치
+
 };
 
 class CMap

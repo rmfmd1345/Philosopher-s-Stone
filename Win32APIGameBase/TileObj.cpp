@@ -37,7 +37,7 @@ void CMap::InitMap(HWND hwnd)
 	Trap_Niddle.InitTile(hwnd, 1 /*Frame*/,TRAP_Niddle, true, L"./Image/Tile/Niddle.bmp", [&](Entity* ent) {NiddleActive(ent);});
 	Trap_ScareCrow.InitTile(hwnd, 1 /*Frame*/, TRAP_ScareCrow, false, L"./Image/Tile/Scarecrow_test.bmp", [&](Entity* ent) {ScareCrowActive(ent); });
 	Trap_Grab.InitTile(hwnd, 1 /*Frame*/, TRAP_Grab, false, L"./Image/Tile/Grap.bmp", [&](Entity* ent) {});
-	Trap_GrabArea.InitTile(hwnd, 1 /*Frame*/, TRAP_GrabArea, true, L"./Image/Tile/GrapArea.bmp", [&](Entity* ent) {GrabActive(ent); });
+	Trap_GrabArea.InitTile(hwnd, 1 /*Frame*/, TRAP_GrabArea, true, L"./Image/Tile/GrapArea.bmp", [&](Entity* ent) {GrabActive(ent);});
 	Trap_Cunfusion.InitTile(hwnd, 1 /*Frame*/, TRAP_Cunfusion, true, L"./Image/Tile/Cunfusion.bmp", [&](Entity* ent) {ConfusionActive(ent); });
 	Trap_Hole.InitTile(hwnd, 1 /*Frame*/, TRAP_Hole, true, L"./Image/Tile/Hole.bmp", [&](Entity* ent) {HoleActive(ent);});
 
@@ -68,12 +68,27 @@ void CMap::ScareCrowActive(Entity* ent)
 
 void CMap::GrabActive(Entity* ent)
 {
+	POINT pos = ent->GetPosition();
+	POINT grabPos; //갈고리가 설치된 위치의 좌표
+	grabPos.x = Map[pos.y][pos.x].Grab_POS.x;
+	grabPos.y = Map[pos.y][pos.x].Grab_POS.y;
 
+	if (Map[grabPos.y][grabPos.x].Tile_On && ent->GetState() != WALK)
+	{
+		ent->SetPosition(Map[pos.y][pos.x].Grab_POS.x, Map[pos.y][pos.x].Grab_POS.y);
+		Map[grabPos.y][grabPos.x].Tile_On = false; //재장전 필요한 상태로 변경
+	}
 }
 
 void CMap::ConfusionActive(Entity* ent)
 {
+	POINT pos = ent->GetPosition();
 
+	if (Map[pos.y][pos.x].Tile_On && ent->GetState() != WALK) //함정이 깔려있으면 //엔티티가 걷는 중이 아니면
+	{
+		ent->SetState(CONFUSE); //엔티티 혼란 상태로 변경
+		Map[pos.y][pos.x].Tile_On = false; //재장전 필요한 상태로 변경
+	}
 }
 
 void CMap::HoleActive(Entity* ent)
@@ -82,7 +97,7 @@ void CMap::HoleActive(Entity* ent)
 	
 	if (Map[pos.y][pos.x].Tile_On && ent->GetState() != WALK) //함정이 깔려있으면 //엔티티가 걷는 중이 아니면
 	{
-		ent->SetState(INTRAP); //엔티티 상태 인트랩 상태로 변경
+		ent->SetState(INTRAP); //엔티티 인트랩 상태로 변경
 		ent->SetAnimation(STAND); //엔티티 서있는 상태로 변경
 		Map[pos.y][pos.x].damgeDelay++;
 		printf("카운트 : %f\n 속도: %f\n", Map[pos.y][pos.x].damgeDelay, Map[pos.y][pos.x].SpinSpeed);
@@ -185,6 +200,9 @@ void CMap::ActiveTile(Entity* ent)
 	case TRAP_Grab:
 		Trap_Grab.Tile_Func(ent);
 		break;
+	case TRAP_GrabArea:
+		Trap_GrabArea.Tile_Func(ent);
+		break;
 	}
 }
 
@@ -201,6 +219,7 @@ void CMap::SetTrapOnMap(CTile Tile, int x, int y)
 	Map[y][x] = Tile;
 	Map[y][x].Tile_Sprite.SetPosition(x * 80, y * 80);
 }
+
 
 void CMap::DrawMap(HDC hMemDC, int x, int y)
 {
