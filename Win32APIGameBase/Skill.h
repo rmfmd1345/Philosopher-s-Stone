@@ -22,7 +22,8 @@ public:
 	int ID;
 
 public:
-	void InitSkill(HWND hWnd);
-	void ActiveSkill();
+	void InitSkill(HWND hWnd, int ID);
+	void ActiveSkill(int Diraction);
 
+	void Terminate();
 };

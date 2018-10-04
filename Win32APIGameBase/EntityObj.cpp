@@ -28,7 +28,6 @@ void Entity::Init(HWND hWnd, int x, int y, int type, COLORREF sprite)
 	switch (type)
 	{
 	case DEALER:
-
 		Ani_stand[UP].Init(hWnd, 0, 0, 80, 120, 1, L"./Image/Walk_Ani/dealer_walk_back.bmp");
 		Ani_stand[DOWN].Init(hWnd, 0, 0, 80, 120, 1, L"./Image/Walk_Ani/dealer_walk_front.bmp");
 		Ani_stand[LEFT].Init(hWnd, 0, 0, 80, 120, 1, L"./Image/Walk_Ani/dealer_walk_left.bmp");

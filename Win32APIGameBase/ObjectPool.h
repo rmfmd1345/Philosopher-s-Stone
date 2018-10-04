@@ -22,7 +22,7 @@ enum Tile_ID_List  // 식별 번호 리스트
 	TRAP_ScareCrow,
 	TRAP_Cunfusion,
 	TRAP_Grab,
-	TRAP_GrabArea
+	TRAP_GrabArea,
 };
 
 enum eDirection

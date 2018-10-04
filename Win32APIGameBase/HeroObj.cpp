@@ -29,15 +29,15 @@ void Hero::Init(HWND hWnd, int x, int y, COLORREF sprite)
 	Ani_walk[LEFT].Init(hWnd, 0, 0, 480, 132, 6, L"./Image/Walk_Ani/hero_walk_left.bmp");
 	Ani_walk[RIGHT].Init(hWnd, 0, 0, 480, 132, 6, L"./Image/Walk_Ani/hero_walk_right.bmp");
 
-	/*Ani_attack[B_UP].Init(hWnd, 0, 0, 240, 122, 4, L"./Image/Walk_Ani/Hero_Back.bmp");
-	Ani_attack[B_DOWN].Init(hWnd, 0, 0, 216, 122, 4, L"./Image/Walk_Ani/Hero_Front.bmp");
-	Ani_attack[B_LEFT].Init(hWnd, 0, 0, 304, 122, 4, L"./Image/Walk_Ani/Hero_Left.bmp");
-	Ani_attack[B_RIGHT].Init(hWnd, 0, 0, 336, 122, 4, L"./Image/Walk_Ani/Hero_Right.bmp");*/
+	Ani_attack[UP].Init(hWnd, 0, 0, 240, 122, 4, L"./Image/Attack_Ani/hero_attack_back.bmp");
+	Ani_attack[DOWN].Init(hWnd, 0, 0, 216, 122, 4, L"./Image/Attack_Ani/hero_attack_front.bmp");
+	Ani_attack[LEFT].Init(hWnd, 0, 0, 304, 122, 4, L"./Image/Attack_Ani/Hero_Attack_Left.bmp");
+	Ani_attack[RIGHT].Init(hWnd, 0, 0, 336, 122, 4, L"./Image/Attack_Ani/hero_attack_right.bmp");
 
-	//ATK_Skill.InitSkill(hWnd);
-	//AGGRO_Skill.InitSkill(hWnd);
-	//PUSH_Skill.InitSkill(hWnd);
-	//BARRICADE_Skill.InitSkill(hWnd);
+	ATK_Skill.InitSkill(hWnd, ATK_SKILL);
+	AGGRO_Skill.InitSkill(hWnd, AGGRO_SKILL);
+	PUSH_Skill.InitSkill(hWnd, PUSH_SKILL);
+	BARRICADE_Skill.InitSkill(hWnd, BARRICADE_SKILL);
 }
 
 void Hero::Ternimate()
