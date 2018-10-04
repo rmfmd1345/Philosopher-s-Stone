@@ -116,7 +116,7 @@ public:
 	Entity Dealer;
 	Entity Wizard;
 	Entity Tanker;
-	vector<Entity> pool;
+	vector<Entity> ePool;
 
 	POINT spawnPosition = { 2, 5 };
 

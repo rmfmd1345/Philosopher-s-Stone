@@ -779,7 +779,7 @@ bool Entity::isBanRoad(int dire)
 
 bool Entity::isMonsterRoadOverlap(int x, int y)
 {
-	for (auto it = ObjPool->MonsterPool.pool.begin(); it != ObjPool->MonsterPool.pool.end(); it++)
+	for (auto it = ObjPool->MonsterPool.ePool.begin(); it != ObjPool->MonsterPool.ePool.end(); it++)
 	{
 		if (it->nowState == WALK)
 		{
@@ -951,34 +951,23 @@ void Monster::Ternimate()
 	Wizard.Ternimate();
 	Tanker.Ternimate();
 
-	if (pool.empty()) return;
+	if (ePool.empty()) return;
 
-	for (auto it = pool.begin(); it != pool.end(); it++)
+	for (auto it = ePool.begin(); it != ePool.end(); it++)
 	{
 		it->Ternimate();
 	}
 
-	pool.clear();
+	ePool.clear();
 }
 
 void Monster::Draw(HDC hMemDC, int x, int y)
 {
-	for (int i = 0; i < MAX_TILE_Y; i++)
-	{
-		for (int j = 0; j < MAX_TILE_X; j++)
-		{
-			if (ObjPool->Maps.Map[i][j].Tile_ID == TRAP_ScareCrow)
-			{
-				ObjPool->Maps.Map[i][j].Tile_Sprite.Draw(hMemDC);
-			}
-		}
-	}
-
-	if (pool.empty())	//몬스터가 없으면 플레이어만 생성
-	{
-		ObjPool->Player.Draw(hMemDC, x, y);
-		return;
-	}
+	//if (ePool.empty())	//몬스터가 없으면 플레이어만 생성
+	//{
+	//	ObjPool->Player.Draw(hMemDC, x, y);
+	//	return;
+	//}
 
 	bool isPlayer = false;
 
@@ -986,14 +975,22 @@ void Monster::Draw(HDC hMemDC, int x, int y)
 	{
 		for (int j = 0; j < MAX_TILE_X; j++)
 		{
-			for (auto it = pool.begin(); it != pool.end(); it++)
-				if (it->GetPosition().y == i && it->GetPosition().x == j) it->Draw(hMemDC, x, y);
+			if (!ePool.empty())
+			{
+				for (auto it = ePool.begin(); it != ePool.end(); it++)
+					if (it->GetPosition().y == i && it->GetPosition().x == j) it->Draw(hMemDC, x, y);
+			}
 
 			if (!isPlayer)
 				if (ObjPool->Player.GetPosition().y == i && ObjPool->Player.GetPosition().x == j)
 				{
 					ObjPool->Player.Draw(hMemDC, x, y);
 					isPlayer = true;
+				}
+
+				if (ObjPool->Maps.Map[i][j].Tile_ID == TRAP_ScareCrow)
+				{
+					ObjPool->Maps.Map[i][j].Tile_Sprite.Draw(hMemDC);
 				}
 		}
 	}
@@ -1003,9 +1000,9 @@ void Monster::Draw(HDC hMemDC, int x, int y)
 
 void Monster::Animation()
 {
-	if (pool.empty()) return;
+	if (ePool.empty()) return;
 
-	for (auto it = pool.begin(); it != pool.end(); it++)
+	for (auto it = ePool.begin(); it != ePool.end(); it++)
 	{
 		it->Animation();
 	}
@@ -1013,10 +1010,10 @@ void Monster::Animation()
 
 void Monster::UpdateState()
 {
-	if (pool.empty()) return;
+	if (ePool.empty()) return;
 
 	bool isSearch = false;
-	for (auto it = pool.begin(); it != pool.end(); it++)
+	for (auto it = ePool.begin(); it != ePool.end(); it++)
 	{
 		it->UpdateState();
 
@@ -1027,7 +1024,7 @@ void Monster::UpdateState()
 	}
 	if (!isSearch)
 	{
-		pool.begin()->SetAllSearch(false);
+		ePool.begin()->SetAllSearch(false);
 	}
 }
 
@@ -1037,15 +1034,15 @@ void Monster::AddMonster(int type, int x, int y)
 	{
 	case DEALER:
 		Dealer.SetPosition(x, y);
-		pool.push_back(Dealer);
+		ePool.push_back(Dealer);
 		break;
 	case WIZARD:
 		Wizard.SetPosition(x, y);
-		pool.push_back(Wizard);
+		ePool.push_back(Wizard);
 		break;
 	case TANKER:
 		Tanker.SetPosition(x, y);
-		pool.push_back(Tanker);
+		ePool.push_back(Tanker);
 		break;
 	}
 }
@@ -1057,16 +1054,16 @@ void Monster::AddMonster(int type)
 
 void Monster::CheckHealth()
 {
-	if (pool.empty()) return;
+	if (ePool.empty()) return;
 
-	for (auto it = pool.begin(); it != pool.end();)
+	for (auto it = ePool.begin(); it != ePool.end();)
 	{
 		if (it->isDead())
 		{
-			it->Ternimate();
-			it = pool.erase(it);
+  			it->Ternimate();
+			it = ePool.erase(it);
 
-			if (pool.empty()) return;
+			if (ePool.empty()) return;
 		}
 		else
 		{
@@ -1077,9 +1074,9 @@ void Monster::CheckHealth()
 
 void Monster::SetDirection(int dire)
 {
-	if (pool.empty()) return;
+	if (ePool.empty()) return;
 
-	for (auto it = pool.begin(); it != pool.end(); it++)
+	for (auto it = ePool.begin(); it != ePool.end(); it++)
 	{
 		it->SetDirection(dire);
 	}
