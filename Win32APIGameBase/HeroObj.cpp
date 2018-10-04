@@ -34,10 +34,10 @@ void Hero::Init(HWND hWnd, int x, int y, COLORREF sprite)
 	Ani_attack[LEFT].Init(hWnd, 0, 0, 304, 122, 4, L"./Image/Attack_Ani/Hero_Attack_Left.bmp");
 	Ani_attack[RIGHT].Init(hWnd, 0, 0, 336, 122, 4, L"./Image/Attack_Ani/hero_attack_right.bmp");
 
-	ATK_Skill.InitSkill(hWnd, ATK_SKILL);
-	AGGRO_Skill.InitSkill(hWnd, AGGRO_SKILL);
-	PUSH_Skill.InitSkill(hWnd, PUSH_SKILL);
-	BARRICADE_Skill.InitSkill(hWnd, BARRICADE_SKILL);
+	//ATK_Skill.InitSkill(hWnd, ATK_SKILL);
+	//AGGRO_Skill.InitSkill(hWnd, AGGRO_SKILL);
+	PUSH_Skill.InitSkill(hWnd, PUSH_SKILL, 7, 8);
+	//BARRICADE_Skill.InitSkill(hWnd, BARRICADE_SKILL);
 }
 
 void Hero::Ternimate()

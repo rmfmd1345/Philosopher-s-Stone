@@ -36,7 +36,11 @@ enum eDirection
 	KEY_2,
 	KEY_3,
 	KEY_4,
-	KEY_5
+	KEY_5,
+	KEY_A,
+	KEY_S,
+	KEY_D,
+	KEY_F
 };
 
 enum eTimer

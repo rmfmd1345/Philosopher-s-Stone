@@ -13,8 +13,10 @@ class Skill
 {
 public:
 	SpriteHelper Ani_Skill[4];
+	POINT Skill_Range[8];
 	int nowFrame;
 	int maxFrame;
+	int maxRange;
 
 	int nowDirection;
 	bool Check_Active;
@@ -22,7 +24,7 @@ public:
 	int ID;
 
 public:
-	void InitSkill(HWND hWnd, int ID);
+	void InitSkill(HWND hWnd, int ID, int f, int r);
 	void ActiveSkill(int Diraction);
 
 	void Terminate();

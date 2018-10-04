@@ -16,7 +16,7 @@ void Ingame::Draw(HDC hMemDC)
 
 	ObjPool->MonsterPool.Draw(hMemDC, PlayerPos.x, PlayerPos.y);
 	//ObjPool->Player.Draw(hMemDC, PlayerPos.x, PlayerPos.y);
-	//MonsterPool.Draw에서 플레이어와 몬스터의 좌표를 확인해 부자연스럽게 겹치지 않도록 함. 
+	//MonsterPool.Draw에서 플레이어와 몬스터의 좌표를 확인해 부자연스럽게 겹치지 않도록 함.
 
 	ObjPool->ingameBtn_Option.Draw(hMemDC);
 	ObjPool->ingameUI_Stone.Draw(hMemDC);
@@ -46,6 +46,15 @@ void Ingame::OnTimer(HWND hWnd, int timer)
 
 		ObjPool->Player.Animation();
 		ObjPool->Player.UpdateState();
+
+		if (ObjPool->Player.ATK_Skill.Check_Active)
+			ObjPool->Player.ATK_Skill.Ani_Skill->NextFrameSprite();
+		if (ObjPool->Player.AGGRO_Skill.Check_Active)
+			ObjPool->Player.AGGRO_Skill.Ani_Skill->NextFrameSprite();
+		if (ObjPool->Player.PUSH_Skill.Check_Active)
+			ObjPool->Player.PUSH_Skill.Ani_Skill->NextFrameSprite();
+		if (ObjPool->Player.BARRICADE_Skill.Check_Active)
+			ObjPool->Player.BARRICADE_Skill.Ani_Skill->NextFrameSprite();
 	}
 	if (timer == MONSTERTM)
 	{
@@ -144,8 +153,8 @@ void Ingame::OnKeyborad()
 		exlastBitState = 0;
 	}
 
-	DWORD lastBitState[10] = { 0, };
-	DWORD keyState[10];
+	DWORD lastBitState[14] = { 0, };
+	DWORD keyState[14];
 
 	keyState[0] = GetAsyncKeyState(VK_UP);
 	keyState[1] = GetAsyncKeyState(VK_DOWN);
@@ -158,6 +167,11 @@ void Ingame::OnKeyborad()
 	keyState[7] = GetAsyncKeyState(0x33); //3
 	keyState[8] = GetAsyncKeyState(0x34); //4
 	keyState[9] = GetAsyncKeyState(0x35); //5
+
+	keyState[10] = GetAsyncKeyState(0x41); //A
+	keyState[11] = GetAsyncKeyState(0x53); //S
+	keyState[12] = GetAsyncKeyState(0x44); //D
+	keyState[13] = GetAsyncKeyState(0x46); //F
 
 	if (lastBitState[UP] == 0 && keyState[UP] & 0x0001) //B_UP //이전에 0x1 이 0 이면 실행(안 누르다가 눌렀을 때)
 	{
@@ -304,9 +318,41 @@ void Ingame::OnKeyborad()
 		lastBitState[KEY_5] = 1;
 	}
 
-	for (int i = 0; i < 6; i++)
+	if (lastBitState[KEY_A] == 0 && keyState[KEY_A] & 0x0001) //B_RIGHT
 	{
-		if ((keyState[10] & 0x8000) == 0) // 완전히 뗐다면 다음 실행을 위해서 상태 초기화
+		ObjPool->Player.ATK_Skill.ActiveSkill(ObjPool->Player.GetDiraction());
+		ObjPool->Player.ATK_Skill.Check_Active = true;
+		
+		lastBitState[KEY_A] = 1;
+	}
+
+	if (lastBitState[KEY_S] == 0 && keyState[KEY_S] & 0x0001) //B_RIGHT
+	{
+		ObjPool->Player.AGGRO_Skill.ActiveSkill(ObjPool->Player.GetDiraction());
+		ObjPool->Player.AGGRO_Skill.Check_Active = true;
+
+		lastBitState[KEY_S] = 1;
+	}
+
+	if (lastBitState[KEY_D] == 0 && keyState[KEY_D] & 0x0001) //B_RIGHT
+	{
+		ObjPool->Player.PUSH_Skill.ActiveSkill(ObjPool->Player.GetDiraction());
+		ObjPool->Player.PUSH_Skill.Check_Active = true;
+
+		lastBitState[KEY_D] = 1;
+	}
+
+	if (lastBitState[KEY_F] == 0 && keyState[KEY_F] & 0x0001) //B_RIGHT
+	{
+		ObjPool->Player.BARRICADE_Skill.ActiveSkill(ObjPool->Player.GetDiraction());
+		ObjPool->Player.BARRICADE_Skill.Check_Active = true;
+
+		lastBitState[KEY_F] = 1;
+	}
+
+	for (int i = 0; i < 14; i++)
+	{
+		if ((keyState[14] & 0x8000) == 0) // 완전히 뗐다면 다음 실행을 위해서 상태 초기화
 		{
 			lastBitState[i] = 0;
 		}
