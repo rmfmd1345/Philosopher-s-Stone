@@ -19,6 +19,7 @@ public:
 	void Draw(HDC hMemDC);	//그리기
 	void Ternimate();		//종료!
 
-	void SetPosition(int x, int y);
+	void SetPosition(int _x, int _y);
+	void SetDrawArea(int _w, int _h);
 	void SetSpriteColor(COLORREF color);
 };

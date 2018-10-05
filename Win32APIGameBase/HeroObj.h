@@ -41,7 +41,7 @@ public:
 	void SetDirection(int dire);
 	void SetState(int state);
 	int GetState();
-	int GetDiraction();
+	int GetDirection();
 
 	POINT GetPosition();
 	int GetWalkState();

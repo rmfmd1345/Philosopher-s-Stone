@@ -14,6 +14,9 @@ void Ingame::Draw(HDC hMemDC)
 	ObjPool->Maps.DrawMap(hMemDC, PlayerPos.x, PlayerPos.y);
 	ObjPool->Maps.DrawBrick(hMemDC, PlayerPos.x, PlayerPos.y);
 
+	//if (ObjPool->Player.GetState() == TRAPREPAIRING)
+		ObjPool->Maps.DrawTrapHpBar(hMemDC, PlayerPos.x, PlayerPos.y);
+
 	ObjPool->MonsterPool.Draw(hMemDC, PlayerPos.x, PlayerPos.y);
 	//ObjPool->Player.Draw(hMemDC, PlayerPos.x, PlayerPos.y);
 	//MonsterPool.Draw에서 플레이어와 몬스터의 좌표를 확인해 부자연스럽게 겹치지 않도록 함.
@@ -200,7 +203,7 @@ void Ingame::OnKeyborad()
 	if (lastBitState[SPACE] == 0 && keyState[SPACE] & 0x0001) //SPACE
 	{
 		//보고 있는게 함정이면 수리
-		if (ObjPool->Maps.CheckTrap(ObjPool->Player.GetDiraction(), ObjPool->Player.GetPosition()))
+		if (ObjPool->Maps.CheckTrap(ObjPool->Player.GetDirection(), ObjPool->Player.GetPosition()))
 		{
 			ObjPool->Player.RepairTrap();
 		}
@@ -320,7 +323,7 @@ void Ingame::OnKeyborad()
 
 	if (lastBitState[KEY_A] == 0 && keyState[KEY_A] & 0x0001) //B_RIGHT
 	{
-		ObjPool->Player.ATK_Skill.ActiveSkill(ObjPool->Player.GetDiraction());
+		ObjPool->Player.ATK_Skill.ActiveSkill(ObjPool->Player.GetDirection());
 		ObjPool->Player.ATK_Skill.Check_Active = true;
 		
 		lastBitState[KEY_A] = 1;
@@ -328,7 +331,7 @@ void Ingame::OnKeyborad()
 
 	if (lastBitState[KEY_S] == 0 && keyState[KEY_S] & 0x0001) //B_RIGHT
 	{
-		ObjPool->Player.AGGRO_Skill.ActiveSkill(ObjPool->Player.GetDiraction());
+		ObjPool->Player.AGGRO_Skill.ActiveSkill(ObjPool->Player.GetDirection());
 		ObjPool->Player.AGGRO_Skill.Check_Active = true;
 
 		lastBitState[KEY_S] = 1;
@@ -336,7 +339,7 @@ void Ingame::OnKeyborad()
 
 	if (lastBitState[KEY_D] == 0 && keyState[KEY_D] & 0x0001) //B_RIGHT
 	{
-		ObjPool->Player.PUSH_Skill.ActiveSkill(ObjPool->Player.GetDiraction());
+		ObjPool->Player.PUSH_Skill.ActiveSkill(ObjPool->Player.GetDirection());
 		ObjPool->Player.PUSH_Skill.Check_Active = true;
 
 		lastBitState[KEY_D] = 1;
@@ -344,7 +347,7 @@ void Ingame::OnKeyborad()
 
 	if (lastBitState[KEY_F] == 0 && keyState[KEY_F] & 0x0001) //B_RIGHT
 	{
-		ObjPool->Player.BARRICADE_Skill.ActiveSkill(ObjPool->Player.GetDiraction());
+		ObjPool->Player.BARRICADE_Skill.ActiveSkill(ObjPool->Player.GetDirection());
 		ObjPool->Player.BARRICADE_Skill.Check_Active = true;
 
 		lastBitState[KEY_F] = 1;

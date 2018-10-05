@@ -23,6 +23,9 @@ public:
 	void DestroyTile(CTile Tile); // 타일 이미지 파괴
 
 public:
+	//함정 공통
+	int TrapHp = 50; //함정 체력 (수리게이지 최대치) //임시로 여기서 초기화함. 나중에 수정필요
+	int repairGage; //수리 진행도 게이지
 	//구멍함정
 	float damgeDelay; //함정 밟았을 때 연속해서 함수가 발동되기까지의 간격
 	float SpinSpeed; //구멍함정에서 엔티티가 도는 속도
@@ -71,6 +74,7 @@ public:
 	void SetTileOnMap(CTile Tile, int x, int y); // 타일을 맵에 배치
 	void SetTrapOnMap(CTile Tile, int x, int y); // 함정을 맵에 배치
 	void DrawMap(HDC hMemDC, int x, int y); //  플레이어를 기준으로 화면에 나오는 타일을 계산하여 출력
+	void DrawTrapHpBar(HDC hMemDC, int x, int y); //함정 수리할 때 hp게이지 출력
 	void SetBrick(int x, int y); // 벽돌 위치를 설정
 	void DrawBrick(HDC hMemDC, int x, int y); // 벽돌을 그려냄
 	void DestroyMap(); // 맵 타일 파괴

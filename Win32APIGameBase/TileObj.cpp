@@ -276,6 +276,31 @@ void CMap::DrawMap(HDC hMemDC, int x, int y)
 	}
 }
 
+void CMap::DrawTrapHpBar(HDC hMemDC, int x, int y)
+{
+	switch (ObjPool->Player.GetDirection())
+	{
+	case LEFT:
+		ObjPool->ingameUI_TrapHpBar.SetPosition(x * 80 - 106, y * 80);
+		ObjPool->ingameUI_TrapHpBar.SetDrawArea(Map[y][x - 1].repairGage, 10);
+		break;
+	case RIGHT:
+		ObjPool->ingameUI_TrapHpBar.SetPosition(x * 80 + 53, y * 80);
+		ObjPool->ingameUI_TrapHpBar.SetDrawArea(Map[y][x + 1].repairGage, 10);
+		break;
+	case UP:
+		ObjPool->ingameUI_TrapHpBar.SetPosition(x * 80 - 26, y * 80 - 80);
+		ObjPool->ingameUI_TrapHpBar.SetDrawArea(Map[y - 1][x].repairGage, 10);
+		break;
+	case DOWN:
+		ObjPool->ingameUI_TrapHpBar.SetPosition(x * 80 - 26, y * 80 + 85);
+		ObjPool->ingameUI_TrapHpBar.SetDrawArea(Map[y + 1][x].repairGage, 10);
+		break;
+	}
+
+	ObjPool->ingameUI_TrapHpBar.Draw(hMemDC);
+}
+
 void CMap::SetBrick(int x, int y)
 {
 	if (Map[y][x].Tile_ID == WALL && (Map[y - 1][x].Tile_ID == NONE || Map[y - 1][x].Tile_ID == MENTLE))
