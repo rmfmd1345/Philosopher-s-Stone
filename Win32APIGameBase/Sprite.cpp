@@ -68,3 +68,9 @@ void SpriteHelper::NextFrameSprite()
 	if (CurrentFrame >= LastFrame)
 		CurrentFrame = 1;
 }
+
+void SpriteHelper::SetFrameSprite(int f)
+{
+	CurrentFrame = 0;
+	rtImg = { (w / LastFrame) * CurrentFrame, 0, (w / LastFrame), h };
+}

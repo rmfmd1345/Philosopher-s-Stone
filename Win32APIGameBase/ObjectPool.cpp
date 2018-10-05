@@ -40,6 +40,7 @@ void ObjectPool::CreateObject(HWND hWnd)	//객체의 초기 설정을 적는 곳
 			Maps.SetTileOnMap(ObjPool->Maps.Floor, 4 + i, 4 + j);
 
 	MonsterPool.Init(hWnd);
+	FindEffect.Init(hWnd, 0, 0, 84, 32, 6, L"./Image/Skill/findeffect.bmp");
 	Maps.SetTileOnMap(ObjPool->Maps.Floor, 2, 5);
 	Maps.SetTileOnMap(ObjPool->Maps.Floor, 3, 5);
 	// for test
@@ -69,4 +70,5 @@ void ObjectPool::DeleteObject()				//비트맵객체는 반드시 종료해주기
 	Maps.DestroyMap();
 
 	MonsterPool.Ternimate();
+	FindEffect.Ternimate();
 }

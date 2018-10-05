@@ -25,4 +25,5 @@ public:
 	void SetSpriteColor(COLORREF color);
 
 	void NextFrameSprite();
+	void SetFrameSprite(int f);
 };

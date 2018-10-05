@@ -70,6 +70,7 @@ public:
 
 	//Entity(Monster)
 	Monster MonsterPool;
+	SpriteHelper FindEffect;
 	int debug = 0;
 
 	Hero Player;

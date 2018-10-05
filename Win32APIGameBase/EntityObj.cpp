@@ -199,12 +199,31 @@ void Entity::Draw(HDC hMemDC, int x, int y)
 		Ani_attack[nowDirection].Draw(hMemDC);
 		break;
 	case MARKFORFIND:
-		Ani_stand[nowDirection].SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y);
+		Ani_stand[nowDirection].SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y - 40);
 		Ani_stand[nowDirection].Draw(hMemDC);
+
+		switch (nowDirection)
+		{
+		case UP:
+			ObjPool->FindEffect.SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 20, ((pos.y - Map_y) - 1) * 80 + Term_y - 70);
+			break;
+		case DOWN:
+			ObjPool->FindEffect.SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 20, ((pos.y - Map_y) - 1) * 80 + Term_y - 70);
+			break;
+		case LEFT:
+			ObjPool->FindEffect.SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 20, ((pos.y - Map_y) - 1) * 80 + Term_y - 70);
+			break;
+		case RIGHT:
+			ObjPool->FindEffect.SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 20, ((pos.y - Map_y) - 1) * 80 + Term_y - 70);
+			break;
+		}
+		ObjPool->FindEffect.Draw(hMemDC);
+		/*
 		ObjPool->Gdi.SetBrushColor(RGB(255, 255, 255));
 		ObjPool->Gdi.Rect(hMemDC, { ((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y - 40,((pos.x - Map_x) - 1) * 80 + Term_x + 40, ((pos.y - Map_y) - 1) * 80 + Term_y });
 		ObjPool->Gdi.SetTextsColor(RGB(255, 50, 50));
 		ObjPool->Gdi.Text(hMemDC, ((pos.x - Map_x) - 1) * 80 + Term_x - 10, ((pos.y - Map_y) - 1) * 80 + Term_y - 30, L"!!!", 24);
+		*/
 		break;
 	}
 }
@@ -302,7 +321,7 @@ void Entity::UpdateState()
 			}
 		}
 		//막다른 길이거나 / 스택 쌓아서 일정정도가 넘으면 밴
-
+		
 		/*
 		{
 			int SearchDirection = -1;
@@ -330,81 +349,64 @@ void Entity::UpdateState()
 
 			if (SearchGap < 0) SearchGap = -(SearchGap);
 
-			switch (SearchDirection)
+			for (int i = 1; i <= SearchGap; i++)
 			{
-			case UP:
-				for (int i = 1; i <= SearchGap; i++)
+				switch (SearchDirection)
 				{
+				case UP:
 					if (ObjPool->Maps.GetTileID(pos.x, pos.y - i) != FLOOR)
 					{
 						SearchDirection = -1;
 						break;
 					}
-				}
-				break;
-			case DOWN:
-				for (int i = 1; i <= SearchGap; i++)
-				{
+					break;
+				case DOWN:
 					if (ObjPool->Maps.GetTileID(pos.x, pos.y + i) != FLOOR)
 					{
 						SearchDirection = -1;
 						break;
 					}
-				}
-				break;
-			case LEFT:
-				for (int i = 1; i <= SearchGap; i++)
-				{
+					break;
+				case LEFT:
 					if (ObjPool->Maps.GetTileID(pos.x - i, pos.y) != FLOOR)
 					{
 						SearchDirection = -1;
 						break;
 					}
-				}
-				break;
-			case RIGHT:
-				for (int i = 1; i <= SearchGap; i++)
-				{
+					break;
+				case RIGHT:
 					if (ObjPool->Maps.GetTileID(pos.x + i, pos.y) != FLOOR)
 					{
 						SearchDirection = -1;
 						break;
 					}
+					break;
 				}
-				break;
 			}
+			//직선 갭차이
 
-			//여기서부터 
 			if (!isAllSearch)
 			{
 				if (SearchDirection != -1)
 				{
 					PlayerPos = ObjPool->Player.GetPosition();
 					isAllSearch = true;
-					isSearch = true;
 
 					SetDirection(SearchDirection);
 					if (PathFind(pos, PlayerPos))
 					{
+					
 						list<POINT>::iterator it;
 						it = m_pathList.begin();
 
 						it = m_pathList.erase(it);
+						
 
-						if (SearchGap == 1)
-						{
-							SetDirection(SearchDirection);
+						ObjPool->FindEffect.SetFrameSprite(0);
 
-							nowAnimation = ATTACK;
-							nowState = ATTACK;
-							return;
-						}
-						else
-						{
-							nowAnimation = MARKFORFIND;
-							nowState = MARKFORFIND;
-							return;
-						}
+						nowAnimation = MARKFORFIND;
+						nowState = MARKFORFIND;
+						return;
 					}
 					else
 					{
@@ -413,109 +415,11 @@ void Entity::UpdateState()
 				}
 			}
 
-			if (isAllSearch)
-			{
-				if (m_pathList.empty())
-				{
-					isSearch = true;
-					if (PathFind(pos, PlayerPos))
-					{
-						list<POINT>::iterator it;
-						it = m_pathList.begin();
-
-						it = m_pathList.erase(it);
-					}
-					else
-					{
-						isSearch = false;
-					}
-				}
-
-				if (isSearch)
-				{
-					if (m_pathList.empty())
-					{
-						isSearch = false;
-					}
-					else
-					{
-						if (SearchGap == 1)
-						{
-							SetDirection(SearchDirection);
-
-							nowAnimation = ATTACK;
-							nowState = ATTACK;
-							return;
-						}
-
-						list<POINT>::iterator it;
-						it = m_pathList.begin();
-
-						if (it->x == pos.x && it->y == pos.y - 1)
-						{
-							it = m_pathList.erase(it);
-
-							SetDirection(UP);
-
-							if (!isRoadBlocked(nowDirection))
-							{
-								nowAnimation = WALK;
-								nowState = WALK;
-								return;
-							}
-						}
-						else if (it->x == pos.x && it->y == pos.y + 1)
-						{
-							it = m_pathList.erase(it);
-
-							SetDirection(DOWN);
-
-							if (!isRoadBlocked(nowDirection))
-							{
-								nowAnimation = WALK;
-								nowState = WALK;
-								return;
-							}
-						}
-						else if (it->x == pos.x - 1 && it->y == pos.y)
-						{
-							it = m_pathList.erase(it);
-
-							SetDirection(LEFT);
-
-							if (!isRoadBlocked(nowDirection))
-							{
-								nowAnimation = WALK;
-								nowState = WALK;
-								return;
-							}
-						}
-						else if (it->x == pos.x + 1 && it->y == pos.y)
-						{
-							it = m_pathList.erase(it);
-
-							SetDirection(RIGHT);
-
-							if (!isRoadBlocked(nowDirection))
-							{
-								nowAnimation = WALK;
-								nowState = WALK;
-								return;
-							}
-						}
-						else
-						{
-							isSearch = false;
-						}
-					}
-				}
-			}
 		}
-		*/
 		//서치중이면 플레이어에게 간다
+		*/
 
 		{
-			{
 
 			int BlockedRoadNum = 0;
 			int BlockedRoad[4] = { 0 };
@@ -537,7 +441,6 @@ void Entity::UpdateState()
 				nowState = WALK;
 				ObjPool->debug = 1;
 				return;
-			}
 			}
 		}
 		//갈림길에서 어디로 갈지 랜덤으로 체크
@@ -598,18 +501,13 @@ void Entity::UpdateState()
 		if (stateFrame < 10)
 		{
 			stateFrame++;
+			if (stateFrame < 7 && stateFrame % 2)
+				ObjPool->FindEffect.NextFrameSprite();
 		}
 		else
 		{
-			if (isMonsterRoadOverlap(nowDirection))
-			{
-				nowAnimation = STAND;
-				nowState = FINDWAY;
-				ObjPool->debug = 0;
-				return;
-			}
-			nowAnimation = WALK;
-			nowState = WALK;
+			nowAnimation = STAND;
+			nowState = FINDWAY;
 			stateFrame = 0;
 		}
 		return;

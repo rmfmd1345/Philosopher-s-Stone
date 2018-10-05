@@ -74,7 +74,7 @@ private:
 	static vector<POINT> BanRoad;				  //막 다른 길
 	static int StackRoad[MAX_TILE_Y][MAX_TILE_X]; //스택되는 길
 
-	static bool isAllSearch;						  //찾는 중 인가
+	static bool isAllSearch;					  //찾는 중 인가
 	static POINT PlayerPos;						  //플레이어 위치
 
 	bool isSearch = false;
