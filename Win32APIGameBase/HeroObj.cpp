@@ -407,7 +407,8 @@ void Hero::RepairTrap()
 	switch (nowDirection)
 	{
 	case LEFT:
-		ObjPool->Maps.Map[pos.y][pos.x - 1].repairGage++;
+		if (ObjPool->Maps.Map[pos.y][pos.x - 1].Tile_On == false)
+			ObjPool->Maps.Map[pos.y][pos.x - 1].repairGage++;
 		if (ObjPool->Maps.Map[pos.y][pos.x - 1].repairGage >= ObjPool->Maps.Map[pos.y][pos.x - 1].TrapHp)
 		{
 			ObjPool->Maps.Map[pos.y][pos.x - 1].Tile_On = true;
@@ -415,7 +416,8 @@ void Hero::RepairTrap()
 		}
 		break;
 	case RIGHT:
-		ObjPool->Maps.Map[pos.y][pos.x + 1].repairGage++;
+		if (ObjPool->Maps.Map[pos.y][pos.x + 1].Tile_On == false)
+			ObjPool->Maps.Map[pos.y][pos.x + 1].repairGage++;
 		if (ObjPool->Maps.Map[pos.y][pos.x + 1].repairGage >= ObjPool->Maps.Map[pos.y][pos.x + 1].TrapHp)
 		{
 			ObjPool->Maps.Map[pos.y][pos.x + 1].Tile_On = true;
@@ -423,7 +425,8 @@ void Hero::RepairTrap()
 		}
 		break;
 	case UP:
-		ObjPool->Maps.Map[pos.y - 1][pos.x].repairGage++;
+		if (ObjPool->Maps.Map[pos.y - 1][pos.x].Tile_On == false)
+			ObjPool->Maps.Map[pos.y - 1][pos.x].repairGage++;
 		if (ObjPool->Maps.Map[pos.y - 1][pos.x].repairGage >= ObjPool->Maps.Map[pos.y - 1][pos.x].TrapHp)
 		{
 			ObjPool->Maps.Map[pos.y - 1][pos.x].Tile_On = true;
@@ -431,7 +434,8 @@ void Hero::RepairTrap()
 		}
 		break;
 	case DOWN:
-		ObjPool->Maps.Map[pos.y + 1][pos.x].repairGage++;
+		if (ObjPool->Maps.Map[pos.y + 1][pos.x].Tile_On == false)
+			ObjPool->Maps.Map[pos.y + 1][pos.x].repairGage++;
 		if (ObjPool->Maps.Map[pos.y + 1][pos.x].repairGage >= ObjPool->Maps.Map[pos.y + 1][pos.x].TrapHp)
 		{
 			ObjPool->Maps.Map[pos.y + 1][pos.x].Tile_On = true;

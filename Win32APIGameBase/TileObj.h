@@ -24,7 +24,7 @@ public:
 
 public:
 	//함정 공통
-	int TrapHp = 50; //함정 체력 (수리게이지 최대치) //임시로 여기서 초기화함. 나중에 수정필요
+	float TrapHp = 50; //함정 체력 (수리게이지 최대치) //임시로 여기서 초기화함. 나중에 float 수정필요
 	int repairGage; //수리 진행도 게이지
 	//구멍함정
 	float damgeDelay; //함정 밟았을 때 연속해서 함수가 발동되기까지의 간격

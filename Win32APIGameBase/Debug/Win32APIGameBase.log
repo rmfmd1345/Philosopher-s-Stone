@@ -1,30 +1,30 @@
 ﻿  stdafx.cpp
   A_Star.cpp
-  BitmapObj.cpp
-  ButtonObj.cpp
-  DrawManager.cpp
   EntityObj.cpp
-  FrameManager.cpp
-  GdiObj.cpp
   HeroObj.cpp
-  InputManager.cpp
-  ObjectPool.cpp
-  SceneManager.cpp
   Scene_Credit.cpp
-  Scene_Ingame.cpp
-  Scene_Title.cpp
   Skill.cpp
   SoundObj.cpp
 c:\users\jhhan\documents\github\philosopher-s-stone\win32apigamebase\soundobj.cpp(99): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   Sprite.cpp
-  System.cpp
+  BitmapObj.cpp
+  DrawManager.cpp
+  FrameManager.cpp
+  GdiObj.cpp
+  InputManager.cpp
+  ObjectPool.cpp
+  SceneManager.cpp
+  Scene_Ingame.cpp
+  Scene_Title.cpp
   SystemObj.cpp
-  TileObj.cpp
-c:\users\jhhan\documents\github\philosopher-s-stone\win32apigamebase\tileobj.cpp(113): warning C4305: '+=': 'double'에서 'float'(으)로 잘립니다.
+  ButtonObj.cpp
+  System.cpp
+  main.cpp
   코드를 생성하고 있습니다...
 c:\users\jhhan\documents\github\philosopher-s-stone\win32apigamebase\entityobj.cpp(836): warning C4715: 'Entity::isMonsterRoadOverlap': 모든 제어 경로에서 값을 반환하지는 않습니다.
 c:\users\jhhan\documents\github\philosopher-s-stone\win32apigamebase\entityobj.cpp(933): warning C4715: 'Entity::returnReverseDirection': 모든 제어 경로에서 값을 반환하지는 않습니다.
   컴파일하고 있습니다...
-  main.cpp
+  TileObj.cpp
+c:\users\jhhan\documents\github\philosopher-s-stone\win32apigamebase\tileobj.cpp(113): warning C4305: '+=': 'double'에서 'float'(으)로 잘립니다.
   코드를 생성하고 있습니다...
   Win32APIGameBase.vcxproj -> C:\Users\jhhan\Documents\GitHub\Philosopher-s-Stone\Win32APIGameBase\Debug\Win32APIGameBase.exe
