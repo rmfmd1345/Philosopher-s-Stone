@@ -14,9 +14,12 @@ void Ingame::Draw(HDC hMemDC)
 	ObjPool->Maps.DrawMap(hMemDC, PlayerPos.x, PlayerPos.y);
 	ObjPool->Maps.DrawBrick(hMemDC, PlayerPos.x, PlayerPos.y);
 
+	//if (ObjPool->Player.GetState() == TRAPREPAIRING)
+		ObjPool->Maps.DrawTrapHpBar(hMemDC, PlayerPos.x, PlayerPos.y);
+
 	ObjPool->MonsterPool.Draw(hMemDC, PlayerPos.x, PlayerPos.y);
 	//ObjPool->Player.Draw(hMemDC, PlayerPos.x, PlayerPos.y);
-	//MonsterPool.Draw에서 플레이어와 몬스터의 좌표를 확인해 부자연스럽게 겹치지 않도록 함. 
+	//MonsterPool.Draw에서 플레이어와 몬스터의 좌표를 확인해 부자연스럽게 겹치지 않도록 함.
 
 	ObjPool->ingameBtn_Option.Draw(hMemDC);
 	ObjPool->ingameUI_Stone.Draw(hMemDC);
@@ -46,10 +49,19 @@ void Ingame::OnTimer(HWND hWnd, int timer)
 
 		ObjPool->Player.Animation();
 		ObjPool->Player.UpdateState();
+
+		if (ObjPool->Player.ATK_Skill.Check_Active)
+			ObjPool->Player.ATK_Skill.Ani_Skill->NextFrameSprite();
+		if (ObjPool->Player.AGGRO_Skill.Check_Active)
+			ObjPool->Player.AGGRO_Skill.Ani_Skill->NextFrameSprite();
+		if (ObjPool->Player.PUSH_Skill.Check_Active)
+			ObjPool->Player.PUSH_Skill.Ani_Skill->NextFrameSprite();
+		if (ObjPool->Player.BARRICADE_Skill.Check_Active)
+			ObjPool->Player.BARRICADE_Skill.Ani_Skill->NextFrameSprite();
 	}
 	if (timer == MONSTERTM)
 	{
-		if (ObjPool->MonsterPool.pool.empty() && ObjPool->MonsterTimer <= 0)
+		if (ObjPool->MonsterPool.ePool.empty() && ObjPool->MonsterTimer <= 0)
 		{
 			int Temp = 0;
 
@@ -83,13 +95,13 @@ void Ingame::OnTimer(HWND hWnd, int timer)
 
 void Ingame::Update() //씬 업데이트
 {
-	for (auto it = ObjPool->MonsterPool.pool.begin(); it != ObjPool->MonsterPool.pool.end(); it++)
+	for (auto it = ObjPool->MonsterPool.ePool.begin(); it != ObjPool->MonsterPool.ePool.end(); it++)
 	{	
 		//monsterID를 만들어서, 함정 발동중인 몬스터의 ID에 대해서만 함수가 발동되게 해야하나?
 		ObjPool->Maps.ActiveTile(it->GetEntity()); //몬스터에 대해 밟고 있는 타일 발동
 		ObjPool->MonsterPool.CheckHealth();
 
-		if (ObjPool->MonsterPool.pool.empty()) return;
+		if (ObjPool->MonsterPool.ePool.empty()) return;
 	}
 
 	if (ObjPool->Player.GetState() == STAND && ObjPool->Player.isWatingTrapSet == true) //이동중에 트랩 세팅을 명령했으면 그 다음 칸에 멈춰서서 함정설치
@@ -144,8 +156,8 @@ void Ingame::OnKeyborad()
 		exlastBitState = 0;
 	}
 
-	DWORD lastBitState[10] = { 0, };
-	DWORD keyState[10];
+	DWORD lastBitState[14] = { 0, };
+	DWORD keyState[14];
 
 	keyState[0] = GetAsyncKeyState(VK_UP);
 	keyState[1] = GetAsyncKeyState(VK_DOWN);
@@ -158,6 +170,11 @@ void Ingame::OnKeyborad()
 	keyState[7] = GetAsyncKeyState(0x33); //3
 	keyState[8] = GetAsyncKeyState(0x34); //4
 	keyState[9] = GetAsyncKeyState(0x35); //5
+
+	keyState[10] = GetAsyncKeyState(0x41); //A
+	keyState[11] = GetAsyncKeyState(0x53); //S
+	keyState[12] = GetAsyncKeyState(0x44); //D
+	keyState[13] = GetAsyncKeyState(0x46); //F
 
 	if (lastBitState[UP] == 0 && keyState[UP] & 0x0001) //B_UP //이전에 0x1 이 0 이면 실행(안 누르다가 눌렀을 때)
 	{
@@ -186,7 +203,7 @@ void Ingame::OnKeyborad()
 	if (lastBitState[SPACE] == 0 && keyState[SPACE] & 0x0001) //SPACE
 	{
 		//보고 있는게 함정이면 수리
-		if (ObjPool->Maps.CheckTrap(ObjPool->Player.GetDiraction(), ObjPool->Player.GetPosition()))
+		if (ObjPool->Maps.CheckTrap(ObjPool->Player.GetDirection(), ObjPool->Player.GetPosition()))
 		{
 			ObjPool->Player.RepairTrap();
 		}
@@ -304,9 +321,41 @@ void Ingame::OnKeyborad()
 		lastBitState[KEY_5] = 1;
 	}
 
-	for (int i = 0; i < 6; i++)
+	if (lastBitState[KEY_A] == 0 && keyState[KEY_A] & 0x0001) //B_RIGHT
 	{
-		if ((keyState[10] & 0x8000) == 0) // 완전히 뗐다면 다음 실행을 위해서 상태 초기화
+		ObjPool->Player.ATK_Skill.ActiveSkill(ObjPool->Player.GetDirection());
+		ObjPool->Player.ATK_Skill.Check_Active = true;
+		
+		lastBitState[KEY_A] = 1;
+	}
+
+	if (lastBitState[KEY_S] == 0 && keyState[KEY_S] & 0x0001) //B_RIGHT
+	{
+		ObjPool->Player.AGGRO_Skill.ActiveSkill(ObjPool->Player.GetDirection());
+		ObjPool->Player.AGGRO_Skill.Check_Active = true;
+
+		lastBitState[KEY_S] = 1;
+	}
+
+	if (lastBitState[KEY_D] == 0 && keyState[KEY_D] & 0x0001) //B_RIGHT
+	{
+		ObjPool->Player.PUSH_Skill.ActiveSkill(ObjPool->Player.GetDirection());
+		ObjPool->Player.PUSH_Skill.Check_Active = true;
+
+		lastBitState[KEY_D] = 1;
+	}
+
+	if (lastBitState[KEY_F] == 0 && keyState[KEY_F] & 0x0001) //B_RIGHT
+	{
+		ObjPool->Player.BARRICADE_Skill.ActiveSkill(ObjPool->Player.GetDirection());
+		ObjPool->Player.BARRICADE_Skill.Check_Active = true;
+
+		lastBitState[KEY_F] = 1;
+	}
+
+	for (int i = 0; i < 14; i++)
+	{
+		if ((keyState[14] & 0x8000) == 0) // 완전히 뗐다면 다음 실행을 위해서 상태 초기화
 		{
 			lastBitState[i] = 0;
 		}

@@ -37,10 +37,16 @@ void Bitmap::Ternimate()
 	DeleteDC(hdcImg);
 }
 
-void Bitmap::SetPosition(int x, int y)
+void Bitmap::SetPosition(int _x, int _y)
 {
-	pos.x = x;
-	pos.y = y;
+	pos.x = _x;
+	pos.y = _y;
+}
+
+void Bitmap::SetDrawArea(int _w, int _h)
+{
+	w = _w;
+	h = _h;
 }
 
 void Bitmap::SetSpriteColor(COLORREF color)

@@ -7,6 +7,7 @@
 #include "BitmapObj.h"
 #include "ButtonObj.h"
 #include "TileObj.h"
+#include "Skill.h"
 #include "HeroObj.h"
 #include "EntityObj.h"
 
@@ -21,7 +22,7 @@ enum Tile_ID_List  // 식별 번호 리스트
 	TRAP_ScareCrow,
 	TRAP_Cunfusion,
 	TRAP_Grab,
-	TRAP_GrabArea
+	TRAP_GrabArea,
 };
 
 enum eDirection
@@ -35,7 +36,11 @@ enum eDirection
 	KEY_2,
 	KEY_3,
 	KEY_4,
-	KEY_5
+	KEY_5,
+	KEY_A,
+	KEY_S,
+	KEY_D,
+	KEY_F
 };
 
 enum eTimer
@@ -97,4 +102,5 @@ public:
 	Bitmap ingameUI_Skill;
 	Bitmap ingameUI_Stage;
 	Bitmap ingameUI_Time;
+	Bitmap ingameUI_TrapHpBar;
 };

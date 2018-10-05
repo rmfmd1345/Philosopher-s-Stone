@@ -28,7 +28,6 @@ void Entity::Init(HWND hWnd, int x, int y, int type, COLORREF sprite)
 	switch (type)
 	{
 	case DEALER:
-
 		Ani_stand[UP].Init(hWnd, 0, 0, 80, 120, 1, L"./Image/Walk_Ani/dealer_walk_back.bmp");
 		Ani_stand[DOWN].Init(hWnd, 0, 0, 80, 120, 1, L"./Image/Walk_Ani/dealer_walk_front.bmp");
 		Ani_stand[LEFT].Init(hWnd, 0, 0, 80, 120, 1, L"./Image/Walk_Ani/dealer_walk_left.bmp");
@@ -38,7 +37,7 @@ void Entity::Init(HWND hWnd, int x, int y, int type, COLORREF sprite)
 		Ani_walk[DOWN].Init(hWnd, 0, 0, 480, 120, 6, L"./Image/Walk_Ani/dealer_walk_front.bmp");
 		Ani_walk[LEFT].Init(hWnd, 0, 0, 480, 120, 6, L"./Image/Walk_Ani/dealer_walk_left.bmp");
 		Ani_walk[RIGHT].Init(hWnd, 0, 0, 480, 120, 6, L"./Image/Walk_Ani/dealer_walk_right.bmp");
-		
+
 		Ani_attack[UP].Init(hWnd, 0, 0, 240, 122, 4, L"./Image/Walk_Ani/dealer_walk_back.bmp");
 		Ani_attack[DOWN].Init(hWnd, 0, 0, 216, 122, 4, L"./Image/Walk_Ani/dealer_walk_front.bmp");
 		Ani_attack[LEFT].Init(hWnd, 0, 0, 304, 122, 4, L"./Image/Walk_Ani/dealer_walk_left.bmp");
@@ -189,12 +188,12 @@ void Entity::Draw(HDC hMemDC, int x, int y)
 	case STAND:
 		Ani_stand[nowDirection].SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y - 40);
 		Ani_stand[nowDirection].Draw(hMemDC);
-		break;													 
-	case WALK:														 
+		break;
+	case WALK:
 		Ani_walk[nowDirection].SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y - 40);
-		Ani_walk[nowDirection].Draw(hMemDC); 
-		break;														 
-	case ATTACK:													 
+		Ani_walk[nowDirection].Draw(hMemDC);
+		break;
+	case ATTACK:
 		Ani_attack[nowDirection].SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y - 40);
 		Ani_attack[nowDirection].Draw(hMemDC);
 		break;
@@ -385,6 +384,10 @@ void Entity::UpdateState()
 			}
 			//직선 갭차이
 
+<<<<<<< HEAD
+=======
+			//여기서부터
+>>>>>>> 96bdf22898f19fdd5c6f2a8766e8be6445709260
 			if (!isAllSearch)
 			{
 				if (SearchDirection != -1)
@@ -420,7 +423,6 @@ void Entity::UpdateState()
 		*/
 
 		{
-
 			int BlockedRoadNum = 0;
 			int BlockedRoad[4] = { 0 };
 			for (int i = 0; i < 4; i++)
@@ -512,6 +514,12 @@ void Entity::UpdateState()
 		}
 		return;
 	}
+
+	//혼란 디버프
+	if (nowState == CONFUSE)
+	{
+		//TODO : 혼란 상태 추가
+	}
 }
 
 bool Entity::GetAllSearch()
@@ -547,22 +555,22 @@ bool Entity::isRoadBlocked(int dire)
 	switch (dire)
 	{
 	case UP:
-		if (ObjPool->Maps.GetTileID(pos.x, pos.y - 1) != NONE && ObjPool->Maps.GetTileID(pos.x, pos.y - 1) != WALL && ObjPool->Maps.GetTileID(pos.x, pos.y - 1) != MENTLE)
+		if (ObjPool->Maps.GetTileMoveID(pos.x, pos.y - 1))
 			return false;
 
 		break;
 	case DOWN:
-		if (ObjPool->Maps.GetTileID(pos.x, pos.y + 1) != NONE && ObjPool->Maps.GetTileID(pos.x, pos.y + 1) != WALL && ObjPool->Maps.GetTileID(pos.x, pos.y + 1) != MENTLE)
+		if (ObjPool->Maps.GetTileMoveID(pos.x, pos.y + 1))
 			return false;
-		
+
 		break;
 	case LEFT:
-		if (ObjPool->Maps.GetTileID(pos.x - 1, pos.y) != NONE && ObjPool->Maps.GetTileID(pos.x - 1, pos.y) != WALL && ObjPool->Maps.GetTileID(pos.x - 1, pos.y) != MENTLE)
+		if (ObjPool->Maps.GetTileMoveID(pos.x - 1, pos.y))
 			return false;
 
 		break;
 	case RIGHT:
-		if (ObjPool->Maps.GetTileID(pos.x + 1, pos.y) != NONE && ObjPool->Maps.GetTileID(pos.x + 1, pos.y) != WALL && ObjPool->Maps.GetTileID(pos.x + 1, pos.y) != MENTLE)
+		if (ObjPool->Maps.GetTileMoveID(pos.x + 1, pos.y))
 			return false;
 
 		break;
@@ -671,7 +679,7 @@ bool Entity::isBanRoad(int dire)
 
 bool Entity::isMonsterRoadOverlap(int x, int y)
 {
-	for (auto it = ObjPool->MonsterPool.pool.begin(); it != ObjPool->MonsterPool.pool.end(); it++)
+	for (auto it = ObjPool->MonsterPool.ePool.begin(); it != ObjPool->MonsterPool.ePool.end(); it++)
 	{
 		if (it->nowState == WALK)
 		{
@@ -843,24 +851,23 @@ void Monster::Ternimate()
 	Wizard.Ternimate();
 	Tanker.Ternimate();
 
-	if (pool.empty()) return;
+	if (ePool.empty()) return;
 
-	for (auto it = pool.begin(); it != pool.end(); it++)
+	for (auto it = ePool.begin(); it != ePool.end(); it++)
 	{
 		it->Ternimate();
 	}
 
-	pool.clear();
+	ePool.clear();
 }
 
 void Monster::Draw(HDC hMemDC, int x, int y)
 {
-
-	if (pool.empty())	//몬스터가 없으면 플레이어만 생성
-	{
-		ObjPool->Player.Draw(hMemDC, x, y);
-		return;
-	}
+	//if (ePool.empty())	//몬스터가 없으면 플레이어만 생성
+	//{
+	//	ObjPool->Player.Draw(hMemDC, x, y);
+	//	return;
+	//}
 
 	bool isPlayer = false;
 
@@ -868,8 +875,11 @@ void Monster::Draw(HDC hMemDC, int x, int y)
 	{
 		for (int j = 0; j < MAX_TILE_X; j++)
 		{
-			for (auto it = pool.begin(); it != pool.end(); it++)
-				if (it->GetPosition().y == i && it->GetPosition().x == j) it->Draw(hMemDC, x, y);
+			if (!ePool.empty())
+			{
+				for (auto it = ePool.begin(); it != ePool.end(); it++)
+					if (it->GetPosition().y == i && it->GetPosition().x == j) it->Draw(hMemDC, x, y);
+			}
 
 			if (!isPlayer)
 				if (ObjPool->Player.GetPosition().y == i && ObjPool->Player.GetPosition().x == j)
@@ -878,22 +888,21 @@ void Monster::Draw(HDC hMemDC, int x, int y)
 					isPlayer = true;
 				}
 
-			if (ObjPool->Maps.Map[i][j].Tile_ID == TRAP_ScareCrow)
-			{
-				ObjPool->Maps.Map[i][j].Tile_Sprite.Draw(hMemDC);
-			}
+				if (ObjPool->Maps.Map[i][j].Tile_ID == TRAP_ScareCrow)
+				{
+					ObjPool->Maps.Map[i][j].Tile_Sprite.Draw(hMemDC);
+				}
 		}
 	}
-
 
 	DrawMap(hMemDC, x, y);
 }
 
 void Monster::Animation()
 {
-	if (pool.empty()) return;
+	if (ePool.empty()) return;
 
-	for (auto it = pool.begin(); it != pool.end(); it++)
+	for (auto it = ePool.begin(); it != ePool.end(); it++)
 	{
 		it->Animation();
 	}
@@ -901,10 +910,10 @@ void Monster::Animation()
 
 void Monster::UpdateState()
 {
-	if (pool.empty()) return;
+	if (ePool.empty()) return;
 
 	bool isSearch = false;
-	for (auto it = pool.begin(); it != pool.end(); it++)
+	for (auto it = ePool.begin(); it != ePool.end(); it++)
 	{
 		it->UpdateState();
 
@@ -915,7 +924,7 @@ void Monster::UpdateState()
 	}
 	if (!isSearch)
 	{
-		pool.begin()->SetAllSearch(false);
+		ePool.begin()->SetAllSearch(false);
 	}
 }
 
@@ -925,15 +934,15 @@ void Monster::AddMonster(int type, int x, int y)
 	{
 	case DEALER:
 		Dealer.SetPosition(x, y);
-		pool.push_back(Dealer);
+		ePool.push_back(Dealer);
 		break;
 	case WIZARD:
 		Wizard.SetPosition(x, y);
-		pool.push_back(Wizard);
+		ePool.push_back(Wizard);
 		break;
 	case TANKER:
 		Tanker.SetPosition(x, y);
-		pool.push_back(Tanker);
+		ePool.push_back(Tanker);
 		break;
 	}
 }
@@ -945,16 +954,16 @@ void Monster::AddMonster(int type)
 
 void Monster::CheckHealth()
 {
-	if (pool.empty()) return;
+	if (ePool.empty()) return;
 
-	for (auto it = pool.begin(); it != pool.end();)
+	for (auto it = ePool.begin(); it != ePool.end();)
 	{
 		if (it->isDead())
 		{
-   			it->Ternimate();
-			it = pool.erase(it);
+  			it->Ternimate();
+			it = ePool.erase(it);
 
-			if (pool.empty()) return;
+			if (ePool.empty()) return;
 		}
 		else
 		{
@@ -965,9 +974,9 @@ void Monster::CheckHealth()
 
 void Monster::SetDirection(int dire)
 {
-	if (pool.empty()) return;
+	if (ePool.empty()) return;
 
-	for (auto it = pool.begin(); it != pool.end(); it++)
+	for (auto it = ePool.begin(); it != ePool.end(); it++)
 	{
 		it->SetDirection(dire);
 	}

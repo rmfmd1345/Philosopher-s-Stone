@@ -12,7 +12,9 @@ enum eState
 	FINDWAY,
 	MARKFORFIND,
 	INTRAP,
-	TRAPSETTING
+	CONFUSE,
+	TRAPSETTING,
+	TRAPREPAIRING
 };
 
 enum eEntity
@@ -114,7 +116,7 @@ public:
 	Entity Dealer;
 	Entity Wizard;
 	Entity Tanker;
-	vector<Entity> pool;
+	vector<Entity> ePool;
 
 	POINT spawnPosition = { 2, 5 };
 

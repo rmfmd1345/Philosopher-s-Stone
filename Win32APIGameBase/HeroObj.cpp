@@ -29,10 +29,15 @@ void Hero::Init(HWND hWnd, int x, int y, COLORREF sprite)
 	Ani_walk[LEFT].Init(hWnd, 0, 0, 480, 132, 6, L"./Image/Walk_Ani/hero_walk_left.bmp");
 	Ani_walk[RIGHT].Init(hWnd, 0, 0, 480, 132, 6, L"./Image/Walk_Ani/hero_walk_right.bmp");
 
-	/*Ani_attack[B_UP].Init(hWnd, 0, 0, 240, 122, 4, L"./Image/Walk_Ani/Hero_Back.bmp");
-	Ani_attack[B_DOWN].Init(hWnd, 0, 0, 216, 122, 4, L"./Image/Walk_Ani/Hero_Front.bmp");
-	Ani_attack[B_LEFT].Init(hWnd, 0, 0, 304, 122, 4, L"./Image/Walk_Ani/Hero_Left.bmp");
-	Ani_attack[B_RIGHT].Init(hWnd, 0, 0, 336, 122, 4, L"./Image/Walk_Ani/Hero_Right.bmp");*/
+	Ani_attack[UP].Init(hWnd, 0, 0, 240, 122, 4, L"./Image/Attack_Ani/hero_attack_back.bmp");
+	Ani_attack[DOWN].Init(hWnd, 0, 0, 216, 122, 4, L"./Image/Attack_Ani/hero_attack_front.bmp");
+	Ani_attack[LEFT].Init(hWnd, 0, 0, 304, 122, 4, L"./Image/Attack_Ani/Hero_Attack_Left.bmp");
+	Ani_attack[RIGHT].Init(hWnd, 0, 0, 336, 122, 4, L"./Image/Attack_Ani/hero_attack_right.bmp");
+
+	//ATK_Skill.InitSkill(hWnd, ATK_SKILL);
+	//AGGRO_Skill.InitSkill(hWnd, AGGRO_SKILL);
+	PUSH_Skill.InitSkill(hWnd, PUSH_SKILL, 7, 8);
+	//BARRICADE_Skill.InitSkill(hWnd, BARRICADE_SKILL);
 }
 
 void Hero::Ternimate()
@@ -187,7 +192,7 @@ void Hero::SetDirection(int dire)
 	switch (nowDirection)
 	{
 	case UP:
-		if (ObjPool->Maps.GetTileID(pos.x, pos.y - 1) == FLOOR)
+		if (ObjPool->Maps.GetTileMoveID(pos.x, pos.y - 1) && ObjPool->Maps.Map[pos.y - 1][pos.x].Tile_On)
 		{
 			nowState = WALK;
 			nowAnimation = WALK;
@@ -195,7 +200,7 @@ void Hero::SetDirection(int dire)
 		}
 		break;
 	case DOWN:
-		if (ObjPool->Maps.GetTileID(pos.x, pos.y + 1) == FLOOR)
+		if (ObjPool->Maps.GetTileMoveID(pos.x, pos.y + 1) && ObjPool->Maps.Map[pos.y + 1][pos.x].Tile_On)
 		{
 			nowState = WALK;
 			nowAnimation = WALK;
@@ -203,7 +208,7 @@ void Hero::SetDirection(int dire)
 		}
 		break;
 	case LEFT:
-		if (ObjPool->Maps.GetTileID(pos.x - 1, pos.y) == FLOOR)
+		if (ObjPool->Maps.GetTileMoveID(pos.x - 1, pos.y) && ObjPool->Maps.Map[pos.y][pos.x - 1].Tile_On)
 		{
 			nowState = WALK;
 			nowAnimation = WALK;
@@ -211,7 +216,7 @@ void Hero::SetDirection(int dire)
 		}
 		break;
 	case RIGHT:
-		if (ObjPool->Maps.GetTileID(pos.x + 1, pos.y) == FLOOR)
+		if (ObjPool->Maps.GetTileMoveID(pos.x + 1, pos.y) && ObjPool->Maps.Map[pos.y][pos.x + 1].Tile_On)
 		{
 			nowState = WALK;
 			nowAnimation = WALK;
@@ -231,7 +236,7 @@ int Hero::GetState()
 	return nowState;
 }
 
-int Hero::GetDiraction()
+int Hero::GetDirection()
 {
 	return nowDirection;
 }
@@ -370,6 +375,15 @@ void Hero::SetTrap()
 			ObjPool->Maps.SetTrapOnMap(ObjPool->Maps.Trap_GrabArea, Temp_X - 1, Temp_Y);
 			ObjPool->Maps.SetTrapOnMap(ObjPool->Maps.Trap_GrabArea, Temp_X, Temp_Y + 1);
 			ObjPool->Maps.SetTrapOnMap(ObjPool->Maps.Trap_GrabArea, Temp_X, Temp_Y - 1);
+
+			POINT grabPos;
+			grabPos.x = Temp_X;
+			grabPos.y = Temp_Y;
+			ObjPool->Maps.Map[Temp_Y + 1][Temp_X].Grab_POS = grabPos; //²ø·Á°¥ ¿µ¿ªÀÇ ÁÂÇ¥ ÀúÀå
+			ObjPool->Maps.Map[Temp_Y - 1][Temp_X].Grab_POS = grabPos;
+			ObjPool->Maps.Map[Temp_Y][Temp_X + 1].Grab_POS = grabPos;
+			ObjPool->Maps.Map[Temp_Y][Temp_X - 1].Grab_POS = grabPos;
+
 		}
 		break;
 	case TRAP_Cunfusion:
@@ -389,21 +403,44 @@ void Hero::SetTrap()
 
 void Hero::RepairTrap()
 {
+	ObjPool->Player.SetState(TRAPREPAIRING);
 	switch (nowDirection)
 	{
 	case LEFT:
-		ObjPool->Maps.Map[pos.y][pos.x - 1].Tile_On = true;
-			
+		if (ObjPool->Maps.Map[pos.y][pos.x - 1].Tile_On == false)
+			ObjPool->Maps.Map[pos.y][pos.x - 1].repairGage++;
+		if (ObjPool->Maps.Map[pos.y][pos.x - 1].repairGage >= ObjPool->Maps.Map[pos.y][pos.x - 1].TrapHp)
+		{
+			ObjPool->Maps.Map[pos.y][pos.x - 1].Tile_On = true;
+			ObjPool->Maps.Map[pos.y][pos.x - 1].repairGage = 0;
+		}
 		break;
 	case RIGHT:
-		ObjPool->Maps.Map[pos.y][pos.x + 1].Tile_On = true;
+		if (ObjPool->Maps.Map[pos.y][pos.x + 1].Tile_On == false)
+			ObjPool->Maps.Map[pos.y][pos.x + 1].repairGage++;
+		if (ObjPool->Maps.Map[pos.y][pos.x + 1].repairGage >= ObjPool->Maps.Map[pos.y][pos.x + 1].TrapHp)
+		{
+			ObjPool->Maps.Map[pos.y][pos.x + 1].Tile_On = true;
+			ObjPool->Maps.Map[pos.y][pos.x + 1].repairGage = 0;
+		}
 		break;
 	case UP:
-		ObjPool->Maps.Map[pos.y - 1][pos.x].Tile_On = true;
+		if (ObjPool->Maps.Map[pos.y - 1][pos.x].Tile_On == false)
+			ObjPool->Maps.Map[pos.y - 1][pos.x].repairGage++;
+		if (ObjPool->Maps.Map[pos.y - 1][pos.x].repairGage >= ObjPool->Maps.Map[pos.y - 1][pos.x].TrapHp)
+		{
+			ObjPool->Maps.Map[pos.y - 1][pos.x].Tile_On = true;
+			ObjPool->Maps.Map[pos.y - 1][pos.x].repairGage = 0;
+		}
 		break;
 	case DOWN:
-		ObjPool->Maps.Map[pos.y + 1][pos.x].Tile_On = true;
-		break;
+		if (ObjPool->Maps.Map[pos.y + 1][pos.x].Tile_On == false)
+			ObjPool->Maps.Map[pos.y + 1][pos.x].repairGage++;
+		if (ObjPool->Maps.Map[pos.y + 1][pos.x].repairGage >= ObjPool->Maps.Map[pos.y + 1][pos.x].TrapHp)
+		{
+			ObjPool->Maps.Map[pos.y + 1][pos.x].Tile_On = true;
+			ObjPool->Maps.Map[pos.y + 1][pos.x].repairGage = 0;
+		}
 	}
 }
 

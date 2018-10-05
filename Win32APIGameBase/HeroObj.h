@@ -21,6 +21,10 @@ private:
 public:
 	int Rock_Num;
 	TCHAR Rock_Num_UI[10];
+	Skill ATK_Skill;
+	Skill AGGRO_Skill;
+	Skill PUSH_Skill;
+	Skill BARRICADE_Skill;
 	int selectedTrap;
 	bool isWatingTrapSet;
 
@@ -37,7 +41,7 @@ public:
 	void SetDirection(int dire);
 	void SetState(int state);
 	int GetState();
-	int GetDiraction();
+	int GetDirection();
 
 	POINT GetPosition();
 	int GetWalkState();

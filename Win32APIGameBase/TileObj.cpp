@@ -2,9 +2,10 @@
 #include "TileObj.h"
 #include "EntityObj.h"
 
-void CTile::InitTile(HWND hwnd, int Frame, int ID, LPCWSTR szFileName, std::function<void(Entity* ent)> Tile_Function)
+void CTile::InitTile(HWND hwnd, int Frame, int ID, int MoveID, LPCWSTR szFileName, std::function<void(Entity* ent)> Tile_Function)
 {
 	Tile_ID = ID;
+	Tile_isCanMove = MoveID;
 	Tile_On = true;
 
 	Brick_Up = false;
@@ -30,15 +31,15 @@ void CTile::DestroyTile(CTile Tile)
 
 void CMap::InitMap(HWND hwnd)
 {
-	None.InitTile(hwnd, 1 /*Frame*/, NONE, L"./Image/Tile/None.bmp", [&](Entity* ent) {});
-	Floor.InitTile(hwnd, 1 /*Frame*/, FLOOR, L"./Image/Tile/Floor.bmp", [&](Entity* ent) {});
-	Wall.InitTile(hwnd, 1 /*Frame*/, WALL, L"./Image/Tile/Wall.bmp", [&](Entity* ent) {});
-	Trap_Niddle.InitTile(hwnd, 1 /*Frame*/, TRAP_Niddle, L"./Image/Tile/Niddle.bmp", [&](Entity* ent) {NiddleActive(ent);});
-	Trap_ScareCrow.InitTile(hwnd, 1 /*Frame*/, TRAP_ScareCrow, L"./Image/Tile/Scarecrow_test.bmp", [&](Entity* ent) {ScareCrowActive(ent); });
-	Trap_Grab.InitTile(hwnd, 1 /*Frame*/, TRAP_Grab, L"./Image/Tile/Grap.bmp", [&](Entity* ent) {});
-	Trap_GrabArea.InitTile(hwnd, 1 /*Frame*/, TRAP_GrabArea, L"./Image/Tile/GrapArea.bmp", [&](Entity* ent) {GrabActive(ent); });
-	Trap_Cunfusion.InitTile(hwnd, 1 /*Frame*/, TRAP_Cunfusion, L"./Image/Tile/Cunfusion.bmp", [&](Entity* ent) {ConfusionActive(ent); });
-	Trap_Hole.InitTile(hwnd, 1 /*Frame*/, TRAP_Hole, L"./Image/Tile/Hole.bmp", [&](Entity* ent) {HoleActive(ent);});
+	None.InitTile(hwnd, 1 /*Frame*/, NONE, false, L"./Image/Tile/None.bmp", [&](Entity* ent) {});
+	Floor.InitTile(hwnd, 1 /*Frame*/, FLOOR, true, L"./Image/Tile/Floor.bmp", [&](Entity* ent) {});
+	Wall.InitTile(hwnd, 1 /*Frame*/, WALL, false, L"./Image/Tile/Wall.bmp", [&](Entity* ent) {});
+	Trap_Niddle.InitTile(hwnd, 1 /*Frame*/,TRAP_Niddle, true, L"./Image/Tile/Niddle.bmp", [&](Entity* ent) {NiddleActive(ent);});
+	Trap_ScareCrow.InitTile(hwnd, 1 /*Frame*/, TRAP_ScareCrow, false, L"./Image/Tile/Scarecrow_test.bmp", [&](Entity* ent) {ScareCrowActive(ent); });
+	Trap_Grab.InitTile(hwnd, 1 /*Frame*/, TRAP_Grab, false, L"./Image/Tile/Grap.bmp", [&](Entity* ent) {});
+	Trap_GrabArea.InitTile(hwnd, 1 /*Frame*/, TRAP_GrabArea, true, L"./Image/Tile/GrapArea.bmp", [&](Entity* ent) {GrabActive(ent);});
+	Trap_Cunfusion.InitTile(hwnd, 1 /*Frame*/, TRAP_Cunfusion, true, L"./Image/Tile/Cunfusion.bmp", [&](Entity* ent) {ConfusionActive(ent); });
+	Trap_Hole.InitTile(hwnd, 1 /*Frame*/, TRAP_Hole, true, L"./Image/Tile/Hole.bmp", [&](Entity* ent) {HoleActive(ent);});
 
 	Brick[B_UP].Init(hwnd, 0, 0, 80, 80, L"./Image/Tile/Brick_Up.bmp");
 	Brick[B_DOWN].Init(hwnd, 0, 0, 80, 80, L"./Image/Tile/Brick_Down.bmp");
@@ -67,12 +68,27 @@ void CMap::ScareCrowActive(Entity* ent)
 
 void CMap::GrabActive(Entity* ent)
 {
+	POINT pos = ent->GetPosition();
+	POINT grabPos; //갈고리가 설치된 위치의 좌표
+	grabPos.x = Map[pos.y][pos.x].Grab_POS.x;
+	grabPos.y = Map[pos.y][pos.x].Grab_POS.y;
 
+	if (Map[grabPos.y][grabPos.x].Tile_On && ent->GetState() != WALK)
+	{
+		ent->SetPosition(Map[pos.y][pos.x].Grab_POS.x, Map[pos.y][pos.x].Grab_POS.y);
+		Map[grabPos.y][grabPos.x].Tile_On = false; //재장전 필요한 상태로 변경
+	}
 }
 
 void CMap::ConfusionActive(Entity* ent)
 {
+	POINT pos = ent->GetPosition();
 
+	if (Map[pos.y][pos.x].Tile_On && ent->GetState() != WALK) //함정이 깔려있으면 //엔티티가 걷는 중이 아니면
+	{
+		ent->SetState(CONFUSE); //엔티티 혼란 상태로 변경
+		Map[pos.y][pos.x].Tile_On = false; //재장전 필요한 상태로 변경
+	}
 }
 
 void CMap::HoleActive(Entity* ent)
@@ -81,7 +97,7 @@ void CMap::HoleActive(Entity* ent)
 	
 	if (Map[pos.y][pos.x].Tile_On && ent->GetState() != WALK) //함정이 깔려있으면 //엔티티가 걷는 중이 아니면
 	{
-		ent->SetState(INTRAP); //엔티티 상태 인트랩 상태로 변경
+		ent->SetState(INTRAP); //엔티티 인트랩 상태로 변경
 		ent->SetAnimation(STAND); //엔티티 서있는 상태로 변경
 		Map[pos.y][pos.x].damgeDelay++;
 		printf("카운트 : %f\n 속도: %f\n", Map[pos.y][pos.x].damgeDelay, Map[pos.y][pos.x].SpinSpeed);
@@ -184,6 +200,9 @@ void CMap::ActiveTile(Entity* ent)
 	case TRAP_Grab:
 		Trap_Grab.Tile_Func(ent);
 		break;
+	case TRAP_GrabArea:
+		Trap_GrabArea.Tile_Func(ent);
+		break;
 	}
 }
 
@@ -200,6 +219,7 @@ void CMap::SetTrapOnMap(CTile Tile, int x, int y)
 	Map[y][x] = Tile;
 	Map[y][x].Tile_Sprite.SetPosition(x * 80, y * 80);
 }
+
 
 void CMap::DrawMap(HDC hMemDC, int x, int y)
 {
@@ -254,6 +274,31 @@ void CMap::DrawMap(HDC hMemDC, int x, int y)
 			Map[i][j].Tile_Sprite.Draw(hMemDC);
 		}
 	}
+}
+
+void CMap::DrawTrapHpBar(HDC hMemDC, int x, int y)
+{
+	switch (ObjPool->Player.GetDirection())
+	{
+	case LEFT:
+		ObjPool->ingameUI_TrapHpBar.SetPosition(x * 80 - 106, y * 80);
+		ObjPool->ingameUI_TrapHpBar.SetDrawArea(Map[y][x - 1].repairGage, 10);
+		break;
+	case RIGHT:
+		ObjPool->ingameUI_TrapHpBar.SetPosition(x * 80 + 53, y * 80);
+		ObjPool->ingameUI_TrapHpBar.SetDrawArea(Map[y][x + 1].repairGage, 10);
+		break;
+	case UP:
+		ObjPool->ingameUI_TrapHpBar.SetPosition(x * 80 - 26, y * 80 - 80);
+		ObjPool->ingameUI_TrapHpBar.SetDrawArea(Map[y - 1][x].repairGage, 10);
+		break;
+	case DOWN:
+		ObjPool->ingameUI_TrapHpBar.SetPosition(x * 80 - 26, y * 80 + 85);
+		ObjPool->ingameUI_TrapHpBar.SetDrawArea(Map[y + 1][x].repairGage, 10);
+		break;
+	}
+
+	ObjPool->ingameUI_TrapHpBar.Draw(hMemDC);
 }
 
 void CMap::SetBrick(int x, int y)
@@ -374,6 +419,11 @@ void CMap::DestroyMap()
 int CMap::GetTileID(int x, int y)
 {
 	return Map[y][x].Tile_ID;
+}
+
+int CMap::GetTileMoveID(int x, int y)
+{
+	return Map[y][x].Tile_isCanMove;
 }
 
 bool CMap::CheckTrap(int diraction, POINT pos)
