@@ -89,7 +89,7 @@ void CMap::GrabActive(Entity* ent)
 					Map[pos.y][pos.x].movingGrab_x = 0;
 					Map[grabPos.y][grabPos.x].Tile_On = false; //재장전 필요한 상태로 변경
 					ent->SetPosition(Map[pos.y][pos.x].Grab_POS.x, Map[pos.y][pos.x].Grab_POS.y);
-					ent->SetState(WALK);
+					ent->SetState(FINDWAY);
 				}
 			}
 			if (grabPos.x == pos.x + 1) //엔티티가 갈고리 왼쪽에 있을 떄
@@ -100,7 +100,7 @@ void CMap::GrabActive(Entity* ent)
 					Map[pos.y][pos.x].movingGrab_x = 0;
 					Map[grabPos.y][grabPos.x].Tile_On = false; //재장전 필요한 상태로 변경
 					ent->SetPosition(Map[pos.y][pos.x].Grab_POS.x, Map[pos.y][pos.x].Grab_POS.y);
-					ent->SetState(WALK);
+					ent->SetState(FINDWAY);
 				}
 			}
 			if (grabPos.y == pos.y - 1) //엔티티가 갈고리 위쪽에 있을 떄
@@ -111,7 +111,7 @@ void CMap::GrabActive(Entity* ent)
 					Map[pos.y][pos.x].movingGrab_y = 0;
 					Map[grabPos.y][grabPos.x].Tile_On = false; //재장전 필요한 상태로 변경
 					ent->SetPosition(Map[pos.y][pos.x].Grab_POS.x, Map[pos.y][pos.x].Grab_POS.y);
-					ent->SetState(WALK);
+					ent->SetState(FINDWAY);
 				}
 			}
 			if (grabPos.y == pos.y + 1) //엔티티가 갈고리 위쪽에 있을 떄
@@ -122,7 +122,7 @@ void CMap::GrabActive(Entity* ent)
 					Map[pos.y][pos.x].movingGrab_y = 0;
 					Map[grabPos.y][grabPos.x].Tile_On = false; //재장전 필요한 상태로 변경
 					ent->SetPosition(Map[pos.y][pos.x].Grab_POS.x, Map[pos.y][pos.x].Grab_POS.y);
-					ent->SetState(WALK);
+					ent->SetState(FINDWAY);
 				}
 			}
 	}
@@ -351,12 +351,13 @@ void CMap::DrawTrapHpBar(HDC hMemDC, int x, int y)
 
 void CMap::SetGrabArea(int x, int y)
 {
-	if (Map[y][x].Tile_ID == TRAP_Grab)
+	if (Map[y][x].Tile_ID == TRAP_GrabArea)
 	{
-		Map[y][x - 1].GrabArea_Row = true;
-		Map[y][x + 1].GrabArea_Row = true;
-		Map[y + 1][x].GrabArea_Column = true;
-		Map[y - 1][x].GrabArea_Column = true;
+		if(Map[y][x + 1].Tile_ID == TRAP_Grab || Map[y][x - 1].Tile_ID == TRAP_Grab)
+			Map[y][x].GrabArea_Row = true;
+
+		if (Map[y + 1][x].Tile_ID == TRAP_Grab || Map[y - 1][x].Tile_ID == TRAP_Grab)
+			Map[y][x].GrabArea_Column = true;
 	}
 }
 
