@@ -41,6 +41,9 @@ void CMap::InitMap(HWND hwnd)
 	Trap_Cunfusion.InitTile(hwnd, 1 /*Frame*/, TRAP_Cunfusion, true, L"./Image/Tile/Cunfusion.bmp", [&](Entity* ent) {ConfusionActive(ent); });
 	Trap_Hole.InitTile(hwnd, 1 /*Frame*/, TRAP_Hole, true, L"./Image/Tile/Hole.bmp", [&](Entity* ent) {HoleActive(ent);});
 
+	Trap_GrabArea_row.Init(hwnd, 0, 0, 80, 80, L"./Image/Tile/GrapArea_row.bmp");
+	Trap_GrabArea_column.Init(hwnd, 0, 0, 80, 80, L"./Image/Tile/GrapArea_column.bmp");
+
 	Brick[B_UP].Init(hwnd, 0, 0, 80, 80, L"./Image/Tile/Brick_Up.bmp");
 	Brick[B_DOWN].Init(hwnd, 0, 0, 80, 80, L"./Image/Tile/Brick_Down.bmp");
 	Brick[B_LEFT].Init(hwnd, 0, 0, 80, 80, L"./Image/Tile/Brick_Left.bmp");
@@ -75,8 +78,53 @@ void CMap::GrabActive(Entity* ent)
 
 	if (Map[grabPos.y][grabPos.x].Tile_On && ent->GetState() != WALK)
 	{
-		ent->SetPosition(Map[pos.y][pos.x].Grab_POS.x, Map[pos.y][pos.x].Grab_POS.y);
-		Map[grabPos.y][grabPos.x].Tile_On = false; //재장전 필요한 상태로 변경
+		ent->SetState(INTRAP); //엔티티 인트랩 상태로 변경
+		ent->SetAnimation(STAND); //엔티티 서있는 상태로 변경
+
+			if (grabPos.x == pos.x - 1) //엔티티가 갈고리 오른쪽에 있을 떄
+			{
+				Map[pos.y][pos.x].movingGrab_x -= 10;
+				if (Map[pos.y][pos.x].movingGrab_x == -80)
+				{
+					Map[pos.y][pos.x].movingGrab_x = 0;
+					Map[grabPos.y][grabPos.x].Tile_On = false; //재장전 필요한 상태로 변경
+					ent->SetPosition(Map[pos.y][pos.x].Grab_POS.x, Map[pos.y][pos.x].Grab_POS.y);
+					ent->SetState(WALK);
+				}
+			}
+			if (grabPos.x == pos.x + 1) //엔티티가 갈고리 왼쪽에 있을 떄
+			{
+				Map[pos.y][pos.x].movingGrab_x += 10;
+				if (Map[pos.y][pos.x].movingGrab_x == 80)
+				{
+					Map[pos.y][pos.x].movingGrab_x = 0;
+					Map[grabPos.y][grabPos.x].Tile_On = false; //재장전 필요한 상태로 변경
+					ent->SetPosition(Map[pos.y][pos.x].Grab_POS.x, Map[pos.y][pos.x].Grab_POS.y);
+					ent->SetState(WALK);
+				}
+			}
+			if (grabPos.y == pos.y - 1) //엔티티가 갈고리 위쪽에 있을 떄
+			{
+				Map[pos.y][pos.x].movingGrab_y -= 10;
+				if (Map[pos.y][pos.x].movingGrab_y == -80)
+				{
+					Map[pos.y][pos.x].movingGrab_y = 0;
+					Map[grabPos.y][grabPos.x].Tile_On = false; //재장전 필요한 상태로 변경
+					ent->SetPosition(Map[pos.y][pos.x].Grab_POS.x, Map[pos.y][pos.x].Grab_POS.y);
+					ent->SetState(WALK);
+				}
+			}
+			if (grabPos.y == pos.y + 1) //엔티티가 갈고리 위쪽에 있을 떄
+			{
+				Map[pos.y][pos.x].movingGrab_y += 10;
+				if (Map[pos.y][pos.x].movingGrab_y == 80)
+				{
+					Map[pos.y][pos.x].movingGrab_y = 0;
+					Map[grabPos.y][grabPos.x].Tile_On = false; //재장전 필요한 상태로 변경
+					ent->SetPosition(Map[pos.y][pos.x].Grab_POS.x, Map[pos.y][pos.x].Grab_POS.y);
+					ent->SetState(WALK);
+				}
+			}
 	}
 }
 
@@ -299,6 +347,76 @@ void CMap::DrawTrapHpBar(HDC hMemDC, int x, int y)
 	}
 
 	ObjPool->ingameUI_TrapHpBar.Draw(hMemDC);
+}
+
+void CMap::SetGrabArea(int x, int y)
+{
+	if (Map[y][x].Tile_ID == TRAP_Grab)
+	{
+		Map[y][x - 1].GrabArea_Row = true;
+		Map[y][x + 1].GrabArea_Row = true;
+		Map[y + 1][x].GrabArea_Column = true;
+		Map[y - 1][x].GrabArea_Column = true;
+	}
+}
+
+void CMap::DrawGrabArea(HDC hMemDC, int x, int y) //갈고리함정 렌더링
+{
+	if (x <= 8)
+		x = 8;
+	if (y <= 5)
+		y = 5;
+	if (x >= MAX_TILE_X - 9)
+		x = 27;
+	if (y >= MAX_TILE_Y - 4)
+		y = 18;
+
+	int Map_Start_x = x - 9;
+	int Map_End_x = x + 10;
+	int Map_Start_y = y - 6;
+	int Map_End_y = y + 6;
+
+	int Term_x = ObjPool->Player.GetWalkTerm().x, Term_y = ObjPool->Player.GetWalkTerm().y;
+
+	for (int i = Map_Start_y; i < Map_End_y; i++)
+	{
+		for (int j = Map_Start_x; j < Map_End_x; j++)
+		{
+			if (i < 1 || j < 1 || i >= MAX_TILE_Y || j >= MAX_TILE_X)
+				continue;
+
+			Map[i][j].GrabArea_Row = false;
+			Map[i][j].GrabArea_Column = false;
+		}
+	}
+
+	for (int i = Map_Start_y; i < Map_End_y; i++)
+	{
+		for (int j = Map_Start_x; j < Map_End_x; j++)
+		{
+			if (i < 1 || j < 1 || i >= MAX_TILE_Y - 1 || j >= MAX_TILE_X - 1)
+				continue;
+
+			SetGrabArea(j, i);
+		}
+	}
+
+	for (int i = Map_Start_y; i < Map_End_y; i++)
+	{
+		for (int j = Map_Start_x; j < Map_End_x; j++)
+		{
+			if (i < 1 || j < 1 || i >= MAX_TILE_Y || j >= MAX_TILE_X)
+				continue;
+
+			Trap_GrabArea_row.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40 + Map[i][j].movingGrab_x, ((i - Map_Start_y) - 1) * 80 + Term_y - 40);
+			Trap_GrabArea_column.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 1) * 80 + Term_y - 40 + Map[i][j].movingGrab_y);
+
+			if (Map[i][j].GrabArea_Row)
+				Trap_GrabArea_row.Draw(hMemDC);
+			if (Map[i][j].GrabArea_Column)
+				Trap_GrabArea_column.Draw(hMemDC);
+		}
+	}
 }
 
 void CMap::SetBrick(int x, int y)

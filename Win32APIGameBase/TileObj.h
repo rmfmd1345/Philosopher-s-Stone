@@ -8,6 +8,8 @@ public:
 	bool Tile_On; // 함정 재장전 여부
 	bool Tile_isCanMove; //지나갈 수 있는 타일인가
 
+	bool GrabArea_Row; //가로
+	bool GrabArea_Column; //세로
 	bool Brick_Up;
 	bool Brick_Down;
 	bool Brick_Left;
@@ -24,7 +26,7 @@ public:
 
 public:
 	//함정 공통
-	float TrapHp = 50; //함정 체력 (수리게이지 최대치) //임시로 여기서 초기화함. 나중에 float 수정필요
+	float TrapHp = 50; //함정 체력 (수리게이지 최대치) //임시로 여기서 초기화함
 	int repairGage; //수리 진행도 게이지
 	//구멍함정
 	float damgeDelay; //함정 밟았을 때 연속해서 함수가 발동되기까지의 간격
@@ -32,7 +34,8 @@ public:
 
 	//갈고리함정
 	POINT Grab_POS; //갈고리 함정을 밟으면 끌려갈 위치
-
+	int movingGrab_x; //함정에 끌려갈 때 갈고리가 그려지는 위치를 바꾸기 위함
+	int movingGrab_y;
 };
 
 class CMap
@@ -51,7 +54,10 @@ public:
 	CTile Trap_Grab; // 갈고리함정
 	CTile Trap_GrabArea; // 갈고리함정 영향권
 
+
 	Bitmap Brick[6]; // 벽돌 이미지
+	Bitmap Trap_GrabArea_row; // 갈고리함정 영향권 (가로)
+	Bitmap Trap_GrabArea_column; // 갈고리함정 영향권 (세로)
 
 	enum Brick_ID_List
 	{
@@ -75,6 +81,9 @@ public:
 	void SetTrapOnMap(CTile Tile, int x, int y); // 함정을 맵에 배치
 	void DrawMap(HDC hMemDC, int x, int y); //  플레이어를 기준으로 화면에 나오는 타일을 계산하여 출력
 	void DrawTrapHpBar(HDC hMemDC, int x, int y); //함정 수리할 때 hp게이지 출력
+	void SetGrabArea(int x, int y); //갈고리 위치를 설정
+	void DrawGrabArea(HDC hMemDC, int x, int y); //갈고리를 그려냄
+
 	void SetBrick(int x, int y); // 벽돌 위치를 설정
 	void DrawBrick(HDC hMemDC, int x, int y); // 벽돌을 그려냄
 	void DestroyMap(); // 맵 타일 파괴

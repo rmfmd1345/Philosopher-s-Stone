@@ -13,8 +13,9 @@ void Ingame::Draw(HDC hMemDC)
 
 	ObjPool->Maps.DrawMap(hMemDC, PlayerPos.x, PlayerPos.y);
 	ObjPool->Maps.DrawBrick(hMemDC, PlayerPos.x, PlayerPos.y);
+	ObjPool->Maps.DrawGrabArea(hMemDC, PlayerPos.x, PlayerPos.y);
 
-	//if (ObjPool->Player.GetState() == TRAPREPAIRING)
+	if (ObjPool->Player.GetState() == TRAPREPAIRING)
 		ObjPool->Maps.DrawTrapHpBar(hMemDC, PlayerPos.x, PlayerPos.y);
 
 	ObjPool->MonsterPool.Draw(hMemDC, PlayerPos.x, PlayerPos.y);
@@ -97,7 +98,6 @@ void Ingame::Update() //씬 업데이트
 {
 	for (auto it = ObjPool->MonsterPool.ePool.begin(); it != ObjPool->MonsterPool.ePool.end(); it++)
 	{	
-		//monsterID를 만들어서, 함정 발동중인 몬스터의 ID에 대해서만 함수가 발동되게 해야하나?
 		ObjPool->Maps.ActiveTile(it->GetEntity()); //몬스터에 대해 밟고 있는 타일 발동
 		ObjPool->MonsterPool.CheckHealth();
 
