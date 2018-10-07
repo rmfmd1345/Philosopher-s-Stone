@@ -24,6 +24,9 @@ public:
 	void SetPosition(int x, int y);
 	void SetSpriteColor(COLORREF color);
 
+	int GetCurrentFrame();
+	int GetLastFrame();
+
 	void NextFrameSprite();
 	void SetFrameSprite(int f);
 };

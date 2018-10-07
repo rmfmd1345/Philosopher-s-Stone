@@ -15,11 +15,14 @@ void CTile::InitTile(HWND hwnd, int Frame, int ID, int MoveID, LPCWSTR szFileNam
 
 	if (Tile_ID == TRAP_ScareCrow)
 		Tile_Sprite.Init(hwnd, 0, 0, 80, 160, Frame, szFileName);
+	else if (Tile_ID == TRAP_Grab)
+		Tile_Sprite.Init(hwnd, 0, 0, 960, 240, Frame, szFileName);
 	else
 		Tile_Sprite.Init(hwnd, 0, 0, 80, 80, Frame, szFileName);
 
 	damgeDelay = 0; 
 	SpinSpeed = 3;
+	stateFrame = 0;
 
 	Tile_Func = Tile_Function;
 }
@@ -36,8 +39,8 @@ void CMap::InitMap(HWND hwnd)
 	Wall.InitTile(hwnd, 1 /*Frame*/, WALL, false, L"./Image/Tile/Wall.bmp", [&](Entity* ent) {});
 	Trap_Niddle.InitTile(hwnd, 1 /*Frame*/,TRAP_Niddle, true, L"./Image/Tile/Niddle.bmp", [&](Entity* ent) {NiddleActive(ent);});
 	Trap_ScareCrow.InitTile(hwnd, 1 /*Frame*/, TRAP_ScareCrow, false, L"./Image/Tile/Scarecrow_test.bmp", [&](Entity* ent) {ScareCrowActive(ent); });
-	Trap_Grab.InitTile(hwnd, 1 /*Frame*/, TRAP_Grab, false, L"./Image/Tile/Grap.bmp", [&](Entity* ent) {});
-	Trap_GrabArea.InitTile(hwnd, 1 /*Frame*/, TRAP_GrabArea, true, L"./Image/Tile/GrapArea.bmp", [&](Entity* ent) {GrabActive(ent);});
+	Trap_Grab.InitTile(hwnd, 4 /*Frame*/, TRAP_Grab, false, L"./Image/Tile/hook_ani.bmp", [&](Entity* ent) {});
+	Trap_GrabArea.InitTile(hwnd, 1 /*Frame*/, TRAP_GrabArea, true, L"./Image/Tile/GrabArea.bmp", [&](Entity* ent) {GrabActive(ent);});
 	Trap_Cunfusion.InitTile(hwnd, 1 /*Frame*/, TRAP_Cunfusion, true, L"./Image/Tile/Cunfusion.bmp", [&](Entity* ent) {ConfusionActive(ent); });
 	Trap_Hole.InitTile(hwnd, 1 /*Frame*/, TRAP_Hole, true, L"./Image/Tile/Hole.bmp", [&](Entity* ent) {HoleActive(ent);});
 
@@ -81,49 +84,22 @@ void CMap::GrabActive(Entity* ent)
 		ent->SetState(INTRAP); //엔티티 인트랩 상태로 변경
 		ent->SetAnimation(STAND); //엔티티 서있는 상태로 변경
 
-			if (grabPos.x == pos.x - 1) //엔티티가 갈고리 오른쪽에 있을 떄
-			{
-				Map[pos.y][pos.x].movingGrab_x -= 10;
-				if (Map[pos.y][pos.x].movingGrab_x == -80)
-				{
-					Map[pos.y][pos.x].movingGrab_x = 0;
-					Map[grabPos.y][grabPos.x].Tile_On = false; //재장전 필요한 상태로 변경
-					ent->SetPosition(Map[pos.y][pos.x].Grab_POS.x, Map[pos.y][pos.x].Grab_POS.y);
-					ent->SetState(FINDWAY);
-				}
-			}
-			if (grabPos.x == pos.x + 1) //엔티티가 갈고리 왼쪽에 있을 떄
-			{
-				Map[pos.y][pos.x].movingGrab_x += 10;
-				if (Map[pos.y][pos.x].movingGrab_x == 80)
-				{
-					Map[pos.y][pos.x].movingGrab_x = 0;
-					Map[grabPos.y][grabPos.x].Tile_On = false; //재장전 필요한 상태로 변경
-					ent->SetPosition(Map[pos.y][pos.x].Grab_POS.x, Map[pos.y][pos.x].Grab_POS.y);
-					ent->SetState(FINDWAY);
-				}
-			}
-			if (grabPos.y == pos.y - 1) //엔티티가 갈고리 위쪽에 있을 떄
-			{
-				Map[pos.y][pos.x].movingGrab_y -= 10;
-				if (Map[pos.y][pos.x].movingGrab_y == -80)
-				{
-					Map[pos.y][pos.x].movingGrab_y = 0;
-					Map[grabPos.y][grabPos.x].Tile_On = false; //재장전 필요한 상태로 변경
-					ent->SetPosition(Map[pos.y][pos.x].Grab_POS.x, Map[pos.y][pos.x].Grab_POS.y);
-					ent->SetState(FINDWAY);
-				}
-			}
 			if (grabPos.y == pos.y + 1) //엔티티가 갈고리 위쪽에 있을 떄
 			{
-				Map[pos.y][pos.x].movingGrab_y += 10;
-				if (Map[pos.y][pos.x].movingGrab_y == 80)
+				if (Map[grabPos.y][grabPos.x].stateFrame < 40) //흠 왜 안되지
 				{
-					Map[pos.y][pos.x].movingGrab_y = 0;
+					Map[grabPos.y][grabPos.x].stateFrame++;
+					if (Map[grabPos.y][grabPos.x].stateFrame % 10 == 0)
+						Map[grabPos.y][grabPos.x].Tile_Sprite.NextFrameSprite();
+				}
+				else
+				{
+					Map[grabPos.y][grabPos.x].stateFrame = 1;
 					Map[grabPos.y][grabPos.x].Tile_On = false; //재장전 필요한 상태로 변경
 					ent->SetPosition(Map[pos.y][pos.x].Grab_POS.x, Map[pos.y][pos.x].Grab_POS.y);
 					ent->SetState(FINDWAY);
 				}
+				return;
 			}
 	}
 }
@@ -314,6 +290,15 @@ void CMap::DrawMap(HDC hMemDC, int x, int y)
 				ObjPool->Maps.Floor.Tile_Sprite.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 1) * 80 + Term_y - 40);
 				ObjPool->Maps.Floor.Tile_Sprite.Draw(hMemDC);
 				Map[i][j].Tile_Sprite.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 2) * 80 + Term_y - 40);
+				continue;
+			}
+
+			if (Map[i][j].Tile_ID == TRAP_Grab)
+			{
+				ObjPool->Maps.Floor.Tile_Sprite.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 1) * 80 + Term_y - 40);
+				ObjPool->Maps.Floor.Tile_Sprite.Draw(hMemDC);
+				Map[i][j].Tile_Sprite.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 120, ((i - Map_Start_y) - 1) * 80 + Term_y - 120);
+				Map[i][j].Tile_Sprite.Draw(hMemDC);
 				continue;
 			}
 

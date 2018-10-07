@@ -28,6 +28,7 @@ public:
 	//함정 공통
 	float TrapHp = 50; //함정 체력 (수리게이지 최대치) //임시로 여기서 초기화함
 	int repairGage; //수리 진행도 게이지
+	int stateFrame; //함정 에니메이션 프레임상태
 	//구멍함정
 	float damgeDelay; //함정 밟았을 때 연속해서 함수가 발동되기까지의 간격
 	float SpinSpeed; //구멍함정에서 엔티티가 도는 속도

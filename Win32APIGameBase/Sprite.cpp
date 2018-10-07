@@ -61,6 +61,16 @@ void SpriteHelper::SetSpriteColor(COLORREF color)
 	SpriteColor = color;
 }
 
+int SpriteHelper::GetCurrentFrame()
+{
+	return CurrentFrame;
+}
+
+int SpriteHelper::GetLastFrame()
+{
+	return LastFrame;
+}
+
 void SpriteHelper::NextFrameSprite()
 {
 	rtImg = { (w / LastFrame) * CurrentFrame, 0, (w / LastFrame), h };
