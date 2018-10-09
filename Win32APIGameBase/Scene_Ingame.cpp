@@ -15,8 +15,6 @@ void Ingame::Draw(HDC hMemDC)
 	ObjPool->Maps.DrawMap(hMemDC, PlayerPos.x, PlayerPos.y);
 	ObjPool->Maps.DrawBrick(hMemDC, PlayerPos.x, PlayerPos.y);
 
-	if (ObjPool->Player.GetState() == TRAPREPAIRING)
-		ObjPool->Maps.DrawTrapHpBar(hMemDC, PlayerPos.x, PlayerPos.y);
 
 	ObjPool->MonsterPool.Draw(hMemDC, PlayerPos.x, PlayerPos.y);
 	//ObjPool->Player.Draw(hMemDC, PlayerPos.x, PlayerPos.y);
@@ -203,7 +201,8 @@ void Ingame::OnKeyborad()
 	if (lastBitState[SPACE] == 0 && keyState[SPACE] & 0x0001) //SPACE
 	{
 		//보고 있는게 함정이면 수리
-		if (ObjPool->Maps.CheckTrap(ObjPool->Player.GetDirection(), ObjPool->Player.GetPosition()))
+		printf("플레이어 상태: %d", ObjPool->Player.GetState());
+		if (ObjPool->Maps.CheckTrap(ObjPool->Player.GetDirection(), ObjPool->Player.GetPosition()) && ObjPool->Player.GetState() != WALK)
 		{
 			ObjPool->Player.RepairTrap();
 		}

@@ -51,8 +51,8 @@ void CTile::InitTile(HWND hwnd, int Frame, int ID, int MoveID, std::function<voi
 	stateFrame = 1;
 	damgeDelay = 0;
 	SpinSpeed = 3;
-	repairGage = 10;
-	TrapHp = 50;
+	repairGage = 0;
+	TrapHp = 60;
 
 
 	Tile_Func = Tile_Function;
@@ -75,7 +75,8 @@ void CMap::InitMap(HWND hwnd)
 	Trap_Cunfusion.InitTile(hwnd, 1 /*Frame*/, TRAP_Cunfusion, true, [&](Entity* ent) {ConfusionActive(ent); });
 	Trap_Hole.InitTile(hwnd, 1 /*Frame*/, TRAP_Hole, true, [&](Entity* ent) {HoleActive(ent);});
 
-	ingameUI_TrapHpBar.Init(hwnd, 0, 0, 50, 10, L"./Image/UI/Ingame/ui_hpBar.bmp");
+	ingameUI_TrapHpBar_edge.Init(hwnd, 0, 0, 60, 14, L"./Image/UI/Ingame/bluebar_edge.bmp");
+	ingameUI_TrapHpBar_fill.Init(hwnd, 0, 0, 60, 14, L"./Image/UI/Ingame/bluebar_fill.bmp");
 
 	Brick[B_UP].Init(hwnd, 0, 0, 80, 80, L"./Image/Tile/Brick_Up.bmp");
 	Brick[B_DOWN].Init(hwnd, 0, 0, 80, 80, L"./Image/Tile/Brick_Down.bmp");
@@ -165,7 +166,7 @@ void CMap::GrabActive(Entity* ent)
 				}
 				else
 				{
-					Map[grabPos.y][grabPos.x].stateFrame = 0;
+					Map[grabPos.y][grabPos.x].stateFrame = 1;
 					Map[grabPos.y][grabPos.x].Tile_On = false; //재장전 필요한 상태로 변경
 					ent->SetPosition(Map[pos.y][pos.x].Grab_POS.x, Map[pos.y][pos.x].Grab_POS.y);
 					ent->SetState(FINDWAY);
@@ -184,7 +185,7 @@ void CMap::GrabActive(Entity* ent)
 				}
 				else
 				{
-					Map[grabPos.y][grabPos.x].stateFrame = 0;
+					Map[grabPos.y][grabPos.x].stateFrame = 1;
 					Map[grabPos.y][grabPos.x].Tile_On = false; //재장전 필요한 상태로 변경
 					ent->SetPosition(Map[pos.y][pos.x].Grab_POS.x, Map[pos.y][pos.x].Grab_POS.y);
 					ent->SetState(FINDWAY);
@@ -236,7 +237,6 @@ void CMap::HoleActive(Entity* ent)
 		}
 	}
 }
-
 
 void CMap::ResetMap(int Character_x, int Character_y)
 {
@@ -326,12 +326,13 @@ void CMap::SetTileOnMap(CTile Tile, int x, int y)
 	Map[y][x].Tile_Sprite.SetPosition(x * 80, y * 80);
 }
 
-void CMap::SetTrapOnMap(CTile Tile, int x, int y)
+int CMap::SetTrapOnMap(CTile Tile, int x, int y)
 {
-	if (Map[y][x].Tile_ID != FLOOR) return;
+	if (Map[y][x].Tile_ID != FLOOR) return false;
 
 	Map[y][x] = Tile;
 	Map[y][x].Tile_Sprite.SetPosition(x * 80, y * 80);
+	return true;
 }
 
 
@@ -395,56 +396,36 @@ void CMap::DrawMap(HDC hMemDC, int x, int y)
 			Map[i][j].Tile_Sprite.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 1) * 80 + Term_y - 40);
 
 			Map[i][j].Tile_Sprite.Draw(hMemDC);
-		}
-	}
-}
 
-void CMap::DrawTrapHpBar(HDC hMemDC, int x, int y)
-{
-	if (x <= 8)
-		x = 8;
-	if (y <= 5)
-		y = 5;
-	if (x >= MAX_TILE_X - 9)
-		x = 27;
-	if (y >= MAX_TILE_Y - 4)
-		y = 18;
 
-	int Map_Start_x = x - 9;
-	int Map_End_x = x + 10;
-	int Map_Start_y = y - 6;
-	int Map_End_y = y + 6;
-
-	int Term_x = ObjPool->Player.GetWalkTerm().x, Term_y = ObjPool->Player.GetWalkTerm().y;
-	for (int i = Map_Start_y; i < Map_End_y; i++)
-	{
-		for (int j = Map_Start_x; j < Map_End_x; j++)
-		{
-			if (i < 1 || j < 1 || i >= MAX_TILE_Y || j >= MAX_TILE_X)
-				continue;
+			//====이 아래로 체력바 UI====
 			if (Map[i][j].Tile_On == false)
 			{
 				switch (ObjPool->Player.GetDirection())
 				{
 				case UP:
-					ingameUI_TrapHpBar.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 25, ((i - Map_Start_y) - 1) * 80 + Term_y +20);
-					ingameUI_TrapHpBar.SetDrawArea(Map[i][j].repairGage, 10);
+					ingameUI_TrapHpBar_edge.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 30, ((i - Map_Start_y) - 1) * 80 + Term_y + 15);
+					ingameUI_TrapHpBar_fill.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 30, ((i - Map_Start_y) - 1) * 80 + Term_y + 15);
 					break;
 				case DOWN:
-					ingameUI_TrapHpBar.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 25, ((i - Map_Start_y) - 1) * 80 + Term_y + 20);
-					ingameUI_TrapHpBar.SetDrawArea(Map[i][j].repairGage, 10);
+					ingameUI_TrapHpBar_edge.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 30, ((i - Map_Start_y) - 1) * 80 + Term_y + 15);
+					ingameUI_TrapHpBar_fill.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 30, ((i - Map_Start_y) - 1) * 80 + Term_y + 15);
 					break;
 				case LEFT:
-					ingameUI_TrapHpBar.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 25, ((i - Map_Start_y) - 1) * 80 + Term_y + 20);
-					ingameUI_TrapHpBar.SetDrawArea(Map[i][j].repairGage, 10);
+					ingameUI_TrapHpBar_edge.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 30, ((i - Map_Start_y) - 1) * 80 + Term_y + 15);
+					ingameUI_TrapHpBar_fill.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 30, ((i - Map_Start_y) - 1) * 80 + Term_y + 15);
 					break;
 				case RIGHT:
-					ingameUI_TrapHpBar.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 25, ((i - Map_Start_y) - 1) * 80 + Term_y + 20);
-					ingameUI_TrapHpBar.SetDrawArea(Map[i][j].repairGage, 10);
+					ingameUI_TrapHpBar_edge.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 30, ((i - Map_Start_y) - 1) * 80 + Term_y + 15);
+					ingameUI_TrapHpBar_fill.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 30, ((i - Map_Start_y) - 1) * 80 + Term_y + 15);
 					break;
 				}
-				ingameUI_TrapHpBar.Draw(hMemDC);
+				ingameUI_TrapHpBar_edge.SetDrawArea(60, 14);
+				ingameUI_TrapHpBar_fill.SetDrawArea(Map[i][j].repairGage, 14);
+				ingameUI_TrapHpBar_fill.Draw(hMemDC);
+				ingameUI_TrapHpBar_edge.Draw(hMemDC);
 			}
+			//====이 위로 체력바 UI
 		}
 	}
 }

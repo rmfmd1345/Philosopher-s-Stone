@@ -369,12 +369,13 @@ void Hero::SetTrap()
 		if (ObjPool->Player.Rock_Num >= 20)
 		{
 			ObjPool->Player.Rock_Num -= 20;
-			ObjPool->Maps.SetTrapOnMap(ObjPool->Maps.Trap_Grab, Temp_X, Temp_Y);
-
-			ObjPool->Maps.SetTrapOnMap(ObjPool->Maps.Trap_GrabArea, Temp_X + 1, Temp_Y); //갈고리함정 영역 설정
-			ObjPool->Maps.SetTrapOnMap(ObjPool->Maps.Trap_GrabArea, Temp_X - 1, Temp_Y);
-			ObjPool->Maps.SetTrapOnMap(ObjPool->Maps.Trap_GrabArea, Temp_X, Temp_Y + 1);
-			ObjPool->Maps.SetTrapOnMap(ObjPool->Maps.Trap_GrabArea, Temp_X, Temp_Y - 1);
+			if (ObjPool->Maps.SetTrapOnMap(ObjPool->Maps.Trap_Grab, Temp_X, Temp_Y))
+			{
+				ObjPool->Maps.SetTrapOnMap(ObjPool->Maps.Trap_GrabArea, Temp_X + 1, Temp_Y); //갈고리함정 영역 설정
+				ObjPool->Maps.SetTrapOnMap(ObjPool->Maps.Trap_GrabArea, Temp_X - 1, Temp_Y);
+				ObjPool->Maps.SetTrapOnMap(ObjPool->Maps.Trap_GrabArea, Temp_X, Temp_Y + 1);
+				ObjPool->Maps.SetTrapOnMap(ObjPool->Maps.Trap_GrabArea, Temp_X, Temp_Y - 1);
+			}
 
 			POINT grabPos;
 			grabPos.x = Temp_X;

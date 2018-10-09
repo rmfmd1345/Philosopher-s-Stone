@@ -59,7 +59,8 @@ public:
 
 
 	Bitmap Brick[6]; // 벽돌 이미지
-	Bitmap ingameUI_TrapHpBar; //함정 체력바
+	Bitmap ingameUI_TrapHpBar_edge; //함정 체력바 테두리
+	Bitmap ingameUI_TrapHpBar_fill; //함정 체력바 채우기
 	Bitmap Trap_GrabArea_row; // 갈고리함정 영향권 (가로)
 	Bitmap Trap_GrabArea_column; // 갈고리함정 영향권 (세로)
 
@@ -82,9 +83,8 @@ public:
 	void ResetMap(int Character_x, int Character_y); // 스테이지 넘어갈 때 맵을 초기화
 	void ActiveTile(Entity* ent); // 해당 타일의 기능을 실행 (람다 사용)
 	void SetTileOnMap(CTile Tile, int x, int y); // 타일을 맵에 배치
-	void SetTrapOnMap(CTile Tile, int x, int y); // 함정을 맵에 배치
+	int SetTrapOnMap(CTile Tile, int x, int y); // 함정을 맵에 배치
 	void DrawMap(HDC hMemDC, int x, int y); //  플레이어를 기준으로 화면에 나오는 타일을 계산하여 출력
-	void DrawTrapHpBar(HDC hMemDC, int x, int y); //함정 수리할 때 hp게이지 출력
 
 	void SetBrick(int x, int y); // 벽돌 위치를 설정
 	void DrawBrick(HDC hMemDC, int x, int y); // 벽돌을 그려냄
