@@ -18,17 +18,19 @@ public:
 	bool SubWall_Right;
 
 	SpriteHelper Tile_Sprite; // 애니메이션 스프라이트 (정방향 출력 시 : 발동 애니메이션 / 역방향 출력 시 : 재장전 애니메이션)
+	SpriteHelper Ani_Trap[4]; // 애니메이션 스프라이트 (정방향 출력 시 : 발동 애니메이션 / 역방향 출력 시 : 재장전 애니메이션)
 
 	std::function<void(Entity* ent)> Tile_Func; // 람다식 (함정 발동 시 프레임 진행)
 
-	void InitTile(HWND hwnd, int Frame, int ID, int MoveID, LPCWSTR szFileName, std::function<void(Entity* ent)> Tile_Function); //타일 초기화
+	void InitTile(HWND hwnd, int Frame, int ID, int MoveID, std::function<void(Entity* ent)> Tile_Function); //타일 초기화
 	void DestroyTile(CTile Tile); // 타일 이미지 파괴
 
 public:
 	//함정 공통
-	float TrapHp = 50; //함정 체력 (수리게이지 최대치) //임시로 여기서 초기화함
+	float TrapHp; //함정 체력 (수리게이지 최대치) //임시로 여기서 초기화함
 	int repairGage; //수리 진행도 게이지
-	int stateFrame; //함정 에니메이션 프레임상태
+	int stateFrame; //함정 애니메이션 프레임상태
+	int nowTrapDirection; //함정 애니메이션 방향
 	//구멍함정
 	float damgeDelay; //함정 밟았을 때 연속해서 함수가 발동되기까지의 간격
 	float SpinSpeed; //구멍함정에서 엔티티가 도는 속도
@@ -57,6 +59,7 @@ public:
 
 
 	Bitmap Brick[6]; // 벽돌 이미지
+	Bitmap ingameUI_TrapHpBar; //함정 체력바
 	Bitmap Trap_GrabArea_row; // 갈고리함정 영향권 (가로)
 	Bitmap Trap_GrabArea_column; // 갈고리함정 영향권 (세로)
 
@@ -82,8 +85,6 @@ public:
 	void SetTrapOnMap(CTile Tile, int x, int y); // 함정을 맵에 배치
 	void DrawMap(HDC hMemDC, int x, int y); //  플레이어를 기준으로 화면에 나오는 타일을 계산하여 출력
 	void DrawTrapHpBar(HDC hMemDC, int x, int y); //함정 수리할 때 hp게이지 출력
-	void SetGrabArea(int x, int y); //갈고리 위치를 설정
-	void DrawGrabArea(HDC hMemDC, int x, int y); //갈고리를 그려냄
 
 	void SetBrick(int x, int y); // 벽돌 위치를 설정
 	void DrawBrick(HDC hMemDC, int x, int y); // 벽돌을 그려냄

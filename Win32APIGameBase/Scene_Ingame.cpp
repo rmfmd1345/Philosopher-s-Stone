@@ -11,9 +11,9 @@ void Ingame::Draw(HDC hMemDC)
 	ObjPool->Gdi.SetBrushColor(RGB(10, 23, 55));
 	ObjPool->Gdi.Rect(hMemDC, { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT });
 
+
 	ObjPool->Maps.DrawMap(hMemDC, PlayerPos.x, PlayerPos.y);
 	ObjPool->Maps.DrawBrick(hMemDC, PlayerPos.x, PlayerPos.y);
-	ObjPool->Maps.DrawGrabArea(hMemDC, PlayerPos.x, PlayerPos.y);
 
 	if (ObjPool->Player.GetState() == TRAPREPAIRING)
 		ObjPool->Maps.DrawTrapHpBar(hMemDC, PlayerPos.x, PlayerPos.y);

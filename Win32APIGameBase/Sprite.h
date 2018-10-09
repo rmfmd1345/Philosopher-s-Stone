@@ -23,10 +23,12 @@ public:
 
 	void SetPosition(int x, int y);
 	void SetSpriteColor(COLORREF color);
+	void SetCurrentFrame(int f);
 
 	int GetCurrentFrame();
 	int GetLastFrame();
 
 	void NextFrameSprite();
+	void NextFrameSprite_Trap();
 	void SetFrameSprite(int f);
 };

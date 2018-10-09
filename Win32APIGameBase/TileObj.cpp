@@ -2,7 +2,7 @@
 #include "TileObj.h"
 #include "EntityObj.h"
 
-void CTile::InitTile(HWND hwnd, int Frame, int ID, int MoveID, LPCWSTR szFileName, std::function<void(Entity* ent)> Tile_Function)
+void CTile::InitTile(HWND hwnd, int Frame, int ID, int MoveID, std::function<void(Entity* ent)> Tile_Function)
 {
 	Tile_ID = ID;
 	Tile_isCanMove = MoveID;
@@ -13,16 +13,47 @@ void CTile::InitTile(HWND hwnd, int Frame, int ID, int MoveID, LPCWSTR szFileNam
 	Brick_Left = false;
 	Brick_Right = false;
 
-	if (Tile_ID == TRAP_ScareCrow)
-		Tile_Sprite.Init(hwnd, 0, 0, 80, 160, Frame, szFileName);
-	else if (Tile_ID == TRAP_Grab)
-		Tile_Sprite.Init(hwnd, 0, 0, 960, 240, Frame, szFileName);
-	else
-		Tile_Sprite.Init(hwnd, 0, 0, 80, 80, Frame, szFileName);
+	switch (Tile_ID)
+	{
+	case NONE:
+		Tile_Sprite.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/None.bmp");
+		break;
+	case FLOOR:
+		Tile_Sprite.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/Floor.bmp");
+		break;
+	case WALL:
+		Tile_Sprite.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/Wall.bmp");
+		break;
+	case TRAP_Niddle:
+		Tile_Sprite.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/Niddle.bmp");
+		break;
+	case TRAP_ScareCrow:
+		Tile_Sprite.Init(hwnd, 0, 0, 80, 160, Frame, L"./Image/Tile/Scarecrow_test.bmp");
+		break;
+	case TRAP_Grab:
+		Ani_Trap[UP].Init(hwnd, 0, 0, 960, 240, Frame, L"./Image/Tile/hook_ani_up.bmp");
+		Ani_Trap[DOWN].Init(hwnd, 0, 0, 960, 240, Frame, L"./Image/Tile/hook_ani_down.bmp");
+		Ani_Trap[LEFT].Init(hwnd, 0, 0, 960, 240, Frame, L"./Image/Tile/hook_ani_left.bmp");
+		Ani_Trap[RIGHT].Init(hwnd, 0, 0, 960, 240, Frame, L"./Image/Tile/hook_ani_right.bmp");
+		break;
+	case TRAP_GrabArea:
+		Tile_Sprite.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/GrabArea.bmp");
+		break;
+	case TRAP_Cunfusion:
+		Tile_Sprite.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/Cunfusion.bmp");
+		break;
+	case TRAP_Hole:
+		Tile_Sprite.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/Hole.bmp");
+		break;
 
-	damgeDelay = 0; 
+	}
+
+	stateFrame = 1;
+	damgeDelay = 0;
 	SpinSpeed = 3;
-	stateFrame = 0;
+	repairGage = 10;
+	TrapHp = 50;
+
 
 	Tile_Func = Tile_Function;
 }
@@ -34,18 +65,17 @@ void CTile::DestroyTile(CTile Tile)
 
 void CMap::InitMap(HWND hwnd)
 {
-	None.InitTile(hwnd, 1 /*Frame*/, NONE, false, L"./Image/Tile/None.bmp", [&](Entity* ent) {});
-	Floor.InitTile(hwnd, 1 /*Frame*/, FLOOR, true, L"./Image/Tile/Floor.bmp", [&](Entity* ent) {});
-	Wall.InitTile(hwnd, 1 /*Frame*/, WALL, false, L"./Image/Tile/Wall.bmp", [&](Entity* ent) {});
-	Trap_Niddle.InitTile(hwnd, 1 /*Frame*/,TRAP_Niddle, true, L"./Image/Tile/Niddle.bmp", [&](Entity* ent) {NiddleActive(ent);});
-	Trap_ScareCrow.InitTile(hwnd, 1 /*Frame*/, TRAP_ScareCrow, false, L"./Image/Tile/Scarecrow_test.bmp", [&](Entity* ent) {ScareCrowActive(ent); });
-	Trap_Grab.InitTile(hwnd, 4 /*Frame*/, TRAP_Grab, false, L"./Image/Tile/hook_ani.bmp", [&](Entity* ent) {});
-	Trap_GrabArea.InitTile(hwnd, 1 /*Frame*/, TRAP_GrabArea, true, L"./Image/Tile/GrabArea.bmp", [&](Entity* ent) {GrabActive(ent);});
-	Trap_Cunfusion.InitTile(hwnd, 1 /*Frame*/, TRAP_Cunfusion, true, L"./Image/Tile/Cunfusion.bmp", [&](Entity* ent) {ConfusionActive(ent); });
-	Trap_Hole.InitTile(hwnd, 1 /*Frame*/, TRAP_Hole, true, L"./Image/Tile/Hole.bmp", [&](Entity* ent) {HoleActive(ent);});
+	None.InitTile(hwnd, 1 /*Frame*/, NONE, false, [&](Entity* ent) {});
+	Floor.InitTile(hwnd, 1 /*Frame*/, FLOOR, true, [&](Entity* ent) {});
+	Wall.InitTile(hwnd, 1 /*Frame*/, WALL, false, [&](Entity* ent) {});
+	Trap_Niddle.InitTile(hwnd, 1 /*Frame*/,TRAP_Niddle, true, [&](Entity* ent) {NiddleActive(ent);});
+	Trap_ScareCrow.InitTile(hwnd, 1 /*Frame*/, TRAP_ScareCrow, false, [&](Entity* ent) {ScareCrowActive(ent); });
+	Trap_Grab.InitTile(hwnd, 4 /*Frame*/, TRAP_Grab, false, [&](Entity* ent) {});
+	Trap_GrabArea.InitTile(hwnd, 1 /*Frame*/, TRAP_GrabArea, true, [&](Entity* ent) {GrabActive(ent);});
+	Trap_Cunfusion.InitTile(hwnd, 1 /*Frame*/, TRAP_Cunfusion, true, [&](Entity* ent) {ConfusionActive(ent); });
+	Trap_Hole.InitTile(hwnd, 1 /*Frame*/, TRAP_Hole, true, [&](Entity* ent) {HoleActive(ent);});
 
-	Trap_GrabArea_row.Init(hwnd, 0, 0, 80, 80, L"./Image/Tile/GrapArea_row.bmp");
-	Trap_GrabArea_column.Init(hwnd, 0, 0, 80, 80, L"./Image/Tile/GrapArea_column.bmp");
+	ingameUI_TrapHpBar.Init(hwnd, 0, 0, 50, 10, L"./Image/UI/Ingame/ui_hpBar.bmp");
 
 	Brick[B_UP].Init(hwnd, 0, 0, 80, 80, L"./Image/Tile/Brick_Up.bmp");
 	Brick[B_DOWN].Init(hwnd, 0, 0, 80, 80, L"./Image/Tile/Brick_Down.bmp");
@@ -86,15 +116,75 @@ void CMap::GrabActive(Entity* ent)
 
 			if (grabPos.y == pos.y + 1) //엔티티가 갈고리 위쪽에 있을 떄
 			{
-				if (Map[grabPos.y][grabPos.x].stateFrame < 40) //흠 왜 안되지
+				Map[grabPos.y][grabPos.x].nowTrapDirection = UP;
+				if (Map[grabPos.y][grabPos.x].stateFrame <= 40) //10, 20, 30, 40,
 				{
-					Map[grabPos.y][grabPos.x].stateFrame++;
 					if (Map[grabPos.y][grabPos.x].stateFrame % 10 == 0)
-						Map[grabPos.y][grabPos.x].Tile_Sprite.NextFrameSprite();
+						Map[grabPos.y][grabPos.x].Ani_Trap[UP].NextFrameSprite_Trap();
+
+					Map[grabPos.y][grabPos.x].stateFrame++;
 				}
 				else
 				{
 					Map[grabPos.y][grabPos.x].stateFrame = 1;
+					//Map[grabPos.y][grabPos.x].Ani_Trap[UP].SetCurrentFrame(0);
+					Map[grabPos.y][grabPos.x].Tile_On = false; //재장전 필요한 상태로 변경
+					ent->SetPosition(Map[pos.y][pos.x].Grab_POS.x, Map[pos.y][pos.x].Grab_POS.y);
+					ent->SetState(FINDWAY);
+				}
+				return;
+			}
+			if (grabPos.y == pos.y - 1) //엔티티가 갈고리 아래쪽에 있을 떄
+			{
+				Map[grabPos.y][grabPos.x].nowTrapDirection = DOWN;
+				if (Map[grabPos.y][grabPos.x].stateFrame <= 40)
+				{
+					if (Map[grabPos.y][grabPos.x].stateFrame % 10 == 0)
+						Map[grabPos.y][grabPos.x].Ani_Trap[DOWN].NextFrameSprite_Trap();
+
+					Map[grabPos.y][grabPos.x].stateFrame++;
+				}
+				else
+				{
+					Map[grabPos.y][grabPos.x].stateFrame = 1;
+					Map[grabPos.y][grabPos.x].Tile_On = false; //재장전 필요한 상태로 변경
+					ent->SetPosition(Map[pos.y][pos.x].Grab_POS.x, Map[pos.y][pos.x].Grab_POS.y);
+					ent->SetState(FINDWAY);
+				}
+				return;
+			}
+			if (grabPos.x == pos.x + 1) //엔티티가 갈고리 왼쪽에 있을 때
+			{
+				Map[grabPos.y][grabPos.x].nowTrapDirection = LEFT;
+				if (Map[grabPos.y][grabPos.x].stateFrame <= 40)
+				{
+					if (Map[grabPos.y][grabPos.x].stateFrame % 10 == 0)
+						Map[grabPos.y][grabPos.x].Ani_Trap[LEFT].NextFrameSprite_Trap();
+
+					Map[grabPos.y][grabPos.x].stateFrame++;
+				}
+				else
+				{
+					Map[grabPos.y][grabPos.x].stateFrame = 0;
+					Map[grabPos.y][grabPos.x].Tile_On = false; //재장전 필요한 상태로 변경
+					ent->SetPosition(Map[pos.y][pos.x].Grab_POS.x, Map[pos.y][pos.x].Grab_POS.y);
+					ent->SetState(FINDWAY);
+				}
+				return;
+			}
+			if (grabPos.x == pos.x - 1) //엔티티가 갈고리 오른쪽에 있을 떄
+			{
+				Map[grabPos.y][grabPos.x].nowTrapDirection = RIGHT;
+				if (Map[grabPos.y][grabPos.x].stateFrame <= 40)
+				{
+					if (Map[grabPos.y][grabPos.x].stateFrame % 10 == 0)
+						Map[grabPos.y][grabPos.x].Ani_Trap[RIGHT].NextFrameSprite_Trap();
+
+					Map[grabPos.y][grabPos.x].stateFrame++;
+				}
+				else
+				{
+					Map[grabPos.y][grabPos.x].stateFrame = 0;
 					Map[grabPos.y][grabPos.x].Tile_On = false; //재장전 필요한 상태로 변경
 					ent->SetPosition(Map[pos.y][pos.x].Grab_POS.x, Map[pos.y][pos.x].Grab_POS.y);
 					ent->SetState(FINDWAY);
@@ -297,8 +387,8 @@ void CMap::DrawMap(HDC hMemDC, int x, int y)
 			{
 				ObjPool->Maps.Floor.Tile_Sprite.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 1) * 80 + Term_y - 40);
 				ObjPool->Maps.Floor.Tile_Sprite.Draw(hMemDC);
-				Map[i][j].Tile_Sprite.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 120, ((i - Map_Start_y) - 1) * 80 + Term_y - 120);
-				Map[i][j].Tile_Sprite.Draw(hMemDC);
+				Map[i][j].Ani_Trap[Map[i][j].nowTrapDirection].SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 120, ((i - Map_Start_y) - 1) * 80 + Term_y - 120);
+				Map[i][j].Ani_Trap[Map[i][j].nowTrapDirection].Draw(hMemDC);
 				continue;
 			}
 
@@ -310,43 +400,6 @@ void CMap::DrawMap(HDC hMemDC, int x, int y)
 }
 
 void CMap::DrawTrapHpBar(HDC hMemDC, int x, int y)
-{
-	switch (ObjPool->Player.GetDirection())
-	{
-	case LEFT:
-		ObjPool->ingameUI_TrapHpBar.SetPosition(x * 80 - 106, y * 80);
-		ObjPool->ingameUI_TrapHpBar.SetDrawArea(Map[y][x - 1].repairGage, 10);
-		break;
-	case RIGHT:
-		ObjPool->ingameUI_TrapHpBar.SetPosition(x * 80 + 53, y * 80);
-		ObjPool->ingameUI_TrapHpBar.SetDrawArea(Map[y][x + 1].repairGage, 10);
-		break;
-	case UP:
-		ObjPool->ingameUI_TrapHpBar.SetPosition(x * 80 - 26, y * 80 - 80);
-		ObjPool->ingameUI_TrapHpBar.SetDrawArea(Map[y - 1][x].repairGage, 10);
-		break;
-	case DOWN:
-		ObjPool->ingameUI_TrapHpBar.SetPosition(x * 80 - 26, y * 80 + 85);
-		ObjPool->ingameUI_TrapHpBar.SetDrawArea(Map[y + 1][x].repairGage, 10);
-		break;
-	}
-
-	ObjPool->ingameUI_TrapHpBar.Draw(hMemDC);
-}
-
-void CMap::SetGrabArea(int x, int y)
-{
-	if (Map[y][x].Tile_ID == TRAP_GrabArea)
-	{
-		if(Map[y][x + 1].Tile_ID == TRAP_Grab || Map[y][x - 1].Tile_ID == TRAP_Grab)
-			Map[y][x].GrabArea_Row = true;
-
-		if (Map[y + 1][x].Tile_ID == TRAP_Grab || Map[y - 1][x].Tile_ID == TRAP_Grab)
-			Map[y][x].GrabArea_Column = true;
-	}
-}
-
-void CMap::DrawGrabArea(HDC hMemDC, int x, int y) //갈고리함정 렌더링
 {
 	if (x <= 8)
 		x = 8;
@@ -363,47 +416,39 @@ void CMap::DrawGrabArea(HDC hMemDC, int x, int y) //갈고리함정 렌더링
 	int Map_End_y = y + 6;
 
 	int Term_x = ObjPool->Player.GetWalkTerm().x, Term_y = ObjPool->Player.GetWalkTerm().y;
-
 	for (int i = Map_Start_y; i < Map_End_y; i++)
 	{
 		for (int j = Map_Start_x; j < Map_End_x; j++)
 		{
 			if (i < 1 || j < 1 || i >= MAX_TILE_Y || j >= MAX_TILE_X)
 				continue;
-
-			Map[i][j].GrabArea_Row = false;
-			Map[i][j].GrabArea_Column = false;
-		}
-	}
-
-	for (int i = Map_Start_y; i < Map_End_y; i++)
-	{
-		for (int j = Map_Start_x; j < Map_End_x; j++)
-		{
-			if (i < 1 || j < 1 || i >= MAX_TILE_Y - 1 || j >= MAX_TILE_X - 1)
-				continue;
-
-			SetGrabArea(j, i);
-		}
-	}
-
-	for (int i = Map_Start_y; i < Map_End_y; i++)
-	{
-		for (int j = Map_Start_x; j < Map_End_x; j++)
-		{
-			if (i < 1 || j < 1 || i >= MAX_TILE_Y || j >= MAX_TILE_X)
-				continue;
-
-			Trap_GrabArea_row.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40 + Map[i][j].movingGrab_x, ((i - Map_Start_y) - 1) * 80 + Term_y - 40);
-			Trap_GrabArea_column.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 1) * 80 + Term_y - 40 + Map[i][j].movingGrab_y);
-
-			if (Map[i][j].GrabArea_Row)
-				Trap_GrabArea_row.Draw(hMemDC);
-			if (Map[i][j].GrabArea_Column)
-				Trap_GrabArea_column.Draw(hMemDC);
+			if (Map[i][j].Tile_On == false)
+			{
+				switch (ObjPool->Player.GetDirection())
+				{
+				case UP:
+					ingameUI_TrapHpBar.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 25, ((i - Map_Start_y) - 1) * 80 + Term_y +20);
+					ingameUI_TrapHpBar.SetDrawArea(Map[i][j].repairGage, 10);
+					break;
+				case DOWN:
+					ingameUI_TrapHpBar.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 25, ((i - Map_Start_y) - 1) * 80 + Term_y + 20);
+					ingameUI_TrapHpBar.SetDrawArea(Map[i][j].repairGage, 10);
+					break;
+				case LEFT:
+					ingameUI_TrapHpBar.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 25, ((i - Map_Start_y) - 1) * 80 + Term_y + 20);
+					ingameUI_TrapHpBar.SetDrawArea(Map[i][j].repairGage, 10);
+					break;
+				case RIGHT:
+					ingameUI_TrapHpBar.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 25, ((i - Map_Start_y) - 1) * 80 + Term_y + 20);
+					ingameUI_TrapHpBar.SetDrawArea(Map[i][j].repairGage, 10);
+					break;
+				}
+				ingameUI_TrapHpBar.Draw(hMemDC);
+			}
 		}
 	}
 }
+
 
 void CMap::SetBrick(int x, int y)
 {

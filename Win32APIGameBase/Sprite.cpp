@@ -61,6 +61,12 @@ void SpriteHelper::SetSpriteColor(COLORREF color)
 	SpriteColor = color;
 }
 
+void SpriteHelper::SetCurrentFrame(int f)
+{
+	CurrentFrame = f;
+	rtImg = { (w / LastFrame) * CurrentFrame, 0, (w / LastFrame), h };
+}
+
 int SpriteHelper::GetCurrentFrame()
 {
 	return CurrentFrame;
@@ -78,6 +84,15 @@ void SpriteHelper::NextFrameSprite()
 	if (CurrentFrame >= LastFrame)
 		CurrentFrame = 1;
 }
+
+void SpriteHelper::NextFrameSprite_Trap()
+{
+	rtImg = { (w / LastFrame) * CurrentFrame, 0, (w / LastFrame), h };
+	CurrentFrame++;
+	if (CurrentFrame >= LastFrame)
+		CurrentFrame = 0;
+}
+
 
 void SpriteHelper::SetFrameSprite(int f)
 {

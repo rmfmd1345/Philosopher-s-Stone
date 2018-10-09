@@ -102,5 +102,4 @@ public:
 	Bitmap ingameUI_Skill;
 	Bitmap ingameUI_Stage;
 	Bitmap ingameUI_Time;
-	Bitmap ingameUI_TrapHpBar;
 };

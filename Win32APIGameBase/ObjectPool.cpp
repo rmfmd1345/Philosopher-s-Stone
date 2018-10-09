@@ -30,8 +30,6 @@ void ObjectPool::CreateObject(HWND hWnd)	//객체의 초기 설정을 적는 곳
 	
 	ingameUI_Time.Init(hWnd, 475, 0, 320, 134, L"./Image/UI/Ingame/ui_time.bmp");
 
-	ingameUI_TrapHpBar.Init(hWnd, 300, 300, 50, 10, L"./Image/UI/Ingame/ui_hpBar.bmp");
-
 	Maps.InitMap(hWnd);
 
 	Maps.ResetMap(5, 5);
