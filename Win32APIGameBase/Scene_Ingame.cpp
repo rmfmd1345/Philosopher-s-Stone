@@ -94,11 +94,12 @@ void Ingame::OnTimer(HWND hWnd, int timer)
 
 void Ingame::Update() //씬 업데이트
 {
-	for (auto it = ObjPool->MonsterPool.ePool.begin(); it != ObjPool->MonsterPool.ePool.end(); it++)
-	{	
+	for (auto it = ObjPool->MonsterPool.ePool.begin(); it != ObjPool->MonsterPool.ePool.end();)
+	{
 		ObjPool->Maps.ActiveTile(it->GetEntity()); //몬스터에 대해 밟고 있는 타일 발동
-		ObjPool->MonsterPool.CheckHealth();
-
+		if (!ObjPool->MonsterPool.CheckHealth()) //죽으면 true 반환
+			it++;
+		
 		if (ObjPool->MonsterPool.ePool.empty()) return;
 	}
 

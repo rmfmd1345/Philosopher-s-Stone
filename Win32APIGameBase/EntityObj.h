@@ -134,7 +134,7 @@ public:
 
 	void AddMonster(int type, int x, int y);
 	void AddMonster(int type);
-	void CheckHealth();
+	bool CheckHealth();
 
 	void SetDirection(int dire);
 

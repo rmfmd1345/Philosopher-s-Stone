@@ -952,24 +952,27 @@ void Monster::AddMonster(int type)
 	AddMonster(type, Dealer.GetSpawnPosition().x, Dealer.GetSpawnPosition().y);
 }
 
-void Monster::CheckHealth()
+bool Monster::CheckHealth()
 {
-	if (ePool.empty()) return;
+	if (ePool.empty()) return false;
 
 	for (auto it = ePool.begin(); it != ePool.end();)
 	{
 		if (it->isDead())
 		{
-  			it->Ternimate();
 			it = ePool.erase(it);
 
-			if (ePool.empty()) return;
+			return true;
+
+			if (ePool.empty()) return false;
 		}
 		else
 		{
 			it++;
 		}
 	}
+
+	return false;
 }
 
 void Monster::SetDirection(int dire)
