@@ -15,10 +15,37 @@ void Ingame::Draw(HDC hMemDC)
 	ObjPool->Maps.DrawMap(hMemDC, PlayerPos.x, PlayerPos.y);
 	ObjPool->Maps.DrawBrick(hMemDC, PlayerPos.x, PlayerPos.y);
 
-
 	ObjPool->MonsterPool.Draw(hMemDC, PlayerPos.x, PlayerPos.y);
 	//ObjPool->Player.Draw(hMemDC, PlayerPos.x, PlayerPos.y);
 	//MonsterPool.Draw에서 플레이어와 몬스터의 좌표를 확인해 부자연스럽게 겹치지 않도록 함.
+
+	if (ObjPool->Player.ATK_Skill.Check_Active)
+	{
+		ObjPool->Player.ATK_Skill.Ani_Skill->Draw(hMemDC);
+		if (ObjPool->Player.ATK_Skill.Ani_Skill->GetCurrentFrame() >= ObjPool->Player.ATK_Skill.Ani_Skill->GetLastFrame() - 1)
+		{
+			ObjPool->Player.ATK_Skill.Check_Active = false;
+			ObjPool->Player.ATK_Skill.Ani_Skill->SetCurrentFrame(1);
+		}
+	}
+	if (ObjPool->Player.AGGRO_Skill.Check_Active)
+	{
+		ObjPool->Player.AGGRO_Skill.Ani_Skill->Draw(hMemDC);
+		if (ObjPool->Player.AGGRO_Skill.nowFrame == ObjPool->Player.AGGRO_Skill.maxFrame - 1)
+			ObjPool->Player.AGGRO_Skill.Check_Active = false;
+	}
+	if (ObjPool->Player.PUSH_Skill.Check_Active)
+	{
+		ObjPool->Player.PUSH_Skill.Ani_Skill->Draw(hMemDC);
+		if (ObjPool->Player.PUSH_Skill.nowFrame == ObjPool->Player.PUSH_Skill.maxFrame - 1)
+			ObjPool->Player.PUSH_Skill.Check_Active = false;
+	}
+	if (ObjPool->Player.BARRICADE_Skill.Check_Active)
+	{
+		ObjPool->Player.BARRICADE_Skill.Ani_Skill->Draw(hMemDC);
+		if (ObjPool->Player.BARRICADE_Skill.nowFrame == ObjPool->Player.BARRICADE_Skill.maxFrame - 1)
+			ObjPool->Player.BARRICADE_Skill.Check_Active = false;
+	}
 
 	ObjPool->ingameBtn_Option.Draw(hMemDC);
 	ObjPool->ingameUI_Stone.Draw(hMemDC);
@@ -323,15 +350,18 @@ void Ingame::OnKeyborad()
 
 	if (lastBitState[KEY_A] == 0 && keyState[KEY_A] & 0x0001) //B_RIGHT
 	{
-		ObjPool->Player.ATK_Skill.ActiveSkill(ObjPool->Player.GetDirection());
-		ObjPool->Player.ATK_Skill.Check_Active = true;
+		if (ObjPool->Player.ATK_Skill.Check_Active == false)
+		{
+			ObjPool->Player.ATK_Skill.ActiveSkill();
+			ObjPool->Player.ATK_Skill.Check_Active = true;
+		}
 		
 		lastBitState[KEY_A] = 1;
 	}
 
 	if (lastBitState[KEY_S] == 0 && keyState[KEY_S] & 0x0001) //B_RIGHT
 	{
-		ObjPool->Player.AGGRO_Skill.ActiveSkill(ObjPool->Player.GetDirection());
+		ObjPool->Player.AGGRO_Skill.ActiveSkill();
 		ObjPool->Player.AGGRO_Skill.Check_Active = true;
 
 		lastBitState[KEY_S] = 1;
@@ -339,7 +369,7 @@ void Ingame::OnKeyborad()
 
 	if (lastBitState[KEY_D] == 0 && keyState[KEY_D] & 0x0001) //B_RIGHT
 	{
-		ObjPool->Player.PUSH_Skill.ActiveSkill(ObjPool->Player.GetDirection());
+		ObjPool->Player.PUSH_Skill.ActiveSkill();
 		ObjPool->Player.PUSH_Skill.Check_Active = true;
 
 		lastBitState[KEY_D] = 1;
@@ -347,7 +377,7 @@ void Ingame::OnKeyborad()
 
 	if (lastBitState[KEY_F] == 0 && keyState[KEY_F] & 0x0001) //B_RIGHT
 	{
-		ObjPool->Player.BARRICADE_Skill.ActiveSkill(ObjPool->Player.GetDirection());
+		ObjPool->Player.BARRICADE_Skill.ActiveSkill();
 		ObjPool->Player.BARRICADE_Skill.Check_Active = true;
 
 		lastBitState[KEY_F] = 1;

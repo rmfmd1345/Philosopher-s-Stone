@@ -25,7 +25,8 @@ public:
 
 public:
 	void InitSkill(HWND hWnd, int ID, int f, int r);
-	void ActiveSkill(int Diraction);
+	void ActiveSkill();
+	void Draw(HDC hMemDC);
 
 	void Terminate();
 };

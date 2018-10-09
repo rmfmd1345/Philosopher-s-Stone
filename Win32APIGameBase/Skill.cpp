@@ -18,13 +18,10 @@ void Skill::InitSkill(HWND hWnd, int id, int f, int r)
 	switch (ID)
 	{
 	case ATK_SKILL:
-		//Ani_Skill[UP].Init(hWnd, 0, 0, );
-		//Ani_Skill[DOWN].Init(hWnd, 0, 0, );
-		//Ani_Skill[LEFT].Init(hWnd, 0, 0, );
-		//Ani_Skill[RIGHT].Init(hWnd, 0, 0, );
+		Ani_Skill[UP].Init(hWnd, 0, 0, 2400, 240, f, L"./Image/Skill/skilleffect_1.bmp");
 		break;
 	case PUSH_SKILL:
-		//Ani_Skill[UP].Init(hWnd, 0, 0, 80, 80, f, L"./Image/Skill/skilleffect_2_1.bmp");
+		Ani_Skill[UP].Init(hWnd, 0, 0, 80, 80, f, L"./Image/Skill/skilleffect_2_1.bmp");
 		Ani_Skill[DOWN].Init(hWnd, 0, 0, 80, 80, f, L"./Image/Skill/skilleffect_2_2.bmp");
 		Ani_Skill[LEFT].Init(hWnd, 0, 0, 80, 80, f, L"./Image/Skill/skilleffect_2_3.bmp");
 		Ani_Skill[RIGHT].Init(hWnd, 0, 0, 80, 80, f, L"./Image/Skill/skilleffect_2_4.bmp");
@@ -40,9 +37,10 @@ void Skill::InitSkill(HWND hWnd, int id, int f, int r)
 	}
 }
 
-void Skill::ActiveSkill(int Direction)
+void Skill::ActiveSkill()
 {
 	POINT P_point = ObjPool->Player.GetPosition();
+	int Direction = ObjPool->Player.GetDirection();
 
 	switch (ID)
 	{
@@ -70,6 +68,18 @@ void Skill::ActiveSkill(int Direction)
 
 		Skill_Range[7].x = P_point.x + 1;
 		Skill_Range[7].y = P_point.y + 1;
+
+		Ani_Skill[UP].SetPosition((ObjPool->Player.GetPosition().x - 1) * 80 - 40, (ObjPool->Player.GetPosition().y - 1) * 80 - 40);
+
+		for (auto it = ObjPool->MonsterPool.ePool.begin(); it != ObjPool->MonsterPool.ePool.end(); it++)
+		{
+			for (int i = 0; i < 8; i++)
+			{
+				if (Skill_Range[i].x == it->GetPosition().x && Skill_Range[i].y == it->GetPosition().y)
+					it->AddHealth(-10);
+			}
+		}
+
 		break;
 	case AGGRO_SKILL:
 
@@ -99,6 +109,71 @@ void Skill::ActiveSkill(int Direction)
 		break;
 	case BARRICADE_SKILL:
 		
+		break;
+	default:
+		break;
+	}
+}
+
+void Skill::Draw(HDC hMemDC)
+{
+	int Direction = ObjPool->Player.GetDirection();
+	
+	switch (ID)
+	{
+	case ATK_SKILL:
+		Ani_Skill[UP].Draw(hMemDC);
+		break;
+	case AGGRO_SKILL:
+		switch (Direction)
+		{
+		case UP:
+			Ani_Skill[UP].Draw(hMemDC);
+			break;
+		case DOWN:
+			Ani_Skill[DOWN].Draw(hMemDC);
+			break;
+		case LEFT:
+			Ani_Skill[LEFT].Draw(hMemDC);
+			break;
+		case RIGHT:
+			Ani_Skill[RIGHT].Draw(hMemDC);
+			break;
+		}
+		break;
+	case PUSH_SKILL:
+		switch (Direction)
+		{
+		case UP:
+			Ani_Skill[UP].Draw(hMemDC);
+			break;
+		case DOWN:
+			Ani_Skill[DOWN].Draw(hMemDC);
+			break;
+		case LEFT:
+			Ani_Skill[LEFT].Draw(hMemDC);
+			break;
+		case RIGHT:
+			Ani_Skill[RIGHT].Draw(hMemDC);
+			break;
+		}
+		break;
+	case BARRICADE_SKILL:
+		switch (Direction)
+		{
+		case UP:
+			Ani_Skill[UP].Draw(hMemDC);
+			break;
+		case DOWN:
+			Ani_Skill[DOWN].Draw(hMemDC);
+			break;
+		case LEFT:
+			Ani_Skill[LEFT].Draw(hMemDC);
+			break;
+		case RIGHT:
+			Ani_Skill[RIGHT].Draw(hMemDC);
+			break;
+		}
 		break;
 	default:
 		break;
