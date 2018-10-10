@@ -884,8 +884,30 @@ void Monster::Draw(HDC hMemDC, int x, int y)
 			if (!isPlayer)
 				if (ObjPool->Player.GetPosition().y == i && ObjPool->Player.GetPosition().x == j)
 				{
+					if (ObjPool->Player.ATK_Skill.Check_Active)
+					{
+						ObjPool->Player.ATK_Skill.Draw(hMemDC);
+					}
+					if (ObjPool->Player.PUSH_Skill.Check_Active && ObjPool->Player.GetDirection() != DOWN)
+					{
+						ObjPool->Player.PUSH_Skill.Draw(hMemDC);
+					}
+					if (ObjPool->Player.BARRICADE_Skill.Check_Active && ObjPool->Player.GetDirection() != DOWN)
+					{
+						ObjPool->Player.BARRICADE_Skill.Draw(hMemDC);
+					}
+
 					ObjPool->Player.Draw(hMemDC, x, y);
 					isPlayer = true;
+
+					if (ObjPool->Player.PUSH_Skill.Check_Active && ObjPool->Player.GetDirection() == DOWN)
+					{
+						ObjPool->Player.PUSH_Skill.Draw(hMemDC);
+					}
+					if (ObjPool->Player.BARRICADE_Skill.Check_Active && ObjPool->Player.GetDirection() == DOWN)
+					{
+						ObjPool->Player.BARRICADE_Skill.Draw(hMemDC);
+					}
 				}
 
 				if (ObjPool->Maps.Map[i][j].Tile_ID == TRAP_ScareCrow)

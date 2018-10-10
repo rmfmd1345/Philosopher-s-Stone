@@ -16,7 +16,6 @@ public:
 	POINT Skill_Range[8];
 	int nowFrame;
 	int maxFrame;
-	int maxRange;
 
 	int nowDirection;
 	bool Check_Active;
@@ -24,8 +23,9 @@ public:
 	int ID;
 
 public:
-	void InitSkill(HWND hWnd, int ID, int f, int r);
+	void InitSkill(HWND hWnd, int ID, int f);
 	void ActiveSkill();
+	void Animation();
 	void Draw(HDC hMemDC);
 
 	void Terminate();
