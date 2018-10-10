@@ -59,9 +59,6 @@ public:
 	CTile Trap_Grab; // 갈고리함정
 	CTile Trap_GrabArea; // 갈고리함정 영향권
 
-	
-
-
 	Bitmap Brick[6]; // 벽돌 이미지
 	Bitmap ingameUI_TrapHpBar_edge; //함정 체력바 테두리
 	Bitmap ingameUI_TrapHpBar_fill; //함정 체력바 채우기

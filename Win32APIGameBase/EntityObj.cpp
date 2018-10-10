@@ -797,6 +797,11 @@ void Entity::SetState(int state)
 	nowState = state;
 }
 
+void Entity::SetStateFrame(int Frame)
+{
+	stateFrame = Frame;
+}
+
 bool Entity::isDead()
 {
 	return !(health > 0);

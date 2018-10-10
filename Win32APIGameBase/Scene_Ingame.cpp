@@ -346,8 +346,8 @@ void Ingame::OnKeyborad()
 	{
 		if (ObjPool->Player.ATK_Skill.Check_Active == false && ObjPool->Player.GetState() != WALK)
 		{
-			ObjPool->Player.ATK_Skill.ActiveSkill();
 			ObjPool->Player.ATK_Skill.Check_Active = true;
+			ObjPool->Player.ATK_Skill.ActiveSkill();
 		}
 		
 		lastBitState[KEY_A] = 1;
@@ -355,8 +355,8 @@ void Ingame::OnKeyborad()
 
 	if (lastBitState[KEY_S] == 0 && keyState[KEY_S] & 0x0001) //B_RIGHT
 	{
-		ObjPool->Player.AGGRO_Skill.ActiveSkill();
 		ObjPool->Player.AGGRO_Skill.Check_Active = true;
+		ObjPool->Player.AGGRO_Skill.ActiveSkill();
 
 		lastBitState[KEY_S] = 1;
 	}
@@ -365,8 +365,8 @@ void Ingame::OnKeyborad()
 	{
 		if (ObjPool->Player.PUSH_Skill.Check_Active == false && ObjPool->Player.GetState() != WALK)
 		{
-			ObjPool->Player.PUSH_Skill.ActiveSkill();
 			ObjPool->Player.PUSH_Skill.Check_Active = true;
+			ObjPool->Player.PUSH_Skill.ActiveSkill();
 		}
 
 		lastBitState[KEY_D] = 1;
@@ -374,8 +374,8 @@ void Ingame::OnKeyborad()
 
 	if (lastBitState[KEY_F] == 0 && keyState[KEY_F] & 0x0001) //B_RIGHT
 	{
-		ObjPool->Player.BARRICADE_Skill.ActiveSkill();
 		ObjPool->Player.BARRICADE_Skill.Check_Active = true;
+		ObjPool->Player.BARRICADE_Skill.ActiveSkill();
 
 		lastBitState[KEY_F] = 1;
 	}

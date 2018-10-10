@@ -66,6 +66,7 @@ public:
 	void SetAnimation(int ani);
 	void SetDirection(int dire);
 	void SetState(int state);
+	void SetStateFrame(int Frame);
 
 	void AddHealth(int a);
 
