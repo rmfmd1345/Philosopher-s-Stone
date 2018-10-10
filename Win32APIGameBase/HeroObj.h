@@ -49,6 +49,7 @@ public:
 
 	void AddHealth(int a);
 	void DigMap();
+	void SetSelectedArea(bool isCreate);
 	void SetTrap();
 	void RepairTrap();
 

@@ -320,6 +320,30 @@ void Hero::DigMap()
 	wsprintf(Rock_Num_UI, L"%05d", Rock_Num);
 }
 
+void Hero::SetSelectedArea(bool isCreate)
+{
+	if (isCreate)
+	{
+		if (ObjPool->Maps.isCanTrapSet(pos.x, pos.y + 1))
+			ObjPool->Maps.Map[pos.y + 1][pos.x].Tile_SelectArea = true;
+		if (ObjPool->Maps.isCanTrapSet(pos.x, pos.y - 1))
+		ObjPool->Maps.Map[pos.y - 1][pos.x].Tile_SelectArea = true;
+		if (ObjPool->Maps.isCanTrapSet(pos.x + 1, pos.y))
+			ObjPool->Maps.Map[pos.y][pos.x + 1].Tile_SelectArea = true;
+		if (ObjPool->Maps.isCanTrapSet(pos.x - 1, pos.y))
+			ObjPool->Maps.Map[pos.y][pos.x - 1].Tile_SelectArea = true;
+		//플레이어 주변영역을 선택된 영역으로 마크한다
+	}
+	else if (!isCreate)
+	{
+		ObjPool->Maps.Map[pos.y + 1][pos.x].Tile_SelectArea = false;
+		ObjPool->Maps.Map[pos.y - 1][pos.x].Tile_SelectArea = false;
+		ObjPool->Maps.Map[pos.y][pos.x + 1].Tile_SelectArea = false;
+		ObjPool->Maps.Map[pos.y][pos.x - 1].Tile_SelectArea = false;
+		//플레이어 주변영역을 지운다.
+	}
+}
+
 void Hero::SetTrap()
 {
 	if (ObjPool->Maps.Map[pos.y][pos.x].Tile_ID != FLOOR)
@@ -327,6 +351,7 @@ void Hero::SetTrap()
 
 	int Temp_X = pos.x;
 	int Temp_Y = pos.y;
+
 	switch (nowDirection)
 	{
 	case LEFT: Temp_X = pos.x - 1;
@@ -368,8 +393,9 @@ void Hero::SetTrap()
 	case TRAP_Grab:
 		if (ObjPool->Player.Rock_Num >= 20)
 		{
-			ObjPool->Player.Rock_Num -= 20;
-			if (ObjPool->Maps.SetTrapOnMap(ObjPool->Maps.Trap_Grab, Temp_X, Temp_Y))
+			ObjPool->Player.Rock_Num -= 20; 
+			ObjPool->Maps.SetTrapOnMap(ObjPool->Maps.Trap_Grab, Temp_X, Temp_Y);
+			if (ObjPool->Maps.isCanTrapSet(Temp_X, Temp_Y))
 			{
 				ObjPool->Maps.SetTrapOnMap(ObjPool->Maps.Trap_GrabArea, Temp_X + 1, Temp_Y); //갈고리함정 영역 설정
 				ObjPool->Maps.SetTrapOnMap(ObjPool->Maps.Trap_GrabArea, Temp_X - 1, Temp_Y);

@@ -6,6 +6,7 @@ class CTile
 public:
 	int Tile_ID; // 타일 식별 번호
 	bool Tile_On; // 함정 재장전 여부
+	bool Tile_SelectArea; //플레이어 고정시 함정 설치가능 영역인가
 	bool Tile_isCanMove; //지나갈 수 있는 타일인가
 
 	bool GrabArea_Row; //가로
@@ -17,8 +18,9 @@ public:
 	bool SubWall_Left;
 	bool SubWall_Right;
 
-	SpriteHelper Tile_Sprite; // 애니메이션 스프라이트 (정방향 출력 시 : 발동 애니메이션 / 역방향 출력 시 : 재장전 애니메이션)
+	SpriteHelper Tile_Sprite;
 	SpriteHelper Ani_Trap[4]; // 애니메이션 스프라이트 (정방향 출력 시 : 발동 애니메이션 / 역방향 출력 시 : 재장전 애니메이션)
+	SpriteHelper Ani_SelectedArea; // 애니메이션 스프라이트 (정방향 출력 시 : 발동 애니메이션 / 역방향 출력 시 : 재장전 애니메이션)
 
 	std::function<void(Entity* ent)> Tile_Func; // 람다식 (함정 발동 시 프레임 진행)
 
@@ -57,10 +59,14 @@ public:
 	CTile Trap_Grab; // 갈고리함정
 	CTile Trap_GrabArea; // 갈고리함정 영향권
 
+	
+
 
 	Bitmap Brick[6]; // 벽돌 이미지
 	Bitmap ingameUI_TrapHpBar_edge; //함정 체력바 테두리
 	Bitmap ingameUI_TrapHpBar_fill; //함정 체력바 채우기
+	Bitmap ingameUI_TrapArea; //함정 설치가능 영역
+
 	Bitmap Trap_GrabArea_row; // 갈고리함정 영향권 (가로)
 	Bitmap Trap_GrabArea_column; // 갈고리함정 영향권 (세로)
 
@@ -84,9 +90,11 @@ public:
 	void ActiveTile(Entity* ent); // 해당 타일의 기능을 실행 (람다 사용)
 	void SetTileOnMap(CTile Tile, int x, int y); // 타일을 맵에 배치
 	int SetTrapOnMap(CTile Tile, int x, int y); // 함정을 맵에 배치
+	bool isCanTrapSet(int x, int y); //설치할 수 있는 곳인가
 	void DrawMap(HDC hMemDC, int x, int y); //  플레이어를 기준으로 화면에 나오는 타일을 계산하여 출력
-
-	void SetBrick(int x, int y); // 벽돌 위치를 설정
+	void DrawTileUI(HDC hMemDC, int x, int y); //체력바, 선택 영역 등 UI 표시
+	void SetBrick(int x, int y);
+	// 벽돌 위치를 설정
 	void DrawBrick(HDC hMemDC, int x, int y); // 벽돌을 그려냄
 	void DestroyMap(); // 맵 타일 파괴
 
