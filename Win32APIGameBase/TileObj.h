@@ -58,6 +58,7 @@ public:
 	CTile Trap_Cunfusion; // 혼란 함정
 	CTile Trap_Grab; // 갈고리함정
 	CTile Trap_GrabArea; // 갈고리함정 영향권
+	CTile Skill_Barricade; // 바리게이트 타일
 
 	Bitmap Brick[6]; // 벽돌 이미지
 	Bitmap ingameUI_TrapHpBar_edge; //함정 체력바 테두리

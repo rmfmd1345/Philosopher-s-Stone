@@ -283,13 +283,20 @@ void Skill::Draw(HDC hMemDC)
 		}
 		break;
 	case BARRICADE_SKILL:
+		if (ObjPool->Maps.Map[Skill_Range[0].y][Skill_Range[0].x].Tile_ID == NONE || ObjPool->Maps.Map[Skill_Range[0].y][Skill_Range[0].x].Tile_ID == WALL)
+		{
+			ObjPool->Player.PUSH_Skill.Check_Active = false;
+			return;
+		}
+
 		Ani_Skill[Direction].Draw(hMemDC);
 
 		if (Ani_Skill[Direction].GetCurrentFrame() >= Ani_Skill[Direction].GetLastFrame() - 1)
 		{
 			Check_Active = false;
 			Ani_Skill[Direction].SetCurrentFrame(1);
-			//바리게이트 생성
+			ObjPool->Maps.Skill_Barricade.nowTrapDirection = Direction;
+			ObjPool->Maps.Map[Skill_Range[0].y][Skill_Range[0].x] = ObjPool->Maps.Skill_Barricade;
 		}
 		break;
 	default:
