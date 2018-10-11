@@ -26,8 +26,10 @@ void Skill::InitSkill(HWND hWnd, int id, int f)
 		Ani_Skill[RIGHT].Init(hWnd, 0, 0, 1280, 160, f, L"./Image/Skill/skilleffect_2_4.bmp");
 		break;
 	case BARRICADE_SKILL:
-		Ani_Skill[UP].Init(hWnd, 0, 0, 80, 80, f, L"./Image/Skill/skilleffect_3_1.bmp");
-		Ani_Skill[LEFT].Init(hWnd, 0, 0, 80, 80, f, L"./Image/Skill/skilleffect_3_2.bmp");
+		Ani_Skill[UP].Init(hWnd, 0, 0, 1920, 80, f, L"./Image/Skill/skilleffect_3_1.bmp");
+		Ani_Skill[DOWN].Init(hWnd, 0, 0, 1920, 80, f, L"./Image/Skill/skilleffect_3_1.bmp");
+		Ani_Skill[LEFT].Init(hWnd, 0, 0, 960, 160, f, L"./Image/Skill/skilleffect_3_2.bmp");
+		Ani_Skill[RIGHT].Init(hWnd, 0, 0, 960, 160, f, L"./Image/Skill/skilleffect_3_2.bmp");
 		break;
 	default:
 		break;
@@ -107,7 +109,7 @@ void Skill::ActiveSkill()
 				return;
 			}
 
-			Ani_Skill[UP].SetPosition(((P_point.x - Map_Start_x) - 2) * 80, ((P_point.y - Map_Start_y) - 3) * 80 - 40);
+			Ani_Skill[UP].SetPosition(((P_point.x - Map_Start_x) - 2) * 80 - 3, ((P_point.y - Map_Start_y) - 3) * 80 - 40);
 			break;
 		case DOWN:
 			Skill_Range[0].x = P_point.x;
@@ -119,7 +121,7 @@ void Skill::ActiveSkill()
 				return;
 			}
 
-			Ani_Skill[DOWN].SetPosition(((P_point.x - Map_Start_x) - 2) * 80, ((P_point.y - Map_Start_y) - 1) * 80 - 40);
+			Ani_Skill[DOWN].SetPosition(((P_point.x - Map_Start_x) - 2) * 80 - 3, ((P_point.y - Map_Start_y) - 1) * 80 - 40);
 			break;
 		case LEFT:
 			Skill_Range[0].x = P_point.x - 1;
@@ -186,6 +188,59 @@ void Skill::ActiveSkill()
 		}
 		break;
 	case BARRICADE_SKILL:
+		switch (Direction)
+		{
+		case UP:
+			Skill_Range[0].x = P_point.x;
+			Skill_Range[0].y = P_point.y - 1;
+
+			if (ObjPool->Maps.Map[Skill_Range[0].y][Skill_Range[0].x].Tile_ID == NONE || ObjPool->Maps.Map[Skill_Range[0].y][Skill_Range[0].x].Tile_ID == WALL)
+			{
+				ObjPool->Player.PUSH_Skill.Check_Active = false;
+				return;
+			}
+
+			Ani_Skill[UP].SetPosition(((P_point.x - Map_Start_x) - 2) * 80, ((P_point.y - Map_Start_y) - 3) * 80 - 15);
+			break;
+		case DOWN:
+			Skill_Range[0].x = P_point.x;
+			Skill_Range[0].y = P_point.y + 1;
+
+			if (ObjPool->Maps.Map[Skill_Range[0].y][Skill_Range[0].x].Tile_ID == NONE || ObjPool->Maps.Map[Skill_Range[0].y][Skill_Range[0].x].Tile_ID == WALL)
+			{
+				ObjPool->Player.PUSH_Skill.Check_Active = false;
+				return;
+			}
+
+			Ani_Skill[DOWN].SetPosition(((P_point.x - Map_Start_x) - 2) * 80, ((P_point.y - Map_Start_y)) * 80 - 40);
+			break;
+		case LEFT:
+			Skill_Range[0].x = P_point.x - 1;
+			Skill_Range[0].y = P_point.y;
+
+			if (ObjPool->Maps.Map[Skill_Range[0].y][Skill_Range[0].x].Tile_ID == NONE || ObjPool->Maps.Map[Skill_Range[0].y][Skill_Range[0].x].Tile_ID == WALL)
+			{
+				ObjPool->Player.PUSH_Skill.Check_Active = false;
+				return;
+			}
+
+			Ani_Skill[LEFT].SetPosition(((P_point.x - Map_Start_x) - 3) * 80 + 25, ((P_point.y - Map_Start_y) - 2) * 80 - 40);
+			break;
+		case RIGHT:
+			Skill_Range[0].x = P_point.x + 1;
+			Skill_Range[0].y = P_point.y;
+
+			if (ObjPool->Maps.Map[Skill_Range[0].y][Skill_Range[0].x].Tile_ID == NONE || ObjPool->Maps.Map[Skill_Range[0].y][Skill_Range[0].x].Tile_ID == WALL)
+			{
+				ObjPool->Player.PUSH_Skill.Check_Active = false;
+				return;
+			}
+
+			Ani_Skill[RIGHT].SetPosition(((P_point.x - Map_Start_x)) * 80, ((P_point.y - Map_Start_y) - 2) * 80 - 40);
+			break;
+		default:
+			break;
+		}
 
 		break;
 	default:
@@ -234,6 +289,7 @@ void Skill::Draw(HDC hMemDC)
 		{
 			Check_Active = false;
 			Ani_Skill[Direction].SetCurrentFrame(1);
+			//바리게이트 생성
 		}
 		break;
 	default:
