@@ -21,6 +21,7 @@ public:
 	bool Check_Active;
 
 	int ID;
+	int Cooltime;
 
 public:
 	void InitSkill(HWND hWnd, int ID, int f);

@@ -14,10 +14,14 @@ void Skill::InitSkill(HWND hWnd, int id, int f)
 	nowDirection = 0;
 	Check_Active = false;
 
+	Cooltime = 0;
+
 	switch (ID)
 	{
 	case ATK_SKILL:
 		Ani_Skill[UP].Init(hWnd, 0, 0, 2400, 240, f, L"./Image/Skill/skilleffect_1.bmp");
+		break;
+	case AGGRO_SKILL:
 		break;
 	case PUSH_SKILL:
 		Ani_Skill[UP].Init(hWnd, 0, 0, 1280, 160, f, L"./Image/Skill/skilleffect_2_1.bmp");
@@ -271,6 +275,7 @@ void Skill::Draw(HDC hMemDC)
 		{
 			Check_Active = false;
 			Ani_Skill[UP].SetCurrentFrame(1);
+			Cooltime = 5;
 		}
 		break;
 	case PUSH_SKILL:
@@ -280,6 +285,7 @@ void Skill::Draw(HDC hMemDC)
 		{
 			Check_Active = false;
 			Ani_Skill[Direction].SetCurrentFrame(1);
+			Cooltime = 3;
 		}
 		break;
 	case BARRICADE_SKILL:
@@ -297,6 +303,7 @@ void Skill::Draw(HDC hMemDC)
 			Ani_Skill[Direction].SetCurrentFrame(1);
 			ObjPool->Maps.Skill_Barricade.nowTrapDirection = Direction;
 			ObjPool->Maps.Map[Skill_Range[0].y][Skill_Range[0].x] = ObjPool->Maps.Skill_Barricade;
+			Cooltime = 7;
 		}
 		break;
 	default:

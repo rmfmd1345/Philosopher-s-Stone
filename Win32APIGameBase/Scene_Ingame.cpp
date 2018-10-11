@@ -87,6 +87,15 @@ void Ingame::OnTimer(HWND hWnd, int timer)
 		{
 			ObjPool->MonsterTimer--;
 		}
+
+		if (ObjPool->Player.ATK_Skill.Cooltime != 0)
+			ObjPool->Player.ATK_Skill.Cooltime--;
+		if (ObjPool->Player.AGGRO_Skill.Cooltime != 0)
+			ObjPool->Player.AGGRO_Skill.Cooltime--;
+		if (ObjPool->Player.PUSH_Skill.Cooltime != 0)
+			ObjPool->Player.PUSH_Skill.Cooltime--;
+		if (ObjPool->Player.BARRICADE_Skill.Cooltime != 0)
+			ObjPool->Player.BARRICADE_Skill.Cooltime--;
 	}
 	wsprintf(ObjPool->TIMER, L"%02d:%02d", ObjPool->MonsterTimer / 60, ObjPool->MonsterTimer % 60);
 	wsprintf(ObjPool->Player.Rock_Num_UI, L"%05d", ObjPool->Player.Rock_Num);
@@ -344,7 +353,7 @@ void Ingame::OnKeyborad()
 
 	if (lastBitState[KEY_A] == 0 && keyState[KEY_A] & 0x0001) //B_RIGHT
 	{
-		if (ObjPool->Player.ATK_Skill.Check_Active == false && ObjPool->Player.GetState() != WALK)
+		if (ObjPool->Player.ATK_Skill.Check_Active == false && ObjPool->Player.GetState() != WALK && ObjPool->Player.ATK_Skill.Cooltime == 0)
 		{
 			ObjPool->Player.ATK_Skill.Check_Active = true;
 			ObjPool->Player.ATK_Skill.ActiveSkill();
@@ -355,15 +364,18 @@ void Ingame::OnKeyborad()
 
 	if (lastBitState[KEY_S] == 0 && keyState[KEY_S] & 0x0001) //B_RIGHT
 	{
-		ObjPool->Player.AGGRO_Skill.Check_Active = true;
-		ObjPool->Player.AGGRO_Skill.ActiveSkill();
+		if (ObjPool->Player.AGGRO_Skill.Check_Active == false && ObjPool->Player.GetState() != WALK && ObjPool->Player.AGGRO_Skill.Cooltime == 0)
+		{
+			ObjPool->Player.AGGRO_Skill.Check_Active = true;
+			ObjPool->Player.AGGRO_Skill.ActiveSkill();
+		}
 
 		lastBitState[KEY_S] = 1;
 	}
 
 	if (lastBitState[KEY_D] == 0 && keyState[KEY_D] & 0x0001) //B_RIGHT
 	{
-		if (ObjPool->Player.PUSH_Skill.Check_Active == false && ObjPool->Player.GetState() != WALK)
+		if (ObjPool->Player.PUSH_Skill.Check_Active == false && ObjPool->Player.GetState() != WALK && ObjPool->Player.PUSH_Skill.Cooltime == 0)
 		{
 			ObjPool->Player.PUSH_Skill.Check_Active = true;
 			ObjPool->Player.PUSH_Skill.ActiveSkill();
@@ -374,8 +386,11 @@ void Ingame::OnKeyborad()
 
 	if (lastBitState[KEY_F] == 0 && keyState[KEY_F] & 0x0001) //B_RIGHT
 	{
-		ObjPool->Player.BARRICADE_Skill.Check_Active = true;
-		ObjPool->Player.BARRICADE_Skill.ActiveSkill();
+		if (ObjPool->Player.BARRICADE_Skill.Check_Active == false && ObjPool->Player.GetState() != WALK && ObjPool->Player.BARRICADE_Skill.Cooltime == 0)
+		{
+			ObjPool->Player.BARRICADE_Skill.Check_Active = true;
+			ObjPool->Player.BARRICADE_Skill.ActiveSkill();
+		}
 
 		lastBitState[KEY_F] = 1;
 	}
