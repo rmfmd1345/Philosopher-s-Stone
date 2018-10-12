@@ -97,9 +97,6 @@ void Skill::ActiveSkill()
 		}
 
 		break;
-	case AGGRO_SKILL:
-
-		break;
 	case PUSH_SKILL:
 		switch (Direction)
 		{
@@ -257,9 +254,9 @@ void Skill::Animation()
 	int Direction = ObjPool->Player.GetDirection();
 
 	if (Check_Active && ID != ATK_SKILL)
-		Ani_Skill[Direction].NextFrameSprite();
-	else
-		Ani_Skill[UP].NextFrameSprite();
+		Ani_Skill[Direction].NextFrameSprite(false);
+	else if (Check_Active && ID == ATK_SKILL)
+		Ani_Skill[UP].NextFrameSprite(false);
 }
 
 void Skill::Draw(HDC hMemDC)
@@ -276,6 +273,7 @@ void Skill::Draw(HDC hMemDC)
 			Check_Active = false;
 			Ani_Skill[UP].SetCurrentFrame(1);
 			Cooltime = 5;
+			ObjPool->Player.SetAnimation(STAND);
 		}
 		break;
 	case PUSH_SKILL:
@@ -286,6 +284,7 @@ void Skill::Draw(HDC hMemDC)
 			Check_Active = false;
 			Ani_Skill[Direction].SetCurrentFrame(1);
 			Cooltime = 3;
+			ObjPool->Player.SetAnimation(STAND);
 		}
 		break;
 	case BARRICADE_SKILL:
@@ -304,6 +303,7 @@ void Skill::Draw(HDC hMemDC)
 			ObjPool->Maps.Skill_Barricade.nowTrapDirection = Direction;
 			ObjPool->Maps.Map[Skill_Range[0].y][Skill_Range[0].x] = ObjPool->Maps.Skill_Barricade;
 			Cooltime = 7;
+			ObjPool->Player.SetAnimation(STAND);
 		}
 		break;
 	default:

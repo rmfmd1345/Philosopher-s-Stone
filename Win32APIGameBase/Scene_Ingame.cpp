@@ -53,8 +53,6 @@ void Ingame::OnTimer(HWND hWnd, int timer)
 
 		if (ObjPool->Player.ATK_Skill.Check_Active)
 			ObjPool->Player.ATK_Skill.Animation();
-		if (ObjPool->Player.AGGRO_Skill.Check_Active)
-			ObjPool->Player.AGGRO_Skill.Animation();
 		if (ObjPool->Player.PUSH_Skill.Check_Active)
 			ObjPool->Player.PUSH_Skill.Animation();
 		if (ObjPool->Player.BARRICADE_Skill.Check_Active)
@@ -350,6 +348,7 @@ void Ingame::OnKeyborad()
 	{
 		if (ObjPool->Player.ATK_Skill.Check_Active == false && ObjPool->Player.GetState() != WALK && ObjPool->Player.ATK_Skill.Cooltime == 0)
 		{
+			ObjPool->Player.SetAnimation(ATTACK);
 			ObjPool->Player.ATK_Skill.Check_Active = true;
 			ObjPool->Player.ATK_Skill.ActiveSkill();
 		}
@@ -361,6 +360,7 @@ void Ingame::OnKeyborad()
 	{
 		if (ObjPool->Player.AGGRO_Skill.Check_Active == false && ObjPool->Player.GetState() != WALK && ObjPool->Player.AGGRO_Skill.Cooltime == 0)
 		{
+			ObjPool->Player.SetAnimation(ATTACK);
 			ObjPool->Player.AGGRO_Skill.Check_Active = true;
 			ObjPool->Player.AGGRO_Skill.ActiveSkill();
 		}
@@ -372,6 +372,7 @@ void Ingame::OnKeyborad()
 	{
 		if (ObjPool->Player.PUSH_Skill.Check_Active == false && ObjPool->Player.GetState() != WALK && ObjPool->Player.PUSH_Skill.Cooltime == 0)
 		{
+			ObjPool->Player.SetAnimation(ATTACK);
 			ObjPool->Player.PUSH_Skill.Check_Active = true;
 			ObjPool->Player.PUSH_Skill.ActiveSkill();
 		}
@@ -383,6 +384,7 @@ void Ingame::OnKeyborad()
 	{
 		if (ObjPool->Player.BARRICADE_Skill.Check_Active == false && ObjPool->Player.GetState() != WALK && ObjPool->Player.BARRICADE_Skill.Cooltime == 0)
 		{
+			ObjPool->Player.SetAnimation(ATTACK);
 			ObjPool->Player.BARRICADE_Skill.Check_Active = true;
 			ObjPool->Player.BARRICADE_Skill.ActiveSkill();
 		}

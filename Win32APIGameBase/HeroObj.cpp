@@ -29,11 +29,11 @@ void Hero::Init(HWND hWnd, int x, int y, COLORREF sprite)
 	Ani_walk[LEFT].Init(hWnd, 0, 0, 480, 132, 6, L"./Image/Walk_Ani/hero_walk_left.bmp");
 	Ani_walk[RIGHT].Init(hWnd, 0, 0, 480, 132, 6, L"./Image/Walk_Ani/hero_walk_right.bmp");
 
-	Ani_attack[UP].Init(hWnd, 0, 0, 240, 122, 4, L"./Image/Attack_Ani/hero_attack_back.bmp");
-	Ani_attack[DOWN].Init(hWnd, 0, 0, 216, 122, 4, L"./Image/Attack_Ani/hero_attack_front.bmp");
-	Ani_attack[LEFT].Init(hWnd, 0, 0, 304, 122, 4, L"./Image/Attack_Ani/Hero_Attack_Left.bmp");
-	Ani_attack[RIGHT].Init(hWnd, 0, 0, 336, 122, 4, L"./Image/Attack_Ani/hero_attack_right.bmp");
-
+	Ani_attack[UP].Init(hWnd, 0, 0, 320, 128, 4, L"./Image/Attack_Ani/hero_attack_back.bmp");
+	Ani_attack[DOWN].Init(hWnd, 0, 0, 320, 128, 4, L"./Image/Attack_Ani/hero_attack_front.bmp");
+	Ani_attack[LEFT].Init(hWnd, 0, 0, 320, 128, 4, L"./Image/Attack_Ani/Hero_Attack_Left.bmp");
+	Ani_attack[RIGHT].Init(hWnd, 0, 0, 320, 128, 4, L"./Image/Attack_Ani/hero_attack_right.bmp");
+	
 	ATK_Skill.InitSkill(hWnd, ATK_SKILL, 10);
 	PUSH_Skill.InitSkill(hWnd, PUSH_SKILL, 8);
 	BARRICADE_Skill.InitSkill(hWnd, BARRICADE_SKILL, 12);
@@ -121,13 +121,13 @@ void Hero::Animation()
 	switch (nowAnimation)
 	{
 	case STAND:
-		Ani_stand[nowDirection].NextFrameSprite();
+		Ani_stand[nowDirection].NextFrameSprite(true);
 		break;
 	case WALK:
-		Ani_walk[nowDirection].NextFrameSprite();
+		Ani_walk[nowDirection].NextFrameSprite(true);
 		break;
 	case ATTACK:
-		Ani_attack[nowDirection].NextFrameSprite();
+		Ani_attack[nowDirection].NextFrameSprite(false);
 		break;
 	}
 }
