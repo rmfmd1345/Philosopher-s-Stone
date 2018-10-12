@@ -32,6 +32,10 @@ void ObjectPool::CreateObject(HWND hWnd)	//객체의 초기 설정을 적는 곳
 	
 	ingameUI_Time.Init(hWnd, 475, 0, 320, 134, L"./Image/UI/Ingame/ui_time.bmp");
 
+	//STATE ANI
+	FindEffect.Init(hWnd, 0, 0, 84, 32, 6, L"./Image/Skill/findeffect.bmp");
+
+	ConfuseEffect.Init(hWnd, 0, 0, 252, 24, 6, L"./Image/Skill/star_ani.bmp");
 
 	Maps.InitMap(hWnd);
 
@@ -43,7 +47,7 @@ void ObjectPool::CreateObject(HWND hWnd)	//객체의 초기 설정을 적는 곳
 			Maps.SetTileOnMap(ObjPool->Maps.Floor, 4 + i, 4 + j);
 
 	MonsterPool.Init(hWnd);
-	FindEffect.Init(hWnd, 0, 0, 84, 32, 6, L"./Image/Skill/findeffect.bmp");
+
 	Maps.SetTileOnMap(ObjPool->Maps.Floor, 2, 5);
 	Maps.SetTileOnMap(ObjPool->Maps.Floor, 3, 5);
 	// for test

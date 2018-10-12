@@ -225,7 +225,15 @@ void Entity::Draw(HDC hMemDC, int x, int y)
 		*/
 		break;
 	}
+
+	if (nowState == CONFUSE) //임시로 해둠. 정리필요
+	{
+		ObjPool->ConfuseEffect.SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 30, ((pos.y - Map_y) - 1) * 80 + Term_y - 70);
+		ObjPool->ConfuseEffect.Draw(hMemDC);
+	}
 }
+
+
 
 void Entity::Animation()
 {
@@ -240,6 +248,10 @@ void Entity::Animation()
 	case ATTACK:
 		Ani_attack[nowDirection].NextFrameSprite();
 		break;
+	}
+	if (nowState == CONFUSE)
+	{
+		ObjPool->ConfuseEffect.NextFrameSprite();
 	}
 }
 
@@ -513,12 +525,6 @@ void Entity::UpdateState()
 			stateFrame = 0;
 		}
 		return;
-	}
-
-	//혼란 디버프
-	if (nowState == CONFUSE)
-	{
-		//TODO : 혼란 상태 추가
 	}
 }
 

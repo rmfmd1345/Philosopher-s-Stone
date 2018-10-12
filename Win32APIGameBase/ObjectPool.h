@@ -77,6 +77,7 @@ public:
 	//Entity(Monster)
 	Monster MonsterPool;
 	SpriteHelper FindEffect;
+	SpriteHelper ConfuseEffect;
 	int debug = 0;
 
 	Hero Player;

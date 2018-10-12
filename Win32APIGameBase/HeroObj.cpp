@@ -480,7 +480,6 @@ void Hero::DrawSelectedTrapUI(HDC hMemDC)
 {
 	if (selectedTrap != NONE)
 	{
-
 		switch (selectedTrap)
 		{
 		case TRAP_Niddle:
