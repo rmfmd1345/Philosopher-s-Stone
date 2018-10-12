@@ -16,6 +16,7 @@ void Ingame::Draw(HDC hMemDC)
 	ObjPool->Maps.DrawBrick(hMemDC, PlayerPos.x, PlayerPos.y);
 	ObjPool->Maps.DrawTileUI(hMemDC, PlayerPos.x, PlayerPos.y);
 
+
 	ObjPool->MonsterPool.Draw(hMemDC, PlayerPos.x, PlayerPos.y);
 	//ObjPool->Player.Draw(hMemDC, PlayerPos.x, PlayerPos.y);
 	//MonsterPool.Draw에서 플레이어와 몬스터의 좌표를 확인해 부자연스럽게 겹치지 않도록 함.
@@ -23,6 +24,7 @@ void Ingame::Draw(HDC hMemDC)
 	ObjPool->ingameBtn_Option.Draw(hMemDC);
 	ObjPool->ingameUI_Stone.Draw(hMemDC);
 	ObjPool->ingameUI_Trap.Draw(hMemDC);
+	ObjPool->Player.DrawSelectedTrapUI(hMemDC);
 	ObjPool->ingameUI_Skill.Draw(hMemDC);
 	ObjPool->ingameUI_Stage.Draw(hMemDC);
 	ObjPool->ingameUI_Time.Draw(hMemDC);
@@ -235,7 +237,6 @@ void Ingame::OnKeyborad()
 		{
 			ObjPool->Player.SetState(TRAPSETTING); //플레이어 고정상태로 만들기
 			ObjPool->Player.selectedTrap = TRAP_Niddle;
-			ObjPool->Player.SetSelectedArea(true);
 		}
 		else if (ObjPool->Player.GetState() == WALK) //이동중에 누르면 다 걸어갈때까지 대기
 		{
@@ -244,8 +245,8 @@ void Ingame::OnKeyborad()
 		}
 		else if (ObjPool->Player.GetState() == TRAPSETTING) //고정상태에서 1번키를 한 번 더 누르면 고정해제
 		{
+			ObjPool->Player.selectedTrap = NONE;
 			ObjPool->Player.SetState(STAND);
-			ObjPool->Player.SetSelectedArea(false);
 		}
 
 		lastBitState[KEY_1] = 1;
@@ -257,19 +258,17 @@ void Ingame::OnKeyborad()
 		{
 			ObjPool->Player.SetState(TRAPSETTING);
 			ObjPool->Player.selectedTrap = TRAP_ScareCrow;
-			ObjPool->Player.SetSelectedArea(true);
 		}
 
 		else if (ObjPool->Player.GetState() == WALK) //이동중에 누르면 다 걸어갈때까지 대기
 		{
 			ObjPool->Player.selectedTrap = TRAP_ScareCrow;
-			ObjPool->Player.isWatingTrapSet = true;
 		}
 
 		else if (ObjPool->Player.GetState() == TRAPSETTING)
 		{
+			ObjPool->Player.selectedTrap = NONE;
 			ObjPool->Player.SetState(STAND);
-			ObjPool->Player.SetSelectedArea(false);
 		}
 
 
@@ -282,7 +281,6 @@ void Ingame::OnKeyborad()
 		{
 			ObjPool->Player.SetState(TRAPSETTING);
 			ObjPool->Player.selectedTrap = TRAP_Grab;
-			ObjPool->Player.SetSelectedArea(true);
 		}
 
 		else if (ObjPool->Player.GetState() == WALK) //이동중에 누르면 다 걸어갈때까지 대기
@@ -293,8 +291,8 @@ void Ingame::OnKeyborad()
 
 		else if (ObjPool->Player.GetState() == TRAPSETTING)
 		{
+			ObjPool->Player.selectedTrap = NONE;
 			ObjPool->Player.SetState(STAND);
-			ObjPool->Player.SetSelectedArea(false);
 		}
 
 
@@ -307,19 +305,17 @@ void Ingame::OnKeyborad()
 		{
 			ObjPool->Player.SetState(TRAPSETTING);
 			ObjPool->Player.selectedTrap = TRAP_Cunfusion;
-			ObjPool->Player.SetSelectedArea(true);
 		}
 
 		else if (ObjPool->Player.GetState() == WALK) //이동중에 누르면 다 걸어갈때까지 대기
 		{
 			ObjPool->Player.selectedTrap = TRAP_Cunfusion;
-			ObjPool->Player.isWatingTrapSet = true;
 		}
 
 		else if (ObjPool->Player.GetState() == TRAPSETTING)
 		{
+			ObjPool->Player.selectedTrap = NONE;
 			ObjPool->Player.SetState(STAND);
-			ObjPool->Player.SetSelectedArea(false);
 		}
 
 		lastBitState[KEY_4] = 1;
@@ -331,7 +327,6 @@ void Ingame::OnKeyborad()
 		{
 			ObjPool->Player.SetState(TRAPSETTING);
 			ObjPool->Player.selectedTrap = TRAP_Hole;
-			ObjPool->Player.SetSelectedArea(true);
 		}
 
 		else if (ObjPool->Player.GetState() == WALK) //이동중에 누르면 다 걸어갈때까지 대기
@@ -342,8 +337,8 @@ void Ingame::OnKeyborad()
 
 		else if (ObjPool->Player.GetState() == TRAPSETTING) 
 		{
+			ObjPool->Player.selectedTrap = NONE;
 			ObjPool->Player.SetState(STAND);
-			ObjPool->Player.SetSelectedArea(false);
 		}
 
 		lastBitState[KEY_5] = 1;

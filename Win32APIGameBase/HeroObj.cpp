@@ -8,7 +8,7 @@ void Hero::Init(HWND hWnd, int x, int y, COLORREF sprite)
 	this->pos = { x, y };
 
 	nowState = STAND;
-	stateFrame = 0;
+	stateFrame_Hero = 0;
 
 	nowAnimation = STAND;
 	nowDirection = DOWN;
@@ -85,19 +85,19 @@ void Hero::Draw(HDC hMemDC, int x, int y)
 
 	if (nowDirection == UP)
 		if (!(5 < pos.y && pos.y <= 18))
-			Term_y -= (stateFrame * 8);
+			Term_y -= (stateFrame_Hero * 8);
 
 	if (nowDirection == DOWN)
 		if (!(5 <= pos.y && pos.y < 18))
-			Term_y += (stateFrame * 8);
+			Term_y += (stateFrame_Hero * 8);
 
 	if (nowDirection == LEFT)
 		if (!(8 < pos.x && pos.x <= 27))
-			Term_x -= (stateFrame * 8);
+			Term_x -= (stateFrame_Hero * 8);
 
 	if (nowDirection == RIGHT)
 		if (!(8 <= pos.x && pos.x < 27))
-			Term_x += (stateFrame * 8);
+			Term_x += (stateFrame_Hero * 8);
 
 	switch (nowAnimation)
 	{
@@ -134,11 +134,16 @@ void Hero::Animation()
 
 void Hero::UpdateState()
 {
+	if (nowState == TRAPSETTING)
+		SetSelectedArea(true);
+	else
+		SetSelectedArea(false);
+
 	if (nowState == WALK)
 	{
-		if (stateFrame < 10)
+		if (stateFrame_Hero < 10)
 		{
-			stateFrame++;
+			stateFrame_Hero++;
 		}
 		else
 		{
@@ -159,7 +164,7 @@ void Hero::UpdateState()
 				break;
 			}
 			nowState = STAND;
-			stateFrame = 0;
+			stateFrame_Hero = 0;
 		}
 		return;
 	}
@@ -248,7 +253,7 @@ POINT Hero::GetPosition()
 int Hero::GetWalkState()
 {
 	if (nowState == WALK)
-		return stateFrame;
+		return stateFrame_Hero;
 	else
 		return 0;
 }
@@ -259,19 +264,19 @@ POINT Hero::GetWalkTerm()
 
 	if(nowDirection == UP)
 		if (5 < pos.y && pos.y <= 18)
-			Term.y += (stateFrame * 8);
+			Term.y += (stateFrame_Hero * 8);
 
 	if (nowDirection == DOWN)
 		if (5 <= pos.y && pos.y < 18)
-			Term.y -= (stateFrame * 8);
+			Term.y -= (stateFrame_Hero * 8);
 
 	if (nowDirection == LEFT)
 		if (8 < pos.x && pos.x <= 27)
-			Term.x += (stateFrame * 8);
+			Term.x += (stateFrame_Hero * 8);
 
 	if (nowDirection == RIGHT)
 		if (8 <= pos.x && pos.x < 27)
-			Term.x -= (stateFrame * 8);
+			Term.x -= (stateFrame_Hero * 8);
 
 	return Term;
 }
@@ -469,6 +474,40 @@ void Hero::RepairTrap()
 			ObjPool->Maps.Map[pos.y + 1][pos.x].repairGage = 0;
 		}
 	}
+}
+
+void Hero::DrawSelectedTrapUI(HDC hMemDC)
+{
+	if (selectedTrap != NONE)
+	{
+
+		switch (selectedTrap)
+		{
+		case TRAP_Niddle:
+			ObjPool->ingameUI_SelectedTrap.SetPosition(300, 540);
+			break;
+		case TRAP_ScareCrow:
+			ObjPool->ingameUI_SelectedTrap.SetPosition(410, 540);
+			break;
+		case TRAP_Grab:
+			ObjPool->ingameUI_SelectedTrap.SetPosition(520, 540);
+			break;
+		case TRAP_Cunfusion:
+			ObjPool->ingameUI_SelectedTrap.SetPosition(630, 540);
+			break;
+		case TRAP_Hole:
+			ObjPool->ingameUI_SelectedTrap.SetPosition(740, 540);
+			break;
+		}
+		ObjPool->ingameUI_SelectedTrap.Draw(hMemDC);
+		stateFrame_TrapSelect++;
+		if (stateFrame_TrapSelect >= 10)
+		{
+			ObjPool->ingameUI_SelectedTrap.NextFrameSprite_Trap();
+			stateFrame_TrapSelect = 0;
+		}
+	}
+		
 }
 
 bool Hero::isDead()

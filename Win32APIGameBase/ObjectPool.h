@@ -103,4 +103,6 @@ public:
 	Bitmap ingameUI_Skill;
 	Bitmap ingameUI_Stage;
 	Bitmap ingameUI_Time;
+
+	SpriteHelper ingameUI_SelectedTrap; //함정 선택 애니메이션
 };
