@@ -232,13 +232,13 @@ void Entity::Animation()
 	switch (nowAnimation)
 	{
 	case STAND:
-		Ani_stand[nowDirection].NextFrameSprite();
+		Ani_stand[nowDirection].NextFrameSprite(true);
 		break;
 	case WALK:
-		Ani_walk[nowDirection].NextFrameSprite();
+		Ani_walk[nowDirection].NextFrameSprite(true);
 		break;
 	case ATTACK:
-		Ani_attack[nowDirection].NextFrameSprite();
+		Ani_attack[nowDirection].NextFrameSprite(false);
 		break;
 	}
 }
@@ -504,7 +504,7 @@ void Entity::UpdateState()
 		{
 			stateFrame++;
 			if (stateFrame < 7 && stateFrame % 2)
-				ObjPool->FindEffect.NextFrameSprite();
+				ObjPool->FindEffect.NextFrameSprite(false);
 		}
 		else
 		{
