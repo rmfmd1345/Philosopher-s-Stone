@@ -52,7 +52,7 @@ void CTile::InitTile(HWND hwnd, int Frame, int ID, int MoveID, std::function<voi
 		Ani_Trap[RIGHT].Init(hwnd, 0, 0, 80, 160, Frame, L"./Image/Tile/Barricade_Right.bmp");
 		break;
 	}
-	Ani_SelectedArea.Init(hwnd, 0, 0, 960, 240, 4, L"./Image/Tile/tileselect.bmp");
+	Ani_SelectedArea.Init(hwnd, 0, 0, 240, 240, 1, L"./Image/Tile/tileselect.bmp");
 
 	stateFrame = 1;
 	damgeDelay = 0;
@@ -79,7 +79,7 @@ void CMap::InitMap(HWND hwnd)
 	Trap_GrabArea.InitTile(hwnd, 1 /*Frame*/, TRAP_GrabArea, true, [&](Entity* ent) {GrabActive(ent);});
 	Trap_Cunfusion.InitTile(hwnd, 1 /*Frame*/, TRAP_Cunfusion, true, [&](Entity* ent) {ConfusionActive(ent); });
 	Trap_Hole.InitTile(hwnd, 1 /*Frame*/, TRAP_Hole, true, [&](Entity* ent) {HoleActive(ent);});
-	Skill_Barricade.InitTile(hwnd, 1 /*Frame*/, SKILL_Barricade, false, [&](Entity* ent) {});
+	Skill_Barricade.InitTile(hwnd, 1 /*Frame*/, SKILL_Barricade, true, [&](Entity* ent) {});
 
 	//ingameUI_TrapArea.Init(hwnd, 0, 0, 960, 240, L"./Image/Tile/tileselect.bmp");
 	ingameUI_TrapHpBar_edge.Init(hwnd, 0, 0, 60, 14, L"./Image/UI/Ingame/bluebar_edge.bmp");
