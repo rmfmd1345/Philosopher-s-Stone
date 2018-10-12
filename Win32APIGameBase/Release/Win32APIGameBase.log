@@ -1,29 +1,7 @@
-﻿  EntityObj.cpp
+﻿  HeroObj.cpp
   코드를 생성하고 있습니다.
-  1 of 877 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
+  1 of 892 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
     1 functions had inline decision re-evaluated but remain unchanged
   코드를 생성했습니다.
-A_Star.obj : warning LNK4020: 'c:\users\stauffen\documents\github\philosopher-s-stone\win32apigamebase\release\vc141.pdb'의 형식 레코드가 손상되었습니다. 디버거에서 일부 기호와 형식에 액세스할 수 없습니다.
-EntityObj.obj : warning LNK4020: 'c:\users\stauffen\documents\github\philosopher-s-stone\win32apigamebase\release\vc141.pdb'의 형식 레코드가 손상되었습니다. 디버거에서 일부 기호와 형식에 액세스할 수 없습니다.
-HeroObj.obj : warning LNK4020: 'c:\users\stauffen\documents\github\philosopher-s-stone\win32apigamebase\release\vc141.pdb'의 형식 레코드가 손상되었습니다. 디버거에서 일부 기호와 형식에 액세스할 수 없습니다.
-Scene_Credit.obj : warning LNK4020: 'c:\users\stauffen\documents\github\philosopher-s-stone\win32apigamebase\release\vc141.pdb'의 형식 레코드가 손상되었습니다. 디버거에서 일부 기호와 형식에 액세스할 수 없습니다.
-Skill.obj : warning LNK4020: 'c:\users\stauffen\documents\github\philosopher-s-stone\win32apigamebase\release\vc141.pdb'의 형식 레코드가 손상되었습니다. 디버거에서 일부 기호와 형식에 액세스할 수 없습니다.
-SoundObj.obj : warning LNK4020: 'c:\users\stauffen\documents\github\philosopher-s-stone\win32apigamebase\release\vc141.pdb'의 형식 레코드가 손상되었습니다. 디버거에서 일부 기호와 형식에 액세스할 수 없습니다.
-Sprite.obj : warning LNK4020: 'c:\users\stauffen\documents\github\philosopher-s-stone\win32apigamebase\release\vc141.pdb'의 형식 레코드가 손상되었습니다. 디버거에서 일부 기호와 형식에 액세스할 수 없습니다.
-BitmapObj.obj : warning LNK4020: 'c:\users\stauffen\documents\github\philosopher-s-stone\win32apigamebase\release\vc141.pdb'의 형식 레코드가 손상되었습니다. 디버거에서 일부 기호와 형식에 액세스할 수 없습니다.
-DrawManager.obj : warning LNK4020: 'c:\users\stauffen\documents\github\philosopher-s-stone\win32apigamebase\release\vc141.pdb'의 형식 레코드가 손상되었습니다. 디버거에서 일부 기호와 형식에 액세스할 수 없습니다.
-FrameManager.obj : warning LNK4020: 'c:\users\stauffen\documents\github\philosopher-s-stone\win32apigamebase\release\vc141.pdb'의 형식 레코드가 손상되었습니다. 디버거에서 일부 기호와 형식에 액세스할 수 없습니다.
-GdiObj.obj : warning LNK4020: 'c:\users\stauffen\documents\github\philosopher-s-stone\win32apigamebase\release\vc141.pdb'의 형식 레코드가 손상되었습니다. 디버거에서 일부 기호와 형식에 액세스할 수 없습니다.
-InputManager.obj : warning LNK4020: 'c:\users\stauffen\documents\github\philosopher-s-stone\win32apigamebase\release\vc141.pdb'의 형식 레코드가 손상되었습니다. 디버거에서 일부 기호와 형식에 액세스할 수 없습니다.
-ObjectPool.obj : warning LNK4020: 'c:\users\stauffen\documents\github\philosopher-s-stone\win32apigamebase\release\vc141.pdb'의 형식 레코드가 손상되었습니다. 디버거에서 일부 기호와 형식에 액세스할 수 없습니다.
-SceneManager.obj : warning LNK4020: 'c:\users\stauffen\documents\github\philosopher-s-stone\win32apigamebase\release\vc141.pdb'의 형식 레코드가 손상되었습니다. 디버거에서 일부 기호와 형식에 액세스할 수 없습니다.
-Scene_Ingame.obj : warning LNK4020: 'c:\users\stauffen\documents\github\philosopher-s-stone\win32apigamebase\release\vc141.pdb'의 형식 레코드가 손상되었습니다. 디버거에서 일부 기호와 형식에 액세스할 수 없습니다.
-Scene_Title.obj : warning LNK4020: 'c:\users\stauffen\documents\github\philosopher-s-stone\win32apigamebase\release\vc141.pdb'의 형식 레코드가 손상되었습니다. 디버거에서 일부 기호와 형식에 액세스할 수 없습니다.
-SystemObj.obj : warning LNK4020: 'c:\users\stauffen\documents\github\philosopher-s-stone\win32apigamebase\release\vc141.pdb'의 형식 레코드가 손상되었습니다. 디버거에서 일부 기호와 형식에 액세스할 수 없습니다.
-ButtonObj.obj : warning LNK4020: 'c:\users\stauffen\documents\github\philosopher-s-stone\win32apigamebase\release\vc141.pdb'의 형식 레코드가 손상되었습니다. 디버거에서 일부 기호와 형식에 액세스할 수 없습니다.
-System.obj : warning LNK4020: 'c:\users\stauffen\documents\github\philosopher-s-stone\win32apigamebase\release\vc141.pdb'의 형식 레코드가 손상되었습니다. 디버거에서 일부 기호와 형식에 액세스할 수 없습니다.
-stdafx.obj : warning LNK4020: 'c:\users\stauffen\documents\github\philosopher-s-stone\win32apigamebase\release\vc141.pdb'의 형식 레코드가 손상되었습니다. 디버거에서 일부 기호와 형식에 액세스할 수 없습니다.
-main.obj : warning LNK4020: 'c:\users\stauffen\documents\github\philosopher-s-stone\win32apigamebase\release\vc141.pdb'의 형식 레코드가 손상되었습니다. 디버거에서 일부 기호와 형식에 액세스할 수 없습니다.
-TileObj.obj : warning LNK4020: 'c:\users\stauffen\documents\github\philosopher-s-stone\win32apigamebase\release\vc141.pdb'의 형식 레코드가 손상되었습니다. 디버거에서 일부 기호와 형식에 액세스할 수 없습니다.
-  Win32APIGameBase.vcxproj -> C:\Users\Stauffen\Documents\GitHub\Philosopher-s-Stone\Win32APIGameBase\Release\Win32APIGameBase.exe
+  Win32APIGameBase.vcxproj -> C:\Users\World Famous Star\Desktop\프로젝트\API 팀 프로젝트\Philosopher-s-Stone\Win32APIGameBase\Release\Win32APIGameBase.exe

@@ -134,7 +134,7 @@ void Hero::Animation()
 
 void Hero::UpdateState()
 {
-	if (nowState == TRAPSETTING)
+	if (nowState == TRAPSETTING || nowState == SKILLPREPARING)
 		SetSelectedArea(true);
 	else
 		SetSelectedArea(false);
@@ -179,15 +179,20 @@ void Hero::SetPosition(int x, int y)
 
 void Hero::SetAnimation(int ani)
 {
+	for (int i = 0; i < 4; i++)
+		Ani_attack[i].SetCurrentFrame(1);
 	nowAnimation = ani;
 }
 
 void Hero::SetDirection(int dire)
 {
+	if (nowAnimation == ATTACK)
+		return;
+
 	if (nowState != WALK)
 		nowDirection = dire;
 
-	if (nowState == TRAPSETTING) //플레이어가 고정된 상태로 트랩 설치중이면
+	if (nowState == TRAPSETTING || nowState == SKILLPREPARING) //플레이어가 고정된 상태로 트랩 설치중이면
 	{
 		nowDirection = dire; //그 자리에서 방향만 바꾸기
 		return;
@@ -350,9 +355,6 @@ void Hero::SetSelectedArea(bool isCreate)
 
 void Hero::SetTrap()
 {
-	if (ObjPool->Maps.Map[pos.y][pos.x].Tile_ID != FLOOR)
-		return;
-
 	int Temp_X = pos.x;
 	int Temp_Y = pos.y;
 
@@ -360,7 +362,7 @@ void Hero::SetTrap()
 	{
 	case LEFT: Temp_X = pos.x - 1;
 		break;
-	case RIGHT: Temp_X = pos.x +  1;
+	case RIGHT: Temp_X = pos.x + 1;
 		break;
 	case UP: Temp_Y = pos.y - 1;
 		break;
@@ -374,30 +376,30 @@ void Hero::SetTrap()
 	case NONE:
 		break;
 	case TRAP_Niddle:
-		if (ObjPool->Player.Rock_Num >= 10)
+		if (Rock_Num >= 10)
 		{
-			ObjPool->Player.Rock_Num -= 10;
+			Rock_Num -= 10;
 			ObjPool->Maps.SetTrapOnMap(ObjPool->Maps.Trap_Niddle, Temp_X, Temp_Y);
 		}
 		break;
 	case TRAP_Hole:
-		if (ObjPool->Player.Rock_Num >= 30)
+		if (Rock_Num >= 30)
 		{
-			ObjPool->Player.Rock_Num -= 30;
+			Rock_Num -= 30;
 			ObjPool->Maps.SetTrapOnMap(ObjPool->Maps.Trap_Hole, Temp_X, Temp_Y);
 		}
 		break;
 	case TRAP_ScareCrow:
-		if (ObjPool->Player.Rock_Num >= 15)
+		if (Rock_Num >= 15)
 		{
-			ObjPool->Player.Rock_Num -= 15;
+			Rock_Num -= 15;
 			ObjPool->Maps.SetTrapOnMap(ObjPool->Maps.Trap_ScareCrow, Temp_X, Temp_Y);
 		}
 		break;
 	case TRAP_Grab:
-		if (ObjPool->Player.Rock_Num >= 20)
+		if (Rock_Num >= 20)
 		{
-			ObjPool->Player.Rock_Num -= 20; 
+			Rock_Num -= 20;
 
 			if (ObjPool->Maps.isCanTrapSet(Temp_X, Temp_Y))
 			{
@@ -419,9 +421,9 @@ void Hero::SetTrap()
 		}
 		break;
 	case TRAP_Cunfusion:
-		if (ObjPool->Player.Rock_Num >= 25)
+		if (Rock_Num >= 25)
 		{
-			ObjPool->Player.Rock_Num -= 25;
+			Rock_Num -= 25;
 			ObjPool->Maps.SetTrapOnMap(ObjPool->Maps.Trap_Cunfusion, Temp_X, Temp_Y);
 		}
 		break;
@@ -433,9 +435,53 @@ void Hero::SetTrap()
 	selectedTrap = NONE; //선택된 함정이 없도록 초기화
 }
 
+void Hero::UseSkill()
+{
+	switch (selectedSkill)
+	{
+	case NONE:
+		break;
+	case ATK_SKILL:
+		if (ObjPool->Player.ATK_Skill.Check_Active == false && ObjPool->Player.GetState() != WALK && ObjPool->Player.ATK_Skill.Cooltime == 0)
+		{
+			ObjPool->Player.SetAnimation(ATTACK);
+			ObjPool->Player.ATK_Skill.Check_Active = true;
+			ObjPool->Player.ATK_Skill.ActiveSkill();
+		}
+		break;
+	case AGGRO_SKILL:
+		if (ObjPool->Player.AGGRO_Skill.Check_Active == false && ObjPool->Player.GetState() != WALK && ObjPool->Player.AGGRO_Skill.Cooltime == 0)
+		{
+			ObjPool->Player.SetAnimation(ATTACK);
+			ObjPool->Player.AGGRO_Skill.Check_Active = true;
+			ObjPool->Player.AGGRO_Skill.ActiveSkill();
+		}
+		break;
+	case PUSH_SKILL:
+		if (ObjPool->Player.PUSH_Skill.Check_Active == false && ObjPool->Player.GetState() != WALK && ObjPool->Player.PUSH_Skill.Cooltime == 0)
+		{
+			ObjPool->Player.SetAnimation(ATTACK);
+			ObjPool->Player.PUSH_Skill.Check_Active = true;
+			ObjPool->Player.PUSH_Skill.ActiveSkill();
+		}
+		break;
+	case BARRICADE_SKILL:
+		if (ObjPool->Player.BARRICADE_Skill.Check_Active == false && ObjPool->Player.GetState() != WALK && ObjPool->Player.BARRICADE_Skill.Cooltime == 0)
+		{
+			ObjPool->Player.SetAnimation(ATTACK);
+			ObjPool->Player.BARRICADE_Skill.Check_Active = true;
+			ObjPool->Player.BARRICADE_Skill.ActiveSkill();
+		}
+		break;
+	default:
+		break;
+	}
+	selectedSkill = NONE;
+}
+
 void Hero::RepairTrap()
 {
-	ObjPool->Player.SetState(TRAPREPAIRING);
+	SetState(TRAPREPAIRING);
 	switch (nowDirection)
 	{
 	case LEFT:
@@ -478,7 +524,7 @@ void Hero::RepairTrap()
 
 void Hero::DrawSelectedTrapUI(HDC hMemDC)
 {
-	if (selectedTrap != NONE)
+	if (selectedTrap != NONE || selectedSkill != NONE_SKILL)
 	{
 		switch (selectedTrap)
 		{
@@ -498,6 +544,23 @@ void Hero::DrawSelectedTrapUI(HDC hMemDC)
 			ObjPool->ingameUI_SelectedTrap.SetPosition(740, 540);
 			break;
 		}
+
+		switch (selectedSkill)
+		{
+		case ATK_SKILL:
+			ObjPool->ingameUI_SelectedTrap.SetPosition(-47, 138);
+			break;
+		case AGGRO_SKILL:
+			ObjPool->ingameUI_SelectedTrap.SetPosition(-47, 238);
+			break;
+		case PUSH_SKILL:
+			ObjPool->ingameUI_SelectedTrap.SetPosition(-47, 338);
+			break;
+		case BARRICADE_SKILL:
+			ObjPool->ingameUI_SelectedTrap.SetPosition(-47, 438);
+			break;
+		}
+
 		ObjPool->ingameUI_SelectedTrap.Draw(hMemDC);
 		stateFrame_TrapSelect++;
 		if (stateFrame_TrapSelect >= 10)

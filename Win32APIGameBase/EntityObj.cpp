@@ -251,7 +251,7 @@ void Entity::Animation()
 	}
 	if (nowState == CONFUSE)
 	{
-		ObjPool->ConfuseEffect.NextFrameSprite();
+		ObjPool->ConfuseEffect.NextFrameSprite(true);
 	}
 }
 

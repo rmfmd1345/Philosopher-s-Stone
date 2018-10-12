@@ -27,7 +27,9 @@ public:
 	Skill PUSH_Skill;
 	Skill BARRICADE_Skill;
 	int selectedTrap;
-	bool isWatingTrapSet;
+	int selectedSkill;
+	bool isWaitingTrapSet;
+	bool isWaitingSkillSet;
 
 public:
 	void Init(HWND hWnd, int x, int y, COLORREF sprite = RGB(255, 0, 255));
@@ -52,6 +54,7 @@ public:
 	void DigMap();
 	void SetSelectedArea(bool isCreate);
 	void SetTrap();
+	void UseSkill();
 	void RepairTrap();
 
 	void DrawSelectedTrapUI(HDC hMemDC);

@@ -16,7 +16,6 @@ void Ingame::Draw(HDC hMemDC)
 	ObjPool->Maps.DrawBrick(hMemDC, PlayerPos.x, PlayerPos.y);
 	ObjPool->Maps.DrawTileUI(hMemDC, PlayerPos.x, PlayerPos.y);
 
-
 	ObjPool->MonsterPool.Draw(hMemDC, PlayerPos.x, PlayerPos.y);
 	//ObjPool->Player.Draw(hMemDC, PlayerPos.x, PlayerPos.y);
 	//MonsterPool.Draw에서 플레이어와 몬스터의 좌표를 확인해 부자연스럽게 겹치지 않도록 함.
@@ -24,8 +23,8 @@ void Ingame::Draw(HDC hMemDC)
 	ObjPool->ingameBtn_Option.Draw(hMemDC);
 	ObjPool->ingameUI_Stone.Draw(hMemDC);
 	ObjPool->ingameUI_Trap.Draw(hMemDC);
-	ObjPool->Player.DrawSelectedTrapUI(hMemDC);
 	ObjPool->ingameUI_Skill.Draw(hMemDC);
+	ObjPool->Player.DrawSelectedTrapUI(hMemDC);
 	ObjPool->ingameUI_Stage.Draw(hMemDC);
 	ObjPool->ingameUI_Time.Draw(hMemDC);
 
@@ -112,12 +111,17 @@ void Ingame::Update() //씬 업데이트
 		if (ObjPool->MonsterPool.ePool.empty()) return;
 	}
 
-	if (ObjPool->Player.GetState() == STAND && ObjPool->Player.isWatingTrapSet == true) //이동중에 트랩 세팅을 명령했으면 그 다음 칸에 멈춰서서 함정설치
+	if (ObjPool->Player.GetState() == STAND && ObjPool->Player.isWaitingTrapSet == true) //이동중에 트랩 세팅을 명령했으면 그 다음 칸에 멈춰서서 함정설치
 	{
 		ObjPool->Player.SetState(TRAPSETTING); //플레이어 고정상태로 만들기
-		ObjPool->Player.isWatingTrapSet = false;
+		ObjPool->Player.isWaitingTrapSet = false;
 	}
 
+	if (ObjPool->Player.GetState() == STAND && ObjPool->Player.isWaitingSkillSet == true) //이동중에 트랩 세팅을 명령했으면 그 다음 칸에 멈춰서서 함정설치
+	{
+		ObjPool->Player.SetState(SKILLPREPARING); //플레이어 고정상태로 만들기
+		ObjPool->Player.isWaitingSkillSet = false;
+	}
 }
 
 void Ingame::OnMouseLButtonDown(HWND hWnd, int x, int y)
@@ -225,6 +229,11 @@ void Ingame::OnKeyborad()
 			ObjPool->Player.SetTrap();
 			ObjPool->Player.SetState(STAND);
 		}
+		else if (ObjPool->Player.GetState() == SKILLPREPARING)
+		{
+			ObjPool->Player.UseSkill();
+			ObjPool->Player.SetState(STAND);
+		}
 		ObjPool->Player.SetSelectedArea(false); //선택상태 해제
 
 		lastBitState[SPACE] = 1;
@@ -241,9 +250,9 @@ void Ingame::OnKeyborad()
 		else if (ObjPool->Player.GetState() == WALK) //이동중에 누르면 다 걸어갈때까지 대기
 		{
 			ObjPool->Player.selectedTrap = TRAP_Niddle;
-			ObjPool->Player.isWatingTrapSet = true;
+			ObjPool->Player.isWaitingTrapSet = true;
 		}
-		else if (ObjPool->Player.GetState() == TRAPSETTING) //고정상태에서 1번키를 한 번 더 누르면 고정해제
+		else if (ObjPool->Player.GetState() == TRAPSETTING && ObjPool->Player.selectedTrap == TRAP_Niddle) //고정상태에서 1번키를 한 번 더 누르면 고정해제
 		{
 			ObjPool->Player.selectedTrap = NONE;
 			ObjPool->Player.SetState(STAND);
@@ -263,14 +272,14 @@ void Ingame::OnKeyborad()
 		else if (ObjPool->Player.GetState() == WALK) //이동중에 누르면 다 걸어갈때까지 대기
 		{
 			ObjPool->Player.selectedTrap = TRAP_ScareCrow;
+			ObjPool->Player.isWaitingTrapSet = true;
 		}
 
-		else if (ObjPool->Player.GetState() == TRAPSETTING)
+		else if (ObjPool->Player.GetState() == TRAPSETTING && ObjPool->Player.selectedTrap == TRAP_ScareCrow)
 		{
 			ObjPool->Player.selectedTrap = NONE;
 			ObjPool->Player.SetState(STAND);
 		}
-
 
 		lastBitState[KEY_2] = 1;
 	}
@@ -286,10 +295,10 @@ void Ingame::OnKeyborad()
 		else if (ObjPool->Player.GetState() == WALK) //이동중에 누르면 다 걸어갈때까지 대기
 		{
 			ObjPool->Player.selectedTrap = TRAP_Grab;
-			ObjPool->Player.isWatingTrapSet = true;
+			ObjPool->Player.isWaitingTrapSet = true;
 		}
 
-		else if (ObjPool->Player.GetState() == TRAPSETTING)
+		else if (ObjPool->Player.GetState() == TRAPSETTING && ObjPool->Player.selectedTrap == TRAP_Grab)
 		{
 			ObjPool->Player.selectedTrap = NONE;
 			ObjPool->Player.SetState(STAND);
@@ -310,9 +319,10 @@ void Ingame::OnKeyborad()
 		else if (ObjPool->Player.GetState() == WALK) //이동중에 누르면 다 걸어갈때까지 대기
 		{
 			ObjPool->Player.selectedTrap = TRAP_Cunfusion;
+			ObjPool->Player.isWaitingTrapSet = true;
 		}
 
-		else if (ObjPool->Player.GetState() == TRAPSETTING)
+		else if (ObjPool->Player.GetState() == TRAPSETTING && ObjPool->Player.selectedTrap == TRAP_Cunfusion)
 		{
 			ObjPool->Player.selectedTrap = NONE;
 			ObjPool->Player.SetState(STAND);
@@ -332,10 +342,10 @@ void Ingame::OnKeyborad()
 		else if (ObjPool->Player.GetState() == WALK) //이동중에 누르면 다 걸어갈때까지 대기
 		{
 			ObjPool->Player.selectedTrap = TRAP_Hole;
-			ObjPool->Player.isWatingTrapSet = true;
+			ObjPool->Player.isWaitingTrapSet = true;
 		}
 
-		else if (ObjPool->Player.GetState() == TRAPSETTING) 
+		else if (ObjPool->Player.GetState() == TRAPSETTING && ObjPool->Player.selectedTrap == TRAP_Hole)
 		{
 			ObjPool->Player.selectedTrap = NONE;
 			ObjPool->Player.SetState(STAND);
@@ -346,23 +356,51 @@ void Ingame::OnKeyborad()
 
 	if (lastBitState[KEY_A] == 0 && keyState[KEY_A] & 0x0001) //B_RIGHT
 	{
-		if (ObjPool->Player.ATK_Skill.Check_Active == false && ObjPool->Player.GetState() != WALK && ObjPool->Player.ATK_Skill.Cooltime == 0)
+		if (ObjPool->Player.ATK_Skill.Cooltime <= 0)
 		{
-			ObjPool->Player.SetAnimation(ATTACK);
-			ObjPool->Player.ATK_Skill.Check_Active = true;
-			ObjPool->Player.ATK_Skill.ActiveSkill();
+			if (ObjPool->Player.GetState() == STAND)
+			{
+				ObjPool->Player.SetState(SKILLPREPARING);
+				ObjPool->Player.selectedSkill = ATK_SKILL;
+			}
+
+			else if (ObjPool->Player.GetState() == WALK) //이동중에 누르면 다 걸어갈때까지 대기
+			{
+				ObjPool->Player.selectedSkill = ATK_SKILL;
+				ObjPool->Player.isWaitingSkillSet = true;
+			}
+
+			else if (ObjPool->Player.GetState() == SKILLPREPARING && ObjPool->Player.selectedSkill == ATK_SKILL)
+			{
+				ObjPool->Player.selectedSkill = NONE;
+				ObjPool->Player.SetState(STAND);
+			}
 		}
-		
+
 		lastBitState[KEY_A] = 1;
 	}
 
 	if (lastBitState[KEY_S] == 0 && keyState[KEY_S] & 0x0001) //B_RIGHT
 	{
-		if (ObjPool->Player.AGGRO_Skill.Check_Active == false && ObjPool->Player.GetState() != WALK && ObjPool->Player.AGGRO_Skill.Cooltime == 0)
+		if (ObjPool->Player.AGGRO_Skill.Cooltime <= 0)
 		{
-			ObjPool->Player.SetAnimation(ATTACK);
-			ObjPool->Player.AGGRO_Skill.Check_Active = true;
-			ObjPool->Player.AGGRO_Skill.ActiveSkill();
+			if (ObjPool->Player.GetState() == STAND)
+			{
+				ObjPool->Player.SetState(SKILLPREPARING);
+				ObjPool->Player.selectedSkill = AGGRO_SKILL;
+			}
+
+			else if (ObjPool->Player.GetState() == WALK) //이동중에 누르면 다 걸어갈때까지 대기
+			{
+				ObjPool->Player.selectedSkill = AGGRO_SKILL;
+				ObjPool->Player.isWaitingSkillSet = true;
+			}
+
+			else if (ObjPool->Player.GetState() == SKILLPREPARING && ObjPool->Player.selectedSkill == AGGRO_SKILL)
+			{
+				ObjPool->Player.selectedSkill = NONE;
+				ObjPool->Player.SetState(STAND);
+			}
 		}
 
 		lastBitState[KEY_S] = 1;
@@ -370,11 +408,25 @@ void Ingame::OnKeyborad()
 
 	if (lastBitState[KEY_D] == 0 && keyState[KEY_D] & 0x0001) //B_RIGHT
 	{
-		if (ObjPool->Player.PUSH_Skill.Check_Active == false && ObjPool->Player.GetState() != WALK && ObjPool->Player.PUSH_Skill.Cooltime == 0)
+		if (ObjPool->Player.PUSH_Skill.Cooltime <= 0)
 		{
-			ObjPool->Player.SetAnimation(ATTACK);
-			ObjPool->Player.PUSH_Skill.Check_Active = true;
-			ObjPool->Player.PUSH_Skill.ActiveSkill();
+			if (ObjPool->Player.GetState() == STAND)
+			{
+				ObjPool->Player.SetState(SKILLPREPARING);
+				ObjPool->Player.selectedSkill = PUSH_SKILL;
+			}
+
+			else if (ObjPool->Player.GetState() == WALK) //이동중에 누르면 다 걸어갈때까지 대기
+			{
+				ObjPool->Player.selectedSkill = PUSH_SKILL;
+				ObjPool->Player.isWaitingSkillSet = true;
+			}
+
+			else if (ObjPool->Player.GetState() == SKILLPREPARING && ObjPool->Player.selectedSkill == PUSH_SKILL)
+			{
+				ObjPool->Player.selectedSkill = NONE;
+				ObjPool->Player.SetState(STAND);
+			}
 		}
 
 		lastBitState[KEY_D] = 1;
@@ -382,11 +434,25 @@ void Ingame::OnKeyborad()
 
 	if (lastBitState[KEY_F] == 0 && keyState[KEY_F] & 0x0001) //B_RIGHT
 	{
-		if (ObjPool->Player.BARRICADE_Skill.Check_Active == false && ObjPool->Player.GetState() != WALK && ObjPool->Player.BARRICADE_Skill.Cooltime == 0)
+		if (ObjPool->Player.BARRICADE_Skill.Cooltime <= 0)
 		{
-			ObjPool->Player.SetAnimation(ATTACK);
-			ObjPool->Player.BARRICADE_Skill.Check_Active = true;
-			ObjPool->Player.BARRICADE_Skill.ActiveSkill();
+			if (ObjPool->Player.GetState() == STAND)
+			{
+				ObjPool->Player.SetState(SKILLPREPARING);
+				ObjPool->Player.selectedSkill = BARRICADE_SKILL;
+			}
+
+			else if (ObjPool->Player.GetState() == WALK) //이동중에 누르면 다 걸어갈때까지 대기
+			{
+				ObjPool->Player.selectedSkill = BARRICADE_SKILL;
+				ObjPool->Player.isWaitingSkillSet = true;
+			}
+
+			else if (ObjPool->Player.GetState() == SKILLPREPARING && ObjPool->Player.selectedSkill == BARRICADE_SKILL)
+			{
+				ObjPool->Player.selectedSkill = NONE;
+				ObjPool->Player.SetState(STAND);
+			}
 		}
 
 		lastBitState[KEY_F] = 1;

@@ -3,6 +3,7 @@ using namespace std;
 
 enum Skill_ID
 {
+	NONE_SKILL,
 	ATK_SKILL,
 	PUSH_SKILL,
 	AGGRO_SKILL,
