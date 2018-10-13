@@ -18,9 +18,10 @@ public:
 	bool SubWall_Left;
 	bool SubWall_Right;
 
-	SpriteHelper Tile_Sprite;
-	SpriteHelper Ani_Trap[4]; // 애니메이션 스프라이트 (정방향 출력 시 : 발동 애니메이션 / 역방향 출력 시 : 재장전 애니메이션)
-	SpriteHelper Ani_SelectedArea; // 애니메이션 스프라이트 (정방향 출력 시 : 발동 애니메이션 / 역방향 출력 시 : 재장전 애니메이션)
+	SpriteHelper Tile_Sprite_On;
+	SpriteHelper Tile_Sprite_Off;
+	SpriteHelper Ani_Trap[4]; // 애니메이션 스프라이트 (정방향 출력 시 : 발동 애니메이션 / 역방향 출력 시 : 재장전 애니메이션) (보류)
+	SpriteHelper Ani_SelectedArea;
 
 	std::function<void(Entity* ent)> Tile_Func; // 람다식 (함정 발동 시 프레임 진행)
 

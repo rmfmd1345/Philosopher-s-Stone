@@ -19,10 +19,10 @@ void Hero::Init(HWND hWnd, int x, int y, COLORREF sprite)
 	health = 100;
 	Rock_Num = 99999;
 
-	Ani_stand[UP].Init(hWnd, 0, 0, 80, 132, 1, L"./Image/Walk_Ani/hero_walk_back.bmp");
-	Ani_stand[DOWN].Init(hWnd, 0, 0, 80, 132, 1, L"./Image/Walk_Ani/hero_walk_front.bmp");
-	Ani_stand[LEFT].Init(hWnd, 0, 0, 80, 132, 1, L"./Image/Walk_Ani/hero_walk_left.bmp");
-	Ani_stand[RIGHT].Init(hWnd, 0, 0, 80, 132, 1, L"./Image/Walk_Ani/hero_walk_right.bmp");
+	Ani_stand[UP].Init(hWnd, 0, 0, 80, 132, 1, L"./Image/Stand_Ani/hero/hero_back_standing.bmp");
+	Ani_stand[DOWN].Init(hWnd, 0, 0, 80, 132, 1, L"./Image/Stand_Ani/hero/hero_front_standing.bmp");
+	Ani_stand[LEFT].Init(hWnd, 0, 0, 80, 132, 1, L"./Image/Stand_Ani/hero/hero_left_standing.bmp");
+	Ani_stand[RIGHT].Init(hWnd, 0, 0, 80, 132, 1, L"./Image/Stand_Ani/hero/hero_right_standing.bmp");
 
 	Ani_walk[UP].Init(hWnd, 0, 0, 480, 132, 6, L"./Image/Walk_Ani/hero_walk_back.bmp");
 	Ani_walk[DOWN].Init(hWnd, 0, 0, 480, 132, 6, L"./Image/Walk_Ani/hero_walk_front.bmp");
@@ -31,7 +31,7 @@ void Hero::Init(HWND hWnd, int x, int y, COLORREF sprite)
 
 	Ani_attack[UP].Init(hWnd, 0, 0, 320, 128, 4, L"./Image/Attack_Ani/hero_attack_back.bmp");
 	Ani_attack[DOWN].Init(hWnd, 0, 0, 320, 128, 4, L"./Image/Attack_Ani/hero_attack_front.bmp");
-	Ani_attack[LEFT].Init(hWnd, 0, 0, 320, 128, 4, L"./Image/Attack_Ani/Hero_Attack_Left.bmp");
+	Ani_attack[LEFT].Init(hWnd, 0, 0, 320, 128, 4, L"./Image/Attack_Ani/hero_attack_left.bmp");
 	Ani_attack[RIGHT].Init(hWnd, 0, 0, 320, 128, 4, L"./Image/Attack_Ani/hero_attack_right.bmp");
 	
 	ATK_Skill.InitSkill(hWnd, ATK_SKILL, 10);
@@ -120,9 +120,6 @@ void Hero::Animation()
 {
 	switch (nowAnimation)
 	{
-	case STAND:
-		Ani_stand[nowDirection].NextFrameSprite(true);
-		break;
 	case WALK:
 		Ani_walk[nowDirection].NextFrameSprite(true);
 		break;
@@ -420,7 +417,7 @@ void Hero::SetTrap()
 
 		}
 		break;
-	case TRAP_Cunfusion:
+	case TRAP_Confusion:
 		if (Rock_Num >= 25)
 		{
 			Rock_Num -= 25;
@@ -442,36 +439,20 @@ void Hero::UseSkill()
 	case NONE:
 		break;
 	case ATK_SKILL:
-		if (ObjPool->Player.ATK_Skill.Check_Active == false && ObjPool->Player.GetState() != WALK && ObjPool->Player.ATK_Skill.Cooltime == 0)
-		{
-			ObjPool->Player.SetAnimation(ATTACK);
-			ObjPool->Player.ATK_Skill.Check_Active = true;
+		if (ObjPool->Player.ATK_Skill.Check_Active == false && ObjPool->Player.GetState() != WALK)
 			ObjPool->Player.ATK_Skill.ActiveSkill();
-		}
 		break;
 	case AGGRO_SKILL:
-		if (ObjPool->Player.AGGRO_Skill.Check_Active == false && ObjPool->Player.GetState() != WALK && ObjPool->Player.AGGRO_Skill.Cooltime == 0)
-		{
-			ObjPool->Player.SetAnimation(ATTACK);
-			ObjPool->Player.AGGRO_Skill.Check_Active = true;
+		if (ObjPool->Player.AGGRO_Skill.Check_Active == false && ObjPool->Player.GetState() != WALK)
 			ObjPool->Player.AGGRO_Skill.ActiveSkill();
-		}
 		break;
 	case PUSH_SKILL:
-		if (ObjPool->Player.PUSH_Skill.Check_Active == false && ObjPool->Player.GetState() != WALK && ObjPool->Player.PUSH_Skill.Cooltime == 0)
-		{
-			ObjPool->Player.SetAnimation(ATTACK);
-			ObjPool->Player.PUSH_Skill.Check_Active = true;
+		if (ObjPool->Player.PUSH_Skill.Check_Active == false && ObjPool->Player.GetState() != WALK)
 			ObjPool->Player.PUSH_Skill.ActiveSkill();
-		}
 		break;
 	case BARRICADE_SKILL:
-		if (ObjPool->Player.BARRICADE_Skill.Check_Active == false && ObjPool->Player.GetState() != WALK && ObjPool->Player.BARRICADE_Skill.Cooltime == 0)
-		{
-			ObjPool->Player.SetAnimation(ATTACK);
-			ObjPool->Player.BARRICADE_Skill.Check_Active = true;
+		if (ObjPool->Player.BARRICADE_Skill.Check_Active == false && ObjPool->Player.GetState() != WALK)
 			ObjPool->Player.BARRICADE_Skill.ActiveSkill();
-		}
 		break;
 	default:
 		break;
@@ -537,7 +518,7 @@ void Hero::DrawSelectedTrapUI(HDC hMemDC)
 		case TRAP_Grab:
 			ObjPool->ingameUI_SelectedTrap.SetPosition(520, 540);
 			break;
-		case TRAP_Cunfusion:
+		case TRAP_Confusion:
 			ObjPool->ingameUI_SelectedTrap.SetPosition(630, 540);
 			break;
 		case TRAP_Hole:

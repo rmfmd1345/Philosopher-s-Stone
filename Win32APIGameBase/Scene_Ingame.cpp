@@ -11,7 +11,6 @@ void Ingame::Draw(HDC hMemDC)
 	ObjPool->Gdi.SetBrushColor(RGB(10, 23, 55));
 	ObjPool->Gdi.Rect(hMemDC, { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT });
 
-
 	ObjPool->Maps.DrawMap(hMemDC, PlayerPos.x, PlayerPos.y);
 	ObjPool->Maps.DrawBrick(hMemDC, PlayerPos.x, PlayerPos.y);
 	ObjPool->Maps.DrawTileUI(hMemDC, PlayerPos.x, PlayerPos.y);
@@ -216,7 +215,7 @@ void Ingame::OnKeyborad()
 	{
 		//보고 있는게 함정이면 수리
 		printf("플레이어 상태: %d", ObjPool->Player.GetState());
-		if (ObjPool->Maps.CheckTrap(ObjPool->Player.GetDirection(), ObjPool->Player.GetPosition()) && ObjPool->Player.GetState() != WALK)
+		if (ObjPool->Maps.CheckTrap(ObjPool->Player.GetDirection(), ObjPool->Player.GetPosition()) && ObjPool->Player.GetState() != TRAPSETTING && ObjPool->Player.GetState() != SKILLPREPARING && ObjPool->Player.GetState() != WALK)
 		{
 			ObjPool->Player.RepairTrap();
 		}
@@ -313,16 +312,16 @@ void Ingame::OnKeyborad()
 		if (ObjPool->Player.GetState() == STAND)
 		{
 			ObjPool->Player.SetState(TRAPSETTING);
-			ObjPool->Player.selectedTrap = TRAP_Cunfusion;
+			ObjPool->Player.selectedTrap = TRAP_Confusion;
 		}
 
 		else if (ObjPool->Player.GetState() == WALK) //이동중에 누르면 다 걸어갈때까지 대기
 		{
-			ObjPool->Player.selectedTrap = TRAP_Cunfusion;
+			ObjPool->Player.selectedTrap = TRAP_Confusion;
 			ObjPool->Player.isWaitingTrapSet = true;
 		}
 
-		else if (ObjPool->Player.GetState() == TRAPSETTING && ObjPool->Player.selectedTrap == TRAP_Cunfusion)
+		else if (ObjPool->Player.GetState() == TRAPSETTING && ObjPool->Player.selectedTrap == TRAP_Confusion)
 		{
 			ObjPool->Player.selectedTrap = NONE;
 			ObjPool->Player.SetState(STAND);
@@ -360,20 +359,8 @@ void Ingame::OnKeyborad()
 		{
 			if (ObjPool->Player.GetState() == STAND)
 			{
-				ObjPool->Player.SetState(SKILLPREPARING);
 				ObjPool->Player.selectedSkill = ATK_SKILL;
-			}
-
-			else if (ObjPool->Player.GetState() == WALK) //이동중에 누르면 다 걸어갈때까지 대기
-			{
-				ObjPool->Player.selectedSkill = ATK_SKILL;
-				ObjPool->Player.isWaitingSkillSet = true;
-			}
-
-			else if (ObjPool->Player.GetState() == SKILLPREPARING && ObjPool->Player.selectedSkill == ATK_SKILL)
-			{
-				ObjPool->Player.selectedSkill = NONE;
-				ObjPool->Player.SetState(STAND);
+				ObjPool->Player.UseSkill();
 			}
 		}
 
@@ -386,20 +373,8 @@ void Ingame::OnKeyborad()
 		{
 			if (ObjPool->Player.GetState() == STAND)
 			{
-				ObjPool->Player.SetState(SKILLPREPARING);
 				ObjPool->Player.selectedSkill = AGGRO_SKILL;
-			}
-
-			else if (ObjPool->Player.GetState() == WALK) //이동중에 누르면 다 걸어갈때까지 대기
-			{
-				ObjPool->Player.selectedSkill = AGGRO_SKILL;
-				ObjPool->Player.isWaitingSkillSet = true;
-			}
-
-			else if (ObjPool->Player.GetState() == SKILLPREPARING && ObjPool->Player.selectedSkill == AGGRO_SKILL)
-			{
-				ObjPool->Player.selectedSkill = NONE;
-				ObjPool->Player.SetState(STAND);
+				ObjPool->Player.UseSkill();
 			}
 		}
 

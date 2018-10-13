@@ -20,7 +20,7 @@ enum Tile_ID_List  // 식별 번호 리스트
 	TRAP_Niddle,
 	TRAP_Hole,
 	TRAP_ScareCrow,
-	TRAP_Cunfusion,
+	TRAP_Confusion,
 	TRAP_Grab,
 	TRAP_GrabArea,
 	SKILL_Barricade

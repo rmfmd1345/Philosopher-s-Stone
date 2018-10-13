@@ -28,20 +28,20 @@ void Entity::Init(HWND hWnd, int x, int y, int type, COLORREF sprite)
 	switch (type)
 	{
 	case DEALER:
-		Ani_stand[UP].Init(hWnd, 0, 0, 80, 120, 1, L"./Image/Walk_Ani/dealer_walk_back.bmp");
-		Ani_stand[DOWN].Init(hWnd, 0, 0, 80, 120, 1, L"./Image/Walk_Ani/dealer_walk_front.bmp");
-		Ani_stand[LEFT].Init(hWnd, 0, 0, 80, 120, 1, L"./Image/Walk_Ani/dealer_walk_left.bmp");
-		Ani_stand[RIGHT].Init(hWnd, 0, 0, 80, 120, 1, L"./Image/Walk_Ani/dealer_walk_right.bmp");
+		Ani_stand[UP].Init(hWnd, 0, 0, 80, 120, 1, L"./Image/Stand_Ani/dealer/dealer_back_standing.bmp");
+		Ani_stand[DOWN].Init(hWnd, 0, 0, 80, 120, 1, L"./Image/Stand_Ani/dealer/dealer_front_standing.bmp");
+		Ani_stand[LEFT].Init(hWnd, 0, 0, 80, 120, 1, L"./Image/Stand_Ani/dealer/dealer_left_standing.bmp");
+		Ani_stand[RIGHT].Init(hWnd, 0, 0, 80, 120, 1, L"./Image/Stand_Ani/dealer/dealer_right_standing.bmp");
 
 		Ani_walk[UP].Init(hWnd, 0, 0, 480, 120, 6, L"./Image/Walk_Ani/dealer_walk_back.bmp");
 		Ani_walk[DOWN].Init(hWnd, 0, 0, 480, 120, 6, L"./Image/Walk_Ani/dealer_walk_front.bmp");
 		Ani_walk[LEFT].Init(hWnd, 0, 0, 480, 120, 6, L"./Image/Walk_Ani/dealer_walk_left.bmp");
 		Ani_walk[RIGHT].Init(hWnd, 0, 0, 480, 120, 6, L"./Image/Walk_Ani/dealer_walk_right.bmp");
 
-		Ani_attack[UP].Init(hWnd, 0, 0, 240, 122, 4, L"./Image/Walk_Ani/dealer_walk_back.bmp");
-		Ani_attack[DOWN].Init(hWnd, 0, 0, 216, 122, 4, L"./Image/Walk_Ani/dealer_walk_front.bmp");
-		Ani_attack[LEFT].Init(hWnd, 0, 0, 304, 122, 4, L"./Image/Walk_Ani/dealer_walk_left.bmp");
-		Ani_attack[RIGHT].Init(hWnd, 0, 0, 336, 122, 4, L"./Image/Walk_Ani/dealer_walk_right.bmp");
+		Ani_attack[UP].Init(hWnd, 0, 0, 240, 122, 4, L"./Image/Attack_Ani/dealer_attack_front.bmp");
+		Ani_attack[DOWN].Init(hWnd, 0, 0, 216, 122, 4, L"./Image/Attack_Ani/dealer_attack_front.bmp");
+		Ani_attack[LEFT].Init(hWnd, 0, 0, 304, 122, 4, L"./Image/Attack_Ani/dealer_attack_front.bmp");
+		Ani_attack[RIGHT].Init(hWnd, 0, 0, 336, 122, 4, L"./Image/Attack_Ani/dealer_attack_front.bmp");
 		break;
 	case WIZARD:
 		Ani_stand[UP].Init(hWnd, 0, 0, 70, 102, 1, L"./Image/Walk_Ani/Wizard_Back.bmp");
@@ -239,9 +239,6 @@ void Entity::Animation()
 {
 	switch (nowAnimation)
 	{
-	case STAND:
-		Ani_stand[nowDirection].NextFrameSprite(true);
-		break;
 	case WALK:
 		Ani_walk[nowDirection].NextFrameSprite(true);
 		break;
@@ -923,7 +920,10 @@ void Monster::Draw(HDC hMemDC, int x, int y)
 
 				if (ObjPool->Maps.Map[i][j].Tile_ID == TRAP_ScareCrow)
 				{
-					ObjPool->Maps.Map[i][j].Tile_Sprite.Draw(hMemDC);
+					if (ObjPool->Maps.Map[i][j].Tile_On)
+						ObjPool->Maps.Map[i][j].Tile_Sprite_On.Draw(hMemDC);
+					else
+						ObjPool->Maps.Map[i][j].Tile_Sprite_Off.Draw(hMemDC);
 				}
 		}
 	}

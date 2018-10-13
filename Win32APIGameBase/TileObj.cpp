@@ -16,19 +16,21 @@ void CTile::InitTile(HWND hwnd, int Frame, int ID, int MoveID, std::function<voi
 	switch (Tile_ID)
 	{
 	case NONE:
-		Tile_Sprite.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/None.bmp");
+		Tile_Sprite_On.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/None.bmp");
 		break;
 	case FLOOR:
-		Tile_Sprite.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/Floor.bmp");
+		Tile_Sprite_On.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/Floor.bmp");
 		break;
 	case WALL:
-		Tile_Sprite.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/Wall.bmp");
+		Tile_Sprite_On.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/Wall.bmp");
 		break;
 	case TRAP_Niddle:
-		Tile_Sprite.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/Niddle.bmp");
+		Tile_Sprite_On.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/Niddle.bmp");
+		Tile_Sprite_Off.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/Niddle_off.bmp");
 		break;
 	case TRAP_ScareCrow:
-		Tile_Sprite.Init(hwnd, 0, 0, 80, 160, Frame, L"./Image/Tile/Scarecrow_test.bmp");
+		Tile_Sprite_On.Init(hwnd, 0, 0, 80, 160, Frame, L"./Image/Tile/Scarecrow.bmp");
+		Tile_Sprite_Off.Init(hwnd, 0, 0, 80, 160, Frame, L"./Image/Tile/Scarecrow_off.bmp");
 		break;
 	case TRAP_Grab:
 		Ani_Trap[UP].Init(hwnd, 0, 0, 960, 240, Frame, L"./Image/Tile/hook_ani_up.bmp");
@@ -37,13 +39,15 @@ void CTile::InitTile(HWND hwnd, int Frame, int ID, int MoveID, std::function<voi
 		Ani_Trap[RIGHT].Init(hwnd, 0, 0, 960, 240, Frame, L"./Image/Tile/hook_ani_right.bmp");
 		break;
 	case TRAP_GrabArea:
-		Tile_Sprite.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/GrabArea.bmp");
+		Tile_Sprite_On.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/GrabArea.bmp");
 		break;
-	case TRAP_Cunfusion:
-		Tile_Sprite.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/Cunfusion.bmp");
+	case TRAP_Confusion:
+		Tile_Sprite_On.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/Confusion.bmp");
+		Tile_Sprite_Off.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/Confusion_off.bmp");
 		break;
 	case TRAP_Hole:
-		Tile_Sprite.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/Hole.bmp");
+		Tile_Sprite_On.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/Hole.bmp");
+		Tile_Sprite_Off.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/Hole_off.bmp");
 		break;
 	case SKILL_Barricade:
 		Ani_Trap[UP].Init(hwnd, 0, 0, 80, 160, Frame, L"./Image/Tile/Barricade_Up.bmp");
@@ -65,7 +69,7 @@ void CTile::InitTile(HWND hwnd, int Frame, int ID, int MoveID, std::function<voi
 
 void CTile::DestroyTile(CTile Tile)
 {
-	Tile.Tile_Sprite.Ternimate();
+	Tile.Tile_Sprite_On.Ternimate();
 }
 
 void CMap::InitMap(HWND hwnd)
@@ -77,7 +81,7 @@ void CMap::InitMap(HWND hwnd)
 	Trap_ScareCrow.InitTile(hwnd, 1 /*Frame*/, TRAP_ScareCrow, false, [&](Entity* ent) {ScareCrowActive(ent); });
 	Trap_Grab.InitTile(hwnd, 4 /*Frame*/, TRAP_Grab, false, [&](Entity* ent) {});
 	Trap_GrabArea.InitTile(hwnd, 1 /*Frame*/, TRAP_GrabArea, true, [&](Entity* ent) {GrabActive(ent);});
-	Trap_Cunfusion.InitTile(hwnd, 1 /*Frame*/, TRAP_Cunfusion, true, [&](Entity* ent) {ConfusionActive(ent); });
+	Trap_Cunfusion.InitTile(hwnd, 1 /*Frame*/, TRAP_Confusion, true, [&](Entity* ent) {ConfusionActive(ent); });
 	Trap_Hole.InitTile(hwnd, 1 /*Frame*/, TRAP_Hole, true, [&](Entity* ent) {HoleActive(ent);});
 	Skill_Barricade.InitTile(hwnd, 1 /*Frame*/, SKILL_Barricade, true, [&](Entity* ent) {});
 
@@ -253,7 +257,7 @@ void CMap::ResetMap(int Character_x, int Character_y)
 		for (int j = 0; j < MAX_TILE_X; j++)
 		{
 			Map[i][j] = None;
-			Map[i][j].Tile_Sprite.SetPosition(j * 80, i * 80);
+			Map[i][j].Tile_Sprite_On.SetPosition(j * 80, i * 80);
 		}
 	}
 
@@ -316,7 +320,7 @@ void CMap::ActiveTile(Entity* ent)
 	case TRAP_ScareCrow:
 		Trap_ScareCrow.Tile_Func(ent);
 		break;
-	case TRAP_Cunfusion:
+	case TRAP_Confusion:
 		Trap_Cunfusion.Tile_Func(ent);
 		break;
 	case TRAP_Grab:
@@ -331,7 +335,7 @@ void CMap::ActiveTile(Entity* ent)
 void CMap::SetTileOnMap(CTile Tile, int x, int y)
 {
 	Map[y][x] = Tile;
-	Map[y][x].Tile_Sprite.SetPosition(x * 80, y * 80);
+	Map[y][x].Tile_Sprite_On.SetPosition(x * 80, y * 80);
 }
 
 int CMap::SetTrapOnMap(CTile Tile, int x, int y)
@@ -339,7 +343,7 @@ int CMap::SetTrapOnMap(CTile Tile, int x, int y)
 	if (Map[y][x].Tile_ID != FLOOR) return false;
 
 	Map[y][x] = Tile;
-	Map[y][x].Tile_Sprite.SetPosition(x * 80, y * 80);
+	Map[y][x].Tile_Sprite_On.SetPosition(x * 80, y * 80);
 	return true;
 }
 
@@ -377,7 +381,7 @@ void CMap::DrawMap(HDC hMemDC, int x, int y)
 					continue;
 
 				Map[i - 1][j] = Wall;
-				Map[i - 1][j].Tile_Sprite.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 2) * 80 + Term_y - 40);
+				Map[i - 1][j].Tile_Sprite_On.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 2) * 80 + Term_y - 40);
 			}
 		}
 	}
@@ -391,14 +395,15 @@ void CMap::DrawMap(HDC hMemDC, int x, int y)
 
 			if (Map[i][j].Tile_ID == TRAP_ScareCrow)
 			{
-				ObjPool->Maps.Floor.Tile_Sprite.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 1) * 80 + Term_y - 40);
-				ObjPool->Maps.Floor.Tile_Sprite.Draw(hMemDC);
-				Map[i][j].Tile_Sprite.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 2) * 80 + Term_y - 40);
+				if (Map[i][j].Tile_On)
+					Map[i][j].Tile_Sprite_On.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 2) * 80 + Term_y - 40);
+				else
+					Map[i][j].Tile_Sprite_Off.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 2) * 80 + Term_y - 40);
 			}
 			else if (Map[i][j].Tile_ID == TRAP_Grab)
 			{
-				ObjPool->Maps.Floor.Tile_Sprite.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 1) * 80 + Term_y - 40);
-				ObjPool->Maps.Floor.Tile_Sprite.Draw(hMemDC);
+				ObjPool->Maps.Floor.Tile_Sprite_On.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 1) * 80 + Term_y - 40);
+				ObjPool->Maps.Floor.Tile_Sprite_On.Draw(hMemDC);
 				Map[i][j].Ani_Trap[Map[i][j].nowTrapDirection].SetPosition(((j - Map_Start_x) - 2) * 80 + Term_x - 40, ((i - Map_Start_y) - 2) * 80 + Term_y - 40);
 				Map[i][j].Ani_Trap[Map[i][j].nowTrapDirection].Draw(hMemDC);
 			}
@@ -409,8 +414,16 @@ void CMap::DrawMap(HDC hMemDC, int x, int y)
 			}
 			else
 			{
-				Map[i][j].Tile_Sprite.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 1) * 80 + Term_y - 40);
-				Map[i][j].Tile_Sprite.Draw(hMemDC);
+				if (Map[i][j].Tile_On)
+				{
+					Map[i][j].Tile_Sprite_On.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 1) * 80 + Term_y - 40);
+					Map[i][j].Tile_Sprite_On.Draw(hMemDC);
+				}
+				else
+				{
+					Map[i][j].Tile_Sprite_Off.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 1) * 80 + Term_y - 40);
+					Map[i][j].Tile_Sprite_Off.Draw(hMemDC);
+				}
 			}
 		}
 	}
@@ -455,8 +468,8 @@ void CMap::DrawTileUI(HDC hMemDC, int x, int y)
 			//====함정 선택 UI====
 			if (Map[i][j].Tile_SelectArea == true)
 			{
-				//ObjPool->Maps.Floor.Tile_Sprite.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 1) * 80 + Term_y - 40);
-				//ObjPool->Maps.Floor.Tile_Sprite.Draw(hMemDC);
+				//ObjPool->Maps.Floor.Tile_Sprite_On.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 1) * 80 + Term_y - 40);
+				//ObjPool->Maps.Floor.Tile_Sprite_On.Draw(hMemDC);
 				Map[i][j].Ani_SelectedArea.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 120, ((i - Map_Start_y) - 1) * 80 + Term_y - 120);
 				Map[i][j].Ani_SelectedArea.Draw(hMemDC);
 			}

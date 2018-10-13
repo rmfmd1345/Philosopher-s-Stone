@@ -96,6 +96,8 @@ void Skill::ActiveSkill()
 			}
 		}
 
+		ObjPool->Player.SetAnimation(ATTACK);
+		ObjPool->Player.ATK_Skill.Check_Active = true;
 		break;
 	case PUSH_SKILL:
 		switch (Direction)
@@ -187,6 +189,9 @@ void Skill::ActiveSkill()
 				}
 			}
 		}
+
+		ObjPool->Player.SetAnimation(ATTACK);
+		ObjPool->Player.PUSH_Skill.Check_Active = true;
 		break;
 	case BARRICADE_SKILL:
 		switch (Direction)
@@ -243,6 +248,8 @@ void Skill::ActiveSkill()
 			break;
 		}
 
+		ObjPool->Player.SetAnimation(ATTACK);
+		ObjPool->Player.BARRICADE_Skill.Check_Active = true;
 		break;
 	default:
 		break;
