@@ -330,15 +330,50 @@ void Hero::SetSelectedArea(bool isCreate)
 {
 	if (isCreate)
 	{
-		if (ObjPool->Maps.isCanTrapSet(pos.x, pos.y + 1))
-			ObjPool->Maps.Map[pos.y + 1][pos.x].Tile_SelectArea = true;
-		if (ObjPool->Maps.isCanTrapSet(pos.x, pos.y - 1))
-			ObjPool->Maps.Map[pos.y - 1][pos.x].Tile_SelectArea = true;
-		if (ObjPool->Maps.isCanTrapSet(pos.x + 1, pos.y))
-			ObjPool->Maps.Map[pos.y][pos.x + 1].Tile_SelectArea = true;
-		if (ObjPool->Maps.isCanTrapSet(pos.x - 1, pos.y))
-			ObjPool->Maps.Map[pos.y][pos.x - 1].Tile_SelectArea = true;
-		//플레이어 주변영역을 선택된 영역으로 마크한다
+		switch (nowDirection)
+		{
+		case UP:
+			if (ObjPool->Maps.isCanTrapSet(pos.x, pos.y - 1) && nowState == TRAPSETTING)
+				ObjPool->Maps.Map[pos.y - 1][pos.x].Tile_SelectArea = true;
+			else if (ObjPool->Maps.Map[pos.y - 1][pos.x].Tile_ID != NONE && ObjPool->Maps.Map[pos.y - 1][pos.x].Tile_ID != MENTLE && nowState == SKILLPREPARING)
+				ObjPool->Maps.Map[pos.y - 1][pos.x].Tile_SelectArea = true;
+
+			ObjPool->Maps.Map[pos.y + 1][pos.x].Tile_SelectArea = false;
+			ObjPool->Maps.Map[pos.y][pos.x + 1].Tile_SelectArea = false;
+			ObjPool->Maps.Map[pos.y][pos.x - 1].Tile_SelectArea = false;
+			break;
+		case DOWN:
+			if (ObjPool->Maps.isCanTrapSet(pos.x, pos.y + 1) && nowState == TRAPSETTING)
+				ObjPool->Maps.Map[pos.y + 1][pos.x].Tile_SelectArea = true;
+			else if (ObjPool->Maps.Map[pos.y + 1][pos.x].Tile_ID != NONE && ObjPool->Maps.Map[pos.y + 1][pos.x].Tile_ID != MENTLE && nowState == SKILLPREPARING)
+				ObjPool->Maps.Map[pos.y + 1][pos.x].Tile_SelectArea = true;
+
+			ObjPool->Maps.Map[pos.y - 1][pos.x].Tile_SelectArea = false;
+			ObjPool->Maps.Map[pos.y][pos.x + 1].Tile_SelectArea = false;
+			ObjPool->Maps.Map[pos.y][pos.x - 1].Tile_SelectArea = false;
+			break;
+		case LEFT:
+			if (ObjPool->Maps.isCanTrapSet(pos.x - 1, pos.y) && nowState == TRAPSETTING)
+				ObjPool->Maps.Map[pos.y][pos.x - 1].Tile_SelectArea = true;
+			else if (ObjPool->Maps.Map[pos.y][pos.x - 1].Tile_ID != NONE && ObjPool->Maps.Map[pos.y][pos.x - 1].Tile_ID != MENTLE && nowState == SKILLPREPARING)
+				ObjPool->Maps.Map[pos.y][pos.x - 1].Tile_SelectArea = true;
+
+			ObjPool->Maps.Map[pos.y + 1][pos.x].Tile_SelectArea = false;
+			ObjPool->Maps.Map[pos.y - 1][pos.x].Tile_SelectArea = false;
+			ObjPool->Maps.Map[pos.y][pos.x + 1].Tile_SelectArea = false;
+			break;
+		case RIGHT:
+			if (ObjPool->Maps.isCanTrapSet(pos.x + 1, pos.y) && nowState == TRAPSETTING)
+				ObjPool->Maps.Map[pos.y][pos.x + 1].Tile_SelectArea = true;
+			else if (ObjPool->Maps.Map[pos.y][pos.x + 1].Tile_ID != NONE && ObjPool->Maps.Map[pos.y][pos.x + 1].Tile_ID != MENTLE && nowState == SKILLPREPARING)
+				ObjPool->Maps.Map[pos.y][pos.x + 1].Tile_SelectArea = true;
+
+			ObjPool->Maps.Map[pos.y + 1][pos.x].Tile_SelectArea = false;
+			ObjPool->Maps.Map[pos.y - 1][pos.x].Tile_SelectArea = false;
+			ObjPool->Maps.Map[pos.y][pos.x - 1].Tile_SelectArea = false;
+			break;
+		}
+		//플레이어가 바라보고 있는 방향을 영역 설정한다.
 	}
 	else if (!isCreate)
 	{
@@ -462,7 +497,6 @@ void Hero::UseSkill()
 
 void Hero::RepairTrap()
 {
-	SetState(TRAPREPAIRING);
 	switch (nowDirection)
 	{
 	case LEFT:
