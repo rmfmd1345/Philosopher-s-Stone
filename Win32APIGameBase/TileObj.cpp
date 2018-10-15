@@ -23,6 +23,7 @@ void CTile::InitTile(HWND hwnd, int Frame, int ID, int MoveID, std::function<voi
 		break;
 	case WALL:
 		Tile_Sprite_On.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/Wall.bmp");
+		Tile_Sprite_Off.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/Wall.bmp");
 		break;
 	case TRAP_Niddle:
 		Tile_Sprite_On.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/Niddle.bmp");

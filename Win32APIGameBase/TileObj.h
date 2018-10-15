@@ -92,8 +92,7 @@ public:
 	bool isCanTrapSet(int x, int y); //설치할 수 있는 곳인가
 	void DrawMap(HDC hMemDC, int x, int y); //  플레이어를 기준으로 화면에 나오는 타일을 계산하여 출력
 	void DrawTileUI(HDC hMemDC, int x, int y); //체력바, 선택 영역 등 UI 표시
-	void SetBrick(int x, int y);
-	// 벽돌 위치를 설정
+	void SetBrick(int x, int y); // 벽돌 위치를 설정
 	void DrawBrick(HDC hMemDC, int x, int y); // 벽돌을 그려냄
 	void DestroyMap(); // 맵 타일 파괴
 

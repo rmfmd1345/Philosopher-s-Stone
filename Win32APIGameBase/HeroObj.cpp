@@ -33,7 +33,7 @@ void Hero::Init(HWND hWnd, int x, int y, COLORREF sprite)
 	Ani_attack[DOWN].Init(hWnd, 0, 0, 320, 128, 4, L"./Image/Attack_Ani/hero_attack_front.bmp");
 	Ani_attack[LEFT].Init(hWnd, 0, 0, 320, 128, 4, L"./Image/Attack_Ani/hero_attack_left.bmp");
 	Ani_attack[RIGHT].Init(hWnd, 0, 0, 320, 128, 4, L"./Image/Attack_Ani/hero_attack_right.bmp");
-	
+
 	ATK_Skill.InitSkill(hWnd, ATK_SKILL, 10);
 	PUSH_Skill.InitSkill(hWnd, PUSH_SKILL, 8);
 	BARRICADE_Skill.InitSkill(hWnd, BARRICADE_SKILL, 12);
@@ -264,7 +264,7 @@ POINT Hero::GetWalkTerm()
 {
 	POINT Term = { 0, 0 };
 
-	if(nowDirection == UP)
+	if (nowDirection == UP)
 		if (5 < pos.y && pos.y <= 18)
 			Term.y += (stateFrame_Hero * 8);
 
@@ -295,29 +295,53 @@ void Hero::DigMap()
 	case LEFT:
 		if (ObjPool->Maps.Map[pos.y][(pos.x - 1)].Tile_ID != MENTLE && (ObjPool->Maps.Map[pos.y][(pos.x - 1)].Tile_ID == NONE || ObjPool->Maps.Map[pos.y][(pos.x - 1)].Tile_ID == WALL)) //멘틀이 아니고 파려는 곳이 NONE이면
 		{
-			ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, (pos.x - 1), pos.y); //floor 로 바닥 설정
-			Rock_Num += 5;
+			ObjPool->Maps.Map[pos.y][pos.x - 1].Tile_On = false;
+			ObjPool->Maps.Map[pos.y][pos.x - 1].repairGage++;
+			if (ObjPool->Maps.Map[pos.y][pos.x - 1].repairGage >= ObjPool->Maps.Map[pos.y][pos.x - 1].TrapHp)
+			{
+				ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, (pos.x - 1), pos.y); //floor 로 바닥 설정
+				Rock_Num += 5;
+				ObjPool->Maps.Map[pos.y][pos.x - 1].repairGage = 0;
+			}
 		}
 		break;
 	case RIGHT:
 		if (ObjPool->Maps.Map[pos.y][(pos.x + 1)].Tile_ID != MENTLE && (ObjPool->Maps.Map[pos.y][(pos.x + 1)].Tile_ID == NONE || ObjPool->Maps.Map[pos.y][(pos.x + 1)].Tile_ID == WALL))
 		{
-			ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, (pos.x + 1), pos.y);
-			Rock_Num += 5;
+			ObjPool->Maps.Map[pos.y][pos.x + 1].Tile_On = false;
+			ObjPool->Maps.Map[pos.y][pos.x + 1].repairGage++;
+			if (ObjPool->Maps.Map[pos.y][pos.x + 1].repairGage >= ObjPool->Maps.Map[pos.y][pos.x + 1].TrapHp)
+			{
+				ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, (pos.x + 1), pos.y);
+				Rock_Num += 5;
+				ObjPool->Maps.Map[pos.y][pos.x + 1].repairGage = 0;
+			}
 		}
 		break;
 	case UP:
 		if (ObjPool->Maps.Map[(pos.y - 1)][pos.x].Tile_ID != MENTLE && (ObjPool->Maps.Map[pos.y - 1][(pos.x)].Tile_ID == NONE || ObjPool->Maps.Map[pos.y - 1][(pos.x)].Tile_ID == WALL))
 		{
-			ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, pos.x, (pos.y - 1));
-			Rock_Num += 5;
+			ObjPool->Maps.Map[pos.y - 1][pos.x].Tile_On = false;
+			ObjPool->Maps.Map[pos.y - 1][pos.x].repairGage++;
+			if (ObjPool->Maps.Map[pos.y - 1][pos.x].repairGage >= ObjPool->Maps.Map[pos.y - 1][pos.x].TrapHp)
+			{
+				ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, pos.x, (pos.y - 1));
+				Rock_Num += 5;
+				ObjPool->Maps.Map[pos.y - 1][pos.x].repairGage = 0;
+			}
 		}
 		break;
 	case DOWN:
 		if (ObjPool->Maps.Map[(pos.y + 1)][pos.x].Tile_ID != MENTLE && (ObjPool->Maps.Map[pos.y + 1][(pos.x)].Tile_ID == NONE || ObjPool->Maps.Map[pos.y + 1][(pos.x)].Tile_ID == WALL))
 		{
-			ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, pos.x, (pos.y + 1));
-			Rock_Num += 5;
+			ObjPool->Maps.Map[pos.y + 1][pos.x].Tile_On = false;
+			ObjPool->Maps.Map[pos.y + 1][pos.x].repairGage++;
+			if (ObjPool->Maps.Map[pos.y + 1][pos.x].repairGage >= ObjPool->Maps.Map[pos.y + 1][pos.x].TrapHp)
+			{
+				ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, pos.x, (pos.y + 1));
+				Rock_Num += 5;
+				ObjPool->Maps.Map[pos.y + 1][pos.x].repairGage = 0;
+			}
 		}
 		break;
 	default:
@@ -596,7 +620,6 @@ void Hero::DrawSelectedTrapUI(HDC hMemDC)
 			stateFrame_TrapSelect = 0;
 		}
 	}
-		
 }
 
 bool Hero::isDead()
