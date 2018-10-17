@@ -521,55 +521,28 @@ void Hero::UseSkill()
 
 void Hero::RepairTrap()
 {
+	int Temp_X = pos.x;
+	int Temp_Y = pos.y;
+
 	switch (nowDirection)
 	{
-	case LEFT:
-		if (ObjPool->Maps.Map[pos.y][pos.x - 1].Tile_ID == TRAP_Hole)
-			return;
-
-		if (ObjPool->Maps.Map[pos.y][pos.x - 1].Tile_On == false)
-			ObjPool->Maps.Map[pos.y][pos.x - 1].repairGage++;
-		if (ObjPool->Maps.Map[pos.y][pos.x - 1].repairGage >= ObjPool->Maps.Map[pos.y][pos.x - 1].TrapHp)
-		{
-			ObjPool->Maps.Map[pos.y][pos.x - 1].Tile_On = true;
-			ObjPool->Maps.Map[pos.y][pos.x - 1].repairGage = 0;
-		}
+	case LEFT: Temp_X = pos.x - 1;
 		break;
-	case RIGHT:
-		if (ObjPool->Maps.Map[pos.y][pos.x + 1].Tile_ID == TRAP_Hole)
-			return;
-
-		if (ObjPool->Maps.Map[pos.y][pos.x + 1].Tile_On == false)
-			ObjPool->Maps.Map[pos.y][pos.x + 1].repairGage++;
-		if (ObjPool->Maps.Map[pos.y][pos.x + 1].repairGage >= ObjPool->Maps.Map[pos.y][pos.x + 1].TrapHp)
-		{
-			ObjPool->Maps.Map[pos.y][pos.x + 1].Tile_On = true;
-			ObjPool->Maps.Map[pos.y][pos.x + 1].repairGage = 0;
-		}
+	case RIGHT: Temp_X = pos.x + 1;
 		break;
-	case UP:
-		if (ObjPool->Maps.Map[pos.y - 1][pos.x].Tile_ID == TRAP_Hole)
-			return;
-
-		if (ObjPool->Maps.Map[pos.y - 1][pos.x].Tile_On == false)
-			ObjPool->Maps.Map[pos.y - 1][pos.x].repairGage++;
-		if (ObjPool->Maps.Map[pos.y - 1][pos.x].repairGage >= ObjPool->Maps.Map[pos.y - 1][pos.x].TrapHp)
-		{
-			ObjPool->Maps.Map[pos.y - 1][pos.x].Tile_On = true;
-			ObjPool->Maps.Map[pos.y - 1][pos.x].repairGage = 0;
-		}
+	case UP: Temp_Y = pos.y - 1;
 		break;
-	case DOWN:
-		if (ObjPool->Maps.Map[pos.y + 1][pos.x].Tile_ID == TRAP_Hole)
-			return;
+	case DOWN: Temp_Y = pos.y + 1;
+		break;
+	}
 
-		if (ObjPool->Maps.Map[pos.y + 1][pos.x].Tile_On == false)
-			ObjPool->Maps.Map[pos.y + 1][pos.x].repairGage++;
-		if (ObjPool->Maps.Map[pos.y + 1][pos.x].repairGage >= ObjPool->Maps.Map[pos.y + 1][pos.x].TrapHp)
-		{
-			ObjPool->Maps.Map[pos.y + 1][pos.x].Tile_On = true;
-			ObjPool->Maps.Map[pos.y + 1][pos.x].repairGage = 0;
-		}
+	if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_On == false)
+		ObjPool->Maps.Map[Temp_Y][Temp_X].repairGage++;
+
+	if (ObjPool->Maps.Map[Temp_Y][Temp_X].repairGage >= ObjPool->Maps.Map[pos.y][pos.x - 1].TrapHp)
+	{					
+		ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_On = true;
+		ObjPool->Maps.Map[Temp_Y][Temp_X].repairGage = 0;
 	}
 }
 

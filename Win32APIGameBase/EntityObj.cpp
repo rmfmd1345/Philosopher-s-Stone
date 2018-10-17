@@ -201,7 +201,7 @@ void Entity::Draw(HDC hMemDC, int x, int y)
 		Ani_stand[nowDirection].SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y - 40);
 		Ani_stand[nowDirection].Draw(hMemDC);
 
-		switch (nowDirection)
+		switch (nowDirection) 
 		{
 		case UP:
 			ObjPool->FindEffect.SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 20, ((pos.y - Map_y) - 1) * 80 + Term_y - 70);
@@ -217,19 +217,22 @@ void Entity::Draw(HDC hMemDC, int x, int y)
 			break;
 		}
 		ObjPool->FindEffect.Draw(hMemDC);
-		/*
+		
 		ObjPool->Gdi.SetBrushColor(RGB(255, 255, 255));
 		ObjPool->Gdi.Rect(hMemDC, { ((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y - 40,((pos.x - Map_x) - 1) * 80 + Term_x + 40, ((pos.y - Map_y) - 1) * 80 + Term_y });
 		ObjPool->Gdi.SetTextsColor(RGB(255, 50, 50));
 		ObjPool->Gdi.Text(hMemDC, ((pos.x - Map_x) - 1) * 80 + Term_x - 10, ((pos.y - Map_y) - 1) * 80 + Term_y - 30, L"!!!", 24);
-		*/
+		
 		break;
 	}
 
-	if (nowState == CONFUSE) //임시로 해둠. 정리필요
+	switch (nowState)
 	{
-		ObjPool->ConfuseEffect.SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 30, ((pos.y - Map_y) - 1) * 80 + Term_y - 70);
-		ObjPool->ConfuseEffect.Draw(hMemDC);
+		case CONFUSE:
+			ObjPool->ConfuseEffect.SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 25, ((pos.y - Map_y) - 1) * 80 + Term_y - 70);
+			ObjPool->ConfuseEffect.Draw(hMemDC);
+			break;
+		//case MARKFORFIND:
 	}
 }
 
@@ -246,9 +249,13 @@ void Entity::Animation()
 		Ani_attack[nowDirection].NextFrameSprite(false);
 		break;
 	}
-	if (nowState == CONFUSE)
+
+
+	switch (nowState)
 	{
+	case CONFUSE:
 		ObjPool->ConfuseEffect.NextFrameSprite(true);
+		break;
 	}
 }
 

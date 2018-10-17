@@ -64,6 +64,7 @@ void CTile::InitTile(HWND hwnd, int Frame, int ID, int MoveID, std::function<voi
 	SpinSpeed = 3;
 	repairGage = 0;
 	TrapHp = 60;
+	stunTime = 100;
 
 	Tile_Func = Tile_Function;
 }
@@ -123,7 +124,7 @@ void CMap::GrabActive(Entity* ent)
 	grabPos.x = Map[pos.y][pos.x].Grab_POS.x;
 	grabPos.y = Map[pos.y][pos.x].Grab_POS.y;
 
-	if (Map[grabPos.y][grabPos.x].Tile_On && ent->GetState() != WALK)
+	if (Map[grabPos.y][grabPos.x].Tile_On && ent->GetState() != WALK) //쓸데없이 코드가 길다. 나중에 줄여야겠다
 	{
 		ent->SetState(INTRAP); //엔티티 인트랩 상태로 변경
 		ent->SetAnimation(STAND); //엔티티 서있는 상태로 변경
@@ -215,7 +216,13 @@ void CMap::ConfusionActive(Entity* ent)
 	if (Map[pos.y][pos.x].Tile_On && ent->GetState() != WALK) //함정이 깔려있으면 //엔티티가 걷는 중이 아니면
 	{
 		ent->SetState(CONFUSE); //엔티티 혼란 상태로 변경
-		Map[pos.y][pos.x].Tile_On = false; //재장전 필요한 상태로 변경
+		Map[pos.y][pos.x].stateFrame++;
+		if (Map[pos.y][pos.x].stateFrame >= Map[pos.y][pos.x].stunTime)
+		{
+			Map[pos.y][pos.x].stateFrame = 0;
+			ent->SetState(FINDWAY); //엔티티 혼란 상태로 변경
+			Map[pos.y][pos.x].Tile_On = false; //재장전 필요한 상태로 변경
+		}
 	}
 }
 
@@ -455,7 +462,7 @@ void CMap::DrawTileUI(HDC hMemDC, int x, int y)
 				continue;
 
 			//====체력바 UI====
-			if (Map[i][j].Tile_On == false && Map[i][j].Tile_ID != TRAP_Hole) //만약 함정이 고장났다면
+			if (Map[i][j].Tile_On == false) //만약 함정이 고장났다면
 			{
 				ingameUI_TrapHpBar_fill.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 30, ((i - Map_Start_y) - 1) * 80 + Term_y + 15);
 				ingameUI_TrapHpBar_edge.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 30, ((i - Map_Start_y) - 1) * 80 + Term_y + 15);

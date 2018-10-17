@@ -34,6 +34,9 @@ public:
 	int repairGage; //수리 진행도 게이지
 	int stateFrame; //함정 애니메이션 프레임상태
 	int nowTrapDirection; //함정 애니메이션 방향
+
+	//혼란함정
+	int stunTime; //함정 걸렸을때 멈추는 시간
 	//구멍함정
 	float damgeDelay; //함정 밟았을 때 연속해서 함수가 발동되기까지의 간격
 	float SpinSpeed; //구멍함정에서 엔티티가 도는 속도
