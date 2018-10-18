@@ -472,7 +472,7 @@ void CMap::DrawTileUI(HDC hMemDC, int x, int y)
 				continue;
 
 			//====체력바 UI====
-			if (Map[i][j].Tile_On == false) //만약 함정이 고장났다면
+			if (Map[i][j].Tile_On == false && Map[i][j].Tile_ID != TRAP_Hole) //만약 함정이 고장났다면
 			{
 				ingameUI_TrapHpBar_fill.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 30, ((i - Map_Start_y) - 1) * 80 + Term_y + 15);
 				ingameUI_TrapHpBar_edge.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 30, ((i - Map_Start_y) - 1) * 80 + Term_y + 15);
