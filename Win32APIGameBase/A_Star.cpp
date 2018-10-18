@@ -216,7 +216,7 @@ bool A_Star::PathFind(POINT MonsterPos, POINT PlayerPos)
 			}
 		}
 
-		// 열린목록이 비어 있는 경우 중단 (검색 가능한 곳이 없음
+		// 열린목록이 비어 있는 경우 중단 (검색 가능한 곳이 없음)
 		if (m_openList.empty() == true)
 		{
 			return false;
