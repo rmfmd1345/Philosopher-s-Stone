@@ -77,12 +77,30 @@ bool A_Star::PathFind(POINT MonsterPos, POINT PlayerPos)
 			{
 				// 경로 리스트 가장 앞에 이번 노드의 좌표를 입력
 				// (반복되면 시작 지점이 가장 마지막에 입력되지만 가장 앞에 위치함
-
-				//m_pathList.push_front(t_node->m_pos);
+				m_pathList.push_front(t_node->m_pos);
 
 				// 현재 노드의 부모 좌표를 가져와서 현재 노드를 부모노드로 변경하고 다시 순회
 				t_node = t_node->p_parentNode;
 			}
+
+			list<POINT>::iterator it;
+			it = m_pathList.begin();
+			while (it != m_pathList.end())
+			{
+				if (MonsterPos.x == it->x && MonsterPos.y == it->y)
+				{
+					it = m_pathList.erase(it);
+				}
+				else if (PlayerPos.x == it->x && PlayerPos.y == it->y)
+				{
+					it = m_pathList.erase(it);
+				}
+				else
+				{
+					it++;
+				}
+			}
+
 			return true;
 		}
 

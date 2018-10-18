@@ -25,6 +25,8 @@ void Entity::Init(HWND hWnd, int x, int y, int type, COLORREF sprite)
 
 	health = 100;
 
+	isSearch = false;
+
 	switch (type)
 	{
 	case DEALER:
@@ -38,10 +40,10 @@ void Entity::Init(HWND hWnd, int x, int y, int type, COLORREF sprite)
 		Ani_walk[LEFT].Init(hWnd, 0, 0, 480, 120, 6, L"./Image/Walk_Ani/dealer_walk_left.bmp");
 		Ani_walk[RIGHT].Init(hWnd, 0, 0, 480, 120, 6, L"./Image/Walk_Ani/dealer_walk_right.bmp");
 
-		Ani_attack[UP].Init(hWnd, 0, 0, 240, 122, 4, L"./Image/Attack_Ani/dealer_attack_front.bmp");
-		Ani_attack[DOWN].Init(hWnd, 0, 0, 216, 122, 4, L"./Image/Attack_Ani/dealer_attack_front.bmp");
-		Ani_attack[LEFT].Init(hWnd, 0, 0, 304, 122, 4, L"./Image/Attack_Ani/dealer_attack_front.bmp");
-		Ani_attack[RIGHT].Init(hWnd, 0, 0, 336, 122, 4, L"./Image/Attack_Ani/dealer_attack_front.bmp");
+		Ani_attack[UP].Init(hWnd, 0, 0, 480, 120, 6, L"./Image/Attack_Ani/dealer_attack_front.bmp");
+		Ani_attack[DOWN].Init(hWnd, 0, 0, 480, 120, 6, L"./Image/Attack_Ani/dealer_attack_front.bmp");
+		Ani_attack[LEFT].Init(hWnd, 0, 0, 480, 120, 6, L"./Image/Attack_Ani/dealer_attack_front.bmp");
+		Ani_attack[RIGHT].Init(hWnd, 0, 0, 480, 120, 6, L"./Image/Attack_Ani/dealer_attack_front.bmp");
 		break;
 	case WIZARD:
 		Ani_stand[UP].Init(hWnd, 0, 0, 70, 102, 1, L"./Image/Walk_Ani/Wizard_Back.bmp");
@@ -290,7 +292,7 @@ void Entity::UpdateState()
 	//АјАн
 	if (nowState == ATTACK)
 	{
-		if (stateFrame < 5)
+		if (stateFrame < 6)
 		{
 			stateFrame++;
 		}
@@ -458,6 +460,10 @@ void Entity::UpdateState()
 
 			if (SearchGap == 1)
 			{
+				isAllSearch = true;
+
+				this->Ani_attack[nowDirection].SetFrameSprite(0);
+
 				nowAnimation = ATTACK;
 				nowState = ATTACK;
 				return;
@@ -517,7 +523,18 @@ void Entity::UpdateState()
 								m_pathList.erase(it);
 								return;
 							}
+							else
+							{
+								nowAnimation = STAND;
+								nowState = FINDWAY;
+								return;
+							}
 						}
+					}
+					else
+					{
+						isSearch = false;
+						return;
 					}
 				}
 				else
@@ -548,6 +565,12 @@ void Entity::UpdateState()
 							nowState = WALK;
 
 							m_pathList.erase(it);
+							return;
+						}
+						else
+						{
+							nowAnimation = STAND;
+							nowState = FINDWAY;
 							return;
 						}
 					}
