@@ -321,7 +321,6 @@ void Entity::UpdateState()
 		}
 		//막다른 길이거나 / 스택 쌓아서 일정정도가 넘으면 밴
 		
-		/*
 		{
 			int SearchDirection = -1;
 			int SearchGap = 0;
@@ -345,36 +344,70 @@ void Entity::UpdateState()
 				SearchDirection = RIGHT;
 				SearchGap = pos.x - ObjPool->Player.GetPosition().x;
 			}
+			
+			else if ((ObjPool->Player.GetPosition().x == pos.x - 1 && ObjPool->Player.GetPosition().y == pos.y - 1))
+			{
+				if (!isRoadBlocked(UP) || !isRoadBlocked(LEFT))
+				{
+					SearchDirection = UPnLEFT;
+					SearchGap = 1;
+				}
+			}
+			else if ((ObjPool->Player.GetPosition().x == pos.x + 1 && ObjPool->Player.GetPosition().y == pos.y - 1))
+			{
+				if (!isRoadBlocked(UP) || !isRoadBlocked(RIGHT))
+				{
+					SearchDirection = UPnRIGHT;
+					SearchGap = 1;
+				}
+			}
+			else if ((ObjPool->Player.GetPosition().x == pos.x - 1 && ObjPool->Player.GetPosition().y == pos.y + 1))
+			{
+				if (!isRoadBlocked(DOWN) || !isRoadBlocked(LEFT))
+				{
+					SearchDirection = DOWNnLEFT;
+					SearchGap = 1;
+				}
+			}
+			else if ((ObjPool->Player.GetPosition().x == pos.x + 1 && ObjPool->Player.GetPosition().y == pos.y + 1))
+			{
+				if (!isRoadBlocked(DOWN) || !isRoadBlocked(RIGHT))
+				{
+					SearchDirection = DOWNnRIGHT;
+					SearchGap = 1;
+				}
+			}
 
 			if (SearchGap < 0) SearchGap = -(SearchGap);
 
-			for (int i = 1; i <= SearchGap; i++)
+			if (SearchDirection == UP || SearchDirection == DOWN || SearchDirection == LEFT || SearchDirection == RIGHT)
+				for (int i = 1; i <= SearchGap; i++)
 			{
 				switch (SearchDirection)
 				{
 				case UP:
-					if (ObjPool->Maps.GetTileID(pos.x, pos.y - i) != FLOOR)
+					if (isRoadBlocked(pos.x, pos.y - i))
 					{
 						SearchDirection = -1;
 						break;
 					}
 					break;
 				case DOWN:
-					if (ObjPool->Maps.GetTileID(pos.x, pos.y + i) != FLOOR)
+					if (isRoadBlocked(pos.x, pos.y + i))
 					{
 						SearchDirection = -1;
 						break;
 					}
 					break;
 				case LEFT:
-					if (ObjPool->Maps.GetTileID(pos.x - i, pos.y) != FLOOR)
+					if (isRoadBlocked(pos.x - i, pos.y))
 					{
 						SearchDirection = -1;
 						break;
 					}
 					break;
 				case RIGHT:
-					if (ObjPool->Maps.GetTileID(pos.x + i, pos.y) != FLOOR)
+					if (isRoadBlocked(pos.x + i, pos.y))
 					{
 						SearchDirection = -1;
 						break;
@@ -384,43 +417,116 @@ void Entity::UpdateState()
 			}
 			//직선 갭차이
 
-<<<<<<< HEAD
-=======
+			if (SearchDirection != -1)
+			{
+				PlayerPos = ObjPool->Player.GetPosition();
+			}
+
 			//여기서부터
->>>>>>> 96bdf22898f19fdd5c6f2a8766e8be6445709260
 			if (!isAllSearch)
 			{
 				if (SearchDirection != -1)
 				{
-					PlayerPos = ObjPool->Player.GetPosition();
 					isAllSearch = true;
 
-					SetDirection(SearchDirection);
+					if (SearchDirection == UP || SearchDirection == DOWN || SearchDirection == LEFT || SearchDirection == RIGHT)
+					{
+						SetDirection(SearchDirection);
+					}
+					else if (SearchDirection == UPnLEFT || SearchDirection == DOWNnLEFT)
+					{
+						SetDirection(LEFT);
+					}
+					else if (SearchDirection == UPnRIGHT || SearchDirection == DOWNnRIGHT)
+					{
+						SetDirection(RIGHT);
+					}
+
+					ObjPool->FindEffect.SetFrameSprite(0);
+
+					nowAnimation = MARKFORFIND;
+					nowState = MARKFORFIND;
+					//플레이어가 있는 방향만 보고 끝낸다(걷기x)
+					return;
+				}
+			}
+
+			if (isAllSearch)
+			{
+				if (!isSearch)
+				{
+					m_pathList.clear();
+					isSearch = true;
+
 					if (PathFind(pos, PlayerPos))
 					{
-					
+						if (m_pathList.empty())
+						{
+							isSearch = false;
+							return;
+						}
+
 						list<POINT>::iterator it;
 						it = m_pathList.begin();
 
-						it = m_pathList.erase(it);
-						
+						if (!isRoadBlocked(it->x, it->y))
+						{
+							if (pos.x == it->x && pos.y - 1 == it->y)
+								SetDirection(UP);
+							else if (pos.x == it->x && pos.y + 1 == it->y)
+								SetDirection(DOWN);
+							else if (pos.x - 1 == it->x && pos.y == it->y)
+								SetDirection(LEFT);
+							else if (pos.x + 1 == it->x && pos.y == it->y)
+								SetDirection(RIGHT);
 
-						ObjPool->FindEffect.SetFrameSprite(0);
+							if (!isMonsterRoadOverlap(nowDirection))
+							{
+								nowAnimation = WALK;
+								nowState = WALK;
 
-						nowAnimation = MARKFORFIND;
-						nowState = MARKFORFIND;
-						return;
+								m_pathList.erase(it);
+								return;
+							}
+						}
 					}
-					else
+				}
+				else
+				{
+					if (m_pathList.empty())
 					{
 						isSearch = false;
+						return;
+					}
+
+					list<POINT>::iterator it;
+					it = m_pathList.begin();
+
+					if (!isRoadBlocked(it->x, it->y))
+					{
+						if (pos.x == it->x && pos.y - 1 == it->y)
+							SetDirection(UP);
+						else if (pos.x == it->x && pos.y + 1 == it->y)
+							SetDirection(DOWN);
+						else if (pos.x - 1 == it->x && pos.y == it->y)
+							SetDirection(LEFT);
+						else if (pos.x + 1 == it->x && pos.y == it->y)
+							SetDirection(RIGHT);
+
+						if (!isMonsterRoadOverlap(nowDirection))
+						{
+							nowAnimation = WALK;
+							nowState = WALK;
+
+							m_pathList.erase(it);
+							return;
+						}
 					}
 				}
 			}
 
 		}
 		//서치중이면 플레이어에게 간다
-		*/
 
 		{
 			int BlockedRoadNum = 0;
@@ -508,8 +614,16 @@ void Entity::UpdateState()
 		}
 		else
 		{
-			nowAnimation = STAND;
-			nowState = FINDWAY;
+			if (!isRoadBlocked(nowDirection) && !isMonsterRoadOverlap(nowDirection))
+			{
+				nowAnimation = WALK;
+				nowState = WALK;
+			}
+			else
+			{
+				nowAnimation = STAND;
+				nowState = FINDWAY;
+			}
 			stateFrame = 0;
 		}
 		return;
@@ -520,6 +634,7 @@ void Entity::UpdateState()
 	{
 		//TODO : 혼란 상태 추가
 	}
+
 }
 
 bool Entity::GetAllSearch()
@@ -915,16 +1030,21 @@ void Monster::UpdateState()
 	bool isSearch = false;
 	for (auto it = ePool.begin(); it != ePool.end(); it++)
 	{
+		if (it->GetHealth() <= 0)
+		{
+			it = ePool.erase(it);
+		}
+
 		it->UpdateState();
 
 		if (it->GetAllSearch())
 		{
-			if (it->GetSearch()) isSearch = true;
+			//if (it->GetSearch()) isSearch = true;
 		}
 	}
 	if (!isSearch)
 	{
-		ePool.begin()->SetAllSearch(false);
+		//ePool.begin()->SetAllSearch(false);
 	}
 }
 

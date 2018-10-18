@@ -31,6 +31,12 @@ enum eDirection
 	DOWN,
 	LEFT,
 	RIGHT,
+	UPnLEFT,
+	UPnRIGHT,
+	DOWNnLEFT,
+	DOWNnRIGHT,
+
+	//KEY
 	SPACE,
 	KEY_1,
 	KEY_2,
