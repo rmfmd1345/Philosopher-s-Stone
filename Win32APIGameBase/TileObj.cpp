@@ -55,6 +55,7 @@ void CTile::InitTile(HWND hwnd, int Frame, int ID, int MoveID, std::function<voi
 		Ani_Trap[DOWN].Init(hwnd, 0, 0, 80, 160, Frame, L"./Image/Tile/Barricade_Down.bmp");
 		Ani_Trap[LEFT].Init(hwnd, 0, 0, 80, 160, Frame, L"./Image/Tile/Barricade_Left.bmp");
 		Ani_Trap[RIGHT].Init(hwnd, 0, 0, 80, 160, Frame, L"./Image/Tile/Barricade_Right.bmp");
+		hp = 3;
 		break;
 	}
 	Ani_SelectedArea.Init(hwnd, 0, 0, 240, 240, 1, L"./Image/Tile/tileselect.bmp");
@@ -81,11 +82,12 @@ void CMap::InitMap(HWND hwnd)
 	Wall.InitTile(hwnd, 1 /*Frame*/, WALL, false, [&](Entity* ent) {});
 	Trap_Niddle.InitTile(hwnd, 1 /*Frame*/,TRAP_Niddle, true, [&](Entity* ent) {NiddleActive(ent);});
 	Trap_ScareCrow.InitTile(hwnd, 1 /*Frame*/, TRAP_ScareCrow, false, [&](Entity* ent) {ScareCrowActive(ent); });
-	Trap_Grab.InitTile(hwnd, 4 /*Frame*/, TRAP_Grab, false, [&](Entity* ent) {});
+	Trap_Grab.InitTile(hwnd, 4 /*Frame*/, TRAP_Grab, true, [&](Entity* ent) {});
 	Trap_GrabArea.InitTile(hwnd, 1 /*Frame*/, TRAP_GrabArea, true, [&](Entity* ent) {GrabActive(ent);});
 	Trap_Cunfusion.InitTile(hwnd, 1 /*Frame*/, TRAP_Confusion, true, [&](Entity* ent) {ConfusionActive(ent); });
 	Trap_Hole.InitTile(hwnd, 1 /*Frame*/, TRAP_Hole, true, [&](Entity* ent) {HoleActive(ent);});
-	Skill_Barricade.InitTile(hwnd, 1 /*Frame*/, SKILL_Barricade, true, [&](Entity* ent) {});
+	Skill_Barricade.InitTile(hwnd, 1 /*Frame*/, SKILL_Barricade, false, [&](Entity* ent) {});
+	Barricade_Health_UI.Init(hwnd, 0, 0, 20, 20, L"./Image/UI/Ingame/heart.bmp");
 
 	//ingameUI_TrapArea.Init(hwnd, 0, 0, 960, 240, L"./Image/Tile/tileselect.bmp");
 	ingameUI_TrapHpBar_edge.Init(hwnd, 0, 0, 60, 14, L"./Image/UI/Ingame/bluebar_edge.bmp");
@@ -106,7 +108,7 @@ void CMap::NiddleActive(Entity* ent)
 	if (Map[pos.y][pos.x].Tile_On) //함정이 깔려있으면
 	{
 		printf("체력 : %d\n", ent->GetHealth());
-		ent->AddHealth(-10);
+		ent->AddHealth(-1);
 		printf("체력 : %d\n", ent->GetHealth());
 		Map[pos.y][pos.x].Tile_On = false; //재장전 필요한 상태로 변경
 	}
@@ -146,6 +148,7 @@ void CMap::GrabActive(Entity* ent)
 					Map[grabPos.y][grabPos.x].Tile_On = false; //재장전 필요한 상태로 변경
 					ent->SetPosition(Map[pos.y][pos.x].Grab_POS.x, Map[pos.y][pos.x].Grab_POS.y);
 					ent->SetState(FINDWAY);
+					ent->AddHealth(-1);
 				}
 				return;
 			}
@@ -165,6 +168,7 @@ void CMap::GrabActive(Entity* ent)
 					Map[grabPos.y][grabPos.x].Tile_On = false; //재장전 필요한 상태로 변경
 					ent->SetPosition(Map[pos.y][pos.x].Grab_POS.x, Map[pos.y][pos.x].Grab_POS.y);
 					ent->SetState(FINDWAY);
+					ent->AddHealth(-1);
 				}
 				return;
 			}
@@ -184,6 +188,7 @@ void CMap::GrabActive(Entity* ent)
 					Map[grabPos.y][grabPos.x].Tile_On = false; //재장전 필요한 상태로 변경
 					ent->SetPosition(Map[pos.y][pos.x].Grab_POS.x, Map[pos.y][pos.x].Grab_POS.y);
 					ent->SetState(FINDWAY);
+					ent->AddHealth(-1);
 				}
 				return;
 			}
@@ -203,6 +208,7 @@ void CMap::GrabActive(Entity* ent)
 					Map[grabPos.y][grabPos.x].Tile_On = false; //재장전 필요한 상태로 변경
 					ent->SetPosition(Map[pos.y][pos.x].Grab_POS.x, Map[pos.y][pos.x].Grab_POS.y);
 					ent->SetState(FINDWAY);
+					ent->AddHealth(-1);
 				}
 				return;
 			}
@@ -244,12 +250,11 @@ void CMap::HoleActive(Entity* ent)
 			else
 				ent->SetDirection(UP);
 
-
 			Map[pos.y][pos.x].SpinSpeed += 0.2; //도는 속도 서서히 낮추기
 
 			if (Map[pos.y][pos.x].SpinSpeed >= 9) //충분히 엔티티가 돌았으면
 			{
-				ent->AddHealth(-100); //엔티티 삭제
+				ent->AddHealth(-5); //엔티티 삭제
 				Map[pos.y][pos.x].Tile_On = false; //재장전 필요한 상태로 변경
 				Map[pos.y][pos.x].SpinSpeed = 3;
 			}
@@ -419,6 +424,11 @@ void CMap::DrawMap(HDC hMemDC, int x, int y)
 			{
 				Map[i][j].Ani_Trap[Map[i][j].nowTrapDirection].SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 2) * 80 + Term_y - 40);
 				Map[i][j].Ani_Trap[Map[i][j].nowTrapDirection].Draw(hMemDC);
+				for (int k = 0; k < Map[i][j].hp; k++)
+				{
+					Barricade_Health_UI.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - (20 * Map[i][j].hp / 2) + (20 * k), ((i - Map_Start_y) - 1) * 80 + Term_y - 40 - 20);
+					Barricade_Health_UI.Draw(hMemDC);
+				}
 			}
 			else
 			{

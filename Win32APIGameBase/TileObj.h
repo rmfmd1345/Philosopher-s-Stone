@@ -5,6 +5,7 @@ class CTile
 {
 public:
 	int Tile_ID; // 타일 식별 번호
+	int hp;
 	bool Tile_On; // 함정 재장전 여부
 	bool Tile_SelectArea; //플레이어 고정시 함정 설치가능 영역인가
 	bool Tile_isCanMove; //지나갈 수 있는 타일인가
@@ -71,6 +72,8 @@ public:
 
 	Bitmap Trap_GrabArea_row; // 갈고리함정 영향권 (가로)
 	Bitmap Trap_GrabArea_column; // 갈고리함정 영향권 (세로)
+
+	Bitmap Barricade_Health_UI; // 바리케이드 체력 UI
 
 	enum Brick_ID_List
 	{

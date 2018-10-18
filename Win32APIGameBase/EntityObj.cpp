@@ -9,7 +9,7 @@ int Entity::StackRoad[MAX_TILE_Y][MAX_TILE_X] = { 0 };
 bool Entity::isAllSearch = false;
 POINT Entity::PlayerPos = { 0,0 };
 
-void Entity::Init(HWND hWnd, int x, int y, int type, COLORREF sprite)
+void Entity::Init(HWND hWnd, int x, int y, int type, int hp, COLORREF sprite)
 {
 	this->type = type;
 	this->pos = { x, y };
@@ -23,7 +23,7 @@ void Entity::Init(HWND hWnd, int x, int y, int type, COLORREF sprite)
 	nowFrame = 0;
 	maxFrame = 4;
 
-	health = 100;
+	health = hp;
 
 	isSearch = false;
 
@@ -79,6 +79,7 @@ void Entity::Init(HWND hWnd, int x, int y, int type, COLORREF sprite)
 		break;
 	}
 
+	Health_UI.Init(hWnd, 0, 0, 20, 20, L"./Image/UI/Ingame/heart.bmp");
 }
 
 void Entity::Ternimate()
@@ -166,6 +167,7 @@ void Entity::Draw(HDC hMemDC, int x, int y)
 	}
 
 	if (nowState == WALK)
+	{
 		switch (nowDirection)
 		{
 		case UP:
@@ -181,6 +183,7 @@ void Entity::Draw(HDC hMemDC, int x, int y)
 			Term_x += (stateFrame * 8);
 			break;
 		}
+	}
 
 	Term_x += ObjPool->Player.GetWalkTerm().x;
 	Term_y += ObjPool->Player.GetWalkTerm().y;
@@ -190,20 +193,35 @@ void Entity::Draw(HDC hMemDC, int x, int y)
 	case STAND:
 		Ani_stand[nowDirection].SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y - 40);
 		Ani_stand[nowDirection].Draw(hMemDC);
+		for (int i = 0; i < health; i++)
+		{
+			Health_UI.SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40 + (Ani_stand[nowDirection].w / 2) - (20 * health / 2) + (20 * i), ((pos.y - Map_y) - 1) * 80 + Term_y - 40 - 20);
+			Health_UI.Draw(hMemDC);
+		}
 		break;
 	case WALK:
 		Ani_walk[nowDirection].SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y - 40);
 		Ani_walk[nowDirection].Draw(hMemDC);
+		for (int i = 0; i < health; i++)
+		{
+			Health_UI.SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40 + (Ani_stand[nowDirection].w / 2) - (20 * health / 2) + (20 * i), ((pos.y - Map_y) - 1) * 80 + Term_y - 40 - 20);
+			Health_UI.Draw(hMemDC);
+		}
 		break;
 	case ATTACK:
 		Ani_attack[nowDirection].SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y - 40);
 		Ani_attack[nowDirection].Draw(hMemDC);
+		for (int i = 0; i < health; i++)
+		{
+			Health_UI.SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40 + (Ani_stand[nowDirection].w / 2) - (20 * health / 2) + (20 * i), ((pos.y - Map_y) - 1) * 80 + Term_y - 40 - 18);
+			Health_UI.Draw(hMemDC);
+		}
 		break;
 	case MARKFORFIND:
 		Ani_stand[nowDirection].SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y - 40);
 		Ani_stand[nowDirection].Draw(hMemDC);
 
-		switch (nowDirection) 
+		switch (nowDirection)
 		{
 		case UP:
 			ObjPool->FindEffect.SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x, ((pos.y - Map_y) - 1) * 80 + Term_y - 70);
@@ -953,6 +971,11 @@ void Entity::SetDirection(int dire)
 	nowDirection = dire;
 }
 
+void Entity::SetHealth(int hp)
+{
+	health = hp;
+}
+
 void Entity::AddHealth(int a)
 {
 	health += a;
@@ -1006,9 +1029,9 @@ int Entity::returnReverseDirection(int dire)
 
 void Monster::Init(HWND hWnd)
 {
-	Dealer.Init(hWnd, 0, 0, DEALER);
-	Wizard.Init(hWnd, 0, 0, WIZARD);
-	Tanker.Init(hWnd, 0, 0, TANKER);
+	Dealer.Init(hWnd, 0, 0, DEALER, 2);
+	Wizard.Init(hWnd, 0, 0, WIZARD, 1);
+	Tanker.Init(hWnd, 0, 0, TANKER, 5);
 }
 
 Monster Monster::GetMonster()
@@ -1157,15 +1180,17 @@ bool Monster::CheckHealth()
 {
 	if (ePool.empty()) return false;
 
+	bool dead = false;
+
 	for (auto it = ePool.begin(); it != ePool.end();)
 	{
 		if (it->isDead())
 		{
 			it = ePool.erase(it);
-
-			return true;
-
-			if (ePool.empty()) return false;
+			Wizard.SetHealth(1);
+			Dealer.SetHealth(2);
+			Tanker.SetHealth(5);
+			dead = true;
 		}
 		else
 		{
@@ -1173,7 +1198,7 @@ bool Monster::CheckHealth()
 		}
 	}
 
-	return false;
+	return dead;
 }
 
 void Monster::SetDirection(int dire)

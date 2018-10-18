@@ -1,7 +1,14 @@
-﻿  EntityObj.cpp
+﻿  TileObj.cpp
+c:\users\world famous star\desktop\프로젝트\api 팀 프로젝트\philosopher-s-stone\win32apigamebase\tileobj.cpp(253): warning C4305: '+=': 'double'에서 'float'(으)로 잘립니다.
   코드를 생성하고 있습니다.
+<<<<<<< HEAD
   0 of 944 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
     0 functions had inline decision re-evaluated but remain unchanged
+=======
+  1 of 898 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    1 functions had inline decision re-evaluated but remain unchanged
+>>>>>>> c06c41e7f0362506a27cbc1c64940a9d1f4ac8f5
   코드를 생성했습니다.
-  Win32APIGameBase.vcxproj -> C:\Users\hp\Documents\GitHub\Philosopher-s-Stone\Win32APIGameBase\Release\Win32APIGameBase.exe
+  Win32APIGameBase.vcxproj -> C:\Users\World Famous Star\Desktop\프로젝트\API 팀 프로젝트\Philosopher-s-Stone\Win32APIGameBase\Release\Win32APIGameBase.exe
