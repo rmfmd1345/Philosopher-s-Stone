@@ -170,6 +170,9 @@
     <ClCompile Include="Skill.cpp">
       <Filter>ObjectPool\Obj</Filter>
     </ClCompile>
+    <ClCompile Include="Scene_Ending.cpp">
+      <Filter>Scene\SceneScript</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">

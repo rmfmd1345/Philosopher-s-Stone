@@ -610,3 +610,11 @@ bool Hero::isWalk()
 
 	return true;
 }
+
+void Hero::CheckHealth()
+{
+	if (isDead())
+	{
+		ObjPool->System.SetScene(SCENE_ENDING);
+	}
+}

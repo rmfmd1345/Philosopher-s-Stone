@@ -28,6 +28,9 @@ void DrawManager::Drawing(HWND hwnd)	//그리기 단계 (더블버퍼링 적용됨)
 	case SCENE_INGAME:
 		Ingame::Draw(hMemDC);
 		break;
+	case SCENE_ENDING:
+		Ending::Draw(hMemDC);
+		break;
 	}
 
 	BitBlt(hdc, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, hMemDC, 0, 0, SRCCOPY);	//씬 그리기에서 그림이 그려진 후면DC를 화면에 보여질 전면DC로 복사

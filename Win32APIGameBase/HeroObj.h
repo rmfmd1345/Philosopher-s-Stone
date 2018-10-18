@@ -61,4 +61,6 @@ public:
 
 	bool isDead();
 	bool isWalk();
+	
+	void CheckHealth();
 };
