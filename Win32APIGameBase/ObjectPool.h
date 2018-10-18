@@ -32,10 +32,6 @@ enum eDirection
 	DOWN,
 	LEFT,
 	RIGHT,
-	UPnLEFT,
-	UPnRIGHT,
-	DOWNnLEFT,
-	DOWNnRIGHT,
 
 	//KEY
 	SPACE,
@@ -47,7 +43,12 @@ enum eDirection
 	KEY_A,
 	KEY_S,
 	KEY_D,
-	KEY_F
+	KEY_F,
+
+	UPnLEFT,
+	UPnRIGHT,
+	DOWNnLEFT,
+	DOWNnRIGHT,
 };
 
 enum eTimer

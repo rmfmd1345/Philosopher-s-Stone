@@ -261,7 +261,7 @@ void Entity::Animation()
 		Ani_walk[nowDirection].NextFrameSprite(true);
 		break;
 	case ATTACK:
-		Ani_attack[nowDirection].NextFrameSprite(false);
+		Ani_attack[nowDirection].NextFrameSprite(true);
 		break;
 	}
 

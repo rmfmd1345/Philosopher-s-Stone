@@ -536,6 +536,9 @@ void Hero::RepairTrap()
 		break;
 	}
 
+	if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID != TRAP_Hole)
+		return;
+
 	if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_On == false)
 		ObjPool->Maps.Map[Temp_Y][Temp_X].repairGage++;
 
