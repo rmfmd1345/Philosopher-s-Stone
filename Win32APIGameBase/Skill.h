@@ -15,6 +15,9 @@ class Skill
 public:
 	SpriteHelper Ani_Skill[4];
 	POINT Skill_Range[8];
+	Bitmap Skill_Cooltime_Bar;
+	Bitmap Skill_Cooltime_Edge;
+
 	int nowFrame;
 	int maxFrame;
 
@@ -29,6 +32,7 @@ public:
 	void ActiveSkill();
 	void Animation();
 	void Draw(HDC hMemDC);
+	void DrawSkillCooltime(HDC hMemDC);
 
 	void Terminate();
 };

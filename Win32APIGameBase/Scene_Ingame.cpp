@@ -26,11 +26,10 @@ void Ingame::Draw(HDC hMemDC)
 	ObjPool->Player.DrawSelectedTrapUI(hMemDC);
 	ObjPool->ingameUI_Stage.Draw(hMemDC);
 	ObjPool->ingameUI_Time.Draw(hMemDC);
-
-	/*TCHAR str[16];
-	wsprintf(str, L"%d", ObjPool->debug);
-	ObjPool->Gdi.SetTextsColor(RGB(255, 255, 255));
-	ObjPool->Gdi.Text(hMemDC, 150, 170, str, 36);*/
+	ObjPool->Player.ATK_Skill.DrawSkillCooltime(hMemDC);
+	ObjPool->Player.AGGRO_Skill.DrawSkillCooltime(hMemDC);
+	ObjPool->Player.PUSH_Skill.DrawSkillCooltime(hMemDC);
+	ObjPool->Player.BARRICADE_Skill.DrawSkillCooltime(hMemDC);
 
 	ObjPool->Gdi.SetTextsColor(RGB(0, 124, 255));
 	ObjPool->Gdi.Text(hMemDC, 560, 45, ObjPool->TIMER, 60);
@@ -86,13 +85,13 @@ void Ingame::OnTimer(HWND hWnd, int timer)
 			ObjPool->MonsterTimer--;
 		}
 
-		if (ObjPool->Player.ATK_Skill.Cooltime != 0)
+		if (ObjPool->Player.ATK_Skill.Cooltime > 0)
 			ObjPool->Player.ATK_Skill.Cooltime--;
-		if (ObjPool->Player.AGGRO_Skill.Cooltime != 0)
+		if (ObjPool->Player.AGGRO_Skill.Cooltime > 0)
 			ObjPool->Player.AGGRO_Skill.Cooltime--;
-		if (ObjPool->Player.PUSH_Skill.Cooltime != 0)
+		if (ObjPool->Player.PUSH_Skill.Cooltime > 0)
 			ObjPool->Player.PUSH_Skill.Cooltime--;
-		if (ObjPool->Player.BARRICADE_Skill.Cooltime != 0)
+		if (ObjPool->Player.BARRICADE_Skill.Cooltime > 0)
 			ObjPool->Player.BARRICADE_Skill.Cooltime--;
 	}
 	wsprintf(ObjPool->TIMER, L"%02d:%02d", ObjPool->MonsterTimer / 60, ObjPool->MonsterTimer % 60);
@@ -104,10 +103,10 @@ void Ingame::Update() //씬 업데이트
 	for (auto it = ObjPool->MonsterPool.ePool.begin(); it != ObjPool->MonsterPool.ePool.end();)
 	{
 		ObjPool->Maps.ActiveTile(it->GetEntity()); //몬스터에 대해 밟고 있는 타일 발동
-		if (!ObjPool->MonsterPool.CheckHealth()) //죽으면 true 반환
+		if (!ObjPool->MonsterPool.CheckHealth())
 			it++;
 		
-		if (ObjPool->MonsterPool.ePool.empty()) return;
+		if (ObjPool->MonsterPool.ePool.empty()) break;
 	}
 
 	if (ObjPool->Player.GetState() == STAND && ObjPool->Player.isWaitingTrapSet == true) //이동중에 트랩 세팅을 명령했으면 그 다음 칸에 멈춰서서 함정설치

@@ -40,6 +40,7 @@ private:
 	SpriteHelper Ani_stand[4];
 	SpriteHelper Ani_walk[4];
 	SpriteHelper Ani_attack[4];
+	Bitmap Health_UI;
 	int nowFrame;
 	int maxFrame;
 
@@ -47,7 +48,7 @@ private:
 
 public:
 
-	void Init(HWND hWnd, int x, int y, int type, COLORREF sprite = RGB(255, 0, 255));
+	void Init(HWND hWnd, int x, int y, int type, int hp, COLORREF sprite = RGB(255, 0, 255));
 	void Draw(HDC hMemDC, int x, int y);
 	void Ternimate();
 
@@ -68,6 +69,7 @@ public:
 	void SetState(int state);
 	void SetStateFrame(int Frame);
 
+	void SetHealth(int hp);
 	void AddHealth(int a);
 
 	bool isDead();
