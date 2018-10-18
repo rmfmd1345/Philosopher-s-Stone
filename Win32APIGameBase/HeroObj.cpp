@@ -536,7 +536,7 @@ void Hero::RepairTrap()
 		break;
 	}
 
-	if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID != TRAP_Hole)
+	if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == TRAP_Hole)
 		return;
 
 	if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_On == false)
@@ -609,4 +609,12 @@ bool Hero::isWalk()
 	if (nowFrame == (maxFrame * 4)) return false;
 
 	return true;
+}
+
+void Hero::CheckHealth()
+{
+	if (isDead())
+	{
+		ObjPool->System.SetScene(SCENE_ENDING);
+	}
 }

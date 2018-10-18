@@ -35,6 +35,12 @@ void InputManager::OnUpdate()
 	case SCENE_INGAME:	//씬이 인게임 이라면
 		Ingame::Update();
 		break;
+	case SCENE_CREDIT:
+		Credit::Update();
+		break;
+	case SCENE_ENDING:
+		Ending::Update();
+		break;
 	}
 }
 

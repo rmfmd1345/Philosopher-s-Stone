@@ -36,3 +36,11 @@ namespace Credit {
 	void OnMouseMove(HWND hWnd, int x, int y);
 	void OnKeyborad();
 }
+
+namespace Ending {
+	void Draw(HDC hMemDC);
+	void OnTimer(HWND hWnd, int timer);
+	void Update();
+	void OnMouseLButtonDown(HWND hWnd, int x, int y);
+	void OnMouseLButtonUp(HWND hWnd, int x, int y);
+}

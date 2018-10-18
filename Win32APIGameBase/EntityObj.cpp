@@ -329,30 +329,6 @@ void Entity::UpdateState()
 	if (nowState == FINDWAY)
 	{
 		{
-			/*
-			StackRoad[pos.y][pos.x]++;
-
-			if (StackRoad[pos.y][pos.x] > FirstSpawnMonsterNum)
-			{
-				SetBanRoad(pos.x, pos.y);
-			}
-			*/
-
-			int BlockedRoadNum = 0;
-			for (int i = 0; i < 4; i++)
-			{
-				if (isRoadBlocked(i) || isBanRoad(i))
-					BlockedRoadNum++;
-			}
-
-			if (BlockedRoadNum >= 3)
-			{
-				SetBanRoad(pos.x, pos.y);
-			}
-		}
-		//막다른 길이거나 / 스택 쌓아서 일정정도가 넘으면 밴
-		
-		{
 			int SearchDirection = -1;
 			int SearchGap = 0;
 			if ((ObjPool->Player.GetPosition().y < pos.y && ObjPool->Player.GetPosition().y + 7 >= pos.y && pos.x == ObjPool->Player.GetPosition().x))
@@ -555,7 +531,7 @@ void Entity::UpdateState()
 						return;
 					}
 				}
-				else
+				else if(isSearch)
 				{
 					if (m_pathList.empty())
 					{
@@ -597,6 +573,32 @@ void Entity::UpdateState()
 
 		}
 		//서치중이면 플레이어에게 간다
+
+		{}
+
+		{
+		/*
+		StackRoad[pos.y][pos.x]++;
+
+		if (StackRoad[pos.y][pos.x] > FirstSpawnMonsterNum)
+		{
+		SetBanRoad(pos.x, pos.y);
+		}
+		*/
+
+		int BlockedRoadNum = 0;
+		for (int i = 0; i < 4; i++)
+		{
+			if (isRoadBlocked(i) || isBanRoad(i))
+				BlockedRoadNum++;
+		}
+
+		if (BlockedRoadNum >= 3)
+		{
+			SetBanRoad(pos.x, pos.y);
+		}
+		}
+		//막다른 길이거나 / 스택 쌓아서 일정정도가 넘으면 밴
 
 		{
 			int BlockedRoadNum = 0;
