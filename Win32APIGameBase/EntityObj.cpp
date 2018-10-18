@@ -204,25 +204,20 @@ void Entity::Draw(HDC hMemDC, int x, int y)
 		switch (nowDirection) 
 		{
 		case UP:
-			ObjPool->FindEffect.SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 20, ((pos.y - Map_y) - 1) * 80 + Term_y - 70);
+			ObjPool->FindEffect.SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x, ((pos.y - Map_y) - 1) * 80 + Term_y - 70);
 			break;
 		case DOWN:
-			ObjPool->FindEffect.SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 20, ((pos.y - Map_y) - 1) * 80 + Term_y - 70);
+			ObjPool->FindEffect.SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 10, ((pos.y - Map_y) - 1) * 80 + Term_y - 70);
 			break;
 		case LEFT:
-			ObjPool->FindEffect.SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 20, ((pos.y - Map_y) - 1) * 80 + Term_y - 70);
+			ObjPool->FindEffect.SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x + 10, ((pos.y - Map_y) - 1) * 80 + Term_y - 70);
 			break;
 		case RIGHT:
-			ObjPool->FindEffect.SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 20, ((pos.y - Map_y) - 1) * 80 + Term_y - 70);
+			ObjPool->FindEffect.SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 25, ((pos.y - Map_y) - 1) * 80 + Term_y - 70);
 			break;
 		}
 		ObjPool->FindEffect.Draw(hMemDC);
-		
-		ObjPool->Gdi.SetBrushColor(RGB(255, 255, 255));
-		ObjPool->Gdi.Rect(hMemDC, { ((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y - 40,((pos.x - Map_x) - 1) * 80 + Term_x + 40, ((pos.y - Map_y) - 1) * 80 + Term_y });
-		ObjPool->Gdi.SetTextsColor(RGB(255, 50, 50));
-		ObjPool->Gdi.Text(hMemDC, ((pos.x - Map_x) - 1) * 80 + Term_x - 10, ((pos.y - Map_y) - 1) * 80 + Term_y - 30, L"!!!", 24);
-		
+
 		break;
 	}
 
@@ -366,7 +361,7 @@ void Entity::UpdateState()
 				if (!isRoadBlocked(UP) || !isRoadBlocked(LEFT))
 				{
 					SearchDirection = UPnLEFT;
-					SearchGap = 1;
+					SearchGap = 2;
 				}
 			}
 			else if ((ObjPool->Player.GetPosition().x == pos.x + 1 && ObjPool->Player.GetPosition().y == pos.y - 1))
@@ -374,7 +369,7 @@ void Entity::UpdateState()
 				if (!isRoadBlocked(UP) || !isRoadBlocked(RIGHT))
 				{
 					SearchDirection = UPnRIGHT;
-					SearchGap = 1;
+					SearchGap = 2;
 				}
 			}
 			else if ((ObjPool->Player.GetPosition().x == pos.x - 1 && ObjPool->Player.GetPosition().y == pos.y + 1))
@@ -382,7 +377,7 @@ void Entity::UpdateState()
 				if (!isRoadBlocked(DOWN) || !isRoadBlocked(LEFT))
 				{
 					SearchDirection = DOWNnLEFT;
-					SearchGap = 1;
+					SearchGap = 2;
 				}
 			}
 			else if ((ObjPool->Player.GetPosition().x == pos.x + 1 && ObjPool->Player.GetPosition().y == pos.y + 1))
@@ -390,7 +385,7 @@ void Entity::UpdateState()
 				if (!isRoadBlocked(DOWN) || !isRoadBlocked(RIGHT))
 				{
 					SearchDirection = DOWNnRIGHT;
-					SearchGap = 1;
+					SearchGap = 2;
 				}
 			}
 
@@ -436,7 +431,38 @@ void Entity::UpdateState()
 			if (SearchDirection != -1)
 			{
 				PlayerPos = ObjPool->Player.GetPosition();
+
+				if (SearchDirection == UP || SearchDirection == DOWN || SearchDirection == LEFT || SearchDirection == RIGHT)
+				{
+					SetDirection(SearchDirection);
+				}
+				else if ((SearchDirection == UPnLEFT || SearchDirection == UPnRIGHT) && !isRoadBlocked(UP))
+				{
+					SetDirection(UP);
+				}
+				else if ((SearchDirection == DOWNnLEFT || SearchDirection == DOWNnRIGHT) && !isRoadBlocked(DOWN))
+				{
+					SetDirection(DOWN);
+				}
+				else if ((SearchDirection == UPnLEFT || SearchDirection == DOWNnLEFT) && !isRoadBlocked(LEFT))
+				{
+					SetDirection(LEFT);
+				}
+				else if ((SearchDirection == UPnRIGHT || SearchDirection == DOWNnRIGHT) && !isRoadBlocked(RIGHT))
+				{
+					SetDirection(RIGHT);
+				}
+				//방향 바꾸기
 			}
+			//일단 플레이어 위치 저장
+
+			if (SearchGap == 1)
+			{
+				nowAnimation = ATTACK;
+				nowState = ATTACK;
+				return;
+			}
+			//공격
 
 			//여기서부터
 			if (!isAllSearch)
@@ -444,19 +470,6 @@ void Entity::UpdateState()
 				if (SearchDirection != -1)
 				{
 					isAllSearch = true;
-
-					if (SearchDirection == UP || SearchDirection == DOWN || SearchDirection == LEFT || SearchDirection == RIGHT)
-					{
-						SetDirection(SearchDirection);
-					}
-					else if (SearchDirection == UPnLEFT || SearchDirection == DOWNnLEFT)
-					{
-						SetDirection(LEFT);
-					}
-					else if (SearchDirection == UPnRIGHT || SearchDirection == DOWNnRIGHT)
-					{
-						SetDirection(RIGHT);
-					}
 
 					ObjPool->FindEffect.SetFrameSprite(0);
 
@@ -1084,12 +1097,12 @@ void Monster::UpdateState()
 
 		if (it->GetAllSearch())
 		{
-			//if (it->GetSearch()) isSearch = true;
+			if (it->GetSearch()) isSearch = true;
 		}
 	}
 	if (!isSearch)
 	{
-		//ePool.begin()->SetAllSearch(false);
+		ePool.begin()->SetAllSearch(false);
 	}
 }
 
