@@ -25,6 +25,8 @@ void Entity::Init(HWND hWnd, int x, int y, int type, int hp, COLORREF sprite)
 
 	health = hp;
 
+	isSearch = false;
+
 	switch (type)
 	{
 	case DEALER:
@@ -308,7 +310,7 @@ void Entity::UpdateState()
 	//АјАн
 	if (nowState == ATTACK)
 	{
-		if (stateFrame < 5)
+		if (stateFrame < 6)
 		{
 			stateFrame++;
 		}
@@ -476,6 +478,10 @@ void Entity::UpdateState()
 
 			if (SearchGap == 1)
 			{
+				isAllSearch = true;
+
+				this->Ani_attack[nowDirection].SetFrameSprite(0);
+
 				nowAnimation = ATTACK;
 				nowState = ATTACK;
 				return;
@@ -535,7 +541,18 @@ void Entity::UpdateState()
 								m_pathList.erase(it);
 								return;
 							}
+							else
+							{
+								nowAnimation = STAND;
+								nowState = FINDWAY;
+								return;
+							}
 						}
+					}
+					else
+					{
+						isSearch = false;
+						return;
 					}
 				}
 				else
@@ -566,6 +583,12 @@ void Entity::UpdateState()
 							nowState = WALK;
 
 							m_pathList.erase(it);
+							return;
+						}
+						else
+						{
+							nowAnimation = STAND;
+							nowState = FINDWAY;
 							return;
 						}
 					}

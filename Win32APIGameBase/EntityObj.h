@@ -82,7 +82,7 @@ private:
 	static bool isAllSearch;					  //찾는 중 인가
 	static POINT PlayerPos;						  //플레이어 위치
 
-	bool isSearch = false;
+	bool isSearch;
 
 public:
 	bool isRoadBlocked();
