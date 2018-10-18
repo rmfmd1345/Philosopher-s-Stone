@@ -28,7 +28,7 @@ public:
 	int GetCurrentFrame();
 	int GetLastFrame();
 
-	void NextFrameSprite();
+	void NextFrameSprite(bool replay);
 	void NextFrameSprite_Trap();
 	void SetFrameSprite(int f);
 };

@@ -77,11 +77,13 @@ int SpriteHelper::GetLastFrame()
 	return LastFrame;
 }
 
-void SpriteHelper::NextFrameSprite()
+void SpriteHelper::NextFrameSprite(bool replay)
 {
 	rtImg = { (w / LastFrame) * CurrentFrame, 0, (w / LastFrame), h };
 	CurrentFrame++;
-	if (CurrentFrame >= LastFrame)
+	if (CurrentFrame >= LastFrame && !replay)
+		CurrentFrame = LastFrame - 1;
+	if (CurrentFrame >= LastFrame && replay)
 		CurrentFrame = 1;
 }
 

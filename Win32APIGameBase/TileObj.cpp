@@ -16,19 +16,22 @@ void CTile::InitTile(HWND hwnd, int Frame, int ID, int MoveID, std::function<voi
 	switch (Tile_ID)
 	{
 	case NONE:
-		Tile_Sprite.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/None.bmp");
+		Tile_Sprite_On.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/None.bmp");
 		break;
 	case FLOOR:
-		Tile_Sprite.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/Floor.bmp");
+		Tile_Sprite_On.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/Floor.bmp");
 		break;
 	case WALL:
-		Tile_Sprite.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/Wall.bmp");
+		Tile_Sprite_On.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/Wall.bmp");
+		Tile_Sprite_Off.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/Wall.bmp");
 		break;
 	case TRAP_Niddle:
-		Tile_Sprite.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/Niddle.bmp");
+		Tile_Sprite_On.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/Niddle.bmp");
+		Tile_Sprite_Off.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/Niddle_off.bmp");
 		break;
 	case TRAP_ScareCrow:
-		Tile_Sprite.Init(hwnd, 0, 0, 80, 160, Frame, L"./Image/Tile/Scarecrow_test.bmp");
+		Tile_Sprite_On.Init(hwnd, 0, 0, 80, 160, Frame, L"./Image/Tile/Scarecrow.bmp");
+		Tile_Sprite_Off.Init(hwnd, 0, 0, 80, 160, Frame, L"./Image/Tile/Scarecrow_off.bmp");
 		break;
 	case TRAP_Grab:
 		Ani_Trap[UP].Init(hwnd, 0, 0, 960, 240, Frame, L"./Image/Tile/hook_ani_up.bmp");
@@ -37,30 +40,38 @@ void CTile::InitTile(HWND hwnd, int Frame, int ID, int MoveID, std::function<voi
 		Ani_Trap[RIGHT].Init(hwnd, 0, 0, 960, 240, Frame, L"./Image/Tile/hook_ani_right.bmp");
 		break;
 	case TRAP_GrabArea:
-		Tile_Sprite.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/GrabArea.bmp");
+		Tile_Sprite_On.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/GrabArea.bmp");
 		break;
-	case TRAP_Cunfusion:
-		Tile_Sprite.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/Cunfusion.bmp");
+	case TRAP_Confusion:
+		Tile_Sprite_On.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/Confusion.bmp");
+		Tile_Sprite_Off.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/Confusion_off.bmp");
 		break;
 	case TRAP_Hole:
-		Tile_Sprite.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/Hole.bmp");
+		Tile_Sprite_On.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/Hole.bmp");
+		Tile_Sprite_Off.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/Hole_off.bmp");
 		break;
-
+	case SKILL_Barricade:
+		Ani_Trap[UP].Init(hwnd, 0, 0, 80, 160, Frame, L"./Image/Tile/Barricade_Up.bmp");
+		Ani_Trap[DOWN].Init(hwnd, 0, 0, 80, 160, Frame, L"./Image/Tile/Barricade_Down.bmp");
+		Ani_Trap[LEFT].Init(hwnd, 0, 0, 80, 160, Frame, L"./Image/Tile/Barricade_Left.bmp");
+		Ani_Trap[RIGHT].Init(hwnd, 0, 0, 80, 160, Frame, L"./Image/Tile/Barricade_Right.bmp");
+		break;
 	}
+	Ani_SelectedArea.Init(hwnd, 0, 0, 240, 240, 1, L"./Image/Tile/tileselect.bmp");
 
 	stateFrame = 1;
 	damgeDelay = 0;
 	SpinSpeed = 3;
-	repairGage = 10;
-	TrapHp = 50;
-
+	repairGage = 0;
+	TrapHp = 60;
+	stunTime = 100;
 
 	Tile_Func = Tile_Function;
 }
 
 void CTile::DestroyTile(CTile Tile)
 {
-	Tile.Tile_Sprite.Ternimate();
+	Tile.Tile_Sprite_On.Ternimate();
 }
 
 void CMap::InitMap(HWND hwnd)
@@ -72,10 +83,13 @@ void CMap::InitMap(HWND hwnd)
 	Trap_ScareCrow.InitTile(hwnd, 1 /*Frame*/, TRAP_ScareCrow, false, [&](Entity* ent) {ScareCrowActive(ent); });
 	Trap_Grab.InitTile(hwnd, 4 /*Frame*/, TRAP_Grab, false, [&](Entity* ent) {});
 	Trap_GrabArea.InitTile(hwnd, 1 /*Frame*/, TRAP_GrabArea, true, [&](Entity* ent) {GrabActive(ent);});
-	Trap_Cunfusion.InitTile(hwnd, 1 /*Frame*/, TRAP_Cunfusion, true, [&](Entity* ent) {ConfusionActive(ent); });
+	Trap_Cunfusion.InitTile(hwnd, 1 /*Frame*/, TRAP_Confusion, true, [&](Entity* ent) {ConfusionActive(ent); });
 	Trap_Hole.InitTile(hwnd, 1 /*Frame*/, TRAP_Hole, true, [&](Entity* ent) {HoleActive(ent);});
+	Skill_Barricade.InitTile(hwnd, 1 /*Frame*/, SKILL_Barricade, true, [&](Entity* ent) {});
 
-	ingameUI_TrapHpBar.Init(hwnd, 0, 0, 50, 10, L"./Image/UI/Ingame/ui_hpBar.bmp");
+	//ingameUI_TrapArea.Init(hwnd, 0, 0, 960, 240, L"./Image/Tile/tileselect.bmp");
+	ingameUI_TrapHpBar_edge.Init(hwnd, 0, 0, 60, 14, L"./Image/UI/Ingame/bluebar_edge.bmp");
+	ingameUI_TrapHpBar_fill.Init(hwnd, 0, 0, 60, 14, L"./Image/UI/Ingame/bluebar_fill.bmp");
 
 	Brick[B_UP].Init(hwnd, 0, 0, 80, 80, L"./Image/Tile/Brick_Up.bmp");
 	Brick[B_DOWN].Init(hwnd, 0, 0, 80, 80, L"./Image/Tile/Brick_Down.bmp");
@@ -97,6 +111,7 @@ void CMap::NiddleActive(Entity* ent)
 		Map[pos.y][pos.x].Tile_On = false; //재장전 필요한 상태로 변경
 	}
 }
+
 void CMap::ScareCrowActive(Entity* ent)
 {
 
@@ -109,7 +124,7 @@ void CMap::GrabActive(Entity* ent)
 	grabPos.x = Map[pos.y][pos.x].Grab_POS.x;
 	grabPos.y = Map[pos.y][pos.x].Grab_POS.y;
 
-	if (Map[grabPos.y][grabPos.x].Tile_On && ent->GetState() != WALK)
+	if (Map[grabPos.y][grabPos.x].Tile_On && ent->GetState() != WALK) //쓸데없이 코드가 길다. 나중에 줄여야겠다
 	{
 		ent->SetState(INTRAP); //엔티티 인트랩 상태로 변경
 		ent->SetAnimation(STAND); //엔티티 서있는 상태로 변경
@@ -165,7 +180,7 @@ void CMap::GrabActive(Entity* ent)
 				}
 				else
 				{
-					Map[grabPos.y][grabPos.x].stateFrame = 0;
+					Map[grabPos.y][grabPos.x].stateFrame = 1;
 					Map[grabPos.y][grabPos.x].Tile_On = false; //재장전 필요한 상태로 변경
 					ent->SetPosition(Map[pos.y][pos.x].Grab_POS.x, Map[pos.y][pos.x].Grab_POS.y);
 					ent->SetState(FINDWAY);
@@ -184,7 +199,7 @@ void CMap::GrabActive(Entity* ent)
 				}
 				else
 				{
-					Map[grabPos.y][grabPos.x].stateFrame = 0;
+					Map[grabPos.y][grabPos.x].stateFrame = 1;
 					Map[grabPos.y][grabPos.x].Tile_On = false; //재장전 필요한 상태로 변경
 					ent->SetPosition(Map[pos.y][pos.x].Grab_POS.x, Map[pos.y][pos.x].Grab_POS.y);
 					ent->SetState(FINDWAY);
@@ -201,7 +216,13 @@ void CMap::ConfusionActive(Entity* ent)
 	if (Map[pos.y][pos.x].Tile_On && ent->GetState() != WALK) //함정이 깔려있으면 //엔티티가 걷는 중이 아니면
 	{
 		ent->SetState(CONFUSE); //엔티티 혼란 상태로 변경
-		Map[pos.y][pos.x].Tile_On = false; //재장전 필요한 상태로 변경
+		Map[pos.y][pos.x].stateFrame++;
+		if (Map[pos.y][pos.x].stateFrame >= Map[pos.y][pos.x].stunTime)
+		{
+			Map[pos.y][pos.x].stateFrame = 0;
+			ent->SetState(FINDWAY); //엔티티 혼란 상태로 변경
+			Map[pos.y][pos.x].Tile_On = false; //재장전 필요한 상태로 변경
+		}
 	}
 }
 
@@ -237,7 +258,6 @@ void CMap::HoleActive(Entity* ent)
 	}
 }
 
-
 void CMap::ResetMap(int Character_x, int Character_y)
 {
 	for (int i = 0; i < MAX_TILE_Y; i++)
@@ -245,7 +265,7 @@ void CMap::ResetMap(int Character_x, int Character_y)
 		for (int j = 0; j < MAX_TILE_X; j++)
 		{
 			Map[i][j] = None;
-			Map[i][j].Tile_Sprite.SetPosition(j * 80, i * 80);
+			Map[i][j].Tile_Sprite_On.SetPosition(j * 80, i * 80);
 		}
 	}
 
@@ -308,7 +328,7 @@ void CMap::ActiveTile(Entity* ent)
 	case TRAP_ScareCrow:
 		Trap_ScareCrow.Tile_Func(ent);
 		break;
-	case TRAP_Cunfusion:
+	case TRAP_Confusion:
 		Trap_Cunfusion.Tile_Func(ent);
 		break;
 	case TRAP_Grab:
@@ -323,17 +343,23 @@ void CMap::ActiveTile(Entity* ent)
 void CMap::SetTileOnMap(CTile Tile, int x, int y)
 {
 	Map[y][x] = Tile;
-	Map[y][x].Tile_Sprite.SetPosition(x * 80, y * 80);
+	Map[y][x].Tile_Sprite_On.SetPosition(x * 80, y * 80);
 }
 
-void CMap::SetTrapOnMap(CTile Tile, int x, int y)
+int CMap::SetTrapOnMap(CTile Tile, int x, int y)
 {
-	if (Map[y][x].Tile_ID != FLOOR) return;
+	if (Map[y][x].Tile_ID != FLOOR) return false;
 
 	Map[y][x] = Tile;
-	Map[y][x].Tile_Sprite.SetPosition(x * 80, y * 80);
+	Map[y][x].Tile_Sprite_On.SetPosition(x * 80, y * 80);
+	return true;
 }
 
+bool CMap::isCanTrapSet(int x, int y)
+{
+	if (Map[y][x].Tile_ID != FLOOR) return false;
+	return true;
+}
 
 void CMap::DrawMap(HDC hMemDC, int x, int y)
 {
@@ -363,7 +389,7 @@ void CMap::DrawMap(HDC hMemDC, int x, int y)
 					continue;
 
 				Map[i - 1][j] = Wall;
-				Map[i - 1][j].Tile_Sprite.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 2) * 80 + Term_y - 40);
+				Map[i - 1][j].Tile_Sprite_On.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 2) * 80 + Term_y - 40);
 			}
 		}
 	}
@@ -377,29 +403,41 @@ void CMap::DrawMap(HDC hMemDC, int x, int y)
 
 			if (Map[i][j].Tile_ID == TRAP_ScareCrow)
 			{
-				ObjPool->Maps.Floor.Tile_Sprite.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 1) * 80 + Term_y - 40);
-				ObjPool->Maps.Floor.Tile_Sprite.Draw(hMemDC);
-				Map[i][j].Tile_Sprite.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 2) * 80 + Term_y - 40);
-				continue;
+				if (Map[i][j].Tile_On)
+					Map[i][j].Tile_Sprite_On.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 2) * 80 + Term_y - 40);
+				else
+					Map[i][j].Tile_Sprite_Off.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 2) * 80 + Term_y - 40);
 			}
-
-			if (Map[i][j].Tile_ID == TRAP_Grab)
+			else if (Map[i][j].Tile_ID == TRAP_Grab)
 			{
-				ObjPool->Maps.Floor.Tile_Sprite.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 1) * 80 + Term_y - 40);
-				ObjPool->Maps.Floor.Tile_Sprite.Draw(hMemDC);
-				Map[i][j].Ani_Trap[Map[i][j].nowTrapDirection].SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 120, ((i - Map_Start_y) - 1) * 80 + Term_y - 120);
+				ObjPool->Maps.Floor.Tile_Sprite_On.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 1) * 80 + Term_y - 40);
+				ObjPool->Maps.Floor.Tile_Sprite_On.Draw(hMemDC);
+				Map[i][j].Ani_Trap[Map[i][j].nowTrapDirection].SetPosition(((j - Map_Start_x) - 2) * 80 + Term_x - 40, ((i - Map_Start_y) - 2) * 80 + Term_y - 40);
 				Map[i][j].Ani_Trap[Map[i][j].nowTrapDirection].Draw(hMemDC);
-				continue;
 			}
-
-			Map[i][j].Tile_Sprite.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 1) * 80 + Term_y - 40);
-
-			Map[i][j].Tile_Sprite.Draw(hMemDC);
+			else if (Map[i][j].Tile_ID == SKILL_Barricade)
+			{
+				Map[i][j].Ani_Trap[Map[i][j].nowTrapDirection].SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 2) * 80 + Term_y - 40);
+				Map[i][j].Ani_Trap[Map[i][j].nowTrapDirection].Draw(hMemDC);
+			}
+			else
+			{
+				if (Map[i][j].Tile_On)
+				{
+					Map[i][j].Tile_Sprite_On.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 1) * 80 + Term_y - 40);
+					Map[i][j].Tile_Sprite_On.Draw(hMemDC);
+				}
+				else
+				{
+					Map[i][j].Tile_Sprite_Off.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 1) * 80 + Term_y - 40);
+					Map[i][j].Tile_Sprite_Off.Draw(hMemDC);
+				}
+			}
 		}
 	}
 }
 
-void CMap::DrawTrapHpBar(HDC hMemDC, int x, int y)
+void CMap::DrawTileUI(HDC hMemDC, int x, int y)
 {
 	if (x <= 8)
 		x = 8;
@@ -422,33 +460,30 @@ void CMap::DrawTrapHpBar(HDC hMemDC, int x, int y)
 		{
 			if (i < 1 || j < 1 || i >= MAX_TILE_Y || j >= MAX_TILE_X)
 				continue;
-			if (Map[i][j].Tile_On == false)
+
+			//====체력바 UI====
+			if (Map[i][j].Tile_On == false) //만약 함정이 고장났다면
 			{
-				switch (ObjPool->Player.GetDirection())
-				{
-				case UP:
-					ingameUI_TrapHpBar.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 25, ((i - Map_Start_y) - 1) * 80 + Term_y +20);
-					ingameUI_TrapHpBar.SetDrawArea(Map[i][j].repairGage, 10);
-					break;
-				case DOWN:
-					ingameUI_TrapHpBar.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 25, ((i - Map_Start_y) - 1) * 80 + Term_y + 20);
-					ingameUI_TrapHpBar.SetDrawArea(Map[i][j].repairGage, 10);
-					break;
-				case LEFT:
-					ingameUI_TrapHpBar.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 25, ((i - Map_Start_y) - 1) * 80 + Term_y + 20);
-					ingameUI_TrapHpBar.SetDrawArea(Map[i][j].repairGage, 10);
-					break;
-				case RIGHT:
-					ingameUI_TrapHpBar.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 25, ((i - Map_Start_y) - 1) * 80 + Term_y + 20);
-					ingameUI_TrapHpBar.SetDrawArea(Map[i][j].repairGage, 10);
-					break;
-				}
-				ingameUI_TrapHpBar.Draw(hMemDC);
+				ingameUI_TrapHpBar_fill.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 30, ((i - Map_Start_y) - 1) * 80 + Term_y + 15);
+				ingameUI_TrapHpBar_edge.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 30, ((i - Map_Start_y) - 1) * 80 + Term_y + 15);
+
+				ingameUI_TrapHpBar_fill.SetDrawArea(Map[i][j].repairGage, 14);
+				ingameUI_TrapHpBar_edge.SetDrawArea(60, 14);
+
+				ingameUI_TrapHpBar_fill.Draw(hMemDC);
+				ingameUI_TrapHpBar_edge.Draw(hMemDC);
+			}
+			//====함정 선택 UI====
+			if (Map[i][j].Tile_SelectArea == true)
+			{
+				//ObjPool->Maps.Floor.Tile_Sprite_On.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 1) * 80 + Term_y - 40);
+				//ObjPool->Maps.Floor.Tile_Sprite_On.Draw(hMemDC);
+				Map[i][j].Ani_SelectedArea.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 120, ((i - Map_Start_y) - 1) * 80 + Term_y - 120);
+				Map[i][j].Ani_SelectedArea.Draw(hMemDC);
 			}
 		}
 	}
 }
-
 
 void CMap::SetBrick(int x, int y)
 {
@@ -563,6 +598,7 @@ void CMap::DestroyMap()
 	Trap_ScareCrow.DestroyTile(Trap_ScareCrow);
 	Trap_Cunfusion.DestroyTile(Trap_Cunfusion);
 	Trap_Grab.DestroyTile(Trap_Grab);
+	Skill_Barricade.DestroyTile(Skill_Barricade);
 }
 
 int CMap::GetTileID(int x, int y)
@@ -580,19 +616,19 @@ bool CMap::CheckTrap(int diraction, POINT pos)
 	switch (diraction)
 	{
 	case LEFT:
-		if (Map[pos.y][pos.x - 1].Tile_ID != NONE && Map[pos.y][pos.x - 1].Tile_ID != WALL && Map[pos.y][pos.x - 1].Tile_ID != FLOOR)
+		if (Map[pos.y][pos.x - 1].Tile_ID != NONE && Map[pos.y][pos.x - 1].Tile_ID != WALL && Map[pos.y][pos.x - 1].Tile_ID != FLOOR && Map[pos.y][pos.x - 1].Tile_ID != SKILL_Barricade)
 			return true;
 		break;
 	case RIGHT:
-		if (Map[pos.y][pos.x + 1].Tile_ID != NONE && Map[pos.y][pos.x + 1].Tile_ID != WALL && Map[pos.y][pos.x + 1].Tile_ID != FLOOR)
+		if (Map[pos.y][pos.x + 1].Tile_ID != NONE && Map[pos.y][pos.x + 1].Tile_ID != WALL && Map[pos.y][pos.x + 1].Tile_ID != FLOOR && Map[pos.y][pos.x + 1].Tile_ID != SKILL_Barricade)
 			return true;
 		break;
 	case UP:
-		if (Map[pos.y - 1][pos.x].Tile_ID != NONE && Map[pos.y - 1][pos.x].Tile_ID != WALL && Map[pos.y - 1][pos.x].Tile_ID != FLOOR)
+		if (Map[pos.y - 1][pos.x].Tile_ID != NONE && Map[pos.y - 1][pos.x].Tile_ID != WALL && Map[pos.y - 1][pos.x].Tile_ID != FLOOR && Map[pos.y - 1][pos.x].Tile_ID != SKILL_Barricade)
 			return true;
 		break;
 	case DOWN:
-		if (Map[pos.y + 1][pos.x].Tile_ID != NONE && Map[pos.y + 1][pos.x].Tile_ID != WALL && Map[pos.y + 1][pos.x].Tile_ID != FLOOR)
+		if (Map[pos.y + 1][pos.x].Tile_ID != NONE && Map[pos.y + 1][pos.x].Tile_ID != WALL && Map[pos.y + 1][pos.x].Tile_ID != FLOOR && Map[pos.y + 1][pos.x].Tile_ID != SKILL_Barricade)
 			return true;
 		break;
 	}

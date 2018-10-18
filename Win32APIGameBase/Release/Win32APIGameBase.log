@@ -1,31 +1,9 @@
-﻿  stdafx.cpp
-  A_Star.cpp
-  BitmapObj.cpp
-  ButtonObj.cpp
-  DrawManager.cpp
+﻿  A_Star.cpp
   EntityObj.cpp
   FrameManager.cpp
-  GdiObj.cpp
-  HeroObj.cpp
-  InputManager.cpp
-  ObjectPool.cpp
-  SceneManager.cpp
-  Scene_Credit.cpp
-  Scene_Ingame.cpp
-  Scene_Title.cpp
-  Skill.cpp
-  SoundObj.cpp
-c:\users\hp\documents\github\philosopher-s-stone\win32apigamebase\soundobj.cpp(99): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  Sprite.cpp
-  System.cpp
-  SystemObj.cpp
-  TileObj.cpp
-c:\users\hp\documents\github\philosopher-s-stone\win32apigamebase\tileobj.cpp(227): warning C4305: '+=': 'double'에서 'float'(으)로 잘립니다.
-  컴파일하고 있습니다...
-  main.cpp
   코드를 생성하고 있습니다.
-  97 of 906 functions (10.7%) were compiled, the rest were copied from previous compilation.
-    7 functions were new in current compilation
-    64 functions had inline decision re-evaluated but remain unchanged
+  158 of 939 functions (16.8%) were compiled, the rest were copied from previous compilation.
+    35 functions were new in current compilation
+    79 functions had inline decision re-evaluated but remain unchanged
   코드를 생성했습니다.
   Win32APIGameBase.vcxproj -> C:\Users\hp\Documents\GitHub\Philosopher-s-Stone\Win32APIGameBase\Release\Win32APIGameBase.exe

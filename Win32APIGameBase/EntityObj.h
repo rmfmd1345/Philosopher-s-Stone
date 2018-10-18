@@ -14,7 +14,7 @@ enum eState
 	INTRAP,
 	CONFUSE,
 	TRAPSETTING,
-	TRAPREPAIRING
+	SKILLPREPARING
 };
 
 enum eEntity
@@ -66,6 +66,7 @@ public:
 	void SetAnimation(int ani);
 	void SetDirection(int dire);
 	void SetState(int state);
+	void SetStateFrame(int Frame);
 
 	void AddHealth(int a);
 
@@ -134,7 +135,7 @@ public:
 
 	void AddMonster(int type, int x, int y);
 	void AddMonster(int type);
-	void CheckHealth();
+	bool CheckHealth();
 
 	void SetDirection(int dire);
 

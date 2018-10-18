@@ -3,6 +3,7 @@ using namespace std;
 
 enum Skill_ID
 {
+	NONE_SKILL,
 	ATK_SKILL,
 	PUSH_SKILL,
 	AGGRO_SKILL,
@@ -16,16 +17,18 @@ public:
 	POINT Skill_Range[8];
 	int nowFrame;
 	int maxFrame;
-	int maxRange;
 
 	int nowDirection;
 	bool Check_Active;
 
 	int ID;
+	int Cooltime;
 
 public:
-	void InitSkill(HWND hWnd, int ID, int f, int r);
-	void ActiveSkill(int Diraction);
+	void InitSkill(HWND hWnd, int ID, int f);
+	void ActiveSkill();
+	void Animation();
+	void Draw(HDC hMemDC);
 
 	void Terminate();
 };

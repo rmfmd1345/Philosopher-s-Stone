@@ -11,12 +11,9 @@ void Ingame::Draw(HDC hMemDC)
 	ObjPool->Gdi.SetBrushColor(RGB(10, 23, 55));
 	ObjPool->Gdi.Rect(hMemDC, { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT });
 
-
 	ObjPool->Maps.DrawMap(hMemDC, PlayerPos.x, PlayerPos.y);
 	ObjPool->Maps.DrawBrick(hMemDC, PlayerPos.x, PlayerPos.y);
-
-	if (ObjPool->Player.GetState() == TRAPREPAIRING)
-		ObjPool->Maps.DrawTrapHpBar(hMemDC, PlayerPos.x, PlayerPos.y);
+	ObjPool->Maps.DrawTileUI(hMemDC, PlayerPos.x, PlayerPos.y);
 
 	ObjPool->MonsterPool.Draw(hMemDC, PlayerPos.x, PlayerPos.y);
 	//ObjPool->Player.Draw(hMemDC, PlayerPos.x, PlayerPos.y);
@@ -26,6 +23,7 @@ void Ingame::Draw(HDC hMemDC)
 	ObjPool->ingameUI_Stone.Draw(hMemDC);
 	ObjPool->ingameUI_Trap.Draw(hMemDC);
 	ObjPool->ingameUI_Skill.Draw(hMemDC);
+	ObjPool->Player.DrawSelectedTrapUI(hMemDC);
 	ObjPool->ingameUI_Stage.Draw(hMemDC);
 	ObjPool->ingameUI_Time.Draw(hMemDC);
 
@@ -52,13 +50,11 @@ void Ingame::OnTimer(HWND hWnd, int timer)
 		ObjPool->Player.UpdateState();
 
 		if (ObjPool->Player.ATK_Skill.Check_Active)
-			ObjPool->Player.ATK_Skill.Ani_Skill->NextFrameSprite();
-		if (ObjPool->Player.AGGRO_Skill.Check_Active)
-			ObjPool->Player.AGGRO_Skill.Ani_Skill->NextFrameSprite();
+			ObjPool->Player.ATK_Skill.Animation();
 		if (ObjPool->Player.PUSH_Skill.Check_Active)
-			ObjPool->Player.PUSH_Skill.Ani_Skill->NextFrameSprite();
+			ObjPool->Player.PUSH_Skill.Animation();
 		if (ObjPool->Player.BARRICADE_Skill.Check_Active)
-			ObjPool->Player.BARRICADE_Skill.Ani_Skill->NextFrameSprite();
+			ObjPool->Player.BARRICADE_Skill.Animation();
 	}
 	if (timer == MONSTERTM)
 	{
@@ -89,6 +85,15 @@ void Ingame::OnTimer(HWND hWnd, int timer)
 		{
 			ObjPool->MonsterTimer--;
 		}
+
+		if (ObjPool->Player.ATK_Skill.Cooltime != 0)
+			ObjPool->Player.ATK_Skill.Cooltime--;
+		if (ObjPool->Player.AGGRO_Skill.Cooltime != 0)
+			ObjPool->Player.AGGRO_Skill.Cooltime--;
+		if (ObjPool->Player.PUSH_Skill.Cooltime != 0)
+			ObjPool->Player.PUSH_Skill.Cooltime--;
+		if (ObjPool->Player.BARRICADE_Skill.Cooltime != 0)
+			ObjPool->Player.BARRICADE_Skill.Cooltime--;
 	}
 	wsprintf(ObjPool->TIMER, L"%02d:%02d", ObjPool->MonsterTimer / 60, ObjPool->MonsterTimer % 60);
 	wsprintf(ObjPool->Player.Rock_Num_UI, L"%05d", ObjPool->Player.Rock_Num);
@@ -96,20 +101,26 @@ void Ingame::OnTimer(HWND hWnd, int timer)
 
 void Ingame::Update() //씬 업데이트
 {
-	for (auto it = ObjPool->MonsterPool.ePool.begin(); it != ObjPool->MonsterPool.ePool.end(); it++)
-	{	
+	for (auto it = ObjPool->MonsterPool.ePool.begin(); it != ObjPool->MonsterPool.ePool.end();)
+	{
 		ObjPool->Maps.ActiveTile(it->GetEntity()); //몬스터에 대해 밟고 있는 타일 발동
-		ObjPool->MonsterPool.CheckHealth();
-
+		if (!ObjPool->MonsterPool.CheckHealth()) //죽으면 true 반환
+			it++;
+		
 		if (ObjPool->MonsterPool.ePool.empty()) return;
 	}
 
-	if (ObjPool->Player.GetState() == STAND && ObjPool->Player.isWatingTrapSet == true) //이동중에 트랩 세팅을 명령했으면 그 다음 칸에 멈춰서서 함정설치
+	if (ObjPool->Player.GetState() == STAND && ObjPool->Player.isWaitingTrapSet == true) //이동중에 트랩 세팅을 명령했으면 그 다음 칸에 멈춰서서 함정설치
 	{
 		ObjPool->Player.SetState(TRAPSETTING); //플레이어 고정상태로 만들기
-		ObjPool->Player.isWatingTrapSet = false;
+		ObjPool->Player.isWaitingTrapSet = false;
 	}
 
+	if (ObjPool->Player.GetState() == STAND && ObjPool->Player.isWaitingSkillSet == true) //이동중에 트랩 세팅을 명령했으면 그 다음 칸에 멈춰서서 함정설치
+	{
+		ObjPool->Player.SetState(SKILLPREPARING); //플레이어 고정상태로 만들기
+		ObjPool->Player.isWaitingSkillSet = false;
+	}
 }
 
 void Ingame::OnMouseLButtonDown(HWND hWnd, int x, int y)
@@ -203,7 +214,8 @@ void Ingame::OnKeyborad()
 	if (lastBitState[SPACE] == 0 && keyState[SPACE] & 0x0001) //SPACE
 	{
 		//보고 있는게 함정이면 수리
-		if (ObjPool->Maps.CheckTrap(ObjPool->Player.GetDirection(), ObjPool->Player.GetPosition()))
+		printf("플레이어 상태: %d", ObjPool->Player.GetState());
+		if (ObjPool->Maps.CheckTrap(ObjPool->Player.GetDirection(), ObjPool->Player.GetPosition()) && ObjPool->Player.GetState() != TRAPSETTING && ObjPool->Player.GetState() != SKILLPREPARING && ObjPool->Player.GetState() != WALK)
 		{
 			ObjPool->Player.RepairTrap();
 		}
@@ -216,6 +228,12 @@ void Ingame::OnKeyborad()
 			ObjPool->Player.SetTrap();
 			ObjPool->Player.SetState(STAND);
 		}
+		else if (ObjPool->Player.GetState() == SKILLPREPARING)
+		{
+			ObjPool->Player.UseSkill();
+			ObjPool->Player.SetState(STAND);
+		}
+		ObjPool->Player.SetSelectedArea(false); //선택상태 해제
 
 		lastBitState[SPACE] = 1;
 	}
@@ -223,7 +241,6 @@ void Ingame::OnKeyborad()
 	//플레이어 작동
 	if (lastBitState[KEY_1] == 0 && keyState[KEY_1] & 0x0001) //1번키
 	{
-		/* 플레이어 이동 중에 1번키를 누르면, 일단 걸어간 후 다음 칸부터 TRAPSETTING 모드가 되게 하고 싶은데 방법 없나 */
 		if (ObjPool->Player.GetState() == STAND) //플레이어가 서 있는 상태면
 		{
 			ObjPool->Player.SetState(TRAPSETTING); //플레이어 고정상태로 만들기
@@ -232,11 +249,13 @@ void Ingame::OnKeyborad()
 		else if (ObjPool->Player.GetState() == WALK) //이동중에 누르면 다 걸어갈때까지 대기
 		{
 			ObjPool->Player.selectedTrap = TRAP_Niddle;
-			ObjPool->Player.isWatingTrapSet = true;
+			ObjPool->Player.isWaitingTrapSet = true;
 		}
-		else if (ObjPool->Player.GetState() == TRAPSETTING) //고정상태에서 1번키를 한 번 더 누르면 고정해제
+		else if (ObjPool->Player.GetState() == TRAPSETTING && ObjPool->Player.selectedTrap == TRAP_Niddle) //고정상태에서 1번키를 한 번 더 누르면 고정해제
+		{
+			ObjPool->Player.selectedTrap = NONE;
 			ObjPool->Player.SetState(STAND);
-
+		}
 
 		lastBitState[KEY_1] = 1;
 	}
@@ -252,11 +271,14 @@ void Ingame::OnKeyborad()
 		else if (ObjPool->Player.GetState() == WALK) //이동중에 누르면 다 걸어갈때까지 대기
 		{
 			ObjPool->Player.selectedTrap = TRAP_ScareCrow;
-			ObjPool->Player.isWatingTrapSet = true;
+			ObjPool->Player.isWaitingTrapSet = true;
 		}
 
-		else if (ObjPool->Player.GetState() == TRAPSETTING)
+		else if (ObjPool->Player.GetState() == TRAPSETTING && ObjPool->Player.selectedTrap == TRAP_ScareCrow)
+		{
+			ObjPool->Player.selectedTrap = NONE;
 			ObjPool->Player.SetState(STAND);
+		}
 
 		lastBitState[KEY_2] = 1;
 	}
@@ -272,11 +294,15 @@ void Ingame::OnKeyborad()
 		else if (ObjPool->Player.GetState() == WALK) //이동중에 누르면 다 걸어갈때까지 대기
 		{
 			ObjPool->Player.selectedTrap = TRAP_Grab;
-			ObjPool->Player.isWatingTrapSet = true;
+			ObjPool->Player.isWaitingTrapSet = true;
 		}
 
-		else if (ObjPool->Player.GetState() == TRAPSETTING)
+		else if (ObjPool->Player.GetState() == TRAPSETTING && ObjPool->Player.selectedTrap == TRAP_Grab)
+		{
+			ObjPool->Player.selectedTrap = NONE;
 			ObjPool->Player.SetState(STAND);
+		}
+
 
 		lastBitState[KEY_3] = 1;
 	}
@@ -286,17 +312,20 @@ void Ingame::OnKeyborad()
 		if (ObjPool->Player.GetState() == STAND)
 		{
 			ObjPool->Player.SetState(TRAPSETTING);
-			ObjPool->Player.selectedTrap = TRAP_Cunfusion;
+			ObjPool->Player.selectedTrap = TRAP_Confusion;
 		}
 
 		else if (ObjPool->Player.GetState() == WALK) //이동중에 누르면 다 걸어갈때까지 대기
 		{
-			ObjPool->Player.selectedTrap = TRAP_Cunfusion;
-			ObjPool->Player.isWatingTrapSet = true;
+			ObjPool->Player.selectedTrap = TRAP_Confusion;
+			ObjPool->Player.isWaitingTrapSet = true;
 		}
 
-		else if (ObjPool->Player.GetState() == TRAPSETTING)
+		else if (ObjPool->Player.GetState() == TRAPSETTING && ObjPool->Player.selectedTrap == TRAP_Confusion)
+		{
+			ObjPool->Player.selectedTrap = NONE;
 			ObjPool->Player.SetState(STAND);
+		}
 
 		lastBitState[KEY_4] = 1;
 	}
@@ -312,43 +341,94 @@ void Ingame::OnKeyborad()
 		else if (ObjPool->Player.GetState() == WALK) //이동중에 누르면 다 걸어갈때까지 대기
 		{
 			ObjPool->Player.selectedTrap = TRAP_Hole;
-			ObjPool->Player.isWatingTrapSet = true;
+			ObjPool->Player.isWaitingTrapSet = true;
 		}
 
-		else if (ObjPool->Player.GetState() == TRAPSETTING)
+		else if (ObjPool->Player.GetState() == TRAPSETTING && ObjPool->Player.selectedTrap == TRAP_Hole)
+		{
+			ObjPool->Player.selectedTrap = NONE;
 			ObjPool->Player.SetState(STAND);
+		}
 
 		lastBitState[KEY_5] = 1;
 	}
 
 	if (lastBitState[KEY_A] == 0 && keyState[KEY_A] & 0x0001) //B_RIGHT
 	{
-		ObjPool->Player.ATK_Skill.ActiveSkill(ObjPool->Player.GetDirection());
-		ObjPool->Player.ATK_Skill.Check_Active = true;
-		
+		if (ObjPool->Player.ATK_Skill.Cooltime <= 0)
+		{
+			if (ObjPool->Player.GetState() == STAND)
+			{
+				ObjPool->Player.selectedSkill = ATK_SKILL;
+				ObjPool->Player.UseSkill();
+			}
+		}
+
 		lastBitState[KEY_A] = 1;
 	}
 
 	if (lastBitState[KEY_S] == 0 && keyState[KEY_S] & 0x0001) //B_RIGHT
 	{
-		ObjPool->Player.AGGRO_Skill.ActiveSkill(ObjPool->Player.GetDirection());
-		ObjPool->Player.AGGRO_Skill.Check_Active = true;
+		if (ObjPool->Player.AGGRO_Skill.Cooltime <= 0)
+		{
+			if (ObjPool->Player.GetState() == STAND)
+			{
+				ObjPool->Player.selectedSkill = AGGRO_SKILL;
+				ObjPool->Player.UseSkill();
+			}
+		}
 
 		lastBitState[KEY_S] = 1;
 	}
 
 	if (lastBitState[KEY_D] == 0 && keyState[KEY_D] & 0x0001) //B_RIGHT
 	{
-		ObjPool->Player.PUSH_Skill.ActiveSkill(ObjPool->Player.GetDirection());
-		ObjPool->Player.PUSH_Skill.Check_Active = true;
+		if (ObjPool->Player.PUSH_Skill.Cooltime <= 0)
+		{
+			if (ObjPool->Player.GetState() == STAND)
+			{
+				ObjPool->Player.SetState(SKILLPREPARING);
+				ObjPool->Player.selectedSkill = PUSH_SKILL;
+			}
+
+			else if (ObjPool->Player.GetState() == WALK) //이동중에 누르면 다 걸어갈때까지 대기
+			{
+				ObjPool->Player.selectedSkill = PUSH_SKILL;
+				ObjPool->Player.isWaitingSkillSet = true;
+			}
+
+			else if (ObjPool->Player.GetState() == SKILLPREPARING && ObjPool->Player.selectedSkill == PUSH_SKILL)
+			{
+				ObjPool->Player.selectedSkill = NONE;
+				ObjPool->Player.SetState(STAND);
+			}
+		}
 
 		lastBitState[KEY_D] = 1;
 	}
 
 	if (lastBitState[KEY_F] == 0 && keyState[KEY_F] & 0x0001) //B_RIGHT
 	{
-		ObjPool->Player.BARRICADE_Skill.ActiveSkill(ObjPool->Player.GetDirection());
-		ObjPool->Player.BARRICADE_Skill.Check_Active = true;
+		if (ObjPool->Player.BARRICADE_Skill.Cooltime <= 0)
+		{
+			if (ObjPool->Player.GetState() == STAND)
+			{
+				ObjPool->Player.SetState(SKILLPREPARING);
+				ObjPool->Player.selectedSkill = BARRICADE_SKILL;
+			}
+
+			else if (ObjPool->Player.GetState() == WALK) //이동중에 누르면 다 걸어갈때까지 대기
+			{
+				ObjPool->Player.selectedSkill = BARRICADE_SKILL;
+				ObjPool->Player.isWaitingSkillSet = true;
+			}
+
+			else if (ObjPool->Player.GetState() == SKILLPREPARING && ObjPool->Player.selectedSkill == BARRICADE_SKILL)
+			{
+				ObjPool->Player.selectedSkill = NONE;
+				ObjPool->Player.SetState(STAND);
+			}
+		}
 
 		lastBitState[KEY_F] = 1;
 	}

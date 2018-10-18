@@ -28,20 +28,20 @@ void Entity::Init(HWND hWnd, int x, int y, int type, COLORREF sprite)
 	switch (type)
 	{
 	case DEALER:
-		Ani_stand[UP].Init(hWnd, 0, 0, 80, 120, 1, L"./Image/Walk_Ani/dealer_walk_back.bmp");
-		Ani_stand[DOWN].Init(hWnd, 0, 0, 80, 120, 1, L"./Image/Walk_Ani/dealer_walk_front.bmp");
-		Ani_stand[LEFT].Init(hWnd, 0, 0, 80, 120, 1, L"./Image/Walk_Ani/dealer_walk_left.bmp");
-		Ani_stand[RIGHT].Init(hWnd, 0, 0, 80, 120, 1, L"./Image/Walk_Ani/dealer_walk_right.bmp");
+		Ani_stand[UP].Init(hWnd, 0, 0, 80, 120, 1, L"./Image/Stand_Ani/dealer/dealer_back_standing.bmp");
+		Ani_stand[DOWN].Init(hWnd, 0, 0, 80, 120, 1, L"./Image/Stand_Ani/dealer/dealer_front_standing.bmp");
+		Ani_stand[LEFT].Init(hWnd, 0, 0, 80, 120, 1, L"./Image/Stand_Ani/dealer/dealer_left_standing.bmp");
+		Ani_stand[RIGHT].Init(hWnd, 0, 0, 80, 120, 1, L"./Image/Stand_Ani/dealer/dealer_right_standing.bmp");
 
 		Ani_walk[UP].Init(hWnd, 0, 0, 480, 120, 6, L"./Image/Walk_Ani/dealer_walk_back.bmp");
 		Ani_walk[DOWN].Init(hWnd, 0, 0, 480, 120, 6, L"./Image/Walk_Ani/dealer_walk_front.bmp");
 		Ani_walk[LEFT].Init(hWnd, 0, 0, 480, 120, 6, L"./Image/Walk_Ani/dealer_walk_left.bmp");
 		Ani_walk[RIGHT].Init(hWnd, 0, 0, 480, 120, 6, L"./Image/Walk_Ani/dealer_walk_right.bmp");
 
-		Ani_attack[UP].Init(hWnd, 0, 0, 240, 122, 4, L"./Image/Walk_Ani/dealer_walk_back.bmp");
-		Ani_attack[DOWN].Init(hWnd, 0, 0, 216, 122, 4, L"./Image/Walk_Ani/dealer_walk_front.bmp");
-		Ani_attack[LEFT].Init(hWnd, 0, 0, 304, 122, 4, L"./Image/Walk_Ani/dealer_walk_left.bmp");
-		Ani_attack[RIGHT].Init(hWnd, 0, 0, 336, 122, 4, L"./Image/Walk_Ani/dealer_walk_right.bmp");
+		Ani_attack[UP].Init(hWnd, 0, 0, 240, 122, 4, L"./Image/Attack_Ani/dealer_attack_front.bmp");
+		Ani_attack[DOWN].Init(hWnd, 0, 0, 216, 122, 4, L"./Image/Attack_Ani/dealer_attack_front.bmp");
+		Ani_attack[LEFT].Init(hWnd, 0, 0, 304, 122, 4, L"./Image/Attack_Ani/dealer_attack_front.bmp");
+		Ani_attack[RIGHT].Init(hWnd, 0, 0, 336, 122, 4, L"./Image/Attack_Ani/dealer_attack_front.bmp");
 		break;
 	case WIZARD:
 		Ani_stand[UP].Init(hWnd, 0, 0, 70, 102, 1, L"./Image/Walk_Ani/Wizard_Back.bmp");
@@ -201,7 +201,7 @@ void Entity::Draw(HDC hMemDC, int x, int y)
 		Ani_stand[nowDirection].SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y - 40);
 		Ani_stand[nowDirection].Draw(hMemDC);
 
-		switch (nowDirection)
+		switch (nowDirection) 
 		{
 		case UP:
 			ObjPool->FindEffect.SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 20, ((pos.y - Map_y) - 1) * 80 + Term_y - 70);
@@ -217,28 +217,44 @@ void Entity::Draw(HDC hMemDC, int x, int y)
 			break;
 		}
 		ObjPool->FindEffect.Draw(hMemDC);
-		/*
+		
 		ObjPool->Gdi.SetBrushColor(RGB(255, 255, 255));
 		ObjPool->Gdi.Rect(hMemDC, { ((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y - 40,((pos.x - Map_x) - 1) * 80 + Term_x + 40, ((pos.y - Map_y) - 1) * 80 + Term_y });
 		ObjPool->Gdi.SetTextsColor(RGB(255, 50, 50));
 		ObjPool->Gdi.Text(hMemDC, ((pos.x - Map_x) - 1) * 80 + Term_x - 10, ((pos.y - Map_y) - 1) * 80 + Term_y - 30, L"!!!", 24);
-		*/
+		
 		break;
 	}
+
+	switch (nowState)
+	{
+		case CONFUSE:
+			ObjPool->ConfuseEffect.SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 25, ((pos.y - Map_y) - 1) * 80 + Term_y - 70);
+			ObjPool->ConfuseEffect.Draw(hMemDC);
+			break;
+		//case MARKFORFIND:
+	}
 }
+
+
 
 void Entity::Animation()
 {
 	switch (nowAnimation)
 	{
-	case STAND:
-		Ani_stand[nowDirection].NextFrameSprite();
-		break;
 	case WALK:
-		Ani_walk[nowDirection].NextFrameSprite();
+		Ani_walk[nowDirection].NextFrameSprite(true);
 		break;
 	case ATTACK:
-		Ani_attack[nowDirection].NextFrameSprite();
+		Ani_attack[nowDirection].NextFrameSprite(false);
+		break;
+	}
+
+
+	switch (nowState)
+	{
+	case CONFUSE:
+		ObjPool->ConfuseEffect.NextFrameSprite(true);
 		break;
 	}
 }
@@ -610,7 +626,7 @@ void Entity::UpdateState()
 		{
 			stateFrame++;
 			if (stateFrame < 7 && stateFrame % 2)
-				ObjPool->FindEffect.NextFrameSprite();
+				ObjPool->FindEffect.NextFrameSprite(false);
 		}
 		else
 		{
@@ -629,7 +645,6 @@ void Entity::UpdateState()
 		return;
 	}
 
-	//혼란 디버프
 	if (nowState == CONFUSE)
 	{
 		//TODO : 혼란 상태 추가
@@ -912,6 +927,11 @@ void Entity::SetState(int state)
 	nowState = state;
 }
 
+void Entity::SetStateFrame(int Frame)
+{
+	stateFrame = Frame;
+}
+
 bool Entity::isDead()
 {
 	return !(health > 0);
@@ -999,13 +1019,38 @@ void Monster::Draw(HDC hMemDC, int x, int y)
 			if (!isPlayer)
 				if (ObjPool->Player.GetPosition().y == i && ObjPool->Player.GetPosition().x == j)
 				{
+					if (ObjPool->Player.ATK_Skill.Check_Active)
+					{
+						ObjPool->Player.ATK_Skill.Draw(hMemDC);
+					}
+					if (ObjPool->Player.PUSH_Skill.Check_Active && ObjPool->Player.GetDirection() != DOWN)
+					{
+						ObjPool->Player.PUSH_Skill.Draw(hMemDC);
+					}
+					if (ObjPool->Player.BARRICADE_Skill.Check_Active && ObjPool->Player.GetDirection() != DOWN)
+					{
+						ObjPool->Player.BARRICADE_Skill.Draw(hMemDC);
+					}
+
 					ObjPool->Player.Draw(hMemDC, x, y);
 					isPlayer = true;
+
+					if (ObjPool->Player.PUSH_Skill.Check_Active && ObjPool->Player.GetDirection() == DOWN)
+					{
+						ObjPool->Player.PUSH_Skill.Draw(hMemDC);
+					}
+					if (ObjPool->Player.BARRICADE_Skill.Check_Active && ObjPool->Player.GetDirection() == DOWN)
+					{
+						ObjPool->Player.BARRICADE_Skill.Draw(hMemDC);
+					}
 				}
 
 				if (ObjPool->Maps.Map[i][j].Tile_ID == TRAP_ScareCrow)
 				{
-					ObjPool->Maps.Map[i][j].Tile_Sprite.Draw(hMemDC);
+					if (ObjPool->Maps.Map[i][j].Tile_On)
+						ObjPool->Maps.Map[i][j].Tile_Sprite_On.Draw(hMemDC);
+					else
+						ObjPool->Maps.Map[i][j].Tile_Sprite_Off.Draw(hMemDC);
 				}
 		}
 	}
@@ -1072,24 +1117,27 @@ void Monster::AddMonster(int type)
 	AddMonster(type, Dealer.GetSpawnPosition().x, Dealer.GetSpawnPosition().y);
 }
 
-void Monster::CheckHealth()
+bool Monster::CheckHealth()
 {
-	if (ePool.empty()) return;
+	if (ePool.empty()) return false;
 
 	for (auto it = ePool.begin(); it != ePool.end();)
 	{
 		if (it->isDead())
 		{
-  			it->Ternimate();
 			it = ePool.erase(it);
 
-			if (ePool.empty()) return;
+			return true;
+
+			if (ePool.empty()) return false;
 		}
 		else
 		{
 			it++;
 		}
 	}
+
+	return false;
 }
 
 void Monster::SetDirection(int dire)

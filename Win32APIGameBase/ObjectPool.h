@@ -20,9 +20,10 @@ enum Tile_ID_List  // 식별 번호 리스트
 	TRAP_Niddle,
 	TRAP_Hole,
 	TRAP_ScareCrow,
-	TRAP_Cunfusion,
+	TRAP_Confusion,
 	TRAP_Grab,
 	TRAP_GrabArea,
+	SKILL_Barricade
 };
 
 enum eDirection
@@ -82,6 +83,7 @@ public:
 	//Entity(Monster)
 	Monster MonsterPool;
 	SpriteHelper FindEffect;
+	SpriteHelper ConfuseEffect;
 	int debug = 0;
 
 	Hero Player;
@@ -108,4 +110,6 @@ public:
 	Bitmap ingameUI_Skill;
 	Bitmap ingameUI_Stage;
 	Bitmap ingameUI_Time;
+
+	SpriteHelper ingameUI_SelectedTrap; //함정 선택 애니메이션
 };

@@ -8,7 +8,8 @@ private:
 	POINT pos;		//엔티티 위치
 
 	int nowState;
-	int stateFrame;
+	int stateFrame_Hero;
+	int stateFrame_TrapSelect;
 
 	int nowAnimation;		//지금 엔티티 애니메이션 상태
 	int nowDirection;
@@ -26,7 +27,9 @@ public:
 	Skill PUSH_Skill;
 	Skill BARRICADE_Skill;
 	int selectedTrap;
-	bool isWatingTrapSet;
+	int selectedSkill;
+	bool isWaitingTrapSet;
+	bool isWaitingSkillSet;
 
 public:
 	void Init(HWND hWnd, int x, int y, COLORREF sprite = RGB(255, 0, 255));
@@ -49,8 +52,12 @@ public:
 
 	void AddHealth(int a);
 	void DigMap();
+	void SetSelectedArea(bool isCreate);
 	void SetTrap();
+	void UseSkill();
 	void RepairTrap();
+
+	void DrawSelectedTrapUI(HDC hMemDC);
 
 	bool isDead();
 	bool isWalk();
