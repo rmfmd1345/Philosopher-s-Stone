@@ -5,6 +5,10 @@ class SpriteHelper
 private:
 
 	HDC hdcImg;				//미리 그려둘 비트맵의 DC
+
+	HDC hAlpha;				//투명화를 위해 그려둘 비트맵의 DC
+	BLENDFUNCTION bf;		//투명화처리에 필요
+
 	HBITMAP hBitmap;		//비트맵
 	COLORREF SpriteColor;	//투명화 컬러 (마젠타가 기본)
 	POINT pos;				//좌표
@@ -19,6 +23,7 @@ public:
 public:
 	void Init(HWND hWnd, int x, int y, int w, int h, int f, LPCWSTR szFileName, COLORREF sprite = RGB(255, 0, 255));
 	void Draw(HDC hMemDC);
+	void AlphaDraw(HDC hMemDC);
 	void ReverseDraw(HDC hMemDC);
 	void Ternimate();
 

@@ -4,6 +4,7 @@
 void SpriteHelper::Init(HWND hWnd, int x, int y, int w, int h, int f, LPCWSTR szFileName, COLORREF sprite)
 {
 	hdcImg = CreateCompatibleDC(GetDC(hWnd));	//그릴 DC를 생성
+	hAlpha = CreateCompatibleDC(GetDC(hWnd));	//그릴 DC를 생성
 
 	WCHAR str[128];
 	wsprintf(str, szFileName);
@@ -32,6 +33,25 @@ void SpriteHelper::Draw(HDC hMemDC)
 {
 	SelectObject(hdcImg, hBitmap);	//미리 만들어둔 DC에 불러온 비트맵을 설정
 	TransparentBlt(hMemDC, pos.x, pos.y, rtImg.right, h, hdcImg, rtImg.left, rtImg.top, rtImg.right, rtImg.bottom, SpriteColor);	//받아온 후면DC에 비트맵을 불러온 DC를 복사
+}
+
+void SpriteHelper::AlphaDraw(HDC hMemDC) //투명화 처리 시도중
+{
+	/* 이론상으론 되야 하는데 안 되어서 보류
+	TransparentBlt(hAlpha, pos.x, pos.y, rtImg.right, h, hMemDC, rtImg.left, rtImg.top, rtImg.right, rtImg.bottom, SpriteColor);
+
+	SelectObject(hdcImg, hBitmap);	//미리 만들어둔 DC에 불러온 비트맵을 설정
+	TransparentBlt(hAlpha, pos.x, pos.y, rtImg.right, h, hdcImg, rtImg.left, rtImg.top, rtImg.right, rtImg.bottom, SpriteColor);
+	*/
+
+	SelectObject(hAlpha, hBitmap);	//이렇게만 했을 경우 마젠타 값이 안빠진 채로 투명화되는 문제가 있다.
+
+	bf.BlendOp = AC_SRC_OVER;
+	bf.BlendFlags = 0; //이 값은 항상 0이여야 함
+	bf.SourceConstantAlpha = 100; //투명도 값
+	bf.AlphaFormat = 0;
+	AlphaBlend(hMemDC, pos.x, pos.y, rtImg.right, h, hAlpha, rtImg.left, rtImg.top, rtImg.right, rtImg.bottom, bf);
+	//3) 백버퍼에 완성된 알파블랜드 알파DC를 보내기
 }
 
 void SpriteHelper::ReverseDraw(HDC hMemDC)
