@@ -34,6 +34,8 @@ void Title::OnMouseLButtonUp(HWND hWnd, int x, int y)
 	if (ObjPool->titleBtn_Start.isClickUp(x, y))	//버튼을 클릭했을 때
 	{
 		ObjPool->System.SetScene(SCENE_INGAME);	//씬을 바꾼다
+		ObjPool->Sounds.Push(BGM_CAVE);
+		ObjPool->Sounds.Pop(1);
 	}
 	if (ObjPool->titleBtn_Credit.isClickUp(x, y))	//버튼을 클릭했을 때
 	{

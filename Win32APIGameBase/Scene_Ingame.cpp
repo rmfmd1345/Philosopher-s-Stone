@@ -224,7 +224,7 @@ void Ingame::OnKeyborad()
 		}
 		else if (ObjPool->Player.GetState() == STAND)
 		{
-			ObjPool->Player.DigMap();
+    			ObjPool->Player.DigMap();
 		}
 		else if (ObjPool->Player.GetState() == TRAPSETTING) //트랩 세팅중이면 설치
 		{

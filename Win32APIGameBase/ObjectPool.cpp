@@ -58,6 +58,8 @@ void ObjectPool::CreateObject(HWND hWnd)	//객체의 초기 설정을 적는 곳
 
 void ObjectPool::DeleteObject()				//비트맵객체는 반드시 종료해주기
 {
+	Sounds.ClearAll();
+
 	titleBg.Ternimate();
 	titleBtn_Start.Ternimate();
 	titleBtn_Credit.Ternimate();

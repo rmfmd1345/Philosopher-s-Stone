@@ -56,7 +56,8 @@ enum eTimer
 	UPDATE,
 	ANIMATION,
 	PLAYERWALK,
-	MONSTERTM
+	MONSTERTM,
+	SOUND
 };
 
 class ObjectPool		//오브젝트 풀 (전역변수같이 사용됨)
@@ -79,8 +80,9 @@ public:
 	void DeleteObject();				//종료
 
 public:
-	System System;	//시스템 변수를 넣어두는 곳 
-	Gdi Gdi;		//그리기 함수를 사용하는 곳
+	System System;		//시스템 변수를 넣어두는 곳
+	SoundList Sounds;	//사운드 넣어두는 곳
+	Gdi Gdi;			//그리기 함수를 사용하는 곳
 
 	//Entity(Monster)
 	Monster MonsterPool;

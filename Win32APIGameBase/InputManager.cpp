@@ -8,12 +8,20 @@ int InputManager::OnCreate(HWND hWnd, WPARAM wParam, LPARAM lParam)
 	SetTimer(hWnd, ANIMATION, 90, NULL);
 	SetTimer(hWnd, PLAYERWALK, 70, NULL);
 	SetTimer(hWnd, MONSTERTM, 1000, NULL);
+	SetTimer(hWnd, SOUND, 100, NULL);
+
+	ObjPool->Sounds.Push(BGM_TITLE, 1);
 
 	return 1;
 }
 
 int InputManager::OnTimer(HWND hWnd, WPARAM wParam, LPARAM lParam)
 {
+	if(wParam == SOUND)
+	{
+		ObjPool->Sounds.Pulse();
+	}
+
 	switch (ObjPool->System.GetScene())	//옵젝풀에서 씬을 불러옴
 	{
 	case SCENE_TITLE:	//씬이 타이틀 이라면
