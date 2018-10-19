@@ -55,6 +55,7 @@ enum eTimer
 {
 	UPDATE,
 	ANIMATION,
+	PLAYERWALK,
 	MONSTERTM
 };
 

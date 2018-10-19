@@ -45,9 +45,6 @@ void Ingame::OnTimer(HWND hWnd, int timer)
 		ObjPool->MonsterPool.Animation();
 		ObjPool->MonsterPool.UpdateState();
 
-		ObjPool->Player.Animation();
-		ObjPool->Player.UpdateState();
-
 		if (ObjPool->Player.ATK_Skill.Check_Active)
 			ObjPool->Player.ATK_Skill.Animation();
 		if (ObjPool->Player.PUSH_Skill.Check_Active)
@@ -55,6 +52,13 @@ void Ingame::OnTimer(HWND hWnd, int timer)
 		if (ObjPool->Player.BARRICADE_Skill.Check_Active)
 			ObjPool->Player.BARRICADE_Skill.Animation();
 	}
+
+	if (timer == PLAYERWALK)
+	{
+		ObjPool->Player.Animation();
+		ObjPool->Player.UpdateState();
+	}
+
 	if (timer == MONSTERTM)
 	{
 		if (ObjPool->MonsterPool.ePool.empty() && ObjPool->MonsterTimer <= 0)
@@ -240,12 +244,12 @@ void Ingame::OnKeyborad()
 	//플레이어 작동
 	if (lastBitState[KEY_1] == 0 && keyState[KEY_1] & 0x0001) //1번키
 	{
-		if (ObjPool->Player.GetState() == STAND) //플레이어가 서 있는 상태면
+		if (ObjPool->Player.GetState() == STAND && ObjPool->Player.Rock_Num >= 10) //플레이어가 서 있는 상태면
 		{
 			ObjPool->Player.SetState(TRAPSETTING); //플레이어 고정상태로 만들기
 			ObjPool->Player.selectedTrap = TRAP_Niddle;
 		}
-		else if (ObjPool->Player.GetState() == WALK) //이동중에 누르면 다 걸어갈때까지 대기
+		else if (ObjPool->Player.GetState() == WALK && ObjPool->Player.Rock_Num >= 10) //이동중에 누르면 다 걸어갈때까지 대기
 		{
 			ObjPool->Player.selectedTrap = TRAP_Niddle;
 			ObjPool->Player.isWaitingTrapSet = true;
@@ -261,13 +265,13 @@ void Ingame::OnKeyborad()
 
 	if (lastBitState[KEY_2] == 0 && keyState[KEY_2] & 0x0001) //2번키
 	{
-		if (ObjPool->Player.GetState() == STAND)
+		if (ObjPool->Player.GetState() == STAND && ObjPool->Player.Rock_Num >= 15)
 		{
 			ObjPool->Player.SetState(TRAPSETTING);
 			ObjPool->Player.selectedTrap = TRAP_ScareCrow;
 		}
 
-		else if (ObjPool->Player.GetState() == WALK) //이동중에 누르면 다 걸어갈때까지 대기
+		else if (ObjPool->Player.GetState() == WALK && ObjPool->Player.Rock_Num >= 15) //이동중에 누르면 다 걸어갈때까지 대기
 		{
 			ObjPool->Player.selectedTrap = TRAP_ScareCrow;
 			ObjPool->Player.isWaitingTrapSet = true;
@@ -284,13 +288,13 @@ void Ingame::OnKeyborad()
 
 	if (lastBitState[KEY_3] == 0 && keyState[KEY_3] & 0x0001) //3번키
 	{
-		if (ObjPool->Player.GetState() == STAND)
+		if (ObjPool->Player.GetState() == STAND && ObjPool->Player.Rock_Num >= 20)
 		{
 			ObjPool->Player.SetState(TRAPSETTING);
 			ObjPool->Player.selectedTrap = TRAP_Grab;
 		}
 
-		else if (ObjPool->Player.GetState() == WALK) //이동중에 누르면 다 걸어갈때까지 대기
+		else if (ObjPool->Player.GetState() == WALK && ObjPool->Player.Rock_Num >= 20) //이동중에 누르면 다 걸어갈때까지 대기
 		{
 			ObjPool->Player.selectedTrap = TRAP_Grab;
 			ObjPool->Player.isWaitingTrapSet = true;
@@ -306,7 +310,7 @@ void Ingame::OnKeyborad()
 		lastBitState[KEY_3] = 1;
 	}
 
-	if (lastBitState[KEY_4] == 0 && keyState[KEY_4] & 0x0001) //4번키
+	if (lastBitState[KEY_4] == 0 && keyState[KEY_4] & 0x0001 && ObjPool->Player.Rock_Num >= 25) //4번키
 	{
 		if (ObjPool->Player.GetState() == STAND)
 		{
@@ -314,7 +318,7 @@ void Ingame::OnKeyborad()
 			ObjPool->Player.selectedTrap = TRAP_Confusion;
 		}
 
-		else if (ObjPool->Player.GetState() == WALK) //이동중에 누르면 다 걸어갈때까지 대기
+		else if (ObjPool->Player.GetState() == WALK && ObjPool->Player.Rock_Num >= 25) //이동중에 누르면 다 걸어갈때까지 대기
 		{
 			ObjPool->Player.selectedTrap = TRAP_Confusion;
 			ObjPool->Player.isWaitingTrapSet = true;
@@ -331,13 +335,13 @@ void Ingame::OnKeyborad()
 
 	if (lastBitState[KEY_5] == 0 && keyState[KEY_5] & 0x0001) //5번키
 	{
-		if (ObjPool->Player.GetState() == STAND)
+		if (ObjPool->Player.GetState() == STAND && ObjPool->Player.Rock_Num >= 30)
 		{
 			ObjPool->Player.SetState(TRAPSETTING);
 			ObjPool->Player.selectedTrap = TRAP_Hole;
 		}
 
-		else if (ObjPool->Player.GetState() == WALK) //이동중에 누르면 다 걸어갈때까지 대기
+		else if (ObjPool->Player.GetState() == WALK && ObjPool->Player.Rock_Num >= 30) //이동중에 누르면 다 걸어갈때까지 대기
 		{
 			ObjPool->Player.selectedTrap = TRAP_Hole;
 			ObjPool->Player.isWaitingTrapSet = true;

@@ -17,7 +17,7 @@ void Hero::Init(HWND hWnd, int x, int y, COLORREF sprite)
 	maxFrame = 4;
 
 	health = 100;
-	Rock_Num = 99999;
+	Rock_Num = 0;
 
 	Ani_stand[UP].Init(hWnd, 0, 0, 80, 132, 1, L"./Image/Stand_Ani/hero/hero_back_standing.bmp");
 	Ani_stand[DOWN].Init(hWnd, 0, 0, 80, 132, 1, L"./Image/Stand_Ani/hero/hero_front_standing.bmp");
