@@ -302,6 +302,7 @@ void Hero::DigMap()
 				ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, (pos.x - 1), pos.y); //floor ·Î ¹Ù´Ú ¼³Á¤
 				Rock_Num += 5;
 				ObjPool->Maps.Map[pos.y][pos.x - 1].repairGage = 0;
+				ObjPool->Sounds.Push(EFFECT_WALLBREAK);
 			}
 		}
 		break;
@@ -315,6 +316,7 @@ void Hero::DigMap()
 				ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, (pos.x + 1), pos.y);
 				Rock_Num += 5;
 				ObjPool->Maps.Map[pos.y][pos.x + 1].repairGage = 0;
+				ObjPool->Sounds.Push(EFFECT_WALLBREAK);
 			}
 		}
 		break;
@@ -328,6 +330,7 @@ void Hero::DigMap()
 				ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, pos.x, (pos.y - 1));
 				Rock_Num += 5;
 				ObjPool->Maps.Map[pos.y - 1][pos.x].repairGage = 0;
+				ObjPool->Sounds.Push(EFFECT_WALLBREAK);
 			}
 		}
 		break;
@@ -341,6 +344,7 @@ void Hero::DigMap()
 				ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, pos.x, (pos.y + 1));
 				Rock_Num += 5;
 				ObjPool->Maps.Map[pos.y + 1][pos.x].repairGage = 0;
+				ObjPool->Sounds.Push(EFFECT_WALLBREAK);
 			}
 		}
 		break;
