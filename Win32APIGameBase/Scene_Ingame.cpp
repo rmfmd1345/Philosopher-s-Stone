@@ -154,14 +154,14 @@ void Ingame::OnKeyborad()
 		exlastBitState = 0;
 	}
 
-	DWORD lastBitState[14] = { 0, };
-	DWORD keyState[14];
+	DWORD lastBitState[15] = { 0, };
+	DWORD keyState[15];
 
 	keyState[0] = GetAsyncKeyState(VK_UP);
 	keyState[1] = GetAsyncKeyState(VK_DOWN);
 	keyState[2] = GetAsyncKeyState(VK_LEFT);
 	keyState[3] = GetAsyncKeyState(VK_RIGHT);
-	keyState[4] = GetAsyncKeyState(VK_SPACE);
+	keyState[4] = GetAsyncKeyState(VK_SPACE); 
 
 	keyState[5] = GetAsyncKeyState(0x31); //1
 	keyState[6] = GetAsyncKeyState(0x32); //2
@@ -173,6 +173,7 @@ void Ingame::OnKeyborad()
 	keyState[11] = GetAsyncKeyState(0x53); //S
 	keyState[12] = GetAsyncKeyState(0x44); //D
 	keyState[13] = GetAsyncKeyState(0x46); //F
+	keyState[14] = GetAsyncKeyState(0x50); //P
 
 	if (lastBitState[UP] == 0 && keyState[UP] & 0x0001) //B_UP //이전에 0x1 이 0 이면 실행(안 누르다가 눌렀을 때)
 	{
@@ -340,7 +341,7 @@ void Ingame::OnKeyborad()
 		lastBitState[KEY_5] = 1;
 	}
 
-	if (lastBitState[KEY_A] == 0 && keyState[KEY_A] & 0x0001) //B_RIGHT
+	if (lastBitState[KEY_A] == 0 && keyState[KEY_A] & 0x0001) //A
 	{
 		if (ObjPool->Player.ATK_Skill.Cooltime <= 0)
 		{
@@ -354,7 +355,7 @@ void Ingame::OnKeyborad()
 		lastBitState[KEY_A] = 1;
 	}
 
-	if (lastBitState[KEY_S] == 0 && keyState[KEY_S] & 0x0001) //B_RIGHT
+	if (lastBitState[KEY_S] == 0 && keyState[KEY_S] & 0x0001) //S
 	{
 		if (ObjPool->Player.AGGRO_Skill.Cooltime <= 0)
 		{
@@ -368,7 +369,7 @@ void Ingame::OnKeyborad()
 		lastBitState[KEY_S] = 1;
 	}
 
-	if (lastBitState[KEY_D] == 0 && keyState[KEY_D] & 0x0001) //B_RIGHT
+	if (lastBitState[KEY_D] == 0 && keyState[KEY_D] & 0x0001) //D
 	{
 		if (ObjPool->Player.PUSH_Skill.Cooltime <= 0)
 		{
@@ -394,7 +395,7 @@ void Ingame::OnKeyborad()
 		lastBitState[KEY_D] = 1;
 	}
 
-	if (lastBitState[KEY_F] == 0 && keyState[KEY_F] & 0x0001) //B_RIGHT
+	if (lastBitState[KEY_F] == 0 && keyState[KEY_F] & 0x0001) //F
 	{
 		if (ObjPool->Player.BARRICADE_Skill.Cooltime <= 0)
 		{
@@ -419,6 +420,13 @@ void Ingame::OnKeyborad()
 
 		lastBitState[KEY_F] = 1;
 	}
+
+	if (lastBitState[KEY_P] == 0 && keyState[KEY_P] & 0x0001) //P
+	{
+		ObjPool->Player.Rock_Num += 5;
+		lastBitState[KEY_P] = 1;
+	}
+
 
 	for (int i = 0; i < 14; i++)
 	{

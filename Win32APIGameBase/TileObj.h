@@ -44,8 +44,7 @@ public:
 
 	//갈고리함정
 	POINT Grab_POS; //갈고리 함정을 밟으면 끌려갈 위치
-	int movingGrab_x; //함정에 끌려갈 때 갈고리가 그려지는 위치를 바꾸기 위함
-	int movingGrab_y;
+
 };
 
 class CMap

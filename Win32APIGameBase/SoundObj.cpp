@@ -140,6 +140,33 @@ void SoundList::Push(int type, int num)
 	case BGM_CAVE:
 		temp.Init(L"./Sound/_cave.wav", (60 * 0) + 58, true, num);
 		break;
+	case TRAP_NIDDLE:
+		temp.Init(L"./Sound/_niddle.wav", (60 * 0) + 58, true, num);
+		break;
+	case TRAP_SCARECROW:
+		temp.Init(L"./Sound/_scarecrow.wav", (60 * 0) + 58, true, num);
+		break;
+	case TRAP_GRAB:
+		temp.Init(L"./Sound/_grab.wav", (60 * 0) + 58, true, num);
+		break;
+	case TRAP_CONFUSE:
+		temp.Init(L"./Sound/_scarecrow.wav", (60 * 0) + 58, true, num); //추가필요
+		break;
+	case TRAP_HOLE:
+		temp.Init(L"./Sound/_scarecrow.wav", (60 * 0) + 58, true, num); //추가필요
+		break;
+	case SKILL_ATK:
+		temp.Init(L"./Sound/_atk.wav", (60 * 0) + 58, true, num);
+		break;
+	case SKILL_AGGRO:
+		temp.Init(L"./Sound/_scarecrow.wav", (60 * 0) + 58, true, num); //추가필요
+		break;
+	case SKILL_BARRICADE:
+		temp.Init(L"./Sound/_barricade.wav", (60 * 0) + 58, true, num);
+		break;
+	case SKILL_PUSH:
+		temp.Init(L"./Sound/_scarecrow.wav", (60 * 0) + 58, true, num); //추가필요
+		break;
 	case EFFECT_WALLBREAK:
 		temp.Init(L"./Sound/_wallbreak.wav", 1, false, num);
 		break;
