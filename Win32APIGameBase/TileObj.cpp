@@ -2,7 +2,7 @@
 #include "TileObj.h"
 #include "EntityObj.h"
 
-void CTile::InitTile(HWND hwnd, int Frame, int ID, int MoveID, std::function<void(Entity* ent)> Tile_Function)
+void CTile::InitTile(HWND hwnd, int Frame, int ID, int MoveID, int traphp, std::function<void(Entity* ent)> Tile_Function)
 {
 	Tile_ID = ID;
 	Tile_isCanMove = MoveID;
@@ -65,7 +65,7 @@ void CTile::InitTile(HWND hwnd, int Frame, int ID, int MoveID, std::function<voi
 	damgeDelay = 0;
 	SpinSpeed = 3;
 	repairGage = 0;
-	TrapHp = 60;
+	TrapHp = traphp;
 	stunTime = 100;
 
 	Tile_Func = Tile_Function;
@@ -78,16 +78,16 @@ void CTile::DestroyTile(CTile Tile)
 
 void CMap::InitMap(HWND hwnd)
 {
-	None.InitTile(hwnd, 1 /*Frame*/, NONE, false, [&](Entity* ent) {});
-	Floor.InitTile(hwnd, 1 /*Frame*/, FLOOR, true, [&](Entity* ent) {});
-	Wall.InitTile(hwnd, 1 /*Frame*/, WALL, false, [&](Entity* ent) {});
-	Trap_Niddle.InitTile(hwnd, 1 /*Frame*/,TRAP_Niddle, true, [&](Entity* ent) {NiddleActive(ent);});
-	Trap_ScareCrow.InitTile(hwnd, 1 /*Frame*/, TRAP_ScareCrow, false, [&](Entity* ent) {ScareCrowActive(ent); });
-	Trap_Grab.InitTile(hwnd, 4 /*Frame*/, TRAP_Grab, true, [&](Entity* ent) {});
-	Trap_GrabArea.InitTile(hwnd, 1 /*Frame*/, TRAP_GrabArea, true, [&](Entity* ent) {GrabActive(ent);});
-	Trap_Cunfusion.InitTile(hwnd, 1 /*Frame*/, TRAP_Confusion, true, [&](Entity* ent) {ConfusionActive(ent); });
-	Trap_Hole.InitTile(hwnd, 1 /*Frame*/, TRAP_Hole, true, [&](Entity* ent) {HoleActive(ent);});
-	Skill_Barricade.InitTile(hwnd, 1 /*Frame*/, SKILL_Barricade, false, [&](Entity* ent) {});
+	None.InitTile(hwnd, 1 /*Frame*/, NONE, false, 35,[&](Entity* ent) {});
+	Floor.InitTile(hwnd, 1 /*Frame*/, FLOOR, true, 60, [&](Entity* ent) {});
+	Wall.InitTile(hwnd, 1 /*Frame*/, WALL, false, 35,[&](Entity* ent) {});
+	Trap_Niddle.InitTile(hwnd, 1 /*Frame*/,TRAP_Niddle, true, 40,[&](Entity* ent) {NiddleActive(ent);});
+	Trap_ScareCrow.InitTile(hwnd, 1 /*Frame*/, TRAP_ScareCrow, false, 45, [&](Entity* ent) {ScareCrowActive(ent); });
+	Trap_Grab.InitTile(hwnd, 4 /*Frame*/, TRAP_Grab, true, 50, [&](Entity* ent) {});
+	Trap_GrabArea.InitTile(hwnd, 1 /*Frame*/, TRAP_GrabArea, true, 55, [&](Entity* ent) {GrabActive(ent);});
+	Trap_Cunfusion.InitTile(hwnd, 1 /*Frame*/, TRAP_Confusion, true, 60, [&](Entity* ent) {ConfusionActive(ent); });
+	Trap_Hole.InitTile(hwnd, 1 /*Frame*/, TRAP_Hole, true, 60, [&](Entity* ent) {HoleActive(ent);});
+	Skill_Barricade.InitTile(hwnd, 1 /*Frame*/, SKILL_Barricade, false, 60, [&](Entity* ent) {});
 	Barricade_Health_UI.Init(hwnd, 0, 0, 20, 20, L"./Image/UI/Ingame/heart.bmp");
 
 	//ingameUI_TrapArea.Init(hwnd, 0, 0, 960, 240, L"./Image/Tile/tileselect.bmp");
@@ -486,7 +486,7 @@ void CMap::DrawTileUI(HDC hMemDC, int x, int y)
 				ingameUI_TrapHpBar_fill.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 30, ((i - Map_Start_y) - 1) * 80 + Term_y + 15);
 				ingameUI_TrapHpBar_edge.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 30, ((i - Map_Start_y) - 1) * 80 + Term_y + 15);
 
-				ingameUI_TrapHpBar_fill.SetDrawArea(Map[i][j].repairGage, 14);
+				ingameUI_TrapHpBar_fill.SetDrawArea(Map[i][j].repairGage * (60 / Map[i][j].TrapHp), 14);
 				ingameUI_TrapHpBar_edge.SetDrawArea(60, 14);
 
 				ingameUI_TrapHpBar_fill.Draw(hMemDC);

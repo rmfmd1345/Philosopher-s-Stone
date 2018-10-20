@@ -952,6 +952,11 @@ int Entity::GetState()
 	return nowState;
 }
 
+int Entity::GetType()
+{
+	return type;
+}
+
 void Entity::SetPosition(int x, int y)
 {
 	this->pos.x = x;
@@ -1178,29 +1183,72 @@ void Monster::AddMonster(int type)
 	AddMonster(type, Dealer.GetSpawnPosition().x, Dealer.GetSpawnPosition().y);
 }
 
-bool Monster::CheckHealth()
+void Monster::AddMonster_Next(int type, int x, int y)
 {
-	if (ePool.empty()) return false;
-
-	bool dead = false;
-
-	for (auto it = ePool.begin(); it != ePool.end();)
+	switch (type)
 	{
-		if (it->isDead())
+	case DEALER:
+		Dealer.SetPosition(x, y);
+		ePool_Next.push_back(Dealer);
+		break;
+	case WIZARD:
+		Wizard.SetPosition(x, y);
+		ePool_Next.push_back(Wizard);
+		break;
+	case TANKER:
+		Tanker.SetPosition(x, y);
+		ePool_Next.push_back(Tanker);
+		break;
+	}
+}
+
+void Monster::AddMonster_Next(int type)
+{
+	AddMonster_Next(type, Dealer.GetSpawnPosition().x, Dealer.GetSpawnPosition().y);
+}
+
+void Monster::NextWave()
+{
+	for (auto it = ePool_Next.begin(); it != ePool_Next.end(); it++)
+		AddMonster(it->GetEntity()->GetType());
+
+	ePool_Next.clear();
+
+	int Temp;
+
+	AddMonster_Next(WIZARD);
+
+	for (int i = 0; i < 2; i++)
+	{
+		Temp = rand() % 2;
+
+		switch (Temp)
 		{
-			it = ePool.erase(it);
-			Wizard.SetHealth(1);
-			Dealer.SetHealth(2);
-			Tanker.SetHealth(5);
-			dead = true;
-		}
-		else
-		{
-			it++;
+		case 0:
+			AddMonster_Next(DEALER);
+			break;
+		case 1:
+			AddMonster_Next(TANKER);
+			break;
 		}
 	}
 
-	return dead;
+	ObjPool->MonsterTimer = 30;
+}
+
+bool Monster::CheckHealth(Entity* ent)
+{
+	if (ePool.empty()) return false;
+
+	if (ent->isDead())
+	{
+		Wizard.SetHealth(1);
+		Dealer.SetHealth(2);
+		Tanker.SetHealth(5);
+		return true;
+	}
+
+	return false;
 }
 
 void Monster::SetDirection(int dire)

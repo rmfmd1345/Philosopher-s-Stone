@@ -13,6 +13,8 @@ public:
 private:
 	HWND m_hWnd;		
 	BOOL m_bIsActive;	//실행 중 여부
+	DEVMODE dmSaved;
+	DEVMODE dmSelected;
 
 public:
 	void Initialize();

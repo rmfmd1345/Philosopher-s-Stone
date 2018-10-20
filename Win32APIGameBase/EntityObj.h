@@ -61,6 +61,7 @@ public:
 	int GetDirection();
 	int GetHealth();
 	int GetState();
+	int GetType();
 
 	void SetPosition(int x, int y);
 	void SetSpawnPosition(int x, int y);
@@ -120,6 +121,7 @@ public:
 	Entity Wizard;
 	Entity Tanker;
 	vector<Entity> ePool;
+	vector<Entity> ePool_Next;
 
 	POINT spawnPosition = { 2, 5 };
 
@@ -137,7 +139,10 @@ public:
 
 	void AddMonster(int type, int x, int y);
 	void AddMonster(int type);
-	bool CheckHealth();
+	void AddMonster_Next(int type, int x, int y);
+	void AddMonster_Next(int type);
+	void NextWave();
+	bool CheckHealth(Entity* ent);
 
 	void SetDirection(int dire);
 

@@ -48,6 +48,8 @@ void ApiSystem::Terminate()		//종료
 	DrawManager::Terminate();
 	FrameManager::Terminate();
 
+	ChangeDisplaySettings(&dmSaved, CDS_RESET);
+
 	ObjPool->DeleteObject();
 }
 
@@ -65,6 +67,17 @@ void ApiSystem::Update()	//갱신
 
 void ApiSystem::CreateApiWindow()	//윈도우 생성.. 생략
 {
+
+	EnumDisplaySettings(nullptr, ENUM_CURRENT_SETTINGS, &dmSaved);
+
+	memset(&dmSelected, 0, sizeof(dmSelected));
+
+	dmSelected.dmSize = sizeof(dmSelected);
+	dmSelected.dmPelsWidth = SCREEN_WIDTH;
+	dmSelected.dmPelsHeight = SCREEN_HEIGHT;
+	dmSelected.dmBitsPerPel = 32;
+	dmSelected.dmFields = DM_BITSPERPEL | DM_PELSWIDTH | DM_PELSHEIGHT;
+	ChangeDisplaySettings(&dmSelected, CDS_FULLSCREEN);
 
 	HINSTANCE hInst = GetModuleHandle(NULL);
 
@@ -91,7 +104,7 @@ void ApiSystem::CreateApiWindow()	//윈도우 생성.. 생략
 
 	RegisterClassEx(&wcex);
 
-	m_hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
+	m_hWnd = CreateWindowW(szWindowClass, szTitle, WS_POPUP,
 		CW_USEDEFAULT, CW_USEDEFAULT, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr, nullptr, hInst, nullptr);
 
 	RECT rt = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };

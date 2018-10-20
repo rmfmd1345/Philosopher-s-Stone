@@ -26,7 +26,7 @@ public:
 
 	std::function<void(Entity* ent)> Tile_Func; // 람다식 (함정 발동 시 프레임 진행)
 
-	void InitTile(HWND hwnd, int Frame, int ID, int MoveID, std::function<void(Entity* ent)> Tile_Function); //타일 초기화
+	void InitTile(HWND hwnd, int Frame, int ID, int MoveID, int traphp, std::function<void(Entity* ent)> Tile_Function); //타일 초기화
 	void DestroyTile(CTile Tile); // 타일 이미지 파괴
 
 public:

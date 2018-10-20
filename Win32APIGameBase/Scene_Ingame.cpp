@@ -63,28 +63,10 @@ void Ingame::OnTimer(HWND hWnd, int timer)
 	{
 		if (ObjPool->MonsterPool.ePool.empty() && ObjPool->MonsterTimer <= 0)
 		{
-			int Temp = 0;
-
-			Temp = rand() % 3;
-
-			switch (Temp)
-			{
-			case DEALER:
-				ObjPool->MonsterPool.AddMonster(DEALER);
-				break;
-			case WIZARD:
-				ObjPool->MonsterPool.AddMonster(WIZARD);
-				break;
-			case TANKER:
-				ObjPool->MonsterPool.AddMonster(TANKER);
-				break;
-			}
-
-			ObjPool->MonsterTimer = 30;
-			return;
+			ObjPool->MonsterPool.NextWave();
 		}
 
-		if (ObjPool->MonsterTimer > 0)
+		if (ObjPool->MonsterPool.ePool.empty() && ObjPool->MonsterTimer > 0)
 		{
 			ObjPool->MonsterTimer--;
 		}
@@ -107,7 +89,9 @@ void Ingame::Update() //씬 업데이트
 	for (auto it = ObjPool->MonsterPool.ePool.begin(); it != ObjPool->MonsterPool.ePool.end();)
 	{
 		ObjPool->Maps.ActiveTile(it->GetEntity()); //몬스터에 대해 밟고 있는 타일 발동
-		if (!ObjPool->MonsterPool.CheckHealth())
+		if (ObjPool->MonsterPool.CheckHealth(it->GetEntity()))
+			it = ObjPool->MonsterPool.ePool.erase(it);
+		else
 			it++;
 		
 		if (ObjPool->MonsterPool.ePool.empty()) break;
