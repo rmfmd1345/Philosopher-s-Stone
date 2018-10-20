@@ -21,7 +21,7 @@ private:
 	int health;
 public:
 	int Rock_Num;
-	TCHAR Rock_Num_UI[10];
+	TCHAR Rock_Num_UI[11];
 	Skill ATK_Skill;
 	Skill AGGRO_Skill;
 	Skill PUSH_Skill;

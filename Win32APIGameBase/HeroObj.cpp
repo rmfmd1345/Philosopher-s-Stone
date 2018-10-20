@@ -351,7 +351,7 @@ void Hero::DigMap()
 	default:
 		break;
 	}
-	wsprintf(Rock_Num_UI, L"%05d", Rock_Num);
+	wsprintf(Rock_Num_UI, L"%06d", Rock_Num);
 }
 
 void Hero::SetSelectedArea(bool isCreate)

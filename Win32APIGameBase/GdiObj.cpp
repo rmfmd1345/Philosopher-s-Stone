@@ -50,7 +50,7 @@ void Gdi::Circle(HDC hMemDC, int x, int y, int r)
 
 void Gdi::Text(HDC hMemDC, int x, int y, const TCHAR* text, int s) //텍스트 그리기
 {
-	hFont = CreateFont(s, 0, 0, 0, FW_NORMAL, 0, 0, 0, HANGUL_CHARSET, 0, 0, 0, 0, FONT);
+	hFont = CreateFont(s, 0, 0, 0, FW_NORMAL, 0, 0, 0, HANGUL_CHARSET, 0, 0, 0, 0, TEXT(FONT));
 	OldFont = (HFONT)SelectObject(hMemDC, hFont);
 	//폰트를 저장 PEN과 BRUSH와 동일하게 선택하고 해제하여서 사용함
 	//s는 사이즈 FONT는 폰트를 저장해둔 매크로 

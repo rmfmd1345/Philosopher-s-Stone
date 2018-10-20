@@ -35,7 +35,7 @@ void Ingame::Draw(HDC hMemDC)
 	ObjPool->Gdi.Text(hMemDC, 560, 45, ObjPool->TIMER, 60);
 
 	ObjPool->Gdi.SetTextsColor(RGB(255, 255, 255));
-	ObjPool->Gdi.Text(hMemDC, 1020, 30, ObjPool->Player.Rock_Num_UI, 48);
+	ObjPool->Gdi.Text(hMemDC, 1017, 32, ObjPool->Player.Rock_Num_UI, 48);
 }
 
 void Ingame::OnTimer(HWND hWnd, int timer)
@@ -81,7 +81,7 @@ void Ingame::OnTimer(HWND hWnd, int timer)
 			ObjPool->Player.BARRICADE_Skill.Cooltime--;
 	}
 	wsprintf(ObjPool->TIMER, L"%02d:%02d", ObjPool->MonsterTimer / 60, ObjPool->MonsterTimer % 60);
-	wsprintf(ObjPool->Player.Rock_Num_UI, L"%05d", ObjPool->Player.Rock_Num);
+	wsprintf(ObjPool->Player.Rock_Num_UI, L"%06d", ObjPool->Player.Rock_Num);
 }
 
 void Ingame::Update() //씬 업데이트
