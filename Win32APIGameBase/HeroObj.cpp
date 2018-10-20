@@ -17,7 +17,7 @@ void Hero::Init(HWND hWnd, int x, int y, COLORREF sprite)
 	maxFrame = 4;
 
 	health = 100;
-	Rock_Num = 99999;
+	Rock_Num = 0;
 
 	Ani_stand[UP].Init(hWnd, 0, 0, 80, 132, 1, L"./Image/Stand_Ani/hero/hero_back_standing.bmp");
 	Ani_stand[DOWN].Init(hWnd, 0, 0, 80, 132, 1, L"./Image/Stand_Ani/hero/hero_front_standing.bmp");
@@ -302,6 +302,7 @@ void Hero::DigMap()
 				ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, (pos.x - 1), pos.y); //floor ·Î ¹Ù´Ú ¼³Á¤
 				Rock_Num += 5;
 				ObjPool->Maps.Map[pos.y][pos.x - 1].repairGage = 0;
+				ObjPool->Sounds.Push(EFFECT_WALLBREAK);
 			}
 		}
 		break;
@@ -315,6 +316,7 @@ void Hero::DigMap()
 				ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, (pos.x + 1), pos.y);
 				Rock_Num += 5;
 				ObjPool->Maps.Map[pos.y][pos.x + 1].repairGage = 0;
+				ObjPool->Sounds.Push(EFFECT_WALLBREAK);
 			}
 		}
 		break;
@@ -328,6 +330,7 @@ void Hero::DigMap()
 				ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, pos.x, (pos.y - 1));
 				Rock_Num += 5;
 				ObjPool->Maps.Map[pos.y - 1][pos.x].repairGage = 0;
+				ObjPool->Sounds.Push(EFFECT_WALLBREAK);
 			}
 		}
 		break;
@@ -341,6 +344,7 @@ void Hero::DigMap()
 				ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, pos.x, (pos.y + 1));
 				Rock_Num += 5;
 				ObjPool->Maps.Map[pos.y + 1][pos.x].repairGage = 0;
+				ObjPool->Sounds.Push(EFFECT_WALLBREAK);
 			}
 		}
 		break;

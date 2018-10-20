@@ -91,10 +91,12 @@ bool A_Star::PathFind(POINT MonsterPos, POINT PlayerPos)
 				{
 					it = m_pathList.erase(it);
 				}
+				/*
 				else if (PlayerPos.x == it->x && PlayerPos.y == it->y)
 				{
 					it = m_pathList.erase(it);
 				}
+				*/
 				else
 				{
 					it++;

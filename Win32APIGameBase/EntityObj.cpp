@@ -40,10 +40,10 @@ void Entity::Init(HWND hWnd, int x, int y, int type, int hp, COLORREF sprite)
 		Ani_walk[LEFT].Init(hWnd, 0, 0, 480, 120, 6, L"./Image/Walk_Ani/dealer_walk_left.bmp");
 		Ani_walk[RIGHT].Init(hWnd, 0, 0, 480, 120, 6, L"./Image/Walk_Ani/dealer_walk_right.bmp");
 
-		Ani_attack[UP].Init(hWnd, 0, 0, 480, 120, 6, L"./Image/Attack_Ani/dealer_attack_front.bmp");
+		Ani_attack[UP].Init(hWnd, 0, 0, 480, 120, 6, L"./Image/Attack_Ani/dealer_attack_back.bmp");
 		Ani_attack[DOWN].Init(hWnd, 0, 0, 480, 120, 6, L"./Image/Attack_Ani/dealer_attack_front.bmp");
-		Ani_attack[LEFT].Init(hWnd, 0, 0, 480, 120, 6, L"./Image/Attack_Ani/dealer_attack_front.bmp");
-		Ani_attack[RIGHT].Init(hWnd, 0, 0, 480, 120, 6, L"./Image/Attack_Ani/dealer_attack_front.bmp");
+		Ani_attack[LEFT].Init(hWnd, 0, 0, 480, 120, 6, L"./Image/Attack_Ani/dealer_attack_left.bmp");
+		Ani_attack[RIGHT].Init(hWnd, 0, 0, 480, 120, 6, L"./Image/Attack_Ani/dealer_attack_right.bmp");
 		break;
 	case WIZARD:
 		Ani_stand[UP].Init(hWnd, 0, 0, 70, 102, 1, L"./Image/Walk_Ani/Wizard_Back.bmp");
@@ -56,10 +56,10 @@ void Entity::Init(HWND hWnd, int x, int y, int type, int hp, COLORREF sprite)
 		Ani_walk[LEFT].Init(hWnd, 0, 0, 296, 102, 4, L"./Image/Walk_Ani/Wizard_Left.bmp");
 		Ani_walk[RIGHT].Init(hWnd, 0, 0, 256, 102, 4, L"./Image/Walk_Ani/Wizard_Right.bmp");
 
-		Ani_attack[UP].Init(hWnd, 0, 0, 280, 102, 4, L"./Image/Walk_Ani/Wizard_Back.bmp");
-		Ani_attack[DOWN].Init(hWnd, 0, 0, 264, 102, 4, L"./Image/Walk_Ani/Wizard_Front.bmp");
-		Ani_attack[LEFT].Init(hWnd, 0, 0, 296, 102, 4, L"./Image/Walk_Ani/Wizard_Left.bmp");
-		Ani_attack[RIGHT].Init(hWnd, 0, 0, 256, 102, 4, L"./Image/Walk_Ani/Wizard_Right.bmp");
+		Ani_attack[UP].Init(hWnd, 0, 0, 480, 102, 6, L"./Image/Attack_Ani/wizard_attack_back.bmp");
+		Ani_attack[DOWN].Init(hWnd, 0, 0, 480, 102, 6, L"./Image/Attack_Ani/wizard_attack_front.bmp");
+		Ani_attack[LEFT].Init(hWnd, 0, 0, 480, 102, 6, L"./Image/Attack_Ani/wizard_attack_left.bmp");
+		Ani_attack[RIGHT].Init(hWnd, 0, 0, 480, 102, 6, L"./Image/Attack_Ani/wizard_attack_right.bmp");
 		break;
 	case TANKER:
 		Ani_stand[UP].Init(hWnd, 0, 0, 106, 138, 1, L"./Image/Walk_Ani/Tanker_Back.bmp");

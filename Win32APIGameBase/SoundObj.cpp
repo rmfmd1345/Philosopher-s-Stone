@@ -1,14 +1,19 @@
 #include "stdafx.h"
 #include "SoundObj.h"
 
-void Song::Init(LPCWSTR FileName, int end, int combo)
+void Sound::Init(LPCWSTR FileName, int end, bool Inf, int n)
 {
 	wsprintf(fliename, FileName);
 
 	endTime = end;
+
+	isPlay = false;
+	Infinite = Inf;
+
+	num = n;
 }
 
-void Song::Play()
+void Sound::Play()
 {
 	TCHAR cmd[128];
 
@@ -18,7 +23,7 @@ void Song::Play()
 	isPlay = true;
 }
 
-void Song::Pause()
+void Sound::Pause()
 {
 	TCHAR cmd[128];
 
@@ -28,7 +33,7 @@ void Song::Pause()
 	isPlay = !(isPlay);
 }
 
-void Song::Stop()
+void Sound::Stop()
 {
 	TCHAR cmd[128];
 
@@ -38,21 +43,23 @@ void Song::Stop()
 	isPlay = false;
 }
 
-void Song::Reset()
+void Sound::Reset()
 {
 	TCHAR cmd[128];
 
 	wsprintf(cmd, L"play %s from 0", fliename);
 	mciSendString(cmd, NULL, 0, NULL);
+
+	isPlay = true;
 }
 
-void Song::Restart()
+void Sound::Restart()
 {
 	Reset();
 	Play();
 }
 
-void Song::SetPlaytime(int time)
+void Sound::SetPlaytime(int time)
 {
 	TCHAR cmd[128];
 
@@ -62,19 +69,24 @@ void Song::SetPlaytime(int time)
 	isPlay = true;
 }
 
-void Song::SetVolume(int vol)
+void Sound::SetVolume(int vol)
 {
 	TCHAR cmd[128];
 	wsprintf(cmd, L"setaudio %s volume from %d", fliename, vol);
 	mciSendString(cmd, NULL, 0, NULL);
 }
 
-bool Song::isSongPlay()
+void Sound::SetInfinite(bool b)
+{
+	Infinite = b;
+}
+
+bool Sound::isSongPlay()
 {
 	return isPlay;
 }
 
-bool Song::isSongEnd()
+bool Sound::isSongEnd()
 {
 	if (GetPlayTime() >= endTime * 10)
 		return true;
@@ -82,7 +94,12 @@ bool Song::isSongEnd()
 		return false;
 }
 
-int Song::GetPlayTime()
+int Sound::GetNum()
+{
+	return num;
+}
+
+int Sound::GetPlayTime()
 {
 	TCHAR cmd[128];
 
@@ -101,7 +118,95 @@ int Song::GetPlayTime()
 	return (int)bgmCurrent;
 }
 
-int Song::GetEndTime()
+int Sound::GetEndTime()
 {
 	return endTime;
+}
+
+bool Sound::GetInfinite()
+{
+	return Infinite;
+}
+
+void SoundList::Push(int type, int num)
+{
+	Sound temp;
+
+	switch (type)
+	{
+	case BGM_TITLE:
+		temp.Init(L"./Sound/_title.wav", (60 * 1) + 37, true, num);
+		break;
+	case BGM_CAVE:
+		temp.Init(L"./Sound/_cave.wav", (60 * 0) + 58, true, num);
+		break;
+	case EFFECT_WALLBREAK:
+		temp.Init(L"./Sound/_wallbreak.wav", 1, false, num);
+		break;
+	default:
+		return;
+	}
+	SoundPool.push_back(temp);
+
+	vector<Sound>::iterator it;
+	it = SoundPool.end() - 1;
+	it->Restart();
+}
+
+void SoundList::Pop(int num)
+{
+	if (SoundPool.empty()) return;
+
+	vector<Sound>::iterator it;
+	it = SoundPool.begin();
+
+	while (it != SoundPool.end())
+	{
+		if (it->GetNum() == num)
+		{
+			it->Stop();
+			it = SoundPool.erase(it);
+		}
+		else
+		{
+			it++;
+		}
+	}
+}
+
+void SoundList::ClearAll()
+{
+	SoundPool.clear();
+}
+
+void SoundList::Pulse()
+{
+	if (SoundPool.empty()) return;
+
+	vector<Sound>::iterator it;
+	it = SoundPool.begin();
+
+	while (it != SoundPool.end())
+	{
+		if (it->isSongEnd())
+		{
+			if (it->GetInfinite())
+			{
+				it->Restart();
+			}
+			else
+			{
+				it = SoundPool.erase(it);
+			}
+		}
+		else
+		{
+			it++;
+		}
+	}
+}
+
+bool SoundList::Empty()
+{
+	return (SoundPool.empty());
 }
