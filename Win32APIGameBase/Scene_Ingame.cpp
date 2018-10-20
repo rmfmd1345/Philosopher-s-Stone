@@ -423,12 +423,13 @@ void Ingame::OnKeyborad()
 
 	if (lastBitState[KEY_P] == 0 && keyState[KEY_P] & 0x0001) //P
 	{
-		ObjPool->Player.Rock_Num += 5;
+		ObjPool->Player.Rock_Num += 100;
+
 		lastBitState[KEY_P] = 1;
 	}
 
 
-	for (int i = 0; i < 14; i++)
+	for (int i = 0; i < 15; i++)
 	{
 		if ((keyState[14] & 0x8000) == 0) // 완전히 뗐다면 다음 실행을 위해서 상태 초기화
 		{
