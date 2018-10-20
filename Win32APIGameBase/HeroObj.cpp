@@ -344,7 +344,7 @@ void Hero::DigMap()
 				ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, pos.x, (pos.y + 1));
 				Rock_Num += 5;
 				ObjPool->Maps.Map[pos.y + 1][pos.x].repairGage = 0;
-				ObjPool->Sounds.Push(EFFECT_WALLBREAK);
+				ObjPool->Sounds.Push(EFFECT_WALLBREAK); 
 			}
 		}
 		break;
@@ -503,19 +503,31 @@ void Hero::UseSkill()
 		break;
 	case ATK_SKILL:
 		if (ObjPool->Player.ATK_Skill.Check_Active == false && ObjPool->Player.GetState() != WALK)
+		{
 			ObjPool->Player.ATK_Skill.ActiveSkill();
+			ObjPool->Sounds.Push(SKILL_ATK);
+		}
 		break;
 	case AGGRO_SKILL:
 		if (ObjPool->Player.AGGRO_Skill.Check_Active == false && ObjPool->Player.GetState() != WALK)
+		{
 			ObjPool->Player.AGGRO_Skill.ActiveSkill();
+			ObjPool->Sounds.Push(SKILL_AGGRO);
+		}
 		break;
 	case PUSH_SKILL:
 		if (ObjPool->Player.PUSH_Skill.Check_Active == false && ObjPool->Player.GetState() != WALK)
+		{
 			ObjPool->Player.PUSH_Skill.ActiveSkill();
+			ObjPool->Sounds.Push(SKILL_PUSH);
+		}
 		break;
 	case BARRICADE_SKILL:
 		if (ObjPool->Player.BARRICADE_Skill.Check_Active == false && ObjPool->Player.GetState() != WALK)
+		{
 			ObjPool->Player.BARRICADE_Skill.ActiveSkill();
+			ObjPool->Sounds.Push(SKILL_BARRICADE);
+		}
 		break;
 	default:
 		break;

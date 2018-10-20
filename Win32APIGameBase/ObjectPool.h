@@ -44,6 +44,7 @@ enum eDirection
 	KEY_S,
 	KEY_D,
 	KEY_F,
+	KEY_P,
 
 	UPnLEFT,
 	UPnRIGHT,

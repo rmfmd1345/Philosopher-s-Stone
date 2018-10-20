@@ -108,6 +108,7 @@ void CMap::NiddleActive(Entity* ent)
 
 	if (Map[pos.y][pos.x].Tile_On) //함정이 깔려있으면
 	{
+		ObjPool->Sounds.Push(TRAP_NIDDLE);
 		printf("체력 : %d\n", ent->GetHealth());
 		ent->AddHealth(-1);
 		printf("체력 : %d\n", ent->GetHealth());
@@ -132,87 +133,43 @@ void CMap::GrabActive(Entity* ent)
 		ent->SetState(INTRAP); //엔티티 인트랩 상태로 변경
 		ent->SetAnimation(STAND); //엔티티 서있는 상태로 변경
 
-			if (grabPos.y == pos.y + 1) //엔티티가 갈고리 위쪽에 있을 떄
-			{
-				Map[grabPos.y][grabPos.x].nowTrapDirection = UP;
-				if (Map[grabPos.y][grabPos.x].stateFrame <= 40) //10, 20, 30, 40,
-				{
-					if (Map[grabPos.y][grabPos.x].stateFrame % 10 == 0)
-						Map[grabPos.y][grabPos.x].Ani_Trap[UP].NextFrameSprite_Trap();
+		if (grabPos.y == pos.y + 1) //엔티티가 갈고리 위쪽에 있을 떄
+		{
+			Map[grabPos.y][grabPos.x].nowTrapDirection = UP;
+		}
 
-					Map[grabPos.y][grabPos.x].stateFrame++;
-				}
-				else
-				{
-					Map[grabPos.y][grabPos.x].stateFrame = 1;
-					//Map[grabPos.y][grabPos.x].Ani_Trap[UP].SetCurrentFrame(0);
-					Map[grabPos.y][grabPos.x].Tile_On = false; //재장전 필요한 상태로 변경
-					ent->SetPosition(Map[pos.y][pos.x].Grab_POS.x, Map[pos.y][pos.x].Grab_POS.y);
-					ent->SetState(FINDWAY);
-					ent->AddHealth(-1);
-				}
-				return;
-			}
-			if (grabPos.y == pos.y - 1) //엔티티가 갈고리 아래쪽에 있을 떄
-			{
-				Map[grabPos.y][grabPos.x].nowTrapDirection = DOWN;
-				if (Map[grabPos.y][grabPos.x].stateFrame <= 40)
-				{
-					if (Map[grabPos.y][grabPos.x].stateFrame % 10 == 0)
-						Map[grabPos.y][grabPos.x].Ani_Trap[DOWN].NextFrameSprite_Trap();
+		if (grabPos.y == pos.y - 1) //엔티티가 갈고리 아래쪽에 있을 떄
+		{
+			Map[grabPos.y][grabPos.x].nowTrapDirection = DOWN;
+		}
+		if (grabPos.x == pos.x + 1) //엔티티가 갈고리 왼쪽에 있을 때
+		{
+			Map[grabPos.y][grabPos.x].nowTrapDirection = LEFT;
+		}
+		if (grabPos.x == pos.x - 1) //엔티티가 갈고리 오른쪽에 있을 떄
+		{
+			Map[grabPos.y][grabPos.x].nowTrapDirection = RIGHT;
+		}
 
-					Map[grabPos.y][grabPos.x].stateFrame++;
-				}
-				else
-				{
-					Map[grabPos.y][grabPos.x].stateFrame = 1;
-					Map[grabPos.y][grabPos.x].Tile_On = false; //재장전 필요한 상태로 변경
-					ent->SetPosition(Map[pos.y][pos.x].Grab_POS.x, Map[pos.y][pos.x].Grab_POS.y);
-					ent->SetState(FINDWAY);
-					ent->AddHealth(-1);
-				}
-				return;
-			}
-			if (grabPos.x == pos.x + 1) //엔티티가 갈고리 왼쪽에 있을 때
-			{
-				Map[grabPos.y][grabPos.x].nowTrapDirection = LEFT;
-				if (Map[grabPos.y][grabPos.x].stateFrame <= 40)
-				{
-					if (Map[grabPos.y][grabPos.x].stateFrame % 10 == 0)
-						Map[grabPos.y][grabPos.x].Ani_Trap[LEFT].NextFrameSprite_Trap();
+		if (Map[grabPos.y][grabPos.x].stateFrame <= 40) //10, 20, 30, 40,
+		{
+			if (Map[grabPos.y][grabPos.x].stateFrame % 10 == 0)
+				Map[grabPos.y][grabPos.x].Ani_Trap[ Map[grabPos.y][grabPos.x].nowTrapDirection ].NextFrameSprite_Trap();
 
-					Map[grabPos.y][grabPos.x].stateFrame++;
-				}
-				else
-				{
-					Map[grabPos.y][grabPos.x].stateFrame = 1;
-					Map[grabPos.y][grabPos.x].Tile_On = false; //재장전 필요한 상태로 변경
-					ent->SetPosition(Map[pos.y][pos.x].Grab_POS.x, Map[pos.y][pos.x].Grab_POS.y);
-					ent->SetState(FINDWAY);
-					ent->AddHealth(-1);
-				}
-				return;
-			}
-			if (grabPos.x == pos.x - 1) //엔티티가 갈고리 오른쪽에 있을 떄
-			{
-				Map[grabPos.y][grabPos.x].nowTrapDirection = RIGHT;
-				if (Map[grabPos.y][grabPos.x].stateFrame <= 40)
-				{
-					if (Map[grabPos.y][grabPos.x].stateFrame % 10 == 0)
-						Map[grabPos.y][grabPos.x].Ani_Trap[RIGHT].NextFrameSprite_Trap();
+			Map[grabPos.y][grabPos.x].stateFrame++;
+		}
+		else
+		{
+			Map[grabPos.y][grabPos.x].stateFrame = 1;
+			//Map[grabPos.y][grabPos.x].Ani_Trap[UP].SetCurrentFrame(0);
+			ObjPool->Sounds.Push(TRAP_GRAB);
+			Map[grabPos.y][grabPos.x].Tile_On = false; //재장전 필요한 상태로 변경
+			ent->SetPosition(Map[pos.y][pos.x].Grab_POS.x, Map[pos.y][pos.x].Grab_POS.y);
+			ent->SetState(FINDWAY);
+			ent->AddHealth(-1);
+		}
+		return;
 
-					Map[grabPos.y][grabPos.x].stateFrame++;
-				}
-				else
-				{
-					Map[grabPos.y][grabPos.x].stateFrame = 1;
-					Map[grabPos.y][grabPos.x].Tile_On = false; //재장전 필요한 상태로 변경
-					ent->SetPosition(Map[pos.y][pos.x].Grab_POS.x, Map[pos.y][pos.x].Grab_POS.y);
-					ent->SetState(FINDWAY);
-					ent->AddHealth(-1);
-				}
-				return;
-			}
 	}
 }
 
@@ -222,6 +179,7 @@ void CMap::ConfusionActive(Entity* ent)
 
 	if (Map[pos.y][pos.x].Tile_On && ent->GetState() != WALK) //함정이 깔려있으면 //엔티티가 걷는 중이 아니면
 	{
+		ObjPool->Sounds.Push(TRAP_CONFUSE);
 		ent->SetState(CONFUSE); //엔티티 혼란 상태로 변경
 		Map[pos.y][pos.x].stateFrame++;
 		if (Map[pos.y][pos.x].stateFrame >= Map[pos.y][pos.x].stunTime)
@@ -256,8 +214,9 @@ void CMap::HoleActive(Entity* ent)
 			if (Map[pos.y][pos.x].SpinSpeed >= 9) //충분히 엔티티가 돌았으면
 			{
 				ent->AddHealth(-5); //엔티티 삭제
-				Map[pos.y][pos.x].Tile_On = false; //재장전 필요한 상태로 변경
 				Map[pos.y][pos.x].SpinSpeed = 3;
+				ObjPool->Sounds.Push(TRAP_HOLE);
+				Map[pos.y][pos.x].Tile_On = false; //재장전 필요한 상태로 변경
 			}
 			Map[pos.y][pos.x].damgeDelay = 0;
 		}
@@ -498,7 +457,7 @@ void CMap::DrawTileUI(HDC hMemDC, int x, int y)
 				//ObjPool->Maps.Floor.Tile_Sprite_On.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 1) * 80 + Term_y - 40);
 				//ObjPool->Maps.Floor.Tile_Sprite_On.Draw(hMemDC);
 				Map[i][j].Ani_SelectedArea.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 120, ((i - Map_Start_y) - 1) * 80 + Term_y - 120);
-				Map[i][j].Ani_SelectedArea.AlphaDraw(hMemDC);
+				Map[i][j].Ani_SelectedArea.Draw(hMemDC);
 			}
 		}
 	}
