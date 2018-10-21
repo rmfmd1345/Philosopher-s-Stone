@@ -259,6 +259,7 @@ void Ingame::OnKeyborad()
 
 	if (lastBitState[SPACE] == 0 && keyState[SPACE] & 0x0001) //SPACE
 	{
+		ObjPool->Player.CheckEnding();
 		//보고 있는게 함정이면 수리
 		if (ObjPool->Maps.CheckTrap(ObjPool->Player.GetDirection(), ObjPool->Player.GetPosition()) && ObjPool->Player.GetState() != TRAPSETTING && ObjPool->Player.GetState() != SKILLPREPARING && ObjPool->Player.GetState() != WALK)
 		{
@@ -266,7 +267,6 @@ void Ingame::OnKeyborad()
 		}
 		else if (ObjPool->Player.GetState() == STAND)
 		{
-			ObjPool->Player.CheckEnding();
     		ObjPool->Player.DigMap();
 		}
 		else if (ObjPool->Player.GetState() == TRAPSETTING) //트랩 세팅중이면 설치

@@ -3,18 +3,14 @@
 
 void Ending::Draw(HDC hMemDC)
 {
-	ObjPool->EndingBg_Dead.Draw(hMemDC);
-
-	/*
-	if (ObjPool->Player.isDead())
-	{
-		ObjPool->EndingBg_Dead.Draw(hMemDC);
-	}
-	else
+	if (ObjPool->Player.Checkending)
 	{
 		ObjPool->EndingBg_Clear.Draw(hMemDC);
 	}
-	*/
+	else
+	{
+		ObjPool->EndingBg_Dead.Draw(hMemDC);
+	}
 }
 
 void Ending::OnTimer(HWND hWnd, int timer)

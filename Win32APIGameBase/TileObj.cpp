@@ -61,6 +61,7 @@ void CTile::InitTile(HWND hwnd, int Frame, int ID, int MoveID, int traphp, std::
 	case ALTAR:
 		Tile_Sprite_On.Init(hwnd, 0, 0, 80, 160, Frame, L"./Image/Tile/altar_stone_on.bmp");
 		Tile_Sprite_Off.Init(hwnd, 0, 0, 80, 160, Frame, L"./Image/Tile/altar_stone_off.bmp");
+		Ani_Trap[UP].Init(hwnd, 0, 0, 480, 160, 6, L"./Image/Tile/altar_stone.bmp");
 		break;
 	}
 	Ani_SelectedArea.Init(hwnd, 0, 0, 240, 240, 1, L"./Image/Tile/tileselect.bmp");
@@ -92,7 +93,7 @@ void CMap::InitMap(HWND hwnd)
 	Trap_Cunfusion.InitTile(hwnd, 1 /*Frame*/, TRAP_Confusion, true, 60, [&](Entity* ent) {ConfusionActive(ent); });
 	Trap_Hole.InitTile(hwnd, 1 /*Frame*/, TRAP_Hole, true, 60, [&](Entity* ent) {HoleActive(ent);});
 	Skill_Barricade.InitTile(hwnd, 1 /*Frame*/, SKILL_Barricade, false, 60, [&](Entity* ent) {});
-	Altar.InitTile(hwnd, 1 /*Frame*/, ALTAR, false, 60, [&](Entity* ent) {});
+	Altar.InitTile(hwnd, 1 /*Frame*/, ALTAR, false, 0, [&](Entity* ent) {});
 	Barricade_Health_UI.Init(hwnd, 0, 0, 20, 20, L"./Image/UI/Ingame/thunder.bmp");
 
 	//ingameUI_TrapArea.Init(hwnd, 0, 0, 960, 240, L"./Image/Tile/tileselect.bmp");
@@ -395,11 +396,27 @@ void CMap::DrawMap(HDC hMemDC, int x, int y)
 				{
 					Map[i][j].Tile_Sprite_On.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 2) * 80 + Term_y - 40);
 					Map[i][j].Tile_Sprite_On.Draw(hMemDC);
+					ObjPool->System.SetScene(SCENE_ENDING);
 				}
 				else
 				{
-					Map[i][j].Tile_Sprite_Off.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 2) * 80 + Term_y - 40);
-					Map[i][j].Tile_Sprite_Off.Draw(hMemDC);
+					if (ObjPool->Player.Checkending)
+					{
+						Map[i][j].Ani_Trap[UP].SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 2) * 80 + Term_y - 40);
+						Map[i][j].Ani_Trap[UP].Draw(hMemDC);
+						Map[i][j].Ani_Trap[UP].NextFrameSprite(false);
+
+						if (Map[i][j].Ani_Trap[UP].GetCurrentFrame() >= Map[i][j].Ani_Trap[UP].GetLastFrame() - 1)
+						{
+							Map[i][j].TrapHp_Now = Map[i][j].TrapHp;
+							Map[i][j].Tile_On = true;
+						}
+					}
+					else
+					{
+						Map[i][j].Tile_Sprite_Off.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 2) * 80 + Term_y - 40);
+						Map[i][j].Tile_Sprite_Off.Draw(hMemDC);
+					}
 				}
 			}
 			else

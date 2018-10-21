@@ -623,7 +623,9 @@ void Hero::CheckEnding()
 	}
 
 	if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == ALTAR)
-		ObjPool->System.SetScene(SCENE_ENDING);
+	{
+		Checkending = true;
+	}
 }
 
 void Hero::DrawSelectedTrapUI(HDC hMemDC)
