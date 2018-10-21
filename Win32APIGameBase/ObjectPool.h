@@ -101,6 +101,7 @@ public:
 	TCHAR Wave_UI[10];
 
 	int timeDropStone = 0;
+	bool CheckMonster;
 
 public:
 	//title Scene
