@@ -367,15 +367,15 @@ void Entity::UpdateState()
 				}
 				//ObjPool->Sounds.Push(칼에 찔리는 소리);
 			}
-			//else if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == SKILL_Barricade)
-			//{
-			//	ObjPool->Maps.Map[Temp_Y][Temp_X].hp--;
-			//	if (ObjPool->Maps.Map[Temp_Y][Temp_X].hp <= 0)
-			//	{
-			//		ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, Temp_X, Temp_Y);
-			//	}
-			//	//ObjPool->Sounds.Push(칼이 튕겨나는 소리);
-			//}
+			else if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == SKILL_Barricade)
+			{
+				ObjPool->Maps.Map[Temp_Y][Temp_X].hp--;
+				if (ObjPool->Maps.Map[Temp_Y][Temp_X].hp <= 0)
+				{
+					ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, Temp_X, Temp_Y);
+				}
+				//ObjPool->Sounds.Push(칼이 튕겨나는 소리);
+			}
 			else if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == TRAP_ScareCrow)
 			{
 				if(ObjPool->Maps.Map[Temp_Y][Temp_X].TrapHp_Now > 0)
@@ -1570,12 +1570,6 @@ void Monster::Ternimate()
 
 void Monster::Draw(HDC hMemDC, int x, int y)
 {
-	//if (ePool.empty())	//몬스터가 없으면 플레이어만 생성
-	//{
-	//	ObjPool->Player.Draw(hMemDC, x, y);
-	//	return;
-	//}
-
 	bool isPlayer = false;
 
 	for (int i = 0; i < MAX_TILE_Y; i++)
@@ -1811,7 +1805,7 @@ void Monster::DrawMap(HDC hMemDC, int x, int y)
 			else
 				wsprintf(str, L" ");
 
-			ObjPool->Gdi.Text(hMemDC, ((j - Map_Start_x) - 1) * 80 + Term_x - 40 + 30, ((i - Map_Start_y) - 2) * 80 + Term_y + 40, str, 36);
+			//ObjPool->Gdi.Text(hMemDC, ((j - Map_Start_x) - 1) * 80 + Term_x - 40 + 30, ((i - Map_Start_y) - 2) * 80 + Term_y + 40, str, 36);
 		}
 	}
 }

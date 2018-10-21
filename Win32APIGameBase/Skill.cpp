@@ -97,6 +97,17 @@ void Skill::ActiveSkill()
 
 		ObjPool->Player.SetAnimation(ATTACK);
 		ObjPool->Player.ATK_Skill.Check_Active = true;
+		ObjPool->SoundPool.Play(SKILL_ATK);
+		break;
+	case AGGRO_SKILL:
+		if (ObjPool->Player.Rock_Num < 5)
+			return;
+		else
+			ObjPool->Player.Rock_Num -= 5;
+
+		ObjPool->Player.SetAnimation(ATTACK);
+		ObjPool->Player.AGGRO_Skill.Check_Active = true;
+		ObjPool->SoundPool.Play(SKILL_AGGRO);
 		break;
 	case PUSH_SKILL:
 
@@ -197,8 +208,14 @@ void Skill::ActiveSkill()
 
 		ObjPool->Player.SetAnimation(ATTACK);
 		ObjPool->Player.PUSH_Skill.Check_Active = true;
+		ObjPool->SoundPool.Play(SKILL_PUSH);
 		break;
 	case BARRICADE_SKILL:
+		if (ObjPool->Player.Rock_Num < 15)
+			return;
+		else
+			ObjPool->Player.Rock_Num -= 15;
+
 		switch (Direction)
 		{
 		case UP:
@@ -255,6 +272,7 @@ void Skill::ActiveSkill()
 
 		ObjPool->Player.SetAnimation(ATTACK);
 		ObjPool->Player.BARRICADE_Skill.Check_Active = true;
+		ObjPool->SoundPool.Play(SKILL_BARRICADE);
 		break;
 	default:
 		break;
