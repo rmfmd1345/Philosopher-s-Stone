@@ -1399,6 +1399,11 @@ void Entity::SetHealth(int hp)
 void Entity::AddHealth(int a)
 {
 	health += a;
+
+	if (nowState == STILLSTONE_FIND || nowState == STILLSTONE_WALK)
+	{
+		isStill = false;
+	}
 }
 
 void Entity::SetState(int state)
