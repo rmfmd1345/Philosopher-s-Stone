@@ -59,7 +59,7 @@ void CTile::InitTile(HWND hwnd, int Frame, int ID, int MoveID, int traphp, std::
 		Ani_Trap[RIGHT].Init(hwnd, 0, 0, 80, 160, Frame, L"./Image/Tile/Barricade_Right.bmp");
 		hp = 3;
 	case ALTAR:
-		Tile_Sprite_On.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/Altar.bmp");
+		//Tile_Sprite_On.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/Altar.bmp");
 		break;
 	}
 	Ani_SelectedArea.Init(hwnd, 0, 0, 240, 240, 1, L"./Image/Tile/tileselect.bmp");
@@ -91,7 +91,7 @@ void CMap::InitMap(HWND hwnd)
 	Trap_Cunfusion.InitTile(hwnd, 1 /*Frame*/, TRAP_Confusion, true, 60, [&](Entity* ent) {ConfusionActive(ent); });
 	Trap_Hole.InitTile(hwnd, 1 /*Frame*/, TRAP_Hole, true, 60, [&](Entity* ent) {HoleActive(ent);});
 	Skill_Barricade.InitTile(hwnd, 1 /*Frame*/, SKILL_Barricade, false, 60, [&](Entity* ent) {});
-	Altar.InitTile(hwnd, 1 /*Frame*/, ALTAR, false, 60, [&](Entity* ent) {});
+	//Altar.InitTile(hwnd, 1 /*Frame*/, ALTAR, false, 60, [&](Entity* ent) {});
 	Barricade_Health_UI.Init(hwnd, 0, 0, 20, 20, L"./Image/UI/Ingame/heart.bmp");
 
 	//ingameUI_TrapArea.Init(hwnd, 0, 0, 960, 240, L"./Image/Tile/tileselect.bmp");

@@ -739,6 +739,7 @@ void Entity::Attack()
 	else if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == SKILL_Barricade)
 	{
 		ObjPool->Maps.Map[Temp_Y][Temp_X].hp--;
+		//ObjPool->Sounds.Push(칼이 튕겨나는 소리);
 	}
 }
 
