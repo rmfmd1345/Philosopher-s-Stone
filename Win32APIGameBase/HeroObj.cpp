@@ -561,6 +561,27 @@ void Hero::RepairTrap()
 	}
 }
 
+void Hero::CheckEnding()
+{
+	int Temp_X = pos.x;
+	int Temp_Y = pos.y;
+
+	switch (nowDirection)
+	{
+	case LEFT: Temp_X = pos.x - 1;
+		break;
+	case RIGHT: Temp_X = pos.x + 1;
+		break;
+	case UP: Temp_Y = pos.y - 1;
+		break;
+	case DOWN: Temp_Y = pos.y + 1;
+		break;
+	}
+
+	if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == ALTAR)
+		ObjPool->System.SetScene(SCENE_ENDING);
+}
+
 void Hero::DrawSelectedTrapUI(HDC hMemDC)
 {
 	if (selectedTrap != NONE || selectedSkill != NONE_SKILL)

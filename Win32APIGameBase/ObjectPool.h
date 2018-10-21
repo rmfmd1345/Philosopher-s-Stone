@@ -106,6 +106,7 @@ public:
 
 	Bitmap titleBg;		//∫Ò∆Æ∏ 
 	Bitmap EndingBg_Dead;
+	Bitmap EndingBg_Clear;
 
 	//credit Scene
 	Bitmap creditBg;		

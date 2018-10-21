@@ -57,6 +57,7 @@ public:
 	void SetTrap();
 	void UseSkill();
 	void RepairTrap();
+	void CheckEnding();
 
 	void DrawSelectedTrapUI(HDC hMemDC);
 
