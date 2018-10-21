@@ -47,13 +47,13 @@ private:
 	int health;
 
 public:
-
 	void Init(HWND hWnd, int x, int y, int type, int hp, COLORREF sprite = RGB(255, 0, 255));
 	void Draw(HDC hMemDC, int x, int y);
 	void Ternimate();
 
 	void Animation();
 	void UpdateState();
+	void Attack();
 
 	POINT GetPosition();
 	POINT GetSpawnPosition();

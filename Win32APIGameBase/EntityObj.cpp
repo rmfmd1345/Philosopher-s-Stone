@@ -211,6 +211,12 @@ void Entity::Draw(HDC hMemDC, int x, int y)
 	case ATTACK:
 		Ani_attack[nowDirection].SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y - 40);
 		Ani_attack[nowDirection].Draw(hMemDC);
+
+		if (Ani_attack[nowDirection].GetCurrentFrame() >= Ani_attack[nowDirection].GetLastFrame() - 1)
+		{
+			Attack();
+		}
+
 		for (int i = 0; i < health; i++)
 		{
 			Health_UI.SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40 + (Ani_stand[nowDirection].w / 2) - (20 * health / 2) + (20 * i), ((pos.y - Map_y) - 1) * 80 + Term_y - 40 - 18);
@@ -706,6 +712,34 @@ void Entity::UpdateState()
 		//TODO : È¥¶õ »óÅÂ Ãß°¡
 	}
 
+}
+
+void Entity::Attack()
+{
+	int Temp_X = pos.x;
+	int Temp_Y = pos.y;
+
+	switch (nowDirection)
+	{
+	case LEFT: Temp_X = pos.x - 1;
+		break;
+	case RIGHT: Temp_X = pos.x + 1;
+		break;
+	case UP: Temp_Y = pos.y - 1;
+		break;
+	case DOWN: Temp_Y = pos.y + 1;
+		break;
+	}
+
+	if (ObjPool->Player.GetPosition().x == Temp_X && ObjPool->Player.GetPosition().y == Temp_Y)
+	{
+		ObjPool->Player.AddHealth(-1);
+		//ObjPool->Sounds.Push(Ä®¿¡ Âñ¸®´Â ¼Ò¸®);
+	}
+	else if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == SKILL_Barricade)
+	{
+		ObjPool->Maps.Map[Temp_Y][Temp_X].hp--;
+	}
 }
 
 bool Entity::GetAllSearch()

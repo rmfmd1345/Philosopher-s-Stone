@@ -42,6 +42,7 @@ void CTile::InitTile(HWND hwnd, int Frame, int ID, int MoveID, int traphp, std::
 		break;
 	case TRAP_GrabArea:
 		Tile_Sprite_On.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/GrabArea.bmp");
+		Tile_Sprite_Off.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/GrabArea.bmp");
 		break;
 	case TRAP_Confusion:
 		Tile_Sprite_On.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/Confusion.bmp");
@@ -57,6 +58,8 @@ void CTile::InitTile(HWND hwnd, int Frame, int ID, int MoveID, int traphp, std::
 		Ani_Trap[LEFT].Init(hwnd, 0, 0, 80, 160, Frame, L"./Image/Tile/Barricade_Left.bmp");
 		Ani_Trap[RIGHT].Init(hwnd, 0, 0, 80, 160, Frame, L"./Image/Tile/Barricade_Right.bmp");
 		hp = 3;
+	case ALTAR:
+		Tile_Sprite_On.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/Altar.bmp");
 		break;
 	}
 	Ani_SelectedArea.Init(hwnd, 0, 0, 240, 240, 1, L"./Image/Tile/tileselect.bmp");
@@ -88,6 +91,7 @@ void CMap::InitMap(HWND hwnd)
 	Trap_Cunfusion.InitTile(hwnd, 1 /*Frame*/, TRAP_Confusion, true, 60, [&](Entity* ent) {ConfusionActive(ent); });
 	Trap_Hole.InitTile(hwnd, 1 /*Frame*/, TRAP_Hole, true, 60, [&](Entity* ent) {HoleActive(ent);});
 	Skill_Barricade.InitTile(hwnd, 1 /*Frame*/, SKILL_Barricade, false, 60, [&](Entity* ent) {});
+	Altar.InitTile(hwnd, 1 /*Frame*/, ALTAR, false, 60, [&](Entity* ent) {});
 	Barricade_Health_UI.Init(hwnd, 0, 0, 20, 20, L"./Image/UI/Ingame/heart.bmp");
 
 	//ingameUI_TrapArea.Init(hwnd, 0, 0, 960, 240, L"./Image/Tile/tileselect.bmp");
@@ -109,9 +113,7 @@ void CMap::NiddleActive(Entity* ent)
 	if (Map[pos.y][pos.x].Tile_On) //함정이 깔려있으면
 	{
 		ObjPool->Sounds.Push(TRAP_NIDDLE);
-		printf("체력 : %d\n", ent->GetHealth());
 		ent->AddHealth(-1);
-		printf("체력 : %d\n", ent->GetHealth());
 		Map[pos.y][pos.x].TrapHp_Now = 0; //재장전 필요한 상태로 변경
 	}
 }
@@ -163,7 +165,7 @@ void CMap::GrabActive(Entity* ent)
 			Map[grabPos.y][grabPos.x].stateFrame = 1;
 			//Map[grabPos.y][grabPos.x].Ani_Trap[UP].SetCurrentFrame(0);
 			ObjPool->Sounds.Push(TRAP_GRAB);
-			Map[pos.y][pos.x].TrapHp_Now = 0; //재장전 필요한 상태로 변경
+			Map[grabPos.y][grabPos.x].TrapHp_Now = 0; //재장전 필요한 상태로 변경
 			ent->SetPosition(Map[pos.y][pos.x].Grab_POS.x, Map[pos.y][pos.x].Grab_POS.y);
 			ent->SetState(FINDWAY);
 			ent->AddHealth(-1);
@@ -223,7 +225,7 @@ void CMap::HoleActive(Entity* ent)
 	}
 }
 
-void CMap::ResetMap(int Character_x, int Character_y)
+void CMap::ResetMap()
 {
 	for (int i = 0; i < MAX_TILE_Y; i++)
 	{
@@ -266,7 +268,12 @@ void CMap::ResetMap(int Character_x, int Character_y)
 		}
 	}
 
-	Map[Character_y][Character_x] = Floor;
+	for (int i = 0; i < 3; i++)
+		for (int j = 0; j < 3; j++)
+			SetTileOnMap(ObjPool->Maps.Floor, 4 + i, 4 + j);
+
+	SetTileOnMap(ObjPool->Maps.Floor, 2, 5);
+	SetTileOnMap(ObjPool->Maps.Floor, 3, 5);
 }
 
 void CMap::ActiveTile(Entity* ent)

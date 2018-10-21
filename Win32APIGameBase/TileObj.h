@@ -63,6 +63,7 @@ public:
 	CTile Trap_Grab; // 갈고리함정
 	CTile Trap_GrabArea; // 갈고리함정 영향권
 	CTile Skill_Barricade; // 바리게이트 타일
+	CTile Altar;
 
 	Bitmap Brick[6]; // 벽돌 이미지
 	Bitmap ingameUI_TrapHpBar_edge; //함정 체력바 테두리
@@ -90,7 +91,7 @@ public:
 	void GrabActive(Entity* ent);
 	void ConfusionActive(Entity* ent);
 	void HoleActive(Entity* ent);
-	void ResetMap(int Character_x, int Character_y); // 스테이지 넘어갈 때 맵을 초기화
+	void ResetMap(); // 스테이지 넘어갈 때 맵을 초기화
 	void ActiveTile(Entity* ent); // 해당 타일의 기능을 실행 (람다 사용)
 	void SetTileOnMap(CTile Tile, int x, int y); // 타일을 맵에 배치
 	int SetTrapOnMap(CTile Tile, int x, int y); // 함정을 맵에 배치

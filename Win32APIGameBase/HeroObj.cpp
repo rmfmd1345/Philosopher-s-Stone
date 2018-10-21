@@ -11,7 +11,7 @@ void Hero::Init(HWND hWnd, int x, int y, COLORREF sprite)
 	stateFrame_Hero = 0;
 
 	nowAnimation = STAND;
-	nowDirection = DOWN;
+	nowDirection = RIGHT;
 
 	nowFrame = 0;
 	maxFrame = 4;

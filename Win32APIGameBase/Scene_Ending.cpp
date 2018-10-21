@@ -31,4 +31,14 @@ void Ending::OnMouseLButtonDown(HWND hWnd, int x, int y)
 void Ending::OnMouseLButtonUp(HWND hWnd, int x, int y)
 {
 	ObjPool->System.SetScene(SCENE_TITLE);
+	ObjPool->Player.AddHealth(1);
+	ObjPool->Player.SetPosition(3, 5);
+
+	ObjPool->MonsterPool.ePool.clear();
+	ObjPool->MonsterPool.ePool_Next.clear();
+	ObjPool->MonsterTimer = 0;
+
+	ObjPool->Maps.ResetMap();
+
+	//초기화 해야할 것 추가
 }
