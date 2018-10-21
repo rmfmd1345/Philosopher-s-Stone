@@ -59,7 +59,7 @@ void CTile::InitTile(HWND hwnd, int Frame, int ID, int MoveID, int traphp, std::
 		Ani_Trap[RIGHT].Init(hwnd, 0, 0, 80, 160, Frame, L"./Image/Tile/Barricade_Right.bmp");
 		hp = 3;
 	case ALTAR:
-		Tile_Sprite_On.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/Altar.bmp");
+		//Tile_Sprite_On.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/Altar.bmp");
 		break;
 	}
 	Ani_SelectedArea.Init(hwnd, 0, 0, 240, 240, 1, L"./Image/Tile/tileselect.bmp");
@@ -112,7 +112,7 @@ void CMap::NiddleActive(Entity* ent)
 
 	if (Map[pos.y][pos.x].Tile_On) //함정이 깔려있으면
 	{
-		ObjPool->Sounds.Push(TRAP_NIDDLE);
+		ObjPool->SoundPool.Play(TRAP_NIDDLE);
 		ent->AddHealth(-1);
 		Map[pos.y][pos.x].TrapHp_Now = 0; //재장전 필요한 상태로 변경
 	}
@@ -164,7 +164,7 @@ void CMap::GrabActive(Entity* ent)
 		{
 			Map[grabPos.y][grabPos.x].stateFrame = 1;
 			//Map[grabPos.y][grabPos.x].Ani_Trap[UP].SetCurrentFrame(0);
-			ObjPool->Sounds.Push(TRAP_GRAB);
+			ObjPool->SoundPool.Play(TRAP_GRAB);
 			Map[grabPos.y][grabPos.x].TrapHp_Now = 0; //재장전 필요한 상태로 변경
 			ent->SetPosition(Map[pos.y][pos.x].Grab_POS.x, Map[pos.y][pos.x].Grab_POS.y);
 			ent->SetState(FINDWAY);
@@ -181,7 +181,7 @@ void CMap::ConfusionActive(Entity* ent)
 
 	if (Map[pos.y][pos.x].Tile_On && ent->GetState() != WALK) //함정이 깔려있으면 //엔티티가 걷는 중이 아니면
 	{
-		ObjPool->Sounds.Push(TRAP_CONFUSE);
+		ObjPool->SoundPool.Play(TRAP_CONFUSE);
 		ent->SetState(CONFUSE); //엔티티 혼란 상태로 변경
 		Map[pos.y][pos.x].stateFrame++;
 		if (Map[pos.y][pos.x].stateFrame >= Map[pos.y][pos.x].stunTime)
@@ -217,7 +217,7 @@ void CMap::HoleActive(Entity* ent)
 			{
 				ent->AddHealth(-5); //엔티티 삭제
 				Map[pos.y][pos.x].SpinSpeed = 3;
-				ObjPool->Sounds.Push(TRAP_HOLE);
+				ObjPool->SoundPool.Play(TRAP_HOLE);
 				Map[pos.y][pos.x].TrapHp_Now = 0; //재장전 필요한 상태로 변경
 			}
 			Map[pos.y][pos.x].damgeDelay = 0;

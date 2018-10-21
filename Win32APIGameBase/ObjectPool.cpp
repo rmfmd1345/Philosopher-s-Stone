@@ -48,11 +48,15 @@ void ObjectPool::CreateObject(HWND hWnd)	//객체의 초기 설정을 적는 곳
 
 	MonsterPool.Init(hWnd);
 	Player.Init(hWnd, 3, 5);
+
+	//Sound Init
+	SoundPool.Init();
+	ObjPool->SoundPool.Play(BGM_TITLE);
 }
 
 void ObjectPool::DeleteObject()				//비트맵객체는 반드시 종료해주기
 {
-	Sounds.ClearAll();
+	SoundPool.Terminate();
 
 	titleBg.Ternimate();
 	titleBtn_Start.Ternimate();

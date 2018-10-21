@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "SoundObj.h"
 
-void Sound::Init(LPCWSTR FileName, int end, bool Inf, int n)
+void Sound::Init(LPCWSTR FileName, int end, bool Inf)
 {
 	wsprintf(fliename, FileName);
 
@@ -9,8 +9,6 @@ void Sound::Init(LPCWSTR FileName, int end, bool Inf, int n)
 
 	isPlay = false;
 	Infinite = Inf;
-
-	num = n;
 }
 
 void Sound::Play()
@@ -94,11 +92,6 @@ bool Sound::isSongEnd()
 		return false;
 }
 
-int Sound::GetNum()
-{
-	return num;
-}
-
 int Sound::GetPlayTime()
 {
 	TCHAR cmd[128];
@@ -128,92 +121,95 @@ bool Sound::GetInfinite()
 	return Infinite;
 }
 
-void SoundList::Push(int type, int num)
+void Sounds::Init()
 {
-	Sound temp;
-
-	switch (type)
+	for(int i = 0; ;i++)
 	{
-	case BGM_TITLE:
-		temp.Init(L"./Sound/_title.wav", (60 * 1) + 37, true, num);
-		break;
-	case BGM_CAVE:
-		temp.Init(L"./Sound/_cave.wav", (60 * 0) + 58, true, num);
-		break;
-	case TRAP_NIDDLE:
-		temp.Init(L"./Sound/_niddle.wav", (60 * 0) + 58, true, num);
-		break;
-	case TRAP_SCARECROW:
-		temp.Init(L"./Sound/_scarecrow.wav", (60 * 0) + 58, true, num);
-		break;
-	case TRAP_GRAB:
-		temp.Init(L"./Sound/_grab.wav", (60 * 0) + 58, true, num);
-		break;
-	case TRAP_CONFUSE:
-		temp.Init(L"./Sound/_scarecrow.wav", (60 * 0) + 58, true, num); //추가필요
-		break;
-	case TRAP_HOLE:
-		temp.Init(L"./Sound/_scarecrow.wav", (60 * 0) + 58, true, num); //추가필요
-		break;
-	case SKILL_ATK:
-		temp.Init(L"./Sound/_atk.wav", (60 * 0) + 58, true, num);
-		break;
-	case SKILL_AGGRO:
-		temp.Init(L"./Sound/_scarecrow.wav", (60 * 0) + 58, true, num); //추가필요
-		break;
-	case SKILL_BARRICADE:
-		temp.Init(L"./Sound/_barricade.wav", (60 * 0) + 58, true, num);
-		break;
-	case SKILL_PUSH:
-		temp.Init(L"./Sound/_scarecrow.wav", (60 * 0) + 58, true, num); //추가필요
-		break;
-	case EFFECT_WALLBREAK:
-		temp.Init(L"./Sound/_wallbreak.wav", 1, false, num);
-		break;
-	default:
-		return;
+		Sound temp;
+
+		switch (i)
+		{
+		case BGM_TITLE:
+			temp.Init(L"./Sound/_title.wav", (60 * 1) + 37, true);
+			break;
+		case BGM_CAVE:
+			temp.Init(L"./Sound/_cave.wav", (60 * 0) + 58, true);
+			break;
+		case EFFECT_WALLBREAK:
+			temp.Init(L"./Sound/_wallbreak.wav", 1, false);
+			break;
+		case TRAP_NIDDLE:
+			temp.Init(L"./Sound/_niddle.wav", 1, false);
+			break;
+		case TRAP_SCARECROW:
+			temp.Init(L"./Sound/_scarecrow.wav", 1, false);
+			break;
+		case TRAP_GRAB:
+			temp.Init(L"./Sound/_grab.wav", 1, false);
+			break;
+		case TRAP_CONFUSE:
+			temp.Init(L"./Sound/_scarecrow.wav", 1, false); //추가필요
+			break;
+		case TRAP_HOLE:
+			temp.Init(L"./Sound/_scarecrow.wav", 1, false); //추가필요
+			break;
+		case SKILL_ATK:
+			temp.Init(L"./Sound/_atk.wav", 1, false);
+			break;
+		case SKILL_AGGRO:
+			temp.Init(L"./Sound/_scarecrow.wav", 1, false); //추가필요
+			break;
+		case SKILL_BARRICADE:
+			temp.Init(L"./Sound/_barricade.wav", 1, false);
+			break;
+		case SKILL_PUSH:
+			temp.Init(L"./Sound/_scarecrow.wav", 1, false); //추가필요
+			break;
+		default:
+			return;
+		}
+
+		pool.push_back(temp);
 	}
-	SoundPool.push_back(temp);
+}
+
+void Sounds::Terminate()
+{
+	pool.clear();
+}
+
+void Sounds::Play(int num)
+{
+	if (pool.empty()) return;
 
 	vector<Sound>::iterator it;
-	it = SoundPool.end() - 1;
+	it = pool.begin();
+
+	it += num;
+
 	it->Restart();
 }
 
-void SoundList::Pop(int num)
+void Sounds::Stop(int num)
 {
-	if (SoundPool.empty()) return;
+	if (pool.empty()) return;
 
 	vector<Sound>::iterator it;
-	it = SoundPool.begin();
+	it = pool.begin();
 
-	while (it != SoundPool.end())
-	{
-		if (it->GetNum() == num)
-		{
-			it->Stop();
-			it = SoundPool.erase(it);
-		}
-		else
-		{
-			it++;
-		}
-	}
+	it += num;
+
+	it->Stop();
 }
 
-void SoundList::ClearAll()
+void Sounds::Pulse()
 {
-	SoundPool.clear();
-}
-
-void SoundList::Pulse()
-{
-	if (SoundPool.empty()) return;
+	if (pool.empty()) return;
 
 	vector<Sound>::iterator it;
-	it = SoundPool.begin();
+	it = pool.begin();
 
-	while (it != SoundPool.end())
+	while (it != pool.end())
 	{
 		if (it->isSongEnd())
 		{
@@ -221,19 +217,8 @@ void SoundList::Pulse()
 			{
 				it->Restart();
 			}
-			else
-			{
-				it = SoundPool.erase(it);
-			}
 		}
-		else
-		{
-			it++;
-		}
-	}
-}
 
-bool SoundList::Empty()
-{
-	return (SoundPool.empty());
+		it++;
+	}
 }
