@@ -46,8 +46,8 @@ void Ending::OnMouseLButtonUp(HWND hWnd, int x, int y)
 
 	ObjPool->Maps.ResetMap();
 
-	ObjPool->Sounds.Push(BGM_TITLE, 1);
-	ObjPool->Sounds.Pop(0);
+	ObjPool->SoundPool.Stop(1);
+	ObjPool->SoundPool.Play(0);
 
 	ObjPool->Wave = 1;
 

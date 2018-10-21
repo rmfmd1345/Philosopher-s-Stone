@@ -153,6 +153,9 @@ void Sounds::Init()
 		case TRAP_HOLE:
 			temp.Init(L"./Sound/_scarecrow.wav", 1, false); //추가필요
 			break;
+		case TRAP_REROAD:
+			temp.Init(L"./Sound/_reload.wav", 1, false);
+			break;
 		case SKILL_ATK:
 			temp.Init(L"./Sound/_atk.wav", 1, false);
 			break;
@@ -164,6 +167,9 @@ void Sounds::Init()
 			break;
 		case SKILL_PUSH:
 			temp.Init(L"./Sound/_scarecrow.wav", 1, false); //추가필요
+			break;
+		case BARRICADE_BREAK:
+			temp.Init(L"./Sound/_break.wav", 1, false);
 			break;
 		default:
 			return;
