@@ -1674,6 +1674,7 @@ void Monster::AddMonster_Next(int type, int x, int y)
 void Monster::AddMonster_Next(int type)
 {
 	AddMonster_Next(type, Dealer.GetSpawnPosition().x, Dealer.GetSpawnPosition().y);
+	CheckMonsters_Num[type]++;
 }
 
 void Monster::NextWave()
@@ -1689,7 +1690,7 @@ void Monster::NextWave()
 
 	for (int i = 0; i < 2; i++)
 	{
-		Temp = rand() % 2;
+		Temp = rand() % 3;
 
 		switch (Temp)
 		{
@@ -1699,10 +1700,16 @@ void Monster::NextWave()
 		case 1:
 			AddMonster_Next(TANKER);
 			break;
+		case 2:
+			AddMonster_Next(WIZARD);
+			break;
 		}
 	}
 
 	ObjPool->MonsterTimer = 30;
+
+	for (int i = 0; i < 3; i++)
+		wsprintf(CheckMonsters_Num_UI[i], L"%d", CheckMonsters_Num[i]);
 }
 
 bool Monster::CheckHealth(Entity* ent)

@@ -96,7 +96,8 @@ public:
 	TCHAR TIMER[10];
 
 	int MonsterTimer = 0;
-	int Wave = 1;
+	int Wave = 0;
+	TCHAR Wave_UI[10]; // 200, 20
 
 	int timeDropStone = 0;
 

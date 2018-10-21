@@ -24,8 +24,8 @@ enum eState
 enum eEntity
 {
 	DEALER,
-	WIZARD,
-	TANKER
+	TANKER,
+	WIZARD
 };
 
 class Entity		: protected A_Star
@@ -135,6 +135,8 @@ public:
 	POINT spawnPosition = { 2, 5 };
 
 	bool CheckMonsters;
+	int CheckMonsters_Num[3] = { 0, };
+	TCHAR CheckMonsters_Num_UI[3][3];
 
 public:
 	void Init(HWND hWnd);

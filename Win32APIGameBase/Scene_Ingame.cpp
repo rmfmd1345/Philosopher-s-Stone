@@ -38,7 +38,15 @@ void Ingame::Draw(HDC hMemDC)
 		ObjPool->Gdi.SetTextsColor(RGB(255, 255, 255));
 	else
 		ObjPool->Gdi.SetTextsColor(RGB(255, 50, 50));
+
 	ObjPool->Gdi.Text(hMemDC, 1020, 37, ObjPool->Player.Rock_Num_UI, 48);
+
+	ObjPool->Gdi.SetTextsColor(RGB(255, 255, 255));
+
+	for (int i = 0; i < 3; i++)
+		ObjPool->Gdi.Text(hMemDC, 205 + i * 60, 120, ObjPool->MonsterPool.CheckMonsters_Num_UI[i], 30);
+
+	ObjPool->Gdi.Text(hMemDC, 200, 15, ObjPool->Wave_UI, 60);
 }
 
 void Ingame::OnTimer(HWND hWnd, int timer)
@@ -72,6 +80,8 @@ void Ingame::OnTimer(HWND hWnd, int timer)
 		if (ObjPool->MonsterPool.ePool.empty() && ObjPool->MonsterTimer <= 0)
 		{
 			ObjPool->MonsterPool.NextWave();
+			ObjPool->Wave++;
+			wsprintf(ObjPool->Wave_UI, L"Wave %d", ObjPool->Wave);
 		}
 
 		if (ObjPool->MonsterPool.ePool.empty() && ObjPool->MonsterTimer > 0)

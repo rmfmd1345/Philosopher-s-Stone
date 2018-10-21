@@ -93,7 +93,7 @@ void CMap::InitMap(HWND hwnd)
 	Trap_Hole.InitTile(hwnd, 1 /*Frame*/, TRAP_Hole, true, 60, [&](Entity* ent) {HoleActive(ent);});
 	Skill_Barricade.InitTile(hwnd, 1 /*Frame*/, SKILL_Barricade, false, 60, [&](Entity* ent) {});
 	Altar.InitTile(hwnd, 1 /*Frame*/, ALTAR, false, 60, [&](Entity* ent) {});
-	Barricade_Health_UI.Init(hwnd, 0, 0, 20, 20, L"./Image/UI/Ingame/heart.bmp");
+	Barricade_Health_UI.Init(hwnd, 0, 0, 20, 20, L"./Image/UI/Ingame/thunder.bmp");
 
 	//ingameUI_TrapArea.Init(hwnd, 0, 0, 960, 240, L"./Image/Tile/tileselect.bmp");
 	ingameUI_TrapHpBar_edge.Init(hwnd, 0, 0, 60, 14, L"./Image/UI/Ingame/bluebar_edge.bmp");
