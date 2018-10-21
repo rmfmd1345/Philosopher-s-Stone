@@ -473,7 +473,6 @@ void Hero::SetTrap()
 			ObjPool->Maps.Map[Temp_Y - 1][Temp_X].Grab_POS = grabPos;
 			ObjPool->Maps.Map[Temp_Y][Temp_X + 1].Grab_POS = grabPos;
 			ObjPool->Maps.Map[Temp_Y][Temp_X - 1].Grab_POS = grabPos;
-
 		}
 		break;
 	case TRAP_Confusion:
@@ -554,10 +553,11 @@ void Hero::RepairTrap()
 	if (ObjPool->Maps.Map[Temp_Y][Temp_X].TrapHp_Now < ObjPool->Maps.Map[pos.y][pos.x - 1].TrapHp)
 		ObjPool->Maps.Map[Temp_Y][Temp_X].TrapHp_Now++;
 
-	if (ObjPool->Maps.Map[Temp_Y][Temp_X].TrapHp_Now >= ObjPool->Maps.Map[pos.y][pos.x - 1].TrapHp)
+	if (ObjPool->Maps.Map[Temp_Y][Temp_X].TrapHp_Now >= ObjPool->Maps.Map[pos.y][pos.x - 1].TrapHp && ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_On == false)
 	{					
 		ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_On = true;
 		ObjPool->Maps.Map[Temp_Y][Temp_X].TrapHp_Now = ObjPool->Maps.Map[pos.y][pos.x - 1].TrapHp;
+		ObjPool->SoundPool.Play(TRAP_REROAD);
 	}
 }
 

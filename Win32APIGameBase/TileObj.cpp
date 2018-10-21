@@ -59,7 +59,8 @@ void CTile::InitTile(HWND hwnd, int Frame, int ID, int MoveID, int traphp, std::
 		Ani_Trap[RIGHT].Init(hwnd, 0, 0, 80, 160, Frame, L"./Image/Tile/Barricade_Right.bmp");
 		hp = 3;
 	case ALTAR:
-		Tile_Sprite_On.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/Altar.bmp");
+		Tile_Sprite_On.Init(hwnd, 0, 0, 80, 160, Frame, L"./Image/Tile/altar_stone_on.bmp");
+		Tile_Sprite_Off.Init(hwnd, 0, 0, 80, 160, Frame, L"./Image/Tile/altar_stone_off.bmp");
 		break;
 	}
 	Ani_SelectedArea.Init(hwnd, 0, 0, 240, 240, 1, L"./Image/Tile/tileselect.bmp");
@@ -268,9 +269,14 @@ void CMap::ResetMap()
 		}
 	}
 
-	int AlterY = rand() % (MAX_TILE_Y - 6) + 3;
+	int AltarY = rand() % (MAX_TILE_Y - 6) + 3;
 
-	SetTileOnMap(ObjPool->Maps.Altar, MAX_TILE_X - 3, AlterY);
+	SetTileOnMap(ObjPool->Maps.Altar, MAX_TILE_X - 3, AltarY);
+	SetTileOnMap(ObjPool->Maps.Floor, MAX_TILE_X - 3, AltarY - 1);
+	SetTileOnMap(ObjPool->Maps.Floor, MAX_TILE_X - 3, AltarY + 1);
+	SetTileOnMap(ObjPool->Maps.Floor, MAX_TILE_X - 4, AltarY - 1);
+	SetTileOnMap(ObjPool->Maps.Floor, MAX_TILE_X - 4, AltarY);
+	SetTileOnMap(ObjPool->Maps.Floor, MAX_TILE_X - 4, AltarY + 1);
 
 	for (int i = 0; i < 3; i++)
 		for (int j = 0; j < 3; j++)
@@ -382,6 +388,9 @@ void CMap::DrawMap(HDC hMemDC, int x, int y)
 
 			if (Map[i][j].Tile_ID == TRAP_ScareCrow)
 			{
+				ObjPool->Maps.Floor.Tile_Sprite_On.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 1) * 80 + Term_y - 40);
+				ObjPool->Maps.Floor.Tile_Sprite_On.Draw(hMemDC);
+
 				if (Map[i][j].Tile_On)
 					Map[i][j].Tile_Sprite_On.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 2) * 80 + Term_y - 40);
 				else
@@ -410,6 +419,19 @@ void CMap::DrawMap(HDC hMemDC, int x, int y)
 				{
 					Barricade_Health_UI.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - (20 * Map[i][j].hp / 2) + (20 * k), ((i - Map_Start_y) - 1) * 80 + Term_y - 40 - 20);
 					Barricade_Health_UI.Draw(hMemDC);
+				}
+			}
+			else if (Map[i][j].Tile_ID == ALTAR)
+			{
+				if (Map[i][j].Tile_On)
+				{
+					Map[i][j].Tile_Sprite_On.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 2) * 80 + Term_y - 40);
+					Map[i][j].Tile_Sprite_On.Draw(hMemDC);
+				}
+				else
+				{
+					Map[i][j].Tile_Sprite_Off.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 2) * 80 + Term_y - 40);
+					Map[i][j].Tile_Sprite_Off.Draw(hMemDC);
 				}
 			}
 			else
