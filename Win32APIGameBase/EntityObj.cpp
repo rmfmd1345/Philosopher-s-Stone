@@ -1547,12 +1547,6 @@ void Monster::Ternimate()
 
 void Monster::Draw(HDC hMemDC, int x, int y)
 {
-	//if (ePool.empty())	//몬스터가 없으면 플레이어만 생성
-	//{
-	//	ObjPool->Player.Draw(hMemDC, x, y);
-	//	return;
-	//}
-
 	bool isPlayer = false;
 
 	for (int i = 0; i < MAX_TILE_Y; i++)
@@ -1788,7 +1782,7 @@ void Monster::DrawMap(HDC hMemDC, int x, int y)
 			else
 				wsprintf(str, L" ");
 
-			ObjPool->Gdi.Text(hMemDC, ((j - Map_Start_x) - 1) * 80 + Term_x - 40 + 30, ((i - Map_Start_y) - 2) * 80 + Term_y + 40, str, 36);
+			//ObjPool->Gdi.Text(hMemDC, ((j - Map_Start_x) - 1) * 80 + Term_x - 40 + 30, ((i - Map_Start_y) - 2) * 80 + Term_y + 40, str, 36);
 		}
 	}
 }

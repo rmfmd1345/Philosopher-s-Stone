@@ -46,7 +46,8 @@ void Ingame::Draw(HDC hMemDC)
 	for (int i = 0; i < 3; i++)
 		ObjPool->Gdi.Text(hMemDC, 205 + i * 60, 120, ObjPool->MonsterPool.CheckMonsters_Num_UI[i], 30);
 
-	ObjPool->Gdi.Text(hMemDC, 190, 15, ObjPool->Wave_UI, 60);
+	ObjPool->Gdi.Text(hMemDC, 200, 15, L"Wave", 60);
+	ObjPool->Gdi.Text(hMemDC, 330, 15, ObjPool->Wave_UI, 60);
 }
 
 void Ingame::OnTimer(HWND hWnd, int timer)
@@ -81,7 +82,7 @@ void Ingame::OnTimer(HWND hWnd, int timer)
 		{
 			ObjPool->MonsterPool.NextWave();
 			ObjPool->Wave++;
-			wsprintf(ObjPool->Wave_UI, L"Wave %02d", ObjPool->Wave);
+			wsprintf(ObjPool->Wave_UI, L"%02d", ObjPool->Wave);
 		}
 
 		if (ObjPool->MonsterPool.ePool.empty() && ObjPool->MonsterTimer > 0)
@@ -284,6 +285,7 @@ void Ingame::OnKeyborad()
 
 	if (lastBitState[KEY_2] == 0 && keyState[KEY_2] & 0x0001) //2번키
 	{
+		ObjPool->SoundPool.Play(EFFECT_SELECT);
 		if (ObjPool->Player.GetState() == STAND && ObjPool->Player.Rock_Num >= 15)
 		{
 			ObjPool->Player.SetState(TRAPSETTING);
@@ -307,6 +309,7 @@ void Ingame::OnKeyborad()
 
 	if (lastBitState[KEY_3] == 0 && keyState[KEY_3] & 0x0001) //3번키
 	{
+		ObjPool->SoundPool.Play(EFFECT_SELECT);
 		if (ObjPool->Player.GetState() == STAND && ObjPool->Player.Rock_Num >= 20)
 		{
 			ObjPool->Player.SetState(TRAPSETTING);
@@ -331,6 +334,7 @@ void Ingame::OnKeyborad()
 
 	if (lastBitState[KEY_4] == 0 && keyState[KEY_4] & 0x0001 && ObjPool->Player.Rock_Num >= 25) //4번키
 	{
+		ObjPool->SoundPool.Play(EFFECT_SELECT);
 		if (ObjPool->Player.GetState() == STAND)
 		{
 			ObjPool->Player.SetState(TRAPSETTING);
@@ -354,6 +358,7 @@ void Ingame::OnKeyborad()
 
 	if (lastBitState[KEY_5] == 0 && keyState[KEY_5] & 0x0001) //5번키
 	{
+		ObjPool->SoundPool.Play(EFFECT_SELECT);
 		if (ObjPool->Player.GetState() == STAND && ObjPool->Player.Rock_Num >= 30)
 		{
 			ObjPool->Player.SetState(TRAPSETTING);
@@ -377,6 +382,7 @@ void Ingame::OnKeyborad()
 
 	if (lastBitState[KEY_A] == 0 && keyState[KEY_A] & 0x0001) //A
 	{
+		ObjPool->SoundPool.Play(EFFECT_SELECT);
 		if (ObjPool->Player.ATK_Skill.Cooltime <= 0)
 		{
 			if (ObjPool->Player.GetState() == STAND)
@@ -391,6 +397,7 @@ void Ingame::OnKeyborad()
 
 	if (lastBitState[KEY_S] == 0 && keyState[KEY_S] & 0x0001) //S
 	{
+		ObjPool->SoundPool.Play(EFFECT_SELECT);
 		if (ObjPool->Player.AGGRO_Skill.Cooltime <= 0)
 		{
 			if (ObjPool->Player.GetState() == STAND)
@@ -405,6 +412,7 @@ void Ingame::OnKeyborad()
 
 	if (lastBitState[KEY_D] == 0 && keyState[KEY_D] & 0x0001) //D
 	{
+		ObjPool->SoundPool.Play(EFFECT_SELECT);
 		if (ObjPool->Player.PUSH_Skill.Cooltime <= 0)
 		{
 			if (ObjPool->Player.GetState() == STAND)
@@ -431,6 +439,7 @@ void Ingame::OnKeyborad()
 
 	if (lastBitState[KEY_F] == 0 && keyState[KEY_F] & 0x0001) //F
 	{
+		ObjPool->SoundPool.Play(EFFECT_SELECT);
 		if (ObjPool->Player.BARRICADE_Skill.Cooltime <= 0)
 		{
 			if (ObjPool->Player.GetState() == STAND)

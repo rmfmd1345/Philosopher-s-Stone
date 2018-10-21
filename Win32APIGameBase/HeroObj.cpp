@@ -501,28 +501,24 @@ void Hero::UseSkill()
 		if (ObjPool->Player.ATK_Skill.Check_Active == false && ObjPool->Player.GetState() != WALK)
 		{
 			ObjPool->Player.ATK_Skill.ActiveSkill();
-			ObjPool->SoundPool.Play(SKILL_ATK);
 		}
 		break;
 	case AGGRO_SKILL:
 		if (ObjPool->Player.AGGRO_Skill.Check_Active == false && ObjPool->Player.GetState() != WALK)
 		{
 			ObjPool->Player.AGGRO_Skill.ActiveSkill();
-			ObjPool->SoundPool.Play(SKILL_AGGRO);
 		}
 		break;
 	case PUSH_SKILL:
 		if (ObjPool->Player.PUSH_Skill.Check_Active == false && ObjPool->Player.GetState() != WALK)
 		{
 			ObjPool->Player.PUSH_Skill.ActiveSkill();
-			ObjPool->SoundPool.Play(SKILL_PUSH);
 		}
 		break;
 	case BARRICADE_SKILL:
 		if (ObjPool->Player.BARRICADE_Skill.Check_Active == false && ObjPool->Player.GetState() != WALK)
 		{
 			ObjPool->Player.BARRICADE_Skill.ActiveSkill();
-			ObjPool->SoundPool.Play(SKILL_BARRICADE);
 		}
 		break;
 	default:
