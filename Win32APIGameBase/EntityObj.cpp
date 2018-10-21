@@ -17,6 +17,7 @@ void Entity::Init(HWND hWnd, int x, int y, int type, int hp, COLORREF sprite)
 
 	nowState = FINDWAY;
 	stateFrame = 0;
+	SpinSpeed = 3;
 
 	nowAnimation = STAND;
 	nowDirection = RIGHT;
@@ -364,18 +365,17 @@ void Entity::UpdateState()
 					stateFrame = 0;
 					return;
 				}
-				//ObjPool->Player.AddHealth(-1);
 				//ObjPool->Sounds.Push(칼에 찔리는 소리);
 			}
-			else if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == SKILL_Barricade)
-			{
-				ObjPool->Maps.Map[Temp_Y][Temp_X].hp--;
-				if (ObjPool->Maps.Map[Temp_Y][Temp_X].hp == 0)
-				{
-					ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, Temp_X, Temp_Y);
-				}
-				//ObjPool->Sounds.Push(칼이 튕겨나는 소리);
-			}
+			//else if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == SKILL_Barricade)
+			//{
+			//	ObjPool->Maps.Map[Temp_Y][Temp_X].hp--;
+			//	if (ObjPool->Maps.Map[Temp_Y][Temp_X].hp <= 0)
+			//	{
+			//		ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, Temp_X, Temp_Y);
+			//	}
+			//	//ObjPool->Sounds.Push(칼이 튕겨나는 소리);
+			//}
 			else if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == TRAP_ScareCrow)
 			{
 				if(ObjPool->Maps.Map[Temp_Y][Temp_X].TrapHp_Now > 0)
@@ -398,6 +398,9 @@ void Entity::UpdateState()
 		if (stateFrame < 60)
 		{
 			stateFrame++;
+
+			if (stateFrame % 10 == 0)
+				ObjPool->SoundPool.Play(EFFECT_DISMANTLETRAP);
 		}
 		else
 		{
@@ -916,10 +919,44 @@ void Entity::UpdateState()
 		return;
 	}
 
+	if (nowState == INHOLE)
+	{
+		stateFrame++;
+
+		if (stateFrame >= SpinSpeed)
+		{
+			if (GetDirection() != RIGHT) //엔티티 돌리기
+				SetDirection(GetDirection() + 1);
+			else
+				SetDirection(UP);
+
+			SpinSpeed += 0.2; //도는 속도 서서히 낮추기
+			//ObjPool->SoundPool.Play(TRAP_HOLESPIN);
+			if (SpinSpeed >= 9) //충분히 엔티티가 돌았으면
+			{
+				stateFrame = 0;
+				SpinSpeed = 3;
+				AddHealth(-5); //엔티티 삭제
+				ObjPool->Maps.Map[pos.y][pos.x].TrapHp_Now = 0;	//재장전 필요한 상태로 변경
+				ObjPool->SoundPool.Play(TRAP_HOLE);
+			}
+		}
+		return;
+	}
+
 	//혼란..?
 	if (nowState == CONFUSE)
 	{
-		//TODO : 혼란 상태 추가
+		if (stateFrame < 50)
+		{
+			stateFrame++;
+		}
+		else
+		{
+			nowAnimation = STAND;
+			nowState = FINDWAY;
+		}
+		return;
 	}
 	
 	//돌 뺏음
@@ -1675,6 +1712,7 @@ void Monster::AddMonster_Next(int type, int x, int y)
 void Monster::AddMonster_Next(int type)
 {
 	AddMonster_Next(type, Dealer.GetSpawnPosition().x, Dealer.GetSpawnPosition().y);
+	CheckMonsters_Num[type]++;
 }
 
 void Monster::NextWave()
@@ -1684,13 +1722,16 @@ void Monster::NextWave()
 
 	ePool_Next.clear();
 
+	for (int i = 0; i < 3; i++)
+		CheckMonsters_Num[i] = 0;
+
 	int Temp;
 
 	AddMonster_Next(WIZARD);
 
 	for (int i = 0; i < 2; i++)
 	{
-		Temp = rand() % 2;
+		Temp = rand() % 3;
 
 		switch (Temp)
 		{
@@ -1700,10 +1741,16 @@ void Monster::NextWave()
 		case 1:
 			AddMonster_Next(TANKER);
 			break;
+		case 2:
+			AddMonster_Next(WIZARD);
+			break;
 		}
 	}
 
 	ObjPool->MonsterTimer = 30;
+
+	for (int i = 0; i < 3; i++)
+		wsprintf(CheckMonsters_Num_UI[i], L"%d", CheckMonsters_Num[i]);
 }
 
 bool Monster::CheckHealth(Entity* ent)

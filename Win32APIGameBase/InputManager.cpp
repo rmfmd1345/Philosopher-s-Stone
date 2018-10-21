@@ -112,6 +112,7 @@ int InputManager::OnMouseRButtonUp(HWND hWnd, WPARAM wParam, LPARAM lParam)
 	return 1;
 }
 
+
 int InputManager::OnMouseMove(HWND hWnd, WPARAM wParam, LPARAM lParam)
 {
 	switch (ObjPool->System.GetScene()) //설명 생략

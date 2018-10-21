@@ -18,7 +18,6 @@ private:
 	SpriteHelper Ani_attack[4];
 	int nowFrame;
 	int maxFrame;
-	int health;
 
 public:
 	int Rock_Num;
@@ -51,7 +50,6 @@ public:
 	int GetWalkState();
 	POINT GetWalkTerm();
 
-	void AddHealth(int a);
 	void DigMap();
 	void SetSelectedArea(bool isCreate);
 	void SetTrap();
@@ -61,8 +59,5 @@ public:
 
 	void DrawSelectedTrapUI(HDC hMemDC);
 
-	bool isDead();
 	bool isWalk();
-	
-	void CheckHealth();
 };

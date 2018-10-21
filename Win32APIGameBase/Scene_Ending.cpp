@@ -35,7 +35,6 @@ void Ending::OnMouseLButtonDown(HWND hWnd, int x, int y)
 void Ending::OnMouseLButtonUp(HWND hWnd, int x, int y)
 {
 	ObjPool->System.SetScene(SCENE_TITLE);
-	ObjPool->Player.AddHealth(1);
 	ObjPool->Player.SetPosition(2, 5);
 	ObjPool->Player.SetDirection(RIGHT);
 	ObjPool->Player.ATK_Skill.Cooltime = 0;
@@ -53,7 +52,7 @@ void Ending::OnMouseLButtonUp(HWND hWnd, int x, int y)
 	ObjPool->SoundPool.Play(BGM_TITLE);
 	ObjPool->SoundPool.Stop(BGM_CAVE);
 
-	ObjPool->Wave = 1;
+	ObjPool->Wave = 0;
 
 	//초기화 해야할 것 추가
 }

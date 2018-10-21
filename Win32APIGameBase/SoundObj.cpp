@@ -138,6 +138,15 @@ void Sounds::Init()
 		case EFFECT_WALLBREAK:
 			temp.Init(L"./Sound/_wallbreak.wav", 1, false);
 			break;
+		case EFFECT_SELECT:
+			temp.Init(L"./Sound/_select.wav", 1, false);
+			break;
+		case EFFECT_TRAPSET:
+			temp.Init(L"./Sound/_trapset.wav", 1, false);
+			break;
+		case EFFECT_DISMANTLETRAP:
+			temp.Init(L"./Sound/_dismantle.wav", 1, false);
+			break;
 		case TRAP_NIDDLE:
 			temp.Init(L"./Sound/_niddle.wav", 1, false);
 			break;
@@ -148,10 +157,13 @@ void Sounds::Init()
 			temp.Init(L"./Sound/_grab.wav", 1, false);
 			break;
 		case TRAP_CONFUSE:
-			temp.Init(L"./Sound/_scarecrow.wav", 1, false); //추가필요
+			temp.Init(L"./Sound/_confuse.wav", 1, false);
 			break;
 		case TRAP_HOLE:
-			temp.Init(L"./Sound/_scarecrow.wav", 1, false); //추가필요
+			temp.Init(L"./Sound/_hole.wav", 1, false);
+			break;
+		case TRAP_HOLESPIN:
+			temp.Init(L"./Sound/_holespin.wav", 1, false);
 			break;
 		case TRAP_REROAD:
 			temp.Init(L"./Sound/_reload.wav", 1, false);
@@ -166,7 +178,7 @@ void Sounds::Init()
 			temp.Init(L"./Sound/_barricade.wav", 1, false);
 			break;
 		case SKILL_PUSH:
-			temp.Init(L"./Sound/_scarecrow.wav", 1, false); //추가필요
+			temp.Init(L"./Sound/_push.wav", 1, false);
 			break;
 		case BARRICADE_BREAK:
 			temp.Init(L"./Sound/_break.wav", 1, false);

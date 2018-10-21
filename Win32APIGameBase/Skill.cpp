@@ -64,6 +64,11 @@ void Skill::ActiveSkill()
 	switch (ID)
 	{
 	case ATK_SKILL:
+		if (ObjPool->Player.Rock_Num < 10)
+			return;
+		else
+			ObjPool->Player.Rock_Num -= 10;
+
 		Skill_Range[0].x = P_point.x - 1;
 		Skill_Range[0].y = P_point.y - 1;
 
@@ -94,6 +99,12 @@ void Skill::ActiveSkill()
 		ObjPool->Player.ATK_Skill.Check_Active = true;
 		break;
 	case PUSH_SKILL:
+
+		if (ObjPool->Player.Rock_Num < 5)
+			return;
+		else
+			ObjPool->Player.Rock_Num -= 5;
+
 		switch (Direction)
 		{
 		case UP:

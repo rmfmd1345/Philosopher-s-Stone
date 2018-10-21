@@ -38,7 +38,15 @@ void Ingame::Draw(HDC hMemDC)
 		ObjPool->Gdi.SetTextsColor(RGB(255, 255, 255));
 	else
 		ObjPool->Gdi.SetTextsColor(RGB(255, 50, 50));
+
 	ObjPool->Gdi.Text(hMemDC, 1020, 37, ObjPool->Player.Rock_Num_UI, 48);
+
+	ObjPool->Gdi.SetTextsColor(RGB(255, 255, 255));
+
+	for (int i = 0; i < 3; i++)
+		ObjPool->Gdi.Text(hMemDC, 205 + i * 60, 120, ObjPool->MonsterPool.CheckMonsters_Num_UI[i], 30);
+
+	ObjPool->Gdi.Text(hMemDC, 190, 15, ObjPool->Wave_UI, 60);
 }
 
 void Ingame::OnTimer(HWND hWnd, int timer)
@@ -72,6 +80,8 @@ void Ingame::OnTimer(HWND hWnd, int timer)
 		if (ObjPool->MonsterPool.ePool.empty() && ObjPool->MonsterTimer <= 0)
 		{
 			ObjPool->MonsterPool.NextWave();
+			ObjPool->Wave++;
+			wsprintf(ObjPool->Wave_UI, L"Wave %02d", ObjPool->Wave);
 		}
 
 		if (ObjPool->MonsterPool.ePool.empty() && ObjPool->MonsterTimer > 0)
@@ -94,9 +104,6 @@ void Ingame::OnTimer(HWND hWnd, int timer)
 
 void Ingame::Update() //씬 업데이트
 {
-	if (ObjPool->Player.isDead())
-		ObjPool->System.SetScene(SCENE_ENDING);
-
 	for (auto it = ObjPool->MonsterPool.ePool.begin(); it != ObjPool->MonsterPool.ePool.end();)
 	{
 		ObjPool->Maps.ActiveTile(it->GetEntity()); //몬스터에 대해 밟고 있는 타일 발동
@@ -255,6 +262,7 @@ void Ingame::OnKeyborad()
 	//플레이어 작동
 	if (lastBitState[KEY_1] == 0 && keyState[KEY_1] & 0x0001) //1번키
 	{
+		ObjPool->SoundPool.Play(EFFECT_SELECT);
 		if (ObjPool->Player.GetState() == STAND && ObjPool->Player.Rock_Num >= 10) //플레이어가 서 있는 상태면
 		{
 			ObjPool->Player.SetState(TRAPSETTING); //플레이어 고정상태로 만들기
@@ -450,7 +458,6 @@ void Ingame::OnKeyborad()
 	if (lastBitState[KEY_P] == 0 && keyState[KEY_P] & 0x0001) //P
 	{
 		ObjPool->Player.Rock_Num += 100;
-		ObjPool->Player.AddHealth(1000);
 
 		lastBitState[KEY_P] = 1;
 	}

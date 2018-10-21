@@ -16,7 +16,6 @@ void Hero::Init(HWND hWnd, int x, int y, COLORREF sprite)
 	nowFrame = 0;
 	maxFrame = 4;
 
-	health = 1;
 	Rock_Num = 0;
 
 	Ani_stand[UP].Init(hWnd, 0, 0, 80, 132, 1, L"./Image/Stand_Ani/hero/hero_back_standing.bmp");
@@ -191,6 +190,7 @@ void Hero::SetDirection(int dire)
 
 	if (nowState == TRAPSETTING || nowState == SKILLPREPARING) //플레이어가 고정된 상태로 트랩 설치중이면
 	{
+		ObjPool->SoundPool.Play(EFFECT_SELECT); 
 		nowDirection = dire; //그 자리에서 방향만 바꾸기
 		return;
 	}
@@ -281,11 +281,6 @@ POINT Hero::GetWalkTerm()
 			Term.x -= (stateFrame_Hero * 8);
 
 	return Term;
-}
-
-void Hero::AddHealth(int a)
-{
-	health += a;
 }
 
 void Hero::DigMap()
@@ -436,13 +431,7 @@ void Hero::SetTrap()
 		{
 			Rock_Num -= 10;
 			ObjPool->Maps.SetTrapOnMap(ObjPool->Maps.Trap_Niddle, Temp_X, Temp_Y);
-		}
-		break;
-	case TRAP_Hole:
-		if (Rock_Num >= 30)
-		{
-			Rock_Num -= 30;
-			ObjPool->Maps.SetTrapOnMap(ObjPool->Maps.Trap_Hole, Temp_X, Temp_Y);
+			ObjPool->SoundPool.Play(EFFECT_TRAPSET);
 		}
 		break;
 	case TRAP_ScareCrow:
@@ -450,6 +439,7 @@ void Hero::SetTrap()
 		{
 			Rock_Num -= 15;
 			ObjPool->Maps.SetTrapOnMap(ObjPool->Maps.Trap_ScareCrow, Temp_X, Temp_Y);
+			ObjPool->SoundPool.Play(EFFECT_TRAPSET);
 		}
 		break;
 	case TRAP_Grab:
@@ -473,6 +463,8 @@ void Hero::SetTrap()
 			ObjPool->Maps.Map[Temp_Y - 1][Temp_X].Grab_POS = grabPos;
 			ObjPool->Maps.Map[Temp_Y][Temp_X + 1].Grab_POS = grabPos;
 			ObjPool->Maps.Map[Temp_Y][Temp_X - 1].Grab_POS = grabPos;
+
+			ObjPool->SoundPool.Play(EFFECT_TRAPSET);
 		}
 		break;
 	case TRAP_Confusion:
@@ -480,6 +472,15 @@ void Hero::SetTrap()
 		{
 			Rock_Num -= 25;
 			ObjPool->Maps.SetTrapOnMap(ObjPool->Maps.Trap_Cunfusion, Temp_X, Temp_Y);
+			ObjPool->SoundPool.Play(EFFECT_TRAPSET);
+		}
+		break;
+	case TRAP_Hole:
+		if (Rock_Num >= 30)
+		{
+			Rock_Num -= 30;
+			ObjPool->Maps.SetTrapOnMap(ObjPool->Maps.Trap_Hole, Temp_X, Temp_Y);
+			ObjPool->SoundPool.Play(EFFECT_TRAPSET);
 		}
 		break;
 	default:
@@ -631,23 +632,10 @@ void Hero::DrawSelectedTrapUI(HDC hMemDC)
 	}
 }
 
-bool Hero::isDead()
-{
-	return !(health);
-}
-
 bool Hero::isWalk()
 {
 	if (nowAnimation != WALK) return false;
 	if (nowFrame == (maxFrame * 4)) return false;
 
 	return true;
-}
-
-void Hero::CheckHealth()
-{
-	if (isDead())
-	{
-		ObjPool->System.SetScene(SCENE_ENDING);
-	}
 }
