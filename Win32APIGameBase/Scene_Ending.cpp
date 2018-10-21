@@ -3,6 +3,9 @@
 
 void Ending::Draw(HDC hMemDC)
 {
+	ObjPool->EndingBg_Dead.Draw(hMemDC);
+
+	/*
 	if (ObjPool->Player.isDead())
 	{
 		ObjPool->EndingBg_Dead.Draw(hMemDC);
@@ -11,6 +14,7 @@ void Ending::Draw(HDC hMemDC)
 	{
 
 	}
+	*/
 }
 
 void Ending::OnTimer(HWND hWnd, int timer)
@@ -41,8 +45,8 @@ void Ending::OnMouseLButtonUp(HWND hWnd, int x, int y)
 
 	ObjPool->Maps.ResetMap();
 
-	ObjPool->Sounds.Push(BGM_TITLE, 1);
-	ObjPool->Sounds.Pop(0);
+	ObjPool->SoundPool.Play(BGM_TITLE);
+	ObjPool->SoundPool.Stop(BGM_CAVE);
 
 	//초기화 해야할 것 추가
 }

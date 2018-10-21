@@ -143,18 +143,33 @@ void Ingame::OnMouseMove(HWND hWnd, int x, int y)
 
 void Ingame::OnKeyborad()
 {
-	DWORD exlastBitState = 0;
-	DWORD exkeyState;
-	exkeyState = GetAsyncKeyState(VK_F1);
+	DWORD exlastBitState[3] = { 0, };
+	DWORD exkeyState[3];
+	exkeyState[0] = GetAsyncKeyState(VK_F1);
+	exkeyState[1] = GetAsyncKeyState(VK_F2);
+	exkeyState[2] = GetAsyncKeyState(VK_F3);
 
-	if (exlastBitState == 0 && exkeyState & 0x0001) //UP //이전에 0x1 이 0 이면 실행(안 누르다가 눌렀을 때)
+	if (exlastBitState[0] == 0 && exkeyState[0] & 0x0001)
 	{
-		ObjPool->MonsterPool.AddMonster(WIZARD, 4, 4);
-		exlastBitState = 1; // 누르는 중엔 실행되지 않도록 표시
+		ObjPool->MonsterPool.AddMonster(DEALER);
+		exlastBitState[0] = 1; // 누르는 중엔 실행되지 않도록 표시
 	}
-	if ((exkeyState & 0x8000) == 0) // 완전히 뗐다면 다음 실행을 위해서 상태 초기화
+	if (exlastBitState[1] == 0 && exkeyState[1] & 0x0001)
 	{
-		exlastBitState = 0;
+		ObjPool->MonsterPool.AddMonster(WIZARD);
+		exlastBitState[1] = 1; // 누르는 중엔 실행되지 않도록 표시
+	}
+	if (exlastBitState[2] == 0 && exkeyState[2] & 0x0001)
+	{
+		ObjPool->MonsterPool.AddMonster(TANKER);
+		exlastBitState[2] = 1; // 누르는 중엔 실행되지 않도록 표시
+	}
+	for (int i = 0; i < 3; i++)
+	{
+		if ((exkeyState[i] & 0x8000) == 0) // 완전히 뗐다면 다음 실행을 위해서 상태 초기화
+		{
+			exlastBitState[i] = 0;
+		}
 	}
 
 	DWORD lastBitState[15] = { 0, };

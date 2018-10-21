@@ -3,6 +3,7 @@
 #include "EntityObj.h"
 
 POINT Entity::spawnPosition = { 2, 5 };
+bool Entity::isStill = false;
 
 vector<POINT> Entity::BanRoad;
 int Entity::StackRoad[MAX_TILE_Y][MAX_TILE_X] = { 0 };
@@ -169,7 +170,7 @@ void Entity::Draw(HDC hMemDC, int x, int y)
 		break;
 	}
 
-	if (nowState == WALK)
+	if (nowAnimation == WALK)
 	{
 		switch (nowDirection)
 		{
@@ -215,11 +216,6 @@ void Entity::Draw(HDC hMemDC, int x, int y)
 		Ani_attack[nowDirection].SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y - 40);
 		Ani_attack[nowDirection].Draw(hMemDC);
 
-		if (Ani_attack[nowDirection].GetCurrentFrame() >= Ani_attack[nowDirection].GetLastFrame() - 1)
-		{
-			Attack();
-		}
-
 		for (int i = 0; i < health; i++)
 		{
 			Health_UI.SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40 + (Ani_stand[nowDirection].w / 2) - (20 * health / 2) + (20 * i), ((pos.y - Map_y) - 1) * 80 + Term_y - 40 - 18);
@@ -256,7 +252,12 @@ void Entity::Draw(HDC hMemDC, int x, int y)
 			ObjPool->ConfuseEffect.SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 25, ((pos.y - Map_y) - 1) * 80 + Term_y - 70);
 			ObjPool->ConfuseEffect.Draw(hMemDC);
 			break;
-		//case MARKFORFIND:
+		case STILLSTONE_FIND:
+		case STILLSTONE_WALK:
+			TCHAR str[5];
+			wsprintf(str, L"↓");
+			ObjPool->Gdi.Text(hMemDC, ((pos.x - Map_x) - 1) * 80 + Term_x - 25, ((pos.y - Map_y) - 1) * 80 + Term_y - 110, str, 36);
+			break;
 	}
 }
 
@@ -322,7 +323,68 @@ void Entity::UpdateState()
 		}
 		else
 		{
-			//ObjPool->Player.AddHealth(-10);
+			int Temp_X = pos.x;
+			int Temp_Y = pos.y;
+
+			switch (nowDirection)
+			{
+			case LEFT: Temp_X = pos.x - 1;
+				break;
+			case RIGHT: Temp_X = pos.x + 1;
+				break;
+			case UP: Temp_Y = pos.y - 1;
+				break;
+			case DOWN: Temp_Y = pos.y + 1;
+				break;
+			}
+
+			if (ObjPool->Player.GetPosition().x == Temp_X && ObjPool->Player.GetPosition().y == Temp_Y)
+			{
+				if (!isStill)
+				{
+					nowAnimation = STAND;
+					nowState = STILLSTONE_FIND;
+					stateFrame = 0;
+
+					isStill = true;
+					m_pathList.clear();
+					return;
+				}
+				else
+				{
+					nowAnimation = ATTACK;
+					nowState = ATTACK;
+					stateFrame = 0;
+					return;
+				}
+				//ObjPool->Player.AddHealth(-1);
+				//ObjPool->Sounds.Push(칼에 찔리는 소리);
+			}
+			else if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == SKILL_Barricade)
+			{
+				ObjPool->Maps.Map[Temp_Y][Temp_X].hp--;
+				if (ObjPool->Maps.Map[Temp_Y][Temp_X].hp == 0)
+				{
+					ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, Temp_X, Temp_Y);
+				}
+				//ObjPool->Sounds.Push(칼이 튕겨나는 소리);
+			}
+			else if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == TRAP_ScareCrow)
+			{
+				if(ObjPool->Maps.Map[Temp_Y][Temp_X].TrapHp_Now > 0)
+					ObjPool->Maps.Map[Temp_Y][Temp_X].TrapHp_Now = 0;
+				else
+					ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, Temp_X, Temp_Y);
+				//ObjPool->Sounds.Push(칼이 튕겨나는 소리);
+			}
+			else if ((ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == TRAP_Niddle 
+				|| ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == TRAP_Hole
+				|| ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == TRAP_Confusion
+				|| ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == TRAP_Grab) && type == WIZARD)
+			{
+				ObjPool->Maps.Map[Temp_Y][Temp_X].TrapHp_Now = 0;
+				//ObjPool->Sounds.Push(칼이 튕겨나는 소리);
+			}
 
 			nowAnimation = STAND;
 			nowState = FINDWAY;
@@ -334,6 +396,129 @@ void Entity::UpdateState()
 	//길찾기
 	if (nowState == FINDWAY)
 	{
+		{
+			switch (nowDirection)
+			{
+			case UP:
+				if (ObjPool->Maps.GetTileID(pos.x, pos.y - 1) == SKILL_Barricade)
+				{
+					nowAnimation = ATTACK;
+					nowState = ATTACK;
+					return;
+				}
+			case DOWN:
+				if (ObjPool->Maps.GetTileID(pos.x, pos.y + 1) == SKILL_Barricade)
+				{
+					nowAnimation = ATTACK;
+					nowState = ATTACK;
+					return;
+				}
+			case LEFT:
+				if (ObjPool->Maps.GetTileID(pos.x - 1, pos.y) == SKILL_Barricade)
+				{
+					nowAnimation = ATTACK;
+					nowState = ATTACK;
+					return;
+				}
+			case RIGHT:
+				if (ObjPool->Maps.GetTileID(pos.x + 1, pos.y) == SKILL_Barricade)
+				{
+					nowAnimation = ATTACK;
+					nowState = ATTACK;
+					return;
+				}
+			}
+
+			for (int i = 0; i < MAX_TILE_Y; i++)
+			{
+				for (int j = 0; j < MAX_TILE_X; j++)
+				{
+					if (ObjPool->Maps.Map[i][j].TrapHp_Now != 0 && ObjPool->Maps.GetTileID(j, i) == TRAP_ScareCrow)
+						if (isSearchFind(j, i))
+						{
+							if (SearchDirection == UP || SearchDirection == DOWN || SearchDirection == LEFT || SearchDirection == RIGHT)
+							{
+								SetDirection(SearchDirection);
+							}
+							else if ((SearchDirection == UPnLEFT || SearchDirection == UPnRIGHT) && !isRoadBlocked(UP))
+							{
+								SetDirection(UP);
+							}
+							else if ((SearchDirection == DOWNnLEFT || SearchDirection == DOWNnRIGHT) && !isRoadBlocked(DOWN))
+							{
+								SetDirection(DOWN);
+							}
+							else if ((SearchDirection == UPnLEFT || SearchDirection == DOWNnLEFT) && !isRoadBlocked(LEFT))
+							{
+								SetDirection(LEFT);
+							}
+							else if ((SearchDirection == UPnRIGHT || SearchDirection == DOWNnRIGHT) && !isRoadBlocked(RIGHT))
+							{
+								SetDirection(RIGHT);
+							}
+
+							if (SearchGap == 1)
+							{
+								nowAnimation = ATTACK;
+								nowState = ATTACK;
+								return;
+							}
+							else
+							{
+								nowAnimation = WALK;
+								nowState = WALK;
+								return;
+							}
+						}
+
+					if (ObjPool->Maps.Map[i][j].TrapHp_Now != 0 && (type == WIZARD || type == TANKER) 
+						&& (ObjPool->Maps.GetTileID(j, i) == TRAP_Niddle
+						|| ObjPool->Maps.GetTileID(j, i) == TRAP_Hole
+						|| ObjPool->Maps.GetTileID(j, i) == TRAP_Confusion
+						|| ObjPool->Maps.GetTileID(j, i) == TRAP_Grab))
+						if (isSearchFind(j, i) && SearchGap <= 2)
+						{
+							if (SearchDirection == UP || SearchDirection == DOWN || SearchDirection == LEFT || SearchDirection == RIGHT)
+							{
+								SetDirection(SearchDirection);
+							}
+							else if ((SearchDirection == UPnLEFT || SearchDirection == UPnRIGHT) && !isRoadBlocked(UP))
+							{
+								SetDirection(UP);
+							}
+							else if ((SearchDirection == DOWNnLEFT || SearchDirection == DOWNnRIGHT) && !isRoadBlocked(DOWN))
+							{
+								SetDirection(DOWN);
+							}
+							else if ((SearchDirection == UPnLEFT || SearchDirection == DOWNnLEFT) && !isRoadBlocked(LEFT))
+							{
+								SetDirection(LEFT);
+							}
+							else if ((SearchDirection == UPnRIGHT || SearchDirection == DOWNnRIGHT) && !isRoadBlocked(RIGHT))
+							{
+								SetDirection(RIGHT);
+							}
+
+							if (SearchGap == 1 && type == WIZARD)
+							{
+								nowAnimation = ATTACK;
+								nowState = ATTACK;
+								return;
+							}
+							else
+							{
+								nowAnimation = WALK;
+								nowState = WALK;
+								return;
+							}
+						}
+				}
+			}
+		}
+		//트랩발견시 행동(플레이어 서치보다 우선순위 <<<허수아비때문에!!)
+
+		{}
+
 		{
 			if (isSearchFind(ObjPool->Player.GetPosition().x, ObjPool->Player.GetPosition().y))
 			{
@@ -423,6 +608,12 @@ void Entity::UpdateState()
 								SetDirection(LEFT);
 							else if (pos.x + 1 == it->x && pos.y == it->y)
 								SetDirection(RIGHT);
+							else
+							{
+								m_pathList.clear();
+								isSearch = false;
+								return;
+							}
 
 							if (!isMonsterRoadOverlap(nowDirection))
 							{
@@ -449,7 +640,7 @@ void Entity::UpdateState()
 						return;
 					}
 				}
-				else if(isSearch)
+				else if (isSearch)
 				{
 					if (m_pathList.empty())
 					{
@@ -470,6 +661,12 @@ void Entity::UpdateState()
 							SetDirection(LEFT);
 						else if (pos.x + 1 == it->x && pos.y == it->y)
 							SetDirection(RIGHT);
+						else
+						{
+							m_pathList.clear();
+							isSearch = false;
+							return;
+						}
 
 						if (!isMonsterRoadOverlap(nowDirection))
 						{
@@ -492,31 +689,94 @@ void Entity::UpdateState()
 		}
 		//서치중이면 플레이어에게 간다 
 
-		{ /* 기본 길찾기 */ }
+		{}
 
 		{
-		/*
-		StackRoad[pos.y][pos.x]++;
+			/*
+			StackRoad[pos.y][pos.x]++;
 
-		if (StackRoad[pos.y][pos.x] > FirstSpawnMonsterNum)
-		{
-		SetBanRoad(pos.x, pos.y);
-		}
-		*/
-		
-		int BlockedRoadNum = 0;
-		for (int i = 0; i < 4; i++)
-		{
-			if (isRoadBlocked(i) || isBanRoad(i))
-				BlockedRoadNum++;
-		}
-
-		if (BlockedRoadNum >= 3)
-		{
+			if (StackRoad[pos.y][pos.x] > FirstSpawnMonsterNum)
+			{
 			SetBanRoad(pos.x, pos.y);
-		}
+			}
+			*/
+			
+			int BlockedRoadNum = 0;
+			for (int i = 0; i < 4; i++)
+			{
+				if (isRoadBlocked(i) || isBanRoad(i))
+					BlockedRoadNum++;
+			}
+
+			if (BlockedRoadNum >= 3)
+			{
+				if(pos.x != spawnPosition.x && pos.y != spawnPosition.y)
+				SetBanRoad(pos.x, pos.y);
+			}
 		}
 		//막다른 길이거나 / 스택 쌓아서 일정정도가 넘으면 밴
+
+		{
+			for (auto it = ObjPool->MonsterPool.ePool.begin(); it != ObjPool->MonsterPool.ePool.end(); it++)
+			{
+				switch (nowDirection)
+				{
+				case UP:
+					if (it->pos.x == pos.x && it->pos.y == pos.y - 1)
+					{
+						if (nowDirection == returnReverseDirection(it->nowDirection))
+						{
+							srand((unsigned)time(NULL));
+							if (rand() % 2)
+								RotateClockwise();
+							else
+								RotateCounterclockwise();
+						}
+					}
+					break;
+				case DOWN:
+					if (it->pos.x == pos.x && it->pos.y == pos.y + 1)
+					{
+						if (nowDirection == returnReverseDirection(it->nowDirection))
+						{
+							srand((unsigned)time(NULL));
+							if (rand() % 2)
+								RotateClockwise();
+							else
+								RotateCounterclockwise();
+						}
+					}
+						break;
+				case LEFT:
+					if (it->pos.x == pos.x - 1 && it->pos.y == pos.y)
+					{
+						if (nowDirection == returnReverseDirection(it->nowDirection))
+						{
+							srand((unsigned)time(NULL));
+							if (rand() % 2)
+								RotateClockwise();
+							else
+								RotateCounterclockwise();
+						}
+					}
+						break;
+				case RIGHT:
+					if (it->pos.x == pos.x + 1 && it->pos.y == pos.y)
+					{
+						if (nowDirection == returnReverseDirection(it->nowDirection))
+						{
+							srand((unsigned)time(NULL));
+							if (rand() % 2)
+								RotateClockwise();
+							else
+								RotateCounterclockwise();
+						}
+					}
+						break;
+				}
+			}
+		}
+		//몬스터끼리 서로 마주보고 있어서 교통체증 방지
 
 		{
 			int BlockedRoadNum = 0;
@@ -619,39 +879,113 @@ void Entity::UpdateState()
 		return;
 	}
 
+	//혼란..?
 	if (nowState == CONFUSE)
 	{
 		//TODO : 혼란 상태 추가
 	}
-
-}
-
-void Entity::Attack()
-{
-	int Temp_X = pos.x;
-	int Temp_Y = pos.y;
-
-	switch (nowDirection)
+	
+	//돌 뺏음
+	if (nowState == STILLSTONE_FIND)
 	{
-	case LEFT: Temp_X = pos.x - 1;
-		break;
-	case RIGHT: Temp_X = pos.x + 1;
-		break;
-	case UP: Temp_Y = pos.y - 1;
-		break;
-	case DOWN: Temp_Y = pos.y + 1;
-		break;
+		if (pos.x == spawnPosition.x && pos.y == spawnPosition.y)
+		{
+			ObjPool->System.SetScene(SCENE_ENDING);
+		}
+
+		if (m_pathList.empty())
+		{
+			if (PathFind(pos, spawnPosition))
+			{
+				if (m_pathList.empty())
+				{
+					return;
+				}
+
+				list<POINT>::iterator it;
+				it = m_pathList.begin();
+
+				if (!isRoadBlocked(it->x, it->y))
+				{
+					if (pos.x == it->x && pos.y - 1 == it->y)
+						SetDirection(UP);
+					else if (pos.x == it->x && pos.y + 1 == it->y)
+						SetDirection(DOWN);
+					else if (pos.x - 1 == it->x && pos.y == it->y)
+						SetDirection(LEFT);
+					else if (pos.x + 1 == it->x && pos.y == it->y)
+						SetDirection(RIGHT);
+
+					nowAnimation = WALK;
+					nowState = STILLSTONE_WALK;
+
+					m_pathList.erase(it);
+					return;
+				}
+			}
+			else
+			{
+				return;
+			}
+		}
+		else
+		{
+			list<POINT>::iterator it;
+			it = m_pathList.begin();
+
+			if (!isRoadBlocked(it->x, it->y))
+			{
+				if (pos.x == it->x && pos.y - 1 == it->y)
+					SetDirection(UP);
+				else if (pos.x == it->x && pos.y + 1 == it->y)
+					SetDirection(DOWN);
+				else if (pos.x - 1 == it->x && pos.y == it->y)
+					SetDirection(LEFT);
+				else if (pos.x + 1 == it->x && pos.y == it->y)
+					SetDirection(RIGHT);
+
+				nowAnimation = WALK;
+				nowState = STILLSTONE_WALK;
+
+				m_pathList.erase(it);
+				return;
+			}
+		}
 	}
 
-	if (ObjPool->Player.GetPosition().x == Temp_X && ObjPool->Player.GetPosition().y == Temp_Y)
+	if (nowState == STILLSTONE_WALK)
 	{
-		ObjPool->Player.AddHealth(-1);
-		//ObjPool->Sounds.Push(칼에 찔리는 소리);
-	}
-	else if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == SKILL_Barricade)
-	{
-		ObjPool->Maps.Map[Temp_Y][Temp_X].hp--;
-		//ObjPool->Sounds.Push(칼이 튕겨나는 소리);
+		if (pos.x == spawnPosition.x && pos.y == spawnPosition.y)
+		{
+			ObjPool->System.SetScene(SCENE_ENDING);
+		}
+
+		if (stateFrame < 10)
+		{
+			stateFrame++;
+		}
+		else
+		{
+			switch (nowDirection)
+			{
+			case UP:
+				pos.y--;
+				break;
+			case DOWN:
+				pos.y++;
+				break;
+			case LEFT:
+				pos.x--;
+				break;
+			case RIGHT:
+				pos.x++;
+				break;
+			}
+			nowAnimation = STAND;
+			nowState = STILLSTONE_FIND;
+			stateFrame = 0;
+		}
+		return;
 	}
 }
 
@@ -686,6 +1020,8 @@ bool Entity::isSearchFind(int x, int y)
 
 		for (int i = 1; i <= SearchGap; i++)
 		{
+			if (i == SearchGap && ObjPool->Maps.GetTileID(temp.x, temp.y) == TRAP_ScareCrow) break;
+
 			if (isRoadBlocked(pos.x, pos.y - i))
 			{
 				SearchDirection = -1;
@@ -700,6 +1036,8 @@ bool Entity::isSearchFind(int x, int y)
 
 		for (int i = 1; i <= SearchGap; i++)
 		{
+			if (i == SearchGap && ObjPool->Maps.GetTileID(temp.x, temp.y) == TRAP_ScareCrow) break;
+
 			if (isRoadBlocked(pos.x, pos.y + i))
 			{
 				SearchDirection = -1;
@@ -714,6 +1052,8 @@ bool Entity::isSearchFind(int x, int y)
 
 		for (int i = 1; i <= SearchGap; i++)
 		{
+			if (i == SearchGap && ObjPool->Maps.GetTileID(temp.x, temp.y) == TRAP_ScareCrow) break;
+
 			if (isRoadBlocked(pos.x - i, pos.y))
 			{
 				SearchDirection = -1;
@@ -728,6 +1068,8 @@ bool Entity::isSearchFind(int x, int y)
 
 		for (int i = 1; i <= SearchGap; i++)
 		{
+			if (i == SearchGap && ObjPool->Maps.GetTileID(temp.x, temp.y) == TRAP_ScareCrow) break;
+
 			if (isRoadBlocked(pos.x + i, pos.y))
 			{
 				SearchDirection = -1;
@@ -800,7 +1142,7 @@ bool Entity::isRoadBlocked()
 
 bool Entity::isRoadBlocked(int x, int y)
 {
-	if (ObjPool->Maps.GetTileID(x, y) == FLOOR)
+	if (ObjPool->Maps.GetTileMoveID(x, y))
 		return false;
 
 	return true;
@@ -937,6 +1279,7 @@ bool Entity::isMonsterRoadOverlap(int x, int y)
 {
 	for (auto it = ObjPool->MonsterPool.ePool.begin(); it != ObjPool->MonsterPool.ePool.end(); it++)
 	{
+		if (it->nowState != STILLSTONE_FIND && it->nowState != STILLSTONE_WALK)
 		if (it->nowState == WALK)
 		{
 			switch (it->nowDirection)
@@ -1225,7 +1568,8 @@ void Monster::UpdateState()
 	}
 	if (!isSearch)
 	{
-		ePool.begin()->SetAllSearch(false);
+		if(ePool.size() != 1)
+			ePool.begin()->SetAllSearch(false);
 	}
 }
 

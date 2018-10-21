@@ -14,7 +14,10 @@ enum eState
 	INTRAP,
 	CONFUSE,
 	TRAPSETTING,
-	SKILLPREPARING
+	SKILLPREPARING,
+
+	STILLSTONE_FIND,
+	STILLSTONE_WALK
 };
 
 enum eEntity
@@ -31,6 +34,7 @@ private:
 	POINT pos;		//엔티티 위치
 
 	static POINT spawnPosition;
+	static bool isStill;
 
 	int nowState;
 	int stateFrame;
@@ -53,7 +57,6 @@ public:
 
 	void Animation();
 	void UpdateState();
-	void Attack();
 
 	POINT GetPosition();
 	POINT GetSpawnPosition();
