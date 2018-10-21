@@ -37,7 +37,7 @@ bool A_Star::PathFind(POINT MonsterPos, POINT PlayerPos)
 	{
 		for (int j = 0; j < MAX_TILE_X; j++)
 		{
-			if (ObjPool->Maps.GetTileID(j, i) != FLOOR)
+			if (!ObjPool->Maps.GetTileMoveID(j, i))
 				SetBlock({ j,i });
 		}
 	}

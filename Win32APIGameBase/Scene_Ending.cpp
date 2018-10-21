@@ -3,6 +3,9 @@
 
 void Ending::Draw(HDC hMemDC)
 {
+	ObjPool->EndingBg_Dead.Draw(hMemDC);
+
+	/*
 	if (ObjPool->Player.isDead())
 	{
 		ObjPool->EndingBg_Dead.Draw(hMemDC);
@@ -11,6 +14,7 @@ void Ending::Draw(HDC hMemDC)
 	{
 		ObjPool->EndingBg_Clear.Draw(hMemDC);
 	}
+	*/
 }
 
 void Ending::OnTimer(HWND hWnd, int timer)
@@ -46,8 +50,8 @@ void Ending::OnMouseLButtonUp(HWND hWnd, int x, int y)
 
 	ObjPool->Maps.ResetMap();
 
-	ObjPool->SoundPool.Stop(1);
-	ObjPool->SoundPool.Play(0);
+	ObjPool->SoundPool.Play(BGM_TITLE);
+	ObjPool->SoundPool.Stop(BGM_CAVE);
 
 	ObjPool->Wave = 1;
 
