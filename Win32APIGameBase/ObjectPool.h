@@ -102,6 +102,7 @@ public:
 	TCHAR Wave_UI[10];
 
 	int timeDropStone = 0;
+	bool CheckMonster;
 
 	int howtonum = 0;
 	bool optionover = false;

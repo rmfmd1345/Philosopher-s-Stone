@@ -38,7 +38,11 @@ void Ingame::Draw(HDC hMemDC)
 	ObjPool->Player.PUSH_Skill.DrawSkillCooltime(hMemDC);
 	ObjPool->Player.BARRICADE_Skill.DrawSkillCooltime(hMemDC);
 
-	ObjPool->Gdi.SetTextsColor(RGB(0, 124, 255));
+	if (!ObjPool->CheckMonster)
+		ObjPool->Gdi.SetTextsColor(RGB(0, 124, 255));
+	else
+		ObjPool->Gdi.SetTextsColor(RGB(255, 50, 50));
+
 	ObjPool->Gdi.Text(hMemDC, 560, 45, ObjPool->TIMER, 60);
 
 	if(!ObjPool->timeDropStone)
@@ -97,6 +101,11 @@ void Ingame::OnTimer(HWND hWnd, int timer)
 		if (ObjPool->MonsterPool.ePool.empty() && ObjPool->MonsterTimer > 0)
 		{
 			ObjPool->MonsterTimer--;
+			ObjPool->CheckMonster = false;
+		}
+		else
+		{
+			ObjPool->CheckMonster = true;
 		}
 
 		if (ObjPool->Player.ATK_Skill.Cooltime > 0)

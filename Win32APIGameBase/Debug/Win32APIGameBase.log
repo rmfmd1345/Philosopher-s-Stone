@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿  stdafx.cpp
   A_Star.cpp
   BitmapObj.cpp
@@ -38,3 +39,7 @@ c:\users\hp\documents\github\philosopher-s-stone\win32apigamebase\tileobj.cpp(48
   main.cpp
   코드를 생성하고 있습니다...
   Win32APIGameBase.vcxproj -> C:\Users\hp\Documents\GitHub\Philosopher-s-Stone\Win32APIGameBase\Debug\Win32APIGameBase.exe
+=======
+﻿  ObjectPool.cpp
+  Win32APIGameBase.vcxproj -> C:\Users\World Famous Star\Desktop\프로젝트\API 팀 프로젝트\Philosopher-s-Stone\Win32APIGameBase\Debug\Win32APIGameBase.exe
+>>>>>>> 77508d8235525962c63597ed77c1a59acb54f77d
