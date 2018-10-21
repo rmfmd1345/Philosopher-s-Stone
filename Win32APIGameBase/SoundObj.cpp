@@ -147,6 +147,12 @@ void Sounds::Init()
 		case EFFECT_DISMANTLETRAP:
 			temp.Init(L"./Sound/_dismantle.wav", 1, false);
 			break;
+		case EFFECT_STAB:
+			temp.Init(L"./Sound/_stab.wav", 1, false);
+			break;
+		case EFFECT_SWORD:
+			temp.Init(L"./Sound/_sword.wav", 1, false);
+			break;
 		case TRAP_NIDDLE:
 			temp.Init(L"./Sound/_niddle.wav", 1, false);
 			break;

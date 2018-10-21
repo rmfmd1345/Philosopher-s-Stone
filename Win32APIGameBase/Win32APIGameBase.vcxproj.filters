@@ -173,6 +173,9 @@
     <ClCompile Include="Scene_Ending.cpp">
       <Filter>Scene\SceneScript</Filter>
     </ClCompile>
+    <ClCompile Include="Scene_Howto.cpp">
+      <Filter>Scene\SceneScript</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">

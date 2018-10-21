@@ -18,7 +18,9 @@ void ObjectPool::CreateObject(HWND hWnd)	//객체의 초기 설정을 적는 곳
 	creditBg.Init(hWnd, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, L"./Image/Background/Credit_Bg.bmp");
 
 	//ingame Scene
-	ingameBtn_Option.Init(hWnd, 1200, 30, 56, 56, L"./Image/UI/Ingame/ui_option.bmp", L"./Image/UI/Ingame/ui_option_down.bmp", L"./Image/UI/Ingame/ui_option_up.bmp");
+	ingameBtn_Option.Init(hWnd, 1200, 30, 56, 56, L"./Image/UI/Ingame/ui_option.bmp", L"./Image/UI/Ingame/ui_option_down.bmp", L"./Image/UI/Ingame/ui_option_up_empty.bmp");
+	
+	ingameSprite_Option.Init(hWnd, 1200, 28, 224, 60, 4, L"./Image/UI/Ingame/ui_option_up_ani.bmp");
 	
 	ingameUI_Stone.Init(hWnd, 950, 25, 224, 70, L"./Image/UI/Ingame/ui_stone.bmp");
 	
@@ -29,6 +31,8 @@ void ObjectPool::CreateObject(HWND hWnd)	//객체의 초기 설정을 적는 곳
 	ingameUI_Skill.Init(hWnd, 20, 180, 104, 454, L"./Image/UI/Ingame/ui_skill.bmp");
 	
 	ingameUI_Stage.Init(hWnd, 0, 0, 400, 156, L"./Image/UI/Ingame/ui_stage.bmp");
+
+	ingameUI_Stage_Steal.Init(hWnd, 0, 0, 400, 156, L"./Image/UI/Ingame/ui_stage_off.bmp");
 	
 	ingameUI_Time.Init(hWnd, 475, 0, 320, 134, L"./Image/UI/Ingame/ui_time.bmp");
 
@@ -69,10 +73,12 @@ void ObjectPool::DeleteObject()				//비트맵객체는 반드시 종료해주기
 	creditBg.Ternimate();
 
 	ingameBtn_Option.Ternimate();
+	ingameSprite_Option.Ternimate();
 	ingameUI_Stone.Ternimate();
 	ingameUI_Trap.Ternimate();
 	ingameUI_Skill.Ternimate();
 	ingameUI_Stage.Ternimate();
+	ingameUI_Stage_Steal.Ternimate();
 	ingameUI_Time.Ternimate();
 
 	Maps.DestroyMap();

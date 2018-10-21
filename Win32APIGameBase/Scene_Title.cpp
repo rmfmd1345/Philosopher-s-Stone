@@ -33,16 +33,17 @@ void Title::OnMouseLButtonUp(HWND hWnd, int x, int y)
 {
 	if (ObjPool->titleBtn_Start.isClickUp(x, y))	//버튼을 클릭했을 때
 	{
-		ObjPool->System.SetScene(SCENE_INGAME);	//씬을 바꾼다
-		ObjPool->SoundPool.Play(BGM_CAVE);
-		ObjPool->SoundPool.Stop(BGM_TITLE);
+		ObjPool->SoundPool.Play(EFFECT_SELECT);
+		ObjPool->System.SetScene(SCENE_HOWTO);	//씬을 바꾼다
 	}
 	if (ObjPool->titleBtn_Credit.isClickUp(x, y))	//버튼을 클릭했을 때
 	{
+		ObjPool->SoundPool.Play(EFFECT_SELECT);
 		ObjPool->System.SetScene(SCENE_CREDIT);	//씬을 바꾼다
 	}
 	if (ObjPool->titleBtn_Exit.isClickUp(x, y))	//버튼을 클릭했을 때
 	{
+		ObjPool->SoundPool.Play(EFFECT_SELECT);
 		exit(0);
 	}
 }

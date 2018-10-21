@@ -20,11 +20,18 @@ void Ingame::Draw(HDC hMemDC)
 	//MonsterPool.Draw에서 플레이어와 몬스터의 좌표를 확인해 부자연스럽게 겹치지 않도록 함.
 
 	ObjPool->ingameBtn_Option.Draw(hMemDC);
+	if (ObjPool->optionover && !ObjPool->optiondown)
+		ObjPool->ingameSprite_Option.Draw(hMemDC);
 	ObjPool->ingameUI_Stone.Draw(hMemDC);
 	ObjPool->ingameUI_Trap.Draw(hMemDC);
 	ObjPool->ingameUI_Skill.Draw(hMemDC);
 	ObjPool->Player.DrawSelectedTrapUI(hMemDC);
-	ObjPool->ingameUI_Stage.Draw(hMemDC);
+
+	if (!ObjPool->MonsterPool.isSteal())
+		ObjPool->ingameUI_Stage.Draw(hMemDC);
+	else
+		ObjPool->ingameUI_Stage_Steal.Draw(hMemDC);
+
 	ObjPool->ingameUI_Time.Draw(hMemDC);
 	ObjPool->Player.ATK_Skill.DrawSkillCooltime(hMemDC);
 	ObjPool->Player.AGGRO_Skill.DrawSkillCooltime(hMemDC);
@@ -65,6 +72,8 @@ void Ingame::OnTimer(HWND hWnd, int timer)
 
 		ObjPool->MonsterPool.Animation();
 		ObjPool->MonsterPool.UpdateState();
+
+		ObjPool->ingameSprite_Option.NextFrameSprite(true);
 
 		if (ObjPool->Player.ATK_Skill.Check_Active)
 			ObjPool->Player.ATK_Skill.Animation();
@@ -140,14 +149,20 @@ void Ingame::Update() //씬 업데이트
 
 void Ingame::OnMouseLButtonDown(HWND hWnd, int x, int y)
 {
-	ObjPool->ingameBtn_Option.isClickDown(x, y);
+	if (ObjPool->ingameBtn_Option.isClickDown(x, y))
+	{
+		ObjPool->optiondown = true;
+	}
 }
 
 void Ingame::OnMouseLButtonUp(HWND hWnd, int x, int y)
 {
+	ObjPool->optiondown = false;
+
 	if (ObjPool->ingameBtn_Option.isClickUp(x, y))
 	{
-		ObjPool->System.SetScene(SCENE_OPTION);
+		ObjPool->SoundPool.Play(EFFECT_SELECT);
+		//ObjPool->System.SetScene(SCENE_OPTION);
 	}
 }
 
@@ -163,7 +178,16 @@ void Ingame::OnMouseRButtonUp(HWND hWnd, int x, int y)
 
 void Ingame::OnMouseMove(HWND hWnd, int x, int y)
 {
-	ObjPool->ingameBtn_Option.isOver(x, y);
+	if (ObjPool->ingameBtn_Option.isOver(x, y))
+	{
+		ObjPool->optionover = true;
+		if (ObjPool->optiondown) ObjPool->optionover = false;
+	}
+	else
+	{
+		ObjPool->optionover = false;
+		ObjPool->optiondown = false;
+	}
 }
 
 void Ingame::OnKeyborad()
