@@ -182,15 +182,9 @@ void CMap::ConfusionActive(Entity* ent)
 
 	if (Map[pos.y][pos.x].Tile_On && ent->GetState() != WALK) //함정이 깔려있으면 //엔티티가 걷는 중이 아니면
 	{
-		ObjPool->SoundPool.Play(TRAP_CONFUSE);
 		ent->SetState(CONFUSE); //엔티티 혼란 상태로 변경
-		Map[pos.y][pos.x].stateFrame++;
-		if (Map[pos.y][pos.x].stateFrame >= Map[pos.y][pos.x].stunTime)
-		{
-			Map[pos.y][pos.x].stateFrame = 0;
-			ent->SetState(FINDWAY); //엔티티 혼란 상태로 변경
-			Map[pos.y][pos.x].TrapHp_Now = 0; //재장전 필요한 상태로 변경
-		}
+		ObjPool->SoundPool.Play(TRAP_CONFUSE);
+		Map[pos.y][pos.x].TrapHp_Now = 0; //재장전 필요한 상태로 변경
 	}
 }
 
