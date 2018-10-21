@@ -64,7 +64,7 @@ void CTile::InitTile(HWND hwnd, int Frame, int ID, int MoveID, int traphp, std::
 	stateFrame = 1;
 	damgeDelay = 0;
 	SpinSpeed = 3;
-	repairGage = 0;
+	TrapHp_Now = traphp;
 	TrapHp = traphp;
 	stunTime = 100;
 
@@ -112,7 +112,7 @@ void CMap::NiddleActive(Entity* ent)
 		printf("체력 : %d\n", ent->GetHealth());
 		ent->AddHealth(-1);
 		printf("체력 : %d\n", ent->GetHealth());
-		Map[pos.y][pos.x].Tile_On = false; //재장전 필요한 상태로 변경
+		Map[pos.y][pos.x].TrapHp_Now = 0; //재장전 필요한 상태로 변경
 	}
 }
 
@@ -163,7 +163,7 @@ void CMap::GrabActive(Entity* ent)
 			Map[grabPos.y][grabPos.x].stateFrame = 1;
 			//Map[grabPos.y][grabPos.x].Ani_Trap[UP].SetCurrentFrame(0);
 			ObjPool->Sounds.Push(TRAP_GRAB);
-			Map[grabPos.y][grabPos.x].Tile_On = false; //재장전 필요한 상태로 변경
+			Map[pos.y][pos.x].TrapHp_Now = 0; //재장전 필요한 상태로 변경
 			ent->SetPosition(Map[pos.y][pos.x].Grab_POS.x, Map[pos.y][pos.x].Grab_POS.y);
 			ent->SetState(FINDWAY);
 			ent->AddHealth(-1);
@@ -186,7 +186,7 @@ void CMap::ConfusionActive(Entity* ent)
 		{
 			Map[pos.y][pos.x].stateFrame = 0;
 			ent->SetState(FINDWAY); //엔티티 혼란 상태로 변경
-			Map[pos.y][pos.x].Tile_On = false; //재장전 필요한 상태로 변경
+			Map[pos.y][pos.x].TrapHp_Now = 0; //재장전 필요한 상태로 변경
 		}
 	}
 }
@@ -216,7 +216,7 @@ void CMap::HoleActive(Entity* ent)
 				ent->AddHealth(-5); //엔티티 삭제
 				Map[pos.y][pos.x].SpinSpeed = 3;
 				ObjPool->Sounds.Push(TRAP_HOLE);
-				Map[pos.y][pos.x].Tile_On = false; //재장전 필요한 상태로 변경
+				Map[pos.y][pos.x].TrapHp_Now = 0; //재장전 필요한 상태로 변경
 			}
 			Map[pos.y][pos.x].damgeDelay = 0;
 		}
@@ -366,6 +366,9 @@ void CMap::DrawMap(HDC hMemDC, int x, int y)
 			if (i < 1 || j < 1 || i >= MAX_TILE_Y || j >= MAX_TILE_X)
 				continue;
 
+			if (Map[i][j].TrapHp_Now <= 0)
+				Map[i][j].Tile_On = false;
+
 			if (Map[i][j].Tile_ID == TRAP_ScareCrow)
 			{
 				if (Map[i][j].Tile_On)
@@ -440,12 +443,12 @@ void CMap::DrawTileUI(HDC hMemDC, int x, int y)
 				continue;
 
 			//====체력바 UI====
-			if (Map[i][j].Tile_On == false && Map[i][j].Tile_ID != TRAP_Hole) //만약 함정이 고장났다면
+			if (Map[i][j].TrapHp_Now < Map[i][j].TrapHp && Map[i][j].Tile_ID != TRAP_Hole) //만약 함정이 고장났다면
 			{
 				ingameUI_TrapHpBar_fill.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 30, ((i - Map_Start_y) - 1) * 80 + Term_y + 15);
 				ingameUI_TrapHpBar_edge.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 30, ((i - Map_Start_y) - 1) * 80 + Term_y + 15);
 
-				ingameUI_TrapHpBar_fill.SetDrawArea(Map[i][j].repairGage * (60 / Map[i][j].TrapHp), 14);
+				ingameUI_TrapHpBar_fill.SetDrawArea(Map[i][j].TrapHp_Now * (60 / Map[i][j].TrapHp), 14);
 				ingameUI_TrapHpBar_edge.SetDrawArea(60, 14);
 
 				ingameUI_TrapHpBar_fill.Draw(hMemDC);

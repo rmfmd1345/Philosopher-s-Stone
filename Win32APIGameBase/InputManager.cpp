@@ -77,6 +77,9 @@ int InputManager::OnMouseLButtonUp(HWND hWnd, WPARAM wParam, LPARAM lParam)
 	case SCENE_INGAME:
 		Ingame::OnMouseLButtonUp(hWnd, LOWORD(lParam), HIWORD(lParam));
 		break;
+	case SCENE_ENDING:
+		Ending::OnMouseLButtonUp(hWnd, LOWORD(lParam), HIWORD(lParam));
+		break;
 	}
 	return 1;
 }
@@ -89,6 +92,9 @@ int InputManager::OnMouseRButtonDown(HWND hWnd, WPARAM wParam, LPARAM lParam)
 		break;
 	case SCENE_INGAME:
 		Ingame::OnMouseRButtonDown(hWnd, LOWORD(lParam), HIWORD(lParam));
+		break;
+	case SCENE_ENDING:
+		Ending::OnMouseLButtonDown(hWnd, LOWORD(lParam), HIWORD(lParam));
 		break;
 	}
 	return 1;

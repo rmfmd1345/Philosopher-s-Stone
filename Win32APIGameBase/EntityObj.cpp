@@ -46,15 +46,15 @@ void Entity::Init(HWND hWnd, int x, int y, int type, int hp, COLORREF sprite)
 		Ani_attack[RIGHT].Init(hWnd, 0, 0, 480, 120, 6, L"./Image/Attack_Ani/dealer_attack_right.bmp");
 		break;
 	case WIZARD:
-		Ani_stand[UP].Init(hWnd, 0, 0, 70, 102, 1, L"./Image/Walk_Ani/Wizard_Back.bmp");
-		Ani_stand[DOWN].Init(hWnd, 0, 0, 66, 102, 1, L"./Image/Walk_Ani/Wizard_Front.bmp");
-		Ani_stand[LEFT].Init(hWnd, 0, 0, 74, 102, 1, L"./Image/Walk_Ani/Wizard_Left.bmp");
-		Ani_stand[RIGHT].Init(hWnd, 0, 0, 64, 102, 1, L"./Image/Walk_Ani/Wizard_Right.bmp");
+		Ani_stand[UP].Init(hWnd, 0, 0, 80, 102, 1, L"./Image/Walk_Ani/Wizard_Back.bmp");
+		Ani_stand[DOWN].Init(hWnd, 0, 0, 80, 102, 1, L"./Image/Walk_Ani/Wizard_Front.bmp");
+		Ani_stand[LEFT].Init(hWnd, 0, 0, 80, 102, 1, L"./Image/Walk_Ani/Wizard_Left.bmp");
+		Ani_stand[RIGHT].Init(hWnd, 0, 0, 80, 102, 1, L"./Image/Walk_Ani/Wizard_Right.bmp");
 
-		Ani_walk[UP].Init(hWnd, 0, 0, 280, 102, 4, L"./Image/Walk_Ani/Wizard_Back.bmp");
-		Ani_walk[DOWN].Init(hWnd, 0, 0, 264, 102, 4, L"./Image/Walk_Ani/Wizard_Front.bmp");
-		Ani_walk[LEFT].Init(hWnd, 0, 0, 296, 102, 4, L"./Image/Walk_Ani/Wizard_Left.bmp");
-		Ani_walk[RIGHT].Init(hWnd, 0, 0, 256, 102, 4, L"./Image/Walk_Ani/Wizard_Right.bmp");
+		Ani_walk[UP].Init(hWnd, 0, 0, 320, 102, 4, L"./Image/Walk_Ani/Wizard_Back.bmp");
+		Ani_walk[DOWN].Init(hWnd, 0, 0, 320, 102, 4, L"./Image/Walk_Ani/Wizard_Front.bmp");
+		Ani_walk[LEFT].Init(hWnd, 0, 0, 320, 102, 4, L"./Image/Walk_Ani/Wizard_Left.bmp");
+		Ani_walk[RIGHT].Init(hWnd, 0, 0, 320, 102, 4, L"./Image/Walk_Ani/Wizard_Right.bmp");
 
 		Ani_attack[UP].Init(hWnd, 0, 0, 480, 102, 6, L"./Image/Attack_Ani/wizard_attack_back.bmp");
 		Ani_attack[DOWN].Init(hWnd, 0, 0, 480, 102, 6, L"./Image/Attack_Ani/wizard_attack_front.bmp");
@@ -64,18 +64,18 @@ void Entity::Init(HWND hWnd, int x, int y, int type, int hp, COLORREF sprite)
 	case TANKER:
 		Ani_stand[UP].Init(hWnd, 0, 0, 106, 138, 1, L"./Image/Walk_Ani/Tanker_Back.bmp");
 		Ani_stand[DOWN].Init(hWnd, 0, 0, 88, 138, 1, L"./Image/Walk_Ani/Tanker_Front.bmp");
-		Ani_stand[LEFT].Init(hWnd, 0, 0, 70, 138, 1, L"./Image/Walk_Ani/Tanker_Left.bmp");
-		Ani_stand[RIGHT].Init(hWnd, 0, 0, 62, 138, 1, L"./Image/Walk_Ani/Tanker_Right.bmp");
+		Ani_stand[LEFT].Init(hWnd, 0, 0, 80, 138, 1, L"./Image/Walk_Ani/Tanker_Left.bmp");
+		Ani_stand[RIGHT].Init(hWnd, 0, 0, 88, 138, 1, L"./Image/Walk_Ani/Tanker_Right.bmp");
 
 		Ani_walk[UP].Init(hWnd, 0, 0, 424, 138, 4, L"./Image/Walk_Ani/Tanker_Back.bmp");
 		Ani_walk[DOWN].Init(hWnd, 0, 0, 352, 138, 4, L"./Image/Walk_Ani/Tanker_Front.bmp");
-		Ani_walk[LEFT].Init(hWnd, 0, 0, 280, 138, 4, L"./Image/Walk_Ani/Tanker_Left.bmp");
-		Ani_walk[RIGHT].Init(hWnd, 0, 0, 248, 138, 4, L"./Image/Walk_Ani/Tanker_Right.bmp");
+		Ani_walk[LEFT].Init(hWnd, 0, 0, 320, 138, 4, L"./Image/Walk_Ani/Tanker_Left.bmp");
+		Ani_walk[RIGHT].Init(hWnd, 0, 0, 352, 138, 4, L"./Image/Walk_Ani/Tanker_Right.bmp");
 
-		Ani_attack[UP].Init(hWnd, 0, 0, 424, 138, 4, L"./Image/Walk_Ani/Tanker_Back.bmp");
-		Ani_attack[DOWN].Init(hWnd, 0, 0, 352, 138, 4, L"./Image/Walk_Ani/Tanker_Front.bmp");
-		Ani_attack[LEFT].Init(hWnd, 0, 0, 280, 138, 4, L"./Image/Walk_Ani/Tanker_Left.bmp");
-		Ani_attack[RIGHT].Init(hWnd, 0, 0, 248, 138, 4, L"./Image/Walk_Ani/Tanker_Right.bmp");
+		Ani_attack[UP].Init(hWnd, 0, 0, 636, 138, 6, L"./Image/Attack_Ani/tanker_attack_back.bmp");
+		Ani_attack[DOWN].Init(hWnd, 0, 0, 528, 138, 6, L"./Image/Attack_Ani/tanker_attack_front.bmp");
+		Ani_attack[LEFT].Init(hWnd, 0, 0, 480, 138, 6, L"./Image/Attack_Ani/tanker_attack_left.bmp");
+		Ani_attack[RIGHT].Init(hWnd, 0, 0, 528, 138, 6, L"./Image/Attack_Ani/tanker_attack_right.bmp");
 		break;
 	}
 

@@ -35,7 +35,7 @@ void Ingame::Draw(HDC hMemDC)
 	ObjPool->Gdi.Text(hMemDC, 560, 45, ObjPool->TIMER, 60);
 
 	ObjPool->Gdi.SetTextsColor(RGB(255, 255, 255));
-	ObjPool->Gdi.Text(hMemDC, 1017, 32, ObjPool->Player.Rock_Num_UI, 48);
+	ObjPool->Gdi.Text(hMemDC, 1020, 37, ObjPool->Player.Rock_Num_UI, 48);
 }
 
 void Ingame::OnTimer(HWND hWnd, int timer)
@@ -81,7 +81,7 @@ void Ingame::OnTimer(HWND hWnd, int timer)
 			ObjPool->Player.BARRICADE_Skill.Cooltime--;
 	}
 	wsprintf(ObjPool->TIMER, L"%02d:%02d", ObjPool->MonsterTimer / 60, ObjPool->MonsterTimer % 60);
-	wsprintf(ObjPool->Player.Rock_Num_UI, L"%06d", ObjPool->Player.Rock_Num);
+	wsprintf(ObjPool->Player.Rock_Num_UI, L"%07d", ObjPool->Player.Rock_Num);
 }
 
 void Ingame::Update() //씬 업데이트
@@ -146,7 +146,7 @@ void Ingame::OnKeyborad()
 
 	if (exlastBitState == 0 && exkeyState & 0x0001) //UP //이전에 0x1 이 0 이면 실행(안 누르다가 눌렀을 때)
 	{
-		ObjPool->MonsterPool.AddMonster(DEALER, 4, 4);
+		ObjPool->MonsterPool.AddMonster(WIZARD, 4, 4);
 		exlastBitState = 1; // 누르는 중엔 실행되지 않도록 표시
 	}
 	if ((exkeyState & 0x8000) == 0) // 완전히 뗐다면 다음 실행을 위해서 상태 초기화

@@ -16,7 +16,7 @@ void Hero::Init(HWND hWnd, int x, int y, COLORREF sprite)
 	nowFrame = 0;
 	maxFrame = 4;
 
-	health = 100;
+	health = 1;
 	Rock_Num = 0;
 
 	Ani_stand[UP].Init(hWnd, 0, 0, 80, 132, 1, L"./Image/Stand_Ani/hero/hero_back_standing.bmp");
@@ -295,13 +295,12 @@ void Hero::DigMap()
 	case LEFT:
 		if (ObjPool->Maps.Map[pos.y][(pos.x - 1)].Tile_ID != MENTLE && (ObjPool->Maps.Map[pos.y][(pos.x - 1)].Tile_ID == NONE || ObjPool->Maps.Map[pos.y][(pos.x - 1)].Tile_ID == WALL)) //멘틀이 아니고 파려는 곳이 NONE이면
 		{
-			ObjPool->Maps.Map[pos.y][pos.x - 1].Tile_On = false;
-			ObjPool->Maps.Map[pos.y][pos.x - 1].repairGage++;
-			if (ObjPool->Maps.Map[pos.y][pos.x - 1].repairGage >= ObjPool->Maps.Map[pos.y][pos.x - 1].TrapHp)
+			ObjPool->Maps.Map[pos.y][pos.x - 1].TrapHp_Now--;
+			if (ObjPool->Maps.Map[pos.y][pos.x - 1].TrapHp_Now <= 0)
 			{
 				ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, (pos.x - 1), pos.y); //floor 로 바닥 설정
 				Rock_Num += 5;
-				ObjPool->Maps.Map[pos.y][pos.x - 1].repairGage = 0;
+				ObjPool->Maps.Map[pos.y][pos.x - 1].TrapHp_Now = ObjPool->Maps.Map[pos.y][pos.x - 1].TrapHp;
 				ObjPool->Sounds.Push(EFFECT_WALLBREAK);
 			}
 		}
@@ -309,13 +308,12 @@ void Hero::DigMap()
 	case RIGHT:
 		if (ObjPool->Maps.Map[pos.y][(pos.x + 1)].Tile_ID != MENTLE && (ObjPool->Maps.Map[pos.y][(pos.x + 1)].Tile_ID == NONE || ObjPool->Maps.Map[pos.y][(pos.x + 1)].Tile_ID == WALL))
 		{
-			ObjPool->Maps.Map[pos.y][pos.x + 1].Tile_On = false;
-			ObjPool->Maps.Map[pos.y][pos.x + 1].repairGage++;
-			if (ObjPool->Maps.Map[pos.y][pos.x + 1].repairGage >= ObjPool->Maps.Map[pos.y][pos.x + 1].TrapHp)
+			ObjPool->Maps.Map[pos.y][pos.x + 1].TrapHp_Now--;
+			if (ObjPool->Maps.Map[pos.y][pos.x + 1].TrapHp_Now <= 0)
 			{
 				ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, (pos.x + 1), pos.y);
 				Rock_Num += 5;
-				ObjPool->Maps.Map[pos.y][pos.x + 1].repairGage = 0;
+				ObjPool->Maps.Map[pos.y][pos.x + 1].TrapHp_Now = ObjPool->Maps.Map[pos.y][pos.x + 1].TrapHp;
 				ObjPool->Sounds.Push(EFFECT_WALLBREAK);
 			}
 		}
@@ -323,13 +321,12 @@ void Hero::DigMap()
 	case UP:
 		if (ObjPool->Maps.Map[(pos.y - 1)][pos.x].Tile_ID != MENTLE && (ObjPool->Maps.Map[pos.y - 1][(pos.x)].Tile_ID == NONE || ObjPool->Maps.Map[pos.y - 1][(pos.x)].Tile_ID == WALL))
 		{
-			ObjPool->Maps.Map[pos.y - 1][pos.x].Tile_On = false;
-			ObjPool->Maps.Map[pos.y - 1][pos.x].repairGage++;
-			if (ObjPool->Maps.Map[pos.y - 1][pos.x].repairGage >= ObjPool->Maps.Map[pos.y - 1][pos.x].TrapHp)
+			ObjPool->Maps.Map[pos.y - 1][pos.x].TrapHp_Now--;
+			if (ObjPool->Maps.Map[pos.y - 1][pos.x].TrapHp_Now <= 0)
 			{
 				ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, pos.x, (pos.y - 1));
 				Rock_Num += 5;
-				ObjPool->Maps.Map[pos.y - 1][pos.x].repairGage = 0;
+				ObjPool->Maps.Map[pos.y - 1][pos.x].TrapHp_Now = ObjPool->Maps.Map[pos.y - 1][pos.x].TrapHp;
 				ObjPool->Sounds.Push(EFFECT_WALLBREAK);
 			}
 		}
@@ -337,21 +334,20 @@ void Hero::DigMap()
 	case DOWN:
 		if (ObjPool->Maps.Map[(pos.y + 1)][pos.x].Tile_ID != MENTLE && (ObjPool->Maps.Map[pos.y + 1][(pos.x)].Tile_ID == NONE || ObjPool->Maps.Map[pos.y + 1][(pos.x)].Tile_ID == WALL))
 		{
-			ObjPool->Maps.Map[pos.y + 1][pos.x].Tile_On = false;
-			ObjPool->Maps.Map[pos.y + 1][pos.x].repairGage++;
-			if (ObjPool->Maps.Map[pos.y + 1][pos.x].repairGage >= ObjPool->Maps.Map[pos.y + 1][pos.x].TrapHp)
+			ObjPool->Maps.Map[pos.y + 1][pos.x].TrapHp_Now--;
+			if (ObjPool->Maps.Map[pos.y + 1][pos.x].TrapHp_Now <= 0)
 			{
 				ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, pos.x, (pos.y + 1));
 				Rock_Num += 5;
-				ObjPool->Maps.Map[pos.y + 1][pos.x].repairGage = 0;
-				ObjPool->Sounds.Push(EFFECT_WALLBREAK); 
+				ObjPool->Maps.Map[pos.y + 1][pos.x].TrapHp_Now = ObjPool->Maps.Map[pos.y + 1][pos.x].TrapHp;
+				ObjPool->Sounds.Push(EFFECT_WALLBREAK);
 			}
 		}
 		break;
 	default:
 		break;
 	}
-	wsprintf(Rock_Num_UI, L"%06d", Rock_Num);
+	wsprintf(Rock_Num_UI, L"%07d", Rock_Num);
 }
 
 void Hero::SetSelectedArea(bool isCreate)
@@ -555,13 +551,13 @@ void Hero::RepairTrap()
 	if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == TRAP_Hole)
 		return;
 
-	if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_On == false)
-		ObjPool->Maps.Map[Temp_Y][Temp_X].repairGage++;
+	if (ObjPool->Maps.Map[Temp_Y][Temp_X].TrapHp_Now < ObjPool->Maps.Map[pos.y][pos.x - 1].TrapHp)
+		ObjPool->Maps.Map[Temp_Y][Temp_X].TrapHp_Now++;
 
-	if (ObjPool->Maps.Map[Temp_Y][Temp_X].repairGage >= ObjPool->Maps.Map[pos.y][pos.x - 1].TrapHp)
+	if (ObjPool->Maps.Map[Temp_Y][Temp_X].TrapHp_Now >= ObjPool->Maps.Map[pos.y][pos.x - 1].TrapHp)
 	{					
 		ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_On = true;
-		ObjPool->Maps.Map[Temp_Y][Temp_X].repairGage = 0;
+		ObjPool->Maps.Map[Temp_Y][Temp_X].TrapHp_Now = ObjPool->Maps.Map[pos.y][pos.x - 1].TrapHp;
 	}
 }
 

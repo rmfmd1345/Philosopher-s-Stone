@@ -32,7 +32,7 @@ public:
 public:
 	//함정 공통
 	float TrapHp; //함정 체력 (수리게이지 최대치) //임시로 여기서 초기화함
-	int repairGage; //수리 진행도 게이지
+	int TrapHp_Now; //수리 진행도 게이지
 	int stateFrame; //함정 애니메이션 프레임상태
 	int nowTrapDirection; //함정 애니메이션 방향
 

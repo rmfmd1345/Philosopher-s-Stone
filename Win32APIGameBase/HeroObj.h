@@ -19,6 +19,7 @@ private:
 	int nowFrame;
 	int maxFrame;
 	int health;
+
 public:
 	int Rock_Num;
 	TCHAR Rock_Num_UI[11];

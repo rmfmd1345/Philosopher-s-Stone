@@ -32,6 +32,9 @@ void ObjectPool::CreateObject(HWND hWnd)	//객체의 초기 설정을 적는 곳
 	
 	ingameUI_Time.Init(hWnd, 475, 0, 320, 134, L"./Image/UI/Ingame/ui_time.bmp");
 
+	//Ending Scene
+	EndingBg_Dead.Init(hWnd, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, L"./Image/Background/Ending_Bg.bmp");
+
 	//STATE ANI
 	FindEffect.Init(hWnd, 0, 0, 84, 32, 6, L"./Image/Skill/findeffect.bmp");
 

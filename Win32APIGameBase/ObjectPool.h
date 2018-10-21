@@ -23,7 +23,8 @@ enum Tile_ID_List  // 식별 번호 리스트
 	TRAP_Confusion,
 	TRAP_Grab,
 	TRAP_GrabArea,
-	SKILL_Barricade
+	SKILL_Barricade,
+	ALTAR
 };
 
 enum eDirection
@@ -95,6 +96,7 @@ public:
 	TCHAR TIMER[10];
 
 	int MonsterTimer = 0;
+	int Wave = 1;
 
 public:
 	//title Scene
@@ -103,6 +105,7 @@ public:
 	Button titleBtn_Exit;
 
 	Bitmap titleBg;		//비트맵
+	Bitmap EndingBg_Dead;
 
 	//credit Scene
 	Bitmap creditBg;		
