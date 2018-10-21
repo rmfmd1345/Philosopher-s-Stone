@@ -11,7 +11,8 @@ enum eState
 	CLEAR,
 	FINDWAY,
 	MARKFORFIND,
-	INTRAP,
+	INHOLE,
+	INGRAB,
 	CONFUSE,
 	TRAPSETTING,
 	SKILLPREPARING,
@@ -39,6 +40,7 @@ private:
 
 	int nowState;
 	int stateFrame;
+	float SpinSpeed;
 
 	int nowAnimation;		//지금 엔티티 애니메이션 상태
 	int nowDirection;
