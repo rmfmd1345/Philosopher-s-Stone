@@ -98,6 +98,8 @@ public:
 	int MonsterTimer = 0;
 	int Wave = 1;
 
+	int timeDropStone = 0;
+
 public:
 	//title Scene
 	Button titleBtn_Start;	//¹öÆ°

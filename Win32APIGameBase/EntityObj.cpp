@@ -323,6 +323,8 @@ void Entity::UpdateState()
 		}
 		else
 		{
+			this->Ani_attack[nowDirection].SetFrameSprite(0);
+
 			int Temp_X = pos.x;
 			int Temp_Y = pos.y;
 
@@ -352,6 +354,11 @@ void Entity::UpdateState()
 				}
 				else
 				{
+					ObjPool->Player.Rock_Num -= 3;
+					if (ObjPool->Player.Rock_Num < 0) ObjPool->Player.Rock_Num = 0;
+
+					ObjPool->timeDropStone = 5;
+
 					nowAnimation = ATTACK;
 					nowState = ATTACK;
 					stateFrame = 0;
@@ -376,7 +383,39 @@ void Entity::UpdateState()
 					ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, Temp_X, Temp_Y);
 				//ObjPool->Sounds.Push(ƒÆ¿Ã ∆®∞‹≥™¥¬ º“∏Æ);
 			}
-			else if ((ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == TRAP_Niddle 
+
+			nowAnimation = STAND;
+			nowState = FINDWAY;
+			stateFrame = 0;
+		}
+		return;
+	}
+
+	//∆Æ∑¶ «ÿ√º
+	if (nowState == DISMANTLETRAP)
+	{
+		if (stateFrame < 60)
+		{
+			stateFrame++;
+		}
+		else
+		{
+			int Temp_X = pos.x;
+			int Temp_Y = pos.y;
+
+			switch (nowDirection)
+			{
+			case LEFT: Temp_X = pos.x - 1;
+				break;
+			case RIGHT: Temp_X = pos.x + 1;
+				break;
+			case UP: Temp_Y = pos.y - 1;
+				break;
+			case DOWN: Temp_Y = pos.y + 1;
+				break;
+			}
+			
+			if ((ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == TRAP_Niddle
 				|| ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == TRAP_Hole
 				|| ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == TRAP_Confusion
 				|| ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == TRAP_Grab) && type == WIZARD)
@@ -501,7 +540,7 @@ void Entity::UpdateState()
 							if (SearchGap == 1 && type == WIZARD)
 							{
 								nowAnimation = ATTACK;
-								nowState = ATTACK;
+								nowState = DISMANTLETRAP;
 								return;
 							}
 							else
@@ -550,8 +589,6 @@ void Entity::UpdateState()
 			if (SearchGap == 1)
 			{
 				isAllSearch = true;
-
-				this->Ani_attack[nowDirection].SetFrameSprite(0);
 
 				nowAnimation = ATTACK;
 				nowState = ATTACK;
@@ -891,6 +928,13 @@ void Entity::UpdateState()
 		{
 			ObjPool->System.SetScene(SCENE_ENDING);
 		}
+		
+		if (!isStill)
+		{
+			nowAnimation = STAND;
+			nowState = FINDWAY;
+			return;
+		}
 
 		if (m_pathList.empty())
 		{
@@ -957,6 +1001,13 @@ void Entity::UpdateState()
 		if (pos.x == spawnPosition.x && pos.y == spawnPosition.y)
 		{
 			ObjPool->System.SetScene(SCENE_ENDING);
+		}
+
+		if (!isStill)
+		{
+			nowAnimation = STAND;
+			nowState = FINDWAY;
+			return;
 		}
 
 		if (stateFrame < 10)
@@ -1398,6 +1449,11 @@ void Entity::SetHealth(int hp)
 void Entity::AddHealth(int a)
 {
 	health += a;
+
+	if (health <= 0 && (nowState == STILLSTONE_FIND || nowState == STILLSTONE_WALK))
+	{
+		isStill = false;
+	}
 }
 
 void Entity::SetState(int state)
