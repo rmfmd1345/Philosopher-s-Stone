@@ -397,6 +397,9 @@ void Entity::UpdateState()
 		if (stateFrame < 60)
 		{
 			stateFrame++;
+
+			if (stateFrame % 10 == 0)
+				ObjPool->SoundPool.Play(EFFECT_DISMANTLETRAP);
 		}
 		else
 		{
@@ -918,7 +921,15 @@ void Entity::UpdateState()
 	//È¥¶õ..?
 	if (nowState == CONFUSE)
 	{
-		//TODO : È¥¶õ »óÅÂ Ãß°¡
+		if (stateFrame < 100)
+		{
+			stateFrame++;
+		}
+		else
+		{
+			nowAnimation = STAND;
+			nowState = FINDWAY;
+		}
 	}
 	
 	//µ¹ »¯À½

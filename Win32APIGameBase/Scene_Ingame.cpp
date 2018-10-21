@@ -252,6 +252,7 @@ void Ingame::OnKeyborad()
 	//플레이어 작동
 	if (lastBitState[KEY_1] == 0 && keyState[KEY_1] & 0x0001) //1번키
 	{
+		ObjPool->SoundPool.Play(EFFECT_SELECT);
 		if (ObjPool->Player.GetState() == STAND && ObjPool->Player.Rock_Num >= 10) //플레이어가 서 있는 상태면
 		{
 			ObjPool->Player.SetState(TRAPSETTING); //플레이어 고정상태로 만들기
