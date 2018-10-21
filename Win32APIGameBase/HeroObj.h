@@ -30,6 +30,7 @@ public:
 	int selectedSkill;
 	bool isWaitingTrapSet;
 	bool isWaitingSkillSet;
+	bool Checkending;
 
 public:
 	void Init(HWND hWnd, int x, int y, COLORREF sprite = RGB(255, 0, 255));
