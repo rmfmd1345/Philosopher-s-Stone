@@ -84,11 +84,16 @@ private:
 	static POINT PlayerPos;						  //플레이어 위치
 
 	bool isSearch;
+	int SearchStack;
+	int SearchDirection;
+	int SearchGap;
 
 public:
 	bool isRoadBlocked();
 	bool isRoadBlocked(int x, int y);
 	bool isRoadBlocked(int dire);
+
+	bool isSearchFind(int x, int y);
 
 	void RotateClockwise();
 	void RotateCounterclockwise();

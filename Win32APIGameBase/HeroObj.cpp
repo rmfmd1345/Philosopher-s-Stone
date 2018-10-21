@@ -301,7 +301,7 @@ void Hero::DigMap()
 				ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, (pos.x - 1), pos.y); //floor ·Î ¹Ù´Ú ¼³Á¤
 				Rock_Num += 5;
 				ObjPool->Maps.Map[pos.y][pos.x - 1].TrapHp_Now = ObjPool->Maps.Map[pos.y][pos.x - 1].TrapHp;
-				ObjPool->Sounds.Push(EFFECT_WALLBREAK);
+				ObjPool->SoundPool.Play(EFFECT_WALLBREAK);
 			}
 		}
 		break;
@@ -314,7 +314,7 @@ void Hero::DigMap()
 				ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, (pos.x + 1), pos.y);
 				Rock_Num += 5;
 				ObjPool->Maps.Map[pos.y][pos.x + 1].TrapHp_Now = ObjPool->Maps.Map[pos.y][pos.x + 1].TrapHp;
-				ObjPool->Sounds.Push(EFFECT_WALLBREAK);
+				ObjPool->SoundPool.Play(EFFECT_WALLBREAK);
 			}
 		}
 		break;
@@ -327,7 +327,7 @@ void Hero::DigMap()
 				ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, pos.x, (pos.y - 1));
 				Rock_Num += 5;
 				ObjPool->Maps.Map[pos.y - 1][pos.x].TrapHp_Now = ObjPool->Maps.Map[pos.y - 1][pos.x].TrapHp;
-				ObjPool->Sounds.Push(EFFECT_WALLBREAK);
+				ObjPool->SoundPool.Play(EFFECT_WALLBREAK);
 			}
 		}
 		break;
@@ -340,7 +340,7 @@ void Hero::DigMap()
 				ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, pos.x, (pos.y + 1));
 				Rock_Num += 5;
 				ObjPool->Maps.Map[pos.y + 1][pos.x].TrapHp_Now = ObjPool->Maps.Map[pos.y + 1][pos.x].TrapHp;
-				ObjPool->Sounds.Push(EFFECT_WALLBREAK);
+				ObjPool->SoundPool.Play(EFFECT_WALLBREAK);
 			}
 		}
 		break;
@@ -501,28 +501,28 @@ void Hero::UseSkill()
 		if (ObjPool->Player.ATK_Skill.Check_Active == false && ObjPool->Player.GetState() != WALK)
 		{
 			ObjPool->Player.ATK_Skill.ActiveSkill();
-			ObjPool->Sounds.Push(SKILL_ATK);
+			ObjPool->SoundPool.Play(SKILL_ATK);
 		}
 		break;
 	case AGGRO_SKILL:
 		if (ObjPool->Player.AGGRO_Skill.Check_Active == false && ObjPool->Player.GetState() != WALK)
 		{
 			ObjPool->Player.AGGRO_Skill.ActiveSkill();
-			ObjPool->Sounds.Push(SKILL_AGGRO);
+			ObjPool->SoundPool.Play(SKILL_AGGRO);
 		}
 		break;
 	case PUSH_SKILL:
 		if (ObjPool->Player.PUSH_Skill.Check_Active == false && ObjPool->Player.GetState() != WALK)
 		{
 			ObjPool->Player.PUSH_Skill.ActiveSkill();
-			ObjPool->Sounds.Push(SKILL_PUSH);
+			ObjPool->SoundPool.Play(SKILL_PUSH);
 		}
 		break;
 	case BARRICADE_SKILL:
 		if (ObjPool->Player.BARRICADE_Skill.Check_Active == false && ObjPool->Player.GetState() != WALK)
 		{
 			ObjPool->Player.BARRICADE_Skill.ActiveSkill();
-			ObjPool->Sounds.Push(SKILL_BARRICADE);
+			ObjPool->SoundPool.Play(SKILL_BARRICADE);
 		}
 		break;
 	default:

@@ -83,7 +83,7 @@ public:
 
 public:
 	System System;		//시스템 변수를 넣어두는 곳
-	SoundList Sounds;	//사운드 넣어두는 곳
+	Sounds SoundPool;	//사운드
 	Gdi Gdi;			//그리기 함수를 사용하는 곳
 
 	//Entity(Monster)

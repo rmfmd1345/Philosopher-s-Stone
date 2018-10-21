@@ -26,6 +26,9 @@ void Entity::Init(HWND hWnd, int x, int y, int type, int hp, COLORREF sprite)
 	health = hp;
 
 	isSearch = false;
+	SearchStack = 0;
+	SearchDirection = -1;
+	SearchGap = 0;
 
 	switch (type)
 	{
@@ -257,8 +260,6 @@ void Entity::Draw(HDC hMemDC, int x, int y)
 	}
 }
 
-
-
 void Entity::Animation()
 {
 	switch (nowAnimation)
@@ -270,7 +271,6 @@ void Entity::Animation()
 		Ani_attack[nowDirection].NextFrameSprite(true);
 		break;
 	}
-
 
 	switch (nowState)
 	{
@@ -335,102 +335,7 @@ void Entity::UpdateState()
 	if (nowState == FINDWAY)
 	{
 		{
-			int SearchDirection = -1;
-			int SearchGap = 0;
-			if ((ObjPool->Player.GetPosition().y < pos.y && ObjPool->Player.GetPosition().y + 7 >= pos.y && pos.x == ObjPool->Player.GetPosition().x))
-			{
-				SearchDirection = UP;
-				SearchGap = pos.y - ObjPool->Player.GetPosition().y;
-			}
-			else if ((ObjPool->Player.GetPosition().y > pos.y && ObjPool->Player.GetPosition().y - 7 <= pos.y && pos.x == ObjPool->Player.GetPosition().x))
-			{
-				SearchDirection = DOWN;
-				SearchGap = pos.y - ObjPool->Player.GetPosition().y;
-			}
-			else if ((ObjPool->Player.GetPosition().x < pos.x && ObjPool->Player.GetPosition().x + 7 >= pos.x && pos.y == ObjPool->Player.GetPosition().y))
-			{
-				SearchDirection = LEFT;
-				SearchGap = pos.x - ObjPool->Player.GetPosition().x;
-			}
-			else if ((ObjPool->Player.GetPosition().x > pos.x && ObjPool->Player.GetPosition().x - 7 <= pos.x && pos.y == ObjPool->Player.GetPosition().y))
-			{
-				SearchDirection = RIGHT;
-				SearchGap = pos.x - ObjPool->Player.GetPosition().x;
-			}
-			
-			else if ((ObjPool->Player.GetPosition().x == pos.x - 1 && ObjPool->Player.GetPosition().y == pos.y - 1))
-			{
-				if (!isRoadBlocked(UP) || !isRoadBlocked(LEFT))
-				{
-					SearchDirection = UPnLEFT;
-					SearchGap = 2;
-				}
-			}
-			else if ((ObjPool->Player.GetPosition().x == pos.x + 1 && ObjPool->Player.GetPosition().y == pos.y - 1))
-			{
-				if (!isRoadBlocked(UP) || !isRoadBlocked(RIGHT))
-				{
-					SearchDirection = UPnRIGHT;
-					SearchGap = 2;
-				}
-			}
-			else if ((ObjPool->Player.GetPosition().x == pos.x - 1 && ObjPool->Player.GetPosition().y == pos.y + 1))
-			{
-				if (!isRoadBlocked(DOWN) || !isRoadBlocked(LEFT))
-				{
-					SearchDirection = DOWNnLEFT;
-					SearchGap = 2;
-				}
-			}
-			else if ((ObjPool->Player.GetPosition().x == pos.x + 1 && ObjPool->Player.GetPosition().y == pos.y + 1))
-			{
-				if (!isRoadBlocked(DOWN) || !isRoadBlocked(RIGHT))
-				{
-					SearchDirection = DOWNnRIGHT;
-					SearchGap = 2;
-				}
-			}
-
-			if (SearchGap < 0) SearchGap = -(SearchGap);
-
-			if (SearchDirection == UP || SearchDirection == DOWN || SearchDirection == LEFT || SearchDirection == RIGHT)
-				for (int i = 1; i <= SearchGap; i++)
-			{
-				switch (SearchDirection)
-				{
-				case UP:
-					if (isRoadBlocked(pos.x, pos.y - i))
-					{
-						SearchDirection = -1;
-						break;
-					}
-					break;
-				case DOWN:
-					if (isRoadBlocked(pos.x, pos.y + i))
-					{
-						SearchDirection = -1;
-						break;
-					}
-					break;
-				case LEFT:
-					if (isRoadBlocked(pos.x - i, pos.y))
-					{
-						SearchDirection = -1;
-						break;
-					}
-					break;
-				case RIGHT:
-					if (isRoadBlocked(pos.x + i, pos.y))
-					{
-						SearchDirection = -1;
-						break;
-					}
-					break;
-				}
-			}
-			//직선 갭차이
-
-			if (SearchDirection != -1)
+			if (isSearchFind(ObjPool->Player.GetPosition().x, ObjPool->Player.GetPosition().y))
 			{
 				PlayerPos = ObjPool->Player.GetPosition();
 
@@ -493,7 +398,11 @@ void Entity::UpdateState()
 					m_pathList.clear();
 					isSearch = true;
 
-					if (PathFind(pos, PlayerPos))
+					if (SearchStack > 5)
+					{
+						isSearch = false;
+					}
+					else if (PathFind(pos, PlayerPos))
 					{
 						if (m_pathList.empty())
 						{
@@ -530,10 +439,13 @@ void Entity::UpdateState()
 								return;
 							}
 						}
+
+						SearchStack = 0;
 					}
 					else
 					{
 						isSearch = false;
+						SearchStack++;
 						return;
 					}
 				}
@@ -578,9 +490,9 @@ void Entity::UpdateState()
 			}
 
 		}
-		//서치중이면 플레이어에게 간다
+		//서치중이면 플레이어에게 간다 
 
-		{}
+		{ /* 기본 길찾기 */ }
 
 		{
 		/*
@@ -591,7 +503,7 @@ void Entity::UpdateState()
 		SetBanRoad(pos.x, pos.y);
 		}
 		*/
-
+		
 		int BlockedRoadNum = 0;
 		for (int i = 0; i < 4; i++)
 		{
@@ -756,6 +668,129 @@ bool Entity::GetSearch()
 void Entity::SetAllSearch(bool is)
 {
 	isAllSearch = is;
+}
+
+bool Entity::isSearchFind(int x, int y)
+{
+	POINT temp;
+	temp.x = x;
+	temp.y = y;
+
+	SearchDirection = -1;
+	SearchGap = 0;
+
+	if ((temp.y < pos.y && temp.y + 4 >= pos.y && pos.x == temp.x))
+	{
+		SearchDirection = UP;
+		SearchGap = pos.y - temp.y;
+
+		for (int i = 1; i <= SearchGap; i++)
+		{
+			if (isRoadBlocked(pos.x, pos.y - i))
+			{
+				SearchDirection = -1;
+				return false;
+			}
+		}
+	}
+	else if ((temp.y > pos.y && temp.y - 4 <= pos.y && pos.x == temp.x))
+	{
+		SearchDirection = DOWN;
+		SearchGap = temp.y - pos.y;
+
+		for (int i = 1; i <= SearchGap; i++)
+		{
+			if (isRoadBlocked(pos.x, pos.y + i))
+			{
+				SearchDirection = -1;
+				return false;
+			}
+		}
+	}
+	else if ((temp.x < pos.x && temp.x + 4 >= pos.x && pos.y == temp.y))
+	{
+		SearchDirection = LEFT;
+		SearchGap = pos.x - temp.x;
+
+		for (int i = 1; i <= SearchGap; i++)
+		{
+			if (isRoadBlocked(pos.x - i, pos.y))
+			{
+				SearchDirection = -1;
+				return false;
+			}
+		}
+	}
+	else if ((temp.x > pos.x && temp.x - 4 <= pos.x && pos.y == temp.y))
+	{
+		SearchDirection = RIGHT;
+		SearchGap = temp.x - pos.x;
+
+		for (int i = 1; i <= SearchGap; i++)
+		{
+			if (isRoadBlocked(pos.x + i, pos.y))
+			{
+				SearchDirection = -1;
+				return false;
+			}
+		}
+	}
+
+	else if ((temp.x == pos.x - 1 && temp.y == pos.y - 1))
+	{
+		if (!isRoadBlocked(UP) || !isRoadBlocked(LEFT))
+		{
+			SearchDirection = UPnLEFT;
+			SearchGap = 2;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else if ((temp.x == pos.x + 1 && temp.y == pos.y - 1))
+	{
+		if (!isRoadBlocked(UP) || !isRoadBlocked(RIGHT))
+		{
+			SearchDirection = UPnRIGHT;
+			SearchGap = 2;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else if ((temp.x == pos.x - 1 && temp.y == pos.y + 1))
+	{
+		if (!isRoadBlocked(DOWN) || !isRoadBlocked(LEFT))
+		{
+			SearchDirection = DOWNnLEFT;
+			SearchGap = 2;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else if ((temp.x == pos.x + 1 && temp.y == pos.y + 1))
+	{
+		if (!isRoadBlocked(DOWN) || !isRoadBlocked(RIGHT))
+		{
+			SearchDirection = DOWNnRIGHT;
+			SearchGap = 2;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	if (SearchDirection != -1 && SearchGap != 0)
+	{
+		return true;
+	}
+
+	return false;
 }
 
 bool Entity::isRoadBlocked()

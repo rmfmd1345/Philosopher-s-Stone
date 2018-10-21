@@ -13,10 +13,8 @@ private:
 
 	bool isPlay;
 
-	int num;
-
 public:
-	void Init(LPCWSTR FileName, int end, bool Inf, int n);
+	void Init(LPCWSTR FileName, int end, bool Inf);
 
 public:
 	void Play();
@@ -32,7 +30,6 @@ public:
 	bool isSongPlay();
 	bool isSongEnd();
 
-	int GetNum();
 	int GetPlayTime();
 	int GetEndTime();
 	bool GetInfinite();
@@ -56,21 +53,22 @@ enum SoundNum
 	SKILL_BARRICADE,
 };
 
-class SoundList
+class Sounds
 {
 public:
-	SoundList() {};
-	~SoundList() {};
+	Sounds() { }
+	~Sounds() { }
 
 private:
-	vector<Sound> SoundPool;
+	vector<Sound> pool;
 
 public:
-	void Push(int type, int num = 0);	//사운드 추가
-	void Pop(int num);					//사운드 지우기
-	void ClearAll();					//모두 지우기
-	void Pulse();						//사운드 끝났는지 확인(무한반복이면 다시 재생)
+	void Init();
+	void Terminate();
 
-	bool Empty();						//비어있는지 확인
+	void Play(int num);
+	void Stop(int num);
+
+	void Pulse();
 
 };
