@@ -323,6 +323,8 @@ void Entity::UpdateState()
 		}
 		else
 		{
+			this->Ani_attack[nowDirection].SetFrameSprite(0);
+
 			int Temp_X = pos.x;
 			int Temp_Y = pos.y;
 
@@ -352,6 +354,11 @@ void Entity::UpdateState()
 				}
 				else
 				{
+					ObjPool->Player.Rock_Num -= 3;
+					if (ObjPool->Player.Rock_Num < 0) ObjPool->Player.Rock_Num = 0;
+
+					ObjPool->timeDropStone = 5;
+
 					nowAnimation = ATTACK;
 					nowState = ATTACK;
 					stateFrame = 0;
@@ -583,8 +590,6 @@ void Entity::UpdateState()
 			if (SearchGap == 1)
 			{
 				isAllSearch = true;
-
-				this->Ani_attack[nowDirection].SetFrameSprite(0);
 
 				nowAnimation = ATTACK;
 				nowState = ATTACK;

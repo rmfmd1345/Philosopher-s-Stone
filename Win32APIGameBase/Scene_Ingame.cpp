@@ -34,7 +34,10 @@ void Ingame::Draw(HDC hMemDC)
 	ObjPool->Gdi.SetTextsColor(RGB(0, 124, 255));
 	ObjPool->Gdi.Text(hMemDC, 560, 45, ObjPool->TIMER, 60);
 
-	ObjPool->Gdi.SetTextsColor(RGB(255, 255, 255));
+	if(!ObjPool->timeDropStone)
+		ObjPool->Gdi.SetTextsColor(RGB(255, 255, 255));
+	else
+		ObjPool->Gdi.SetTextsColor(RGB(255, 50, 50));
 	ObjPool->Gdi.Text(hMemDC, 1020, 37, ObjPool->Player.Rock_Num_UI, 48);
 }
 
@@ -42,6 +45,11 @@ void Ingame::OnTimer(HWND hWnd, int timer)
 {
 	if (timer == ANIMATION)
 	{
+		if (ObjPool->timeDropStone > 0)
+		{
+			ObjPool->timeDropStone--;
+		}
+
 		ObjPool->MonsterPool.Animation();
 		ObjPool->MonsterPool.UpdateState();
 
