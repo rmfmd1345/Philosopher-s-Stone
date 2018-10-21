@@ -93,7 +93,7 @@ void CMap::InitMap(HWND hwnd)
 	Trap_Hole.InitTile(hwnd, 1 /*Frame*/, TRAP_Hole, true, 60, [&](Entity* ent) {HoleActive(ent);});
 	Skill_Barricade.InitTile(hwnd, 1 /*Frame*/, SKILL_Barricade, false, 60, [&](Entity* ent) {});
 	Altar.InitTile(hwnd, 1 /*Frame*/, ALTAR, false, 60, [&](Entity* ent) {});
-	Barricade_Health_UI.Init(hwnd, 0, 0, 20, 20, L"./Image/UI/Ingame/heart.bmp");
+	Barricade_Health_UI.Init(hwnd, 0, 0, 20, 20, L"./Image/UI/Ingame/thunder.bmp");
 
 	//ingameUI_TrapArea.Init(hwnd, 0, 0, 960, 240, L"./Image/Tile/tileselect.bmp");
 	ingameUI_TrapHpBar_edge.Init(hwnd, 0, 0, 60, 14, L"./Image/UI/Ingame/bluebar_edge.bmp");
@@ -133,26 +133,21 @@ void CMap::GrabActive(Entity* ent)
 
 	if (Map[grabPos.y][grabPos.x].Tile_On && ent->GetState() != WALK) //쓸데없이 코드가 길다. 나중에 줄여야겠다
 	{
-		ent->SetState(INTRAP); //엔티티 인트랩 상태로 변경
+		ent->SetState(INGRAB); //엔티티 인트랩 상태로 변경
 		ent->SetAnimation(STAND); //엔티티 서있는 상태로 변경
 
 		if (grabPos.y == pos.y + 1) //엔티티가 갈고리 위쪽에 있을 떄
-		{
 			Map[grabPos.y][grabPos.x].nowTrapDirection = UP;
-		}
 
 		if (grabPos.y == pos.y - 1) //엔티티가 갈고리 아래쪽에 있을 떄
-		{
 			Map[grabPos.y][grabPos.x].nowTrapDirection = DOWN;
-		}
+
 		if (grabPos.x == pos.x + 1) //엔티티가 갈고리 왼쪽에 있을 때
-		{
 			Map[grabPos.y][grabPos.x].nowTrapDirection = LEFT;
-		}
-		if (grabPos.x == pos.x - 1) //엔티티가 갈고리 오른쪽에 있을 떄
-		{
+
+		if (grabPos.x == pos.x - 1) //엔티티가 갈고리 오른쪽에 있을 때
 			Map[grabPos.y][grabPos.x].nowTrapDirection = RIGHT;
-		}
+
 
 		if (Map[grabPos.y][grabPos.x].stateFrame <= 40) //10, 20, 30, 40,
 		{
@@ -164,7 +159,6 @@ void CMap::GrabActive(Entity* ent)
 		else
 		{
 			Map[grabPos.y][grabPos.x].stateFrame = 1;
-			//Map[grabPos.y][grabPos.x].Ani_Trap[UP].SetCurrentFrame(0);
 			ObjPool->SoundPool.Play(TRAP_GRAB);
 			Map[grabPos.y][grabPos.x].TrapHp_Now = 0; //재장전 필요한 상태로 변경
 			ent->SetPosition(Map[pos.y][pos.x].Grab_POS.x, Map[pos.y][pos.x].Grab_POS.y);
@@ -183,6 +177,7 @@ void CMap::ConfusionActive(Entity* ent)
 	if (Map[pos.y][pos.x].Tile_On && ent->GetState() != WALK) //함정이 깔려있으면 //엔티티가 걷는 중이 아니면
 	{
 		ent->SetState(CONFUSE); //엔티티 혼란 상태로 변경
+		//ent->SetAnimation(STAND); //엔티티 서있는 상태로 변경
 		ObjPool->SoundPool.Play(TRAP_CONFUSE);
 		Map[pos.y][pos.x].TrapHp_Now = 0; //재장전 필요한 상태로 변경
 	}
@@ -194,29 +189,8 @@ void CMap::HoleActive(Entity* ent)
 	
 	if (Map[pos.y][pos.x].Tile_On && ent->GetState() != WALK) //함정이 깔려있으면 //엔티티가 걷는 중이 아니면
 	{
-		ent->SetState(INTRAP); //엔티티 인트랩 상태로 변경
-		ent->SetAnimation(STAND); //엔티티 서있는 상태로 변경
-		Map[pos.y][pos.x].damgeDelay++;
-		printf("카운트 : %f\n 속도: %f\n", Map[pos.y][pos.x].damgeDelay, Map[pos.y][pos.x].SpinSpeed);
-
-		if (Map[pos.y][pos.x].damgeDelay >= Map[pos.y][pos.x].SpinSpeed)
-		{
-			if (ent->GetDirection() != RIGHT) //엔티티 돌리기
-				ent->SetDirection(ent->GetDirection() + 1);
-			else
-				ent->SetDirection(UP);
-
-			Map[pos.y][pos.x].SpinSpeed += 0.2; //도는 속도 서서히 낮추기
-
-			if (Map[pos.y][pos.x].SpinSpeed >= 9) //충분히 엔티티가 돌았으면
-			{
-				ent->AddHealth(-5); //엔티티 삭제
-				Map[pos.y][pos.x].SpinSpeed = 3;
-				ObjPool->SoundPool.Play(TRAP_HOLE);
-				Map[pos.y][pos.x].TrapHp_Now = 0; //재장전 필요한 상태로 변경
-			}
-			Map[pos.y][pos.x].damgeDelay = 0;
-		}
+		ent->SetState(INHOLE); //엔티티 인트랩 상태로 변경
+		//ent->SetAnimation(STAND); //엔티티 서있는 상태로 변경
 	}
 }
 

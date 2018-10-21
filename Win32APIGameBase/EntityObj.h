@@ -11,7 +11,8 @@ enum eState
 	CLEAR,
 	FINDWAY,
 	MARKFORFIND,
-	INTRAP,
+	INHOLE,
+	INGRAB,
 	CONFUSE,
 	TRAPSETTING,
 	SKILLPREPARING,
@@ -24,8 +25,8 @@ enum eState
 enum eEntity
 {
 	DEALER,
-	WIZARD,
-	TANKER
+	TANKER,
+	WIZARD
 };
 
 class Entity		: protected A_Star
@@ -39,6 +40,7 @@ private:
 
 	int nowState;
 	int stateFrame;
+	float SpinSpeed;
 
 	int nowAnimation;		//지금 엔티티 애니메이션 상태
 	int nowDirection;
@@ -135,6 +137,8 @@ public:
 	POINT spawnPosition = { 2, 5 };
 
 	bool CheckMonsters;
+	int CheckMonsters_Num[3] = { 0, };
+	TCHAR CheckMonsters_Num_UI[3][3];
 
 public:
 	void Init(HWND hWnd);

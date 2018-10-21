@@ -160,7 +160,10 @@ void Sounds::Init()
 			temp.Init(L"./Sound/_confuse.wav", 1, false);
 			break;
 		case TRAP_HOLE:
-			temp.Init(L"./Sound/_scarecrow.wav", 1, false); //추가필요
+			temp.Init(L"./Sound/_hole.wav", 1, false);
+			break;
+		case TRAP_HOLESPIN:
+			temp.Init(L"./Sound/_holespin.wav", 1, false);
 			break;
 		case TRAP_REROAD:
 			temp.Init(L"./Sound/_reload.wav", 1, false);

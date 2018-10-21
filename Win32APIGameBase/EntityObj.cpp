@@ -17,6 +17,7 @@ void Entity::Init(HWND hWnd, int x, int y, int type, int hp, COLORREF sprite)
 
 	nowState = FINDWAY;
 	stateFrame = 0;
+	SpinSpeed = 3;
 
 	nowAnimation = STAND;
 	nowDirection = RIGHT;
@@ -918,10 +919,35 @@ void Entity::UpdateState()
 		return;
 	}
 
+	if (nowState == INHOLE)
+	{
+		stateFrame++;
+
+		if (stateFrame >= SpinSpeed)
+		{
+			if (GetDirection() != RIGHT) //엔티티 돌리기
+				SetDirection(GetDirection() + 1);
+			else
+				SetDirection(UP);
+
+			SpinSpeed += 0.2; //도는 속도 서서히 낮추기
+			//ObjPool->SoundPool.Play(TRAP_HOLESPIN);
+			if (SpinSpeed >= 9) //충분히 엔티티가 돌았으면
+			{
+				stateFrame = 0;
+				SpinSpeed = 3;
+				AddHealth(-5); //엔티티 삭제
+				ObjPool->Maps.Map[pos.y][pos.x].TrapHp_Now = 0;	//재장전 필요한 상태로 변경
+				ObjPool->SoundPool.Play(TRAP_HOLE);
+			}
+		}
+		return;
+	}
+
 	//혼란..?
 	if (nowState == CONFUSE)
 	{
-		if (stateFrame < 100)
+		if (stateFrame < 50)
 		{
 			stateFrame++;
 		}
@@ -930,6 +956,7 @@ void Entity::UpdateState()
 			nowAnimation = STAND;
 			nowState = FINDWAY;
 		}
+		return;
 	}
 	
 	//돌 뺏음
@@ -1685,6 +1712,7 @@ void Monster::AddMonster_Next(int type, int x, int y)
 void Monster::AddMonster_Next(int type)
 {
 	AddMonster_Next(type, Dealer.GetSpawnPosition().x, Dealer.GetSpawnPosition().y);
+	CheckMonsters_Num[type]++;
 }
 
 void Monster::NextWave()
@@ -1700,7 +1728,7 @@ void Monster::NextWave()
 
 	for (int i = 0; i < 2; i++)
 	{
-		Temp = rand() % 2;
+		Temp = rand() % 3;
 
 		switch (Temp)
 		{
@@ -1710,10 +1738,16 @@ void Monster::NextWave()
 		case 1:
 			AddMonster_Next(TANKER);
 			break;
+		case 2:
+			AddMonster_Next(WIZARD);
+			break;
 		}
 	}
 
 	ObjPool->MonsterTimer = 30;
+
+	for (int i = 0; i < 3; i++)
+		wsprintf(CheckMonsters_Num_UI[i], L"%d", CheckMonsters_Num[i]);
 }
 
 bool Monster::CheckHealth(Entity* ent)
