@@ -16,7 +16,6 @@ void Hero::Init(HWND hWnd, int x, int y, COLORREF sprite)
 	nowFrame = 0;
 	maxFrame = 4;
 
-	health = 1;
 	Rock_Num = 0;
 
 	Ani_stand[UP].Init(hWnd, 0, 0, 80, 132, 1, L"./Image/Stand_Ani/hero/hero_back_standing.bmp");
@@ -281,11 +280,6 @@ POINT Hero::GetWalkTerm()
 			Term.x -= (stateFrame_Hero * 8);
 
 	return Term;
-}
-
-void Hero::AddHealth(int a)
-{
-	health += a;
 }
 
 void Hero::DigMap()
@@ -631,23 +625,10 @@ void Hero::DrawSelectedTrapUI(HDC hMemDC)
 	}
 }
 
-bool Hero::isDead()
-{
-	return !(health);
-}
-
 bool Hero::isWalk()
 {
 	if (nowAnimation != WALK) return false;
 	if (nowFrame == (maxFrame * 4)) return false;
 
 	return true;
-}
-
-void Hero::CheckHealth()
-{
-	if (isDead())
-	{
-		ObjPool->System.SetScene(SCENE_ENDING);
-	}
 }

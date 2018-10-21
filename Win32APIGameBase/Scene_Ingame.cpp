@@ -86,9 +86,6 @@ void Ingame::OnTimer(HWND hWnd, int timer)
 
 void Ingame::Update() //씬 업데이트
 {
-	if (ObjPool->Player.isDead())
-		ObjPool->System.SetScene(SCENE_ENDING);
-
 	for (auto it = ObjPool->MonsterPool.ePool.begin(); it != ObjPool->MonsterPool.ePool.end();)
 	{
 		ObjPool->Maps.ActiveTile(it->GetEntity()); //몬스터에 대해 밟고 있는 타일 발동
@@ -442,7 +439,6 @@ void Ingame::OnKeyborad()
 	if (lastBitState[KEY_P] == 0 && keyState[KEY_P] & 0x0001) //P
 	{
 		ObjPool->Player.Rock_Num += 100;
-		ObjPool->Player.AddHealth(1000);
 
 		lastBitState[KEY_P] = 1;
 	}
