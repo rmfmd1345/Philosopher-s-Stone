@@ -13,9 +13,9 @@ private:
 
 	int nowAnimation;		//지금 엔티티 애니메이션 상태
 	int nowDirection;
-	SpriteHelper Ani_stand[4];
-	SpriteHelper Ani_walk[4];
-	SpriteHelper Ani_attack[4];
+	SpriteHelper Ani_stand[2][4];
+	SpriteHelper Ani_walk[2][4];
+	SpriteHelper Ani_attack[2][4];
 	int nowFrame;
 	int maxFrame;
 

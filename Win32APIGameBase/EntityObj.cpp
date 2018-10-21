@@ -29,6 +29,8 @@ void Entity::Init(HWND hWnd, int x, int y, int t, int hp, COLORREF sprite)
 
 	health = hp;
 
+	steal = false;
+
 	isSearch = false;
 	SearchStack = 0;
 	SearchDirection = -1;
@@ -317,6 +319,8 @@ void Entity::UpdateState()
 
 			if (ObjPool->Player.GetPosition().x == Temp_X && ObjPool->Player.GetPosition().y == Temp_Y)
 			{
+				ObjPool->SoundPool.Play(EFFECT_SWORD);
+				ObjPool->SoundPool.Play(EFFECT_STAB);
 				if (!isSteal)
 				{
 					nowAnimation = STAND;
@@ -324,6 +328,7 @@ void Entity::UpdateState()
 					stateFrame = 0;
 
 					isSteal = true;
+					steal = true;
 					m_pathList.clear();
 					return;
 				}
@@ -339,7 +344,6 @@ void Entity::UpdateState()
 					stateFrame = 0;
 					return;
 				}
-				//ObjPool->Sounds.Push(Ä®¿¡ Âñ¸®´Â ¼Ò¸®);
 			}
 			else if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == SKILL_Barricade)
 			{
@@ -348,7 +352,7 @@ void Entity::UpdateState()
 				{
 					ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, Temp_X, Temp_Y);
 				}
-				//ObjPool->Sounds.Push(Ä®ÀÌ Æ¨°Ü³ª´Â ¼Ò¸®);
+				ObjPool->SoundPool.Play(EFFECT_SWORD);
 			}
 			else if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == TRAP_ScareCrow)
 			{
@@ -356,7 +360,11 @@ void Entity::UpdateState()
 					ObjPool->Maps.Map[Temp_Y][Temp_X].TrapHp_Now = 0;
 				else
 					ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, Temp_X, Temp_Y);
-				//ObjPool->Sounds.Push(Ä®ÀÌ Æ¨°Ü³ª´Â ¼Ò¸®);
+				ObjPool->SoundPool.Play(EFFECT_SWORD);
+			}
+			else
+			{
+				ObjPool->SoundPool.Play(EFFECT_SWORD);
 			}
 
 			nowAnimation = STAND;
@@ -418,6 +426,10 @@ void Entity::UpdateState()
 			{
 				PosStack++;
 			}
+			else 
+			{ 
+				PosStack = 0; 
+			}
 			old_pos = pos;
 
 			if (PosStack > 50)
@@ -441,6 +453,7 @@ void Entity::UpdateState()
 					nowAnimation = WALK;
 					nowState = WALK;
 					ObjPool->debug = 1;
+					PosStack = 0;
 					return;
 				}
 			}
@@ -1375,7 +1388,7 @@ bool Entity::isMonsterRoadOverlap(int x, int y)
 {
 	for (auto it = ObjPool->MonsterPool.ePool.begin(); it != ObjPool->MonsterPool.ePool.end(); it++)
 	{
-		if (it->nowState != STILLSTONE_FIND && it->nowState != STILLSTONE_WALK)
+		if (!it->steal)
 		if (it->nowState == WALK)
 		{
 			switch (it->nowDirection)
@@ -1496,9 +1509,10 @@ void Entity::AddHealth(int a)
 {
 	health += a;
 
-	if (health <= 0 && (nowState == STILLSTONE_FIND || nowState == STILLSTONE_WALK))
+	if (health <= 0 && steal)
 	{
 		isSteal = false;
+		steal = false;
 	}
 }
 
@@ -1826,4 +1840,9 @@ void Monster::DrawMap(HDC hMemDC, int x, int y)
 void Monster::ResetSteal()
 {
 	Dealer.ResetSteal();
+}
+
+bool Monster::isSteal()
+{
+	return (Dealer.isSteal);
 }

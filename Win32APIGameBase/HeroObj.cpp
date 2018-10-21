@@ -18,20 +18,35 @@ void Hero::Init(HWND hWnd, int x, int y, COLORREF sprite)
 
 	Rock_Num = 0;
 
-	Ani_stand[UP].Init(hWnd, 0, 0, 80, 132, 1, L"./Image/Stand_Ani/hero/hero_back_standing.bmp");
-	Ani_stand[DOWN].Init(hWnd, 0, 0, 80, 132, 1, L"./Image/Stand_Ani/hero/hero_front_standing.bmp");
-	Ani_stand[LEFT].Init(hWnd, 0, 0, 80, 132, 1, L"./Image/Stand_Ani/hero/hero_left_standing.bmp");
-	Ani_stand[RIGHT].Init(hWnd, 0, 0, 80, 132, 1, L"./Image/Stand_Ani/hero/hero_right_standing.bmp");
+	Ani_stand[0][UP].Init(hWnd, 0, 0, 80, 132, 1, L"./Image/Stand_Ani/hero/hero_back_standing.bmp");
+	Ani_stand[0][DOWN].Init(hWnd, 0, 0, 80, 132, 1, L"./Image/Stand_Ani/hero/hero_front_standing.bmp");
+	Ani_stand[0][LEFT].Init(hWnd, 0, 0, 80, 132, 1, L"./Image/Stand_Ani/hero/hero_left_standing.bmp");
+	Ani_stand[0][RIGHT].Init(hWnd, 0, 0, 80, 132, 1, L"./Image/Stand_Ani/hero/hero_right_standing.bmp");
 
-	Ani_walk[UP].Init(hWnd, 0, 0, 480, 132, 6, L"./Image/Walk_Ani/hero_walk_back.bmp");
-	Ani_walk[DOWN].Init(hWnd, 0, 0, 480, 132, 6, L"./Image/Walk_Ani/hero_walk_front.bmp");
-	Ani_walk[LEFT].Init(hWnd, 0, 0, 480, 132, 6, L"./Image/Walk_Ani/hero_walk_left.bmp");
-	Ani_walk[RIGHT].Init(hWnd, 0, 0, 480, 132, 6, L"./Image/Walk_Ani/hero_walk_right.bmp");
+	Ani_walk[0][UP].Init(hWnd, 0, 0, 480, 132, 6, L"./Image/Walk_Ani/hero_walk_back.bmp");
+	Ani_walk[0][DOWN].Init(hWnd, 0, 0, 480, 132, 6, L"./Image/Walk_Ani/hero_walk_front.bmp");
+	Ani_walk[0][LEFT].Init(hWnd, 0, 0, 480, 132, 6, L"./Image/Walk_Ani/hero_walk_left.bmp");
+	Ani_walk[0][RIGHT].Init(hWnd, 0, 0, 480, 132, 6, L"./Image/Walk_Ani/hero_walk_right.bmp");
 
-	Ani_attack[UP].Init(hWnd, 0, 0, 320, 128, 4, L"./Image/Attack_Ani/hero_attack_back.bmp");
-	Ani_attack[DOWN].Init(hWnd, 0, 0, 320, 128, 4, L"./Image/Attack_Ani/hero_attack_front.bmp");
-	Ani_attack[LEFT].Init(hWnd, 0, 0, 320, 128, 4, L"./Image/Attack_Ani/hero_attack_left.bmp");
-	Ani_attack[RIGHT].Init(hWnd, 0, 0, 320, 128, 4, L"./Image/Attack_Ani/hero_attack_right.bmp");
+	Ani_attack[0][UP].Init(hWnd, 0, 0, 320, 128, 4, L"./Image/Attack_Ani/hero_attack_back.bmp");
+	Ani_attack[0][DOWN].Init(hWnd, 0, 0, 320, 128, 4, L"./Image/Attack_Ani/hero_attack_front.bmp");
+	Ani_attack[0][LEFT].Init(hWnd, 0, 0, 320, 128, 4, L"./Image/Attack_Ani/hero_attack_left.bmp");
+	Ani_attack[0][RIGHT].Init(hWnd, 0, 0, 320, 128, 4, L"./Image/Attack_Ani/hero_attack_right.bmp");
+
+	Ani_stand[1][UP].Init(hWnd, 0, 0, 80, 132, 1, L"./Image/Stand_Ani/hero/hero_back_standing_off.bmp");
+	Ani_stand[1][DOWN].Init(hWnd, 0, 0, 80, 132, 1, L"./Image/Stand_Ani/hero/hero_front_standing_off.bmp");
+	Ani_stand[1][LEFT].Init(hWnd, 0, 0, 80, 132, 1, L"./Image/Stand_Ani/hero/hero_left_standing_off.bmp");
+	Ani_stand[1][RIGHT].Init(hWnd, 0, 0, 80, 132, 1, L"./Image/Stand_Ani/hero/hero_right_standing_off.bmp");
+
+	Ani_walk[1][UP].Init(hWnd, 0, 0, 480, 132, 6, L"./Image/Walk_Ani/hero_walk_back_off.bmp");
+	Ani_walk[1][DOWN].Init(hWnd, 0, 0, 480, 132, 6, L"./Image/Walk_Ani/hero_walk_front_off.bmp");
+	Ani_walk[1][LEFT].Init(hWnd, 0, 0, 480, 132, 6, L"./Image/Walk_Ani/hero_walk_left_off.bmp");
+	Ani_walk[1][RIGHT].Init(hWnd, 0, 0, 480, 132, 6, L"./Image/Walk_Ani/hero_walk_right_off.bmp");
+
+	Ani_attack[1][UP].Init(hWnd, 0, 0, 320, 128, 4, L"./Image/Attack_Ani/hero_attack_back_off.bmp");
+	Ani_attack[1][DOWN].Init(hWnd, 0, 0, 320, 128, 4, L"./Image/Attack_Ani/hero_attack_front_off.bmp");
+	Ani_attack[1][LEFT].Init(hWnd, 0, 0, 320, 128, 4, L"./Image/Attack_Ani/hero_attack_left_off.bmp");
+	Ani_attack[1][RIGHT].Init(hWnd, 0, 0, 320, 128, 4, L"./Image/Attack_Ani/hero_attack_right_off.bmp");
 
 	ATK_Skill.InitSkill(hWnd, ATK_SKILL, 10);
 	PUSH_Skill.InitSkill(hWnd, PUSH_SKILL, 8);
@@ -40,11 +55,14 @@ void Hero::Init(HWND hWnd, int x, int y, COLORREF sprite)
 
 void Hero::Ternimate()
 {
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 2; i++)
 	{
-		Ani_stand[i].Ternimate();
-		Ani_walk[i].Ternimate();
-		Ani_attack[i].Ternimate();
+		for (int j = 0; j < 4; j++)
+		{
+			Ani_stand[i][j].Ternimate();
+			Ani_walk[i][j].Ternimate();
+			Ani_attack[i][j].Ternimate();
+		}
 	}
 }
 
@@ -101,16 +119,40 @@ void Hero::Draw(HDC hMemDC, int x, int y)
 	switch (nowAnimation)
 	{
 	case STAND:
-		Ani_stand[nowDirection].SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y - 40);
-		Ani_stand[nowDirection].Draw(hMemDC);
+		if (!ObjPool->MonsterPool.isSteal())
+		{
+			Ani_stand[0][nowDirection].SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y - 40);
+			Ani_stand[0][nowDirection].Draw(hMemDC);
+		}
+		else
+		{
+			Ani_stand[1][nowDirection].SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y - 40);
+			Ani_stand[1][nowDirection].Draw(hMemDC);
+		}
 		break;
 	case WALK:
-		Ani_walk[nowDirection].SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y - 40);
-		Ani_walk[nowDirection].Draw(hMemDC);
+		if (!ObjPool->MonsterPool.isSteal())
+		{
+			Ani_walk[0][nowDirection].SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y - 40);
+			Ani_walk[0][nowDirection].Draw(hMemDC);
+		}
+		else
+		{
+			Ani_walk[1][nowDirection].SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y - 40);
+			Ani_walk[1][nowDirection].Draw(hMemDC);
+		}
 		break;
 	case ATTACK:
-		Ani_attack[nowDirection].SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y - 40);
-		Ani_attack[nowDirection].Draw(hMemDC);
+		if (!ObjPool->MonsterPool.isSteal())
+		{
+			Ani_attack[0][nowDirection].SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y - 40);
+			Ani_attack[0][nowDirection].Draw(hMemDC);
+		}
+		else
+		{
+			Ani_attack[1][nowDirection].SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y - 40);
+			Ani_attack[1][nowDirection].Draw(hMemDC);
+		}
 		break;
 	}
 }
@@ -120,10 +162,12 @@ void Hero::Animation()
 	switch (nowAnimation)
 	{
 	case WALK:
-		Ani_walk[nowDirection].NextFrameSprite(true);
+		Ani_walk[0][nowDirection].NextFrameSprite(true);
+		Ani_walk[1][nowDirection].NextFrameSprite(true);
 		break;
 	case ATTACK:
-		Ani_attack[nowDirection].NextFrameSprite(false);
+		Ani_attack[0][nowDirection].NextFrameSprite(false);
+		Ani_attack[1][nowDirection].NextFrameSprite(false);
 		break;
 	}
 }
@@ -176,7 +220,10 @@ void Hero::SetPosition(int x, int y)
 void Hero::SetAnimation(int ani)
 {
 	for (int i = 0; i < 4; i++)
-		Ani_attack[i].SetCurrentFrame(1);
+	{
+		Ani_attack[0][i].SetCurrentFrame(0);
+		Ani_attack[1][i].SetCurrentFrame(0);
+	}
 	nowAnimation = ani;
 }
 

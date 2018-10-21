@@ -45,6 +45,9 @@ void InputManager::OnUpdate()
 	case SCENE_CREDIT:
 		Credit::Update();
 		break;
+	case SCENE_HOWTO:
+		Howto::Update();
+		break;
 	case SCENE_ENDING:
 		Ending::Update();
 		break;
@@ -61,6 +64,15 @@ int InputManager::OnMouseLButtonDown(HWND hWnd, WPARAM wParam, LPARAM lParam)
 	case SCENE_INGAME:
 		Ingame::OnMouseLButtonDown(hWnd, LOWORD(lParam), HIWORD(lParam));
 		break;
+	case SCENE_CREDIT:
+		Credit::OnMouseLButtonDown(hWnd, LOWORD(lParam), HIWORD(lParam));
+		break;
+	case SCENE_HOWTO:
+		Howto::OnMouseLButtonDown(hWnd, LOWORD(lParam), HIWORD(lParam));
+		break;
+	case SCENE_ENDING:
+		Ending::OnMouseLButtonDown(hWnd, LOWORD(lParam), HIWORD(lParam));
+		break;
 	}
 	return 1;
 }
@@ -74,6 +86,12 @@ int InputManager::OnMouseLButtonUp(HWND hWnd, WPARAM wParam, LPARAM lParam)
 		break;
 	case SCENE_INGAME:
 		Ingame::OnMouseLButtonUp(hWnd, LOWORD(lParam), HIWORD(lParam));
+		break;
+	case SCENE_CREDIT:
+		Credit::OnMouseLButtonUp(hWnd, LOWORD(lParam), HIWORD(lParam));
+		break;
+	case SCENE_HOWTO:
+		Howto::OnMouseLButtonUp(hWnd, LOWORD(lParam), HIWORD(lParam));
 		break;
 	case SCENE_ENDING:
 		Ending::OnMouseLButtonUp(hWnd, LOWORD(lParam), HIWORD(lParam));
@@ -90,9 +108,6 @@ int InputManager::OnMouseRButtonDown(HWND hWnd, WPARAM wParam, LPARAM lParam)
 		break;
 	case SCENE_INGAME:
 		Ingame::OnMouseRButtonDown(hWnd, LOWORD(lParam), HIWORD(lParam));
-		break;
-	case SCENE_ENDING:
-		Ending::OnMouseLButtonDown(hWnd, LOWORD(lParam), HIWORD(lParam));
 		break;
 	}
 	return 1;
@@ -145,9 +160,6 @@ void InputManager::InputUpdate()		//메세지가 아닌 다른 인풋의 처리 (ex. 키보드)
 	{
 	case SCENE_TITLE:
 		Title::OnKeyborad();
-		break;
-	case SCENE_CREDIT:
-		Credit::OnKeyborad();
 		break;
 	case SCENE_INGAME:
 		Ingame::OnKeyborad();

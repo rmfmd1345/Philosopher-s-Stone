@@ -25,6 +25,9 @@ void DrawManager::Drawing(HWND hwnd)	//그리기 단계 (더블버퍼링 적용됨)
 	case SCENE_CREDIT:
 		Credit::Draw(hMemDC);
 		break;
+	case SCENE_HOWTO:
+		Howto::Draw(hMemDC);
+		break;
 	case SCENE_INGAME:
 		Ingame::Draw(hMemDC);
 		break;

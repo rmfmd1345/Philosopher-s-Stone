@@ -38,7 +38,6 @@ private:
 	int PosStack;
 
 	static POINT spawnPosition;
-	static bool isSteal;
 
 	int nowState;
 	int stateFrame;
@@ -54,6 +53,8 @@ private:
 	int maxFrame;
 
 	int health;
+
+	bool steal;
 
 public:
 	void Init(HWND hWnd, int x, int y, int t, int hp, COLORREF sprite = RGB(255, 0, 255));
@@ -97,6 +98,8 @@ private:
 	int SearchGap;
 
 public:
+	static bool isSteal;
+
 	bool isRoadBlocked();
 	bool isRoadBlocked(int x, int y);
 	bool isRoadBlocked(int dire);
@@ -162,6 +165,8 @@ public:
 
 	void SetDirection(int dire);
 	void ResetSteal();
+
+	bool isSteal();
 
 private:
 	void DrawMap(HDC hMemDC, int x, int y);

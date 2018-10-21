@@ -103,6 +103,10 @@ public:
 	int timeDropStone = 0;
 
 public:
+	int howtonum = 0;
+	bool optionover = false;
+	bool optiondown = false;
+
 	//title Scene
 	Button titleBtn_Start;	//버튼
 	Button titleBtn_Credit;
@@ -118,10 +122,12 @@ public:
 	//ingame Scene
 	CMap Maps;
 	Button ingameBtn_Option;
+	SpriteHelper ingameSprite_Option;
 	Bitmap ingameUI_Stone;
 	Bitmap ingameUI_Trap;
 	Bitmap ingameUI_Skill;
 	Bitmap ingameUI_Stage;
+	Bitmap ingameUI_Stage_Steal;
 	Bitmap ingameUI_Time;
 
 	SpriteHelper ingameUI_SelectedTrap; //함정 선택 애니메이션

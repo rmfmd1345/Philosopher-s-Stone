@@ -177,6 +177,7 @@
     <ClCompile Include="HeroObj.cpp" />
     <ClCompile Include="Scene_Credit.cpp" />
     <ClCompile Include="Scene_Ending.cpp" />
+    <ClCompile Include="Scene_Howto.cpp" />
     <ClCompile Include="Skill.cpp" />
     <ClCompile Include="SoundObj.cpp" />
     <ClCompile Include="Sprite.cpp" />

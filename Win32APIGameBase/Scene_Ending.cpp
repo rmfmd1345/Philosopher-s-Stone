@@ -34,6 +34,7 @@ void Ending::OnMouseLButtonDown(HWND hWnd, int x, int y)
 
 void Ending::OnMouseLButtonUp(HWND hWnd, int x, int y)
 {
+	ObjPool->SoundPool.Play(EFFECT_SELECT);
 	ObjPool->System.SetScene(SCENE_TITLE);
 	ObjPool->Player.SetPosition(2, 5);
 	ObjPool->Player.SetDirection(RIGHT);
@@ -54,6 +55,8 @@ void Ending::OnMouseLButtonUp(HWND hWnd, int x, int y)
 
 	ObjPool->Wave = -1;
 	ObjPool->MonsterPool.ResetSteal();
+
+	ObjPool->howtonum = 0;
 
 	//초기화 해야할 것 추가
 }
