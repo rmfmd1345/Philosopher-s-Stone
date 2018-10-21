@@ -12,7 +12,7 @@ void Ending::Draw(HDC hMemDC)
 	}
 	else
 	{
-
+		ObjPool->EndingBg_Clear.Draw(hMemDC);
 	}
 	*/
 }
@@ -38,6 +38,11 @@ void Ending::OnMouseLButtonUp(HWND hWnd, int x, int y)
 	ObjPool->Player.AddHealth(1);
 	ObjPool->Player.SetPosition(2, 5);
 	ObjPool->Player.SetDirection(RIGHT);
+	ObjPool->Player.ATK_Skill.Cooltime = 0;
+	ObjPool->Player.AGGRO_Skill.Cooltime = 0;
+	ObjPool->Player.PUSH_Skill.Cooltime = 0;
+	ObjPool->Player.BARRICADE_Skill.Cooltime = 0;
+	ObjPool->Player.Rock_Num = 0;
 
 	ObjPool->MonsterPool.ePool.clear();
 	ObjPool->MonsterPool.ePool_Next.clear();
@@ -47,6 +52,8 @@ void Ending::OnMouseLButtonUp(HWND hWnd, int x, int y)
 
 	ObjPool->SoundPool.Play(BGM_TITLE);
 	ObjPool->SoundPool.Stop(BGM_CAVE);
+
+	ObjPool->Wave = 1;
 
 	//초기화 해야할 것 추가
 }
