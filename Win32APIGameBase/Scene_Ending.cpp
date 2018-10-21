@@ -52,7 +52,7 @@ void Ending::OnMouseLButtonUp(HWND hWnd, int x, int y)
 	ObjPool->SoundPool.Play(BGM_TITLE);
 	ObjPool->SoundPool.Stop(BGM_CAVE);
 
-	ObjPool->Wave = 1;
+	ObjPool->Wave = 0;
 
 	//초기화 해야할 것 추가
 }

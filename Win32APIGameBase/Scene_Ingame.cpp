@@ -46,7 +46,7 @@ void Ingame::Draw(HDC hMemDC)
 	for (int i = 0; i < 3; i++)
 		ObjPool->Gdi.Text(hMemDC, 205 + i * 60, 120, ObjPool->MonsterPool.CheckMonsters_Num_UI[i], 30);
 
-	ObjPool->Gdi.Text(hMemDC, 200, 15, ObjPool->Wave_UI, 60);
+	ObjPool->Gdi.Text(hMemDC, 190, 15, ObjPool->Wave_UI, 60);
 }
 
 void Ingame::OnTimer(HWND hWnd, int timer)
@@ -81,7 +81,7 @@ void Ingame::OnTimer(HWND hWnd, int timer)
 		{
 			ObjPool->MonsterPool.NextWave();
 			ObjPool->Wave++;
-			wsprintf(ObjPool->Wave_UI, L"Wave %d", ObjPool->Wave);
+			wsprintf(ObjPool->Wave_UI, L"Wave %02d", ObjPool->Wave);
 		}
 
 		if (ObjPool->MonsterPool.ePool.empty() && ObjPool->MonsterTimer > 0)

@@ -366,15 +366,15 @@ void Entity::UpdateState()
 				}
 				//ObjPool->Sounds.Push(Ä®¿¡ Âñ¸®´Â ¼Ò¸®);
 			}
-			else if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == SKILL_Barricade)
-			{
-				ObjPool->Maps.Map[Temp_Y][Temp_X].hp--;
-				if (ObjPool->Maps.Map[Temp_Y][Temp_X].hp <= 0)
-				{
-					ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, Temp_X, Temp_Y);
-				}
-				//ObjPool->Sounds.Push(Ä®ÀÌ Æ¨°Ü³ª´Â ¼Ò¸®);
-			}
+			//else if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == SKILL_Barricade)
+			//{
+			//	ObjPool->Maps.Map[Temp_Y][Temp_X].hp--;
+			//	if (ObjPool->Maps.Map[Temp_Y][Temp_X].hp <= 0)
+			//	{
+			//		ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, Temp_X, Temp_Y);
+			//	}
+			//	//ObjPool->Sounds.Push(Ä®ÀÌ Æ¨°Ü³ª´Â ¼Ò¸®);
+			//}
 			else if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == TRAP_ScareCrow)
 			{
 				if(ObjPool->Maps.Map[Temp_Y][Temp_X].TrapHp_Now > 0)
@@ -1694,6 +1694,9 @@ void Monster::NextWave()
 		AddMonster(it->GetEntity()->GetType());
 
 	ePool_Next.clear();
+
+	for (int i = 0; i < 3; i++)
+		CheckMonsters_Num[i] = 0;
 
 	int Temp;
 
