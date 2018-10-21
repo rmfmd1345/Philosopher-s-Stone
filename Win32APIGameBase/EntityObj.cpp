@@ -1828,7 +1828,7 @@ void Monster::DrawMap(HDC hMemDC, int x, int y)
 			ObjPool->Gdi.SetTextsColor(RGB(250, 250, 250));
 
 			if (Dealer.isBanRoad(j, i))
-				wsprintf(str, L"X");
+				wsprintf(str, L" ");
 			else
 				wsprintf(str, L" ");
 

@@ -238,6 +238,8 @@ void CMap::ResetMap()
 		}
 	}
 
+
+	
 	int AltarY = rand() % (MAX_TILE_Y - 6) + 3;
 
 	SetTileOnMap(ObjPool->Maps.Altar, MAX_TILE_X - 3, AltarY);
@@ -246,6 +248,20 @@ void CMap::ResetMap()
 	SetTileOnMap(ObjPool->Maps.Floor, MAX_TILE_X - 4, AltarY - 1);
 	SetTileOnMap(ObjPool->Maps.Floor, MAX_TILE_X - 4, AltarY);
 	SetTileOnMap(ObjPool->Maps.Floor, MAX_TILE_X - 4, AltarY + 1);
+	ObjPool->EndingPos = { MAX_TILE_X - 3, AltarY };
+	
+	/*
+	SetTileOnMap(ObjPool->Maps.Altar, 4, 4);
+	SetTileOnMap(ObjPool->Maps.Floor, 4, 4 - 1);
+	SetTileOnMap(ObjPool->Maps.Floor, 4, 4 + 1);
+	SetTileOnMap(ObjPool->Maps.Floor, 4 - 1, 4);
+	SetTileOnMap(ObjPool->Maps.Floor, 4 + 1, 4);
+	SetTileOnMap(ObjPool->Maps.Floor, 4 - 1, 4 - 1);
+	SetTileOnMap(ObjPool->Maps.Floor, 4 + 1, 4 - 1);
+	SetTileOnMap(ObjPool->Maps.Floor, 4 - 1, 4 + 1);
+	SetTileOnMap(ObjPool->Maps.Floor, 4 + 1, 4 + 1);
+	ObjPool->EndingPos = { 4,4 };
+	*/
 
 	for (int i = 0; i < 3; i++)
 		for (int j = 0; j < 3; j++)
@@ -396,7 +412,6 @@ void CMap::DrawMap(HDC hMemDC, int x, int y)
 				{
 					Map[i][j].Tile_Sprite_On.SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 2) * 80 + Term_y - 40);
 					Map[i][j].Tile_Sprite_On.Draw(hMemDC);
-					ObjPool->System.SetScene(SCENE_ENDING);
 				}
 				else
 				{
@@ -404,7 +419,6 @@ void CMap::DrawMap(HDC hMemDC, int x, int y)
 					{
 						Map[i][j].Ani_Trap[UP].SetPosition(((j - Map_Start_x) - 1) * 80 + Term_x - 40, ((i - Map_Start_y) - 2) * 80 + Term_y - 40);
 						Map[i][j].Ani_Trap[UP].Draw(hMemDC);
-						Map[i][j].Ani_Trap[UP].NextFrameSprite(false);
 
 						if (Map[i][j].Ani_Trap[UP].GetCurrentFrame() >= Map[i][j].Ani_Trap[UP].GetLastFrame() - 1)
 						{

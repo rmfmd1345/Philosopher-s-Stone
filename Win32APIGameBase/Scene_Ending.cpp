@@ -53,6 +53,8 @@ void Ending::OnMouseLButtonUp(HWND hWnd, int x, int y)
 	ObjPool->MonsterPool.ResetSteal();
 
 	ObjPool->howtonum = 0;
+	ObjPool->Player.Checkending = false;
+	ObjPool->aniEnding = 0;
 
 	//초기화 해야할 것 추가
 }

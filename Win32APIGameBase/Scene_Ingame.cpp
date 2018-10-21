@@ -108,6 +108,20 @@ void Ingame::OnTimer(HWND hWnd, int timer)
 		if (ObjPool->Player.BARRICADE_Skill.Cooltime > 0)
 			ObjPool->Player.BARRICADE_Skill.Cooltime--;
 	}
+
+	if(timer == ENDING)
+	{
+		if (ObjPool->Player.Checkending)
+		{
+			ObjPool->Maps.Map[ObjPool->EndingPos.y][ObjPool->EndingPos.x].Ani_Trap[UP].NextFrameSprite(false);
+			ObjPool->aniEnding++;
+		}
+		if (ObjPool->aniEnding > 10)
+		{
+			ObjPool->System.SetScene(SCENE_ENDING);
+		}
+	}
+
 	wsprintf(ObjPool->TIMER, L"%02d:%02d", ObjPool->MonsterTimer / 60, ObjPool->MonsterTimer % 60);
 	wsprintf(ObjPool->Player.Rock_Num_UI, L"%07d", ObjPool->Player.Rock_Num);
 }
@@ -491,6 +505,7 @@ void Ingame::OnKeyborad()
 	if (lastBitState[KEY_P] == 0 && keyState[KEY_P] & 0x0001) //P
 	{
 		ObjPool->Player.Rock_Num += 100;
+		ObjPool->Player.SetPosition(ObjPool->EndingPos.x - 1, ObjPool->EndingPos.y);
 
 		lastBitState[KEY_P] = 1;
 	}

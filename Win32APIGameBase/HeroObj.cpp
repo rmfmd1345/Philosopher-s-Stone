@@ -625,6 +625,7 @@ void Hero::CheckEnding()
 	if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == ALTAR)
 	{
 		Checkending = true;
+		ObjPool->SoundPool.Play(ENDING_ALTAR);
 	}
 }
 

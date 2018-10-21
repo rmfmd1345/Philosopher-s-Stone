@@ -189,6 +189,9 @@ void Sounds::Init()
 		case BARRICADE_BREAK:
 			temp.Init(L"./Sound/_break.wav", 1, false);
 			break;
+		case ENDING_ALTAR:
+			temp.Init(L"./Sound/_ending.wav", 1, false);
+			break;
 		default:
 			return;
 		}

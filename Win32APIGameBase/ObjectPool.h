@@ -59,7 +59,8 @@ enum eTimer
 	ANIMATION,
 	PLAYERWALK,
 	MONSTERTM,
-	SOUND
+	SOUND,
+	ENDING
 };
 
 class ObjectPool		//오브젝트 풀 (전역변수같이 사용됨)
@@ -102,11 +103,14 @@ public:
 
 	int timeDropStone = 0;
 
-public:
 	int howtonum = 0;
 	bool optionover = false;
 	bool optiondown = false;
 
+	int aniEnding = 0;
+	POINT EndingPos;
+
+public:
 	//title Scene
 	Button titleBtn_Start;	//버튼
 	Button titleBtn_Credit;

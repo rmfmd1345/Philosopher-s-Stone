@@ -9,6 +9,7 @@ int InputManager::OnCreate(HWND hWnd, WPARAM wParam, LPARAM lParam)
 	SetTimer(hWnd, PLAYERWALK, 70, NULL);
 	SetTimer(hWnd, MONSTERTM, 1000, NULL);
 	SetTimer(hWnd, SOUND, 1000, NULL);
+	SetTimer(hWnd, ENDING, 100, NULL);
 
 	return 1;
 }

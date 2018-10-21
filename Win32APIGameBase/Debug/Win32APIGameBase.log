@@ -1,6 +1,40 @@
-﻿  Scene_Ingame.cpp
-<<<<<<< HEAD
+﻿  stdafx.cpp
+  A_Star.cpp
+  BitmapObj.cpp
+  ButtonObj.cpp
+  DrawManager.cpp
+  EntityObj.cpp
+c:\users\hp\documents\github\philosopher-s-stone\win32apigamebase\entityobj.cpp(955): warning C4305: '+=': 'double'에서 'float'(으)로 잘립니다.
+  FrameManager.cpp
+  GdiObj.cpp
+  HeroObj.cpp
+c:\users\hp\documents\github\philosopher-s-stone\win32apigamebase\heroobj.cpp(345): warning C4244: '=': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\hp\documents\github\philosopher-s-stone\win32apigamebase\heroobj.cpp(358): warning C4244: '=': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\hp\documents\github\philosopher-s-stone\win32apigamebase\heroobj.cpp(371): warning C4244: '=': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\hp\documents\github\philosopher-s-stone\win32apigamebase\heroobj.cpp(384): warning C4244: '=': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\hp\documents\github\philosopher-s-stone\win32apigamebase\heroobj.cpp(603): warning C4244: '=': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  InputManager.cpp
+  ObjectPool.cpp
+  SceneManager.cpp
+  Scene_Credit.cpp
+  Scene_Ending.cpp
+  Scene_Howto.cpp
+  Scene_Ingame.cpp
+  Scene_Title.cpp
+  Skill.cpp
+  SoundObj.cpp
+c:\users\hp\documents\github\philosopher-s-stone\win32apigamebase\soundobj.cpp(109): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  Sprite.cpp
+  System.cpp
+  코드를 생성하고 있습니다...
+c:\users\hp\documents\github\philosopher-s-stone\win32apigamebase\entityobj.cpp(1445): warning C4715: 'Entity::isMonsterRoadOverlap': 모든 제어 경로에서 값을 반환하지는 않습니다.
+c:\users\hp\documents\github\philosopher-s-stone\win32apigamebase\entityobj.cpp(1563): warning C4715: 'Entity::returnReverseDirection': 모든 제어 경로에서 값을 반환하지는 않습니다.
+  컴파일하고 있습니다...
+  SystemObj.cpp
+  TileObj.cpp
+c:\users\hp\documents\github\philosopher-s-stone\win32apigamebase\tileobj.cpp(73): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\hp\documents\github\philosopher-s-stone\win32apigamebase\tileobj.cpp(425): warning C4244: '=': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\hp\documents\github\philosopher-s-stone\win32apigamebase\tileobj.cpp(483): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  main.cpp
+  코드를 생성하고 있습니다...
   Win32APIGameBase.vcxproj -> C:\Users\hp\Documents\GitHub\Philosopher-s-Stone\Win32APIGameBase\Debug\Win32APIGameBase.exe
-=======
-  Win32APIGameBase.vcxproj -> C:\Users\World Famous Star\Desktop\프로젝트\API 팀 프로젝트\Philosopher-s-Stone\Win32APIGameBase\Debug\Win32APIGameBase.exe
->>>>>>> 7ec01669dafab2ed4f3104bbb9edd6401504effc
