@@ -211,7 +211,8 @@ void Ingame::OnKeyborad()
 		}
 		else if (ObjPool->Player.GetState() == STAND)
 		{
-    			ObjPool->Player.DigMap();
+			ObjPool->Player.CheckEnding();
+    		ObjPool->Player.DigMap();
 		}
 		else if (ObjPool->Player.GetState() == TRAPSETTING) //트랩 세팅중이면 설치
 		{
@@ -426,6 +427,7 @@ void Ingame::OnKeyborad()
 	if (lastBitState[KEY_P] == 0 && keyState[KEY_P] & 0x0001) //P
 	{
 		ObjPool->Player.Rock_Num += 100;
+		ObjPool->Player.AddHealth(1000);
 
 		lastBitState[KEY_P] = 1;
 	}

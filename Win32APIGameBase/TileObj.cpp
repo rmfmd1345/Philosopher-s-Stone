@@ -59,7 +59,7 @@ void CTile::InitTile(HWND hwnd, int Frame, int ID, int MoveID, int traphp, std::
 		Ani_Trap[RIGHT].Init(hwnd, 0, 0, 80, 160, Frame, L"./Image/Tile/Barricade_Right.bmp");
 		hp = 3;
 	case ALTAR:
-		//Tile_Sprite_On.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/Altar.bmp");
+		Tile_Sprite_On.Init(hwnd, 0, 0, 80, 80, Frame, L"./Image/Tile/Altar.bmp");
 		break;
 	}
 	Ani_SelectedArea.Init(hwnd, 0, 0, 240, 240, 1, L"./Image/Tile/tileselect.bmp");
@@ -91,7 +91,7 @@ void CMap::InitMap(HWND hwnd)
 	Trap_Cunfusion.InitTile(hwnd, 1 /*Frame*/, TRAP_Confusion, true, 60, [&](Entity* ent) {ConfusionActive(ent); });
 	Trap_Hole.InitTile(hwnd, 1 /*Frame*/, TRAP_Hole, true, 60, [&](Entity* ent) {HoleActive(ent);});
 	Skill_Barricade.InitTile(hwnd, 1 /*Frame*/, SKILL_Barricade, false, 60, [&](Entity* ent) {});
-	//Altar.InitTile(hwnd, 1 /*Frame*/, ALTAR, false, 60, [&](Entity* ent) {});
+	Altar.InitTile(hwnd, 1 /*Frame*/, ALTAR, false, 60, [&](Entity* ent) {});
 	Barricade_Health_UI.Init(hwnd, 0, 0, 20, 20, L"./Image/UI/Ingame/heart.bmp");
 
 	//ingameUI_TrapArea.Init(hwnd, 0, 0, 960, 240, L"./Image/Tile/tileselect.bmp");
@@ -267,6 +267,10 @@ void CMap::ResetMap()
 			Map[i][j].Tile_ID = MENTLE;
 		}
 	}
+
+	int AlterY = rand() % (MAX_TILE_Y - 6) + 3;
+
+	SetTileOnMap(ObjPool->Maps.Altar, MAX_TILE_X - 3, AlterY);
 
 	for (int i = 0; i < 3; i++)
 		for (int j = 0; j < 3; j++)
@@ -604,19 +608,19 @@ bool CMap::CheckTrap(int diraction, POINT pos)
 	switch (diraction)
 	{
 	case LEFT:
-		if (Map[pos.y][pos.x - 1].Tile_ID != NONE && Map[pos.y][pos.x - 1].Tile_ID != WALL && Map[pos.y][pos.x - 1].Tile_ID != FLOOR && Map[pos.y][pos.x - 1].Tile_ID != SKILL_Barricade)
+		if (Map[pos.y][pos.x - 1].Tile_ID != NONE && Map[pos.y][pos.x - 1].Tile_ID != WALL && Map[pos.y][pos.x - 1].Tile_ID != FLOOR && Map[pos.y][pos.x - 1].Tile_ID != SKILL_Barricade && Map[pos.y][pos.x - 1].Tile_ID != ALTAR)
 			return true;
 		break;
 	case RIGHT:
-		if (Map[pos.y][pos.x + 1].Tile_ID != NONE && Map[pos.y][pos.x + 1].Tile_ID != WALL && Map[pos.y][pos.x + 1].Tile_ID != FLOOR && Map[pos.y][pos.x + 1].Tile_ID != SKILL_Barricade)
+		if (Map[pos.y][pos.x + 1].Tile_ID != NONE && Map[pos.y][pos.x + 1].Tile_ID != WALL && Map[pos.y][pos.x + 1].Tile_ID != FLOOR && Map[pos.y][pos.x + 1].Tile_ID != SKILL_Barricade && Map[pos.y][pos.x + 1].Tile_ID != ALTAR)
 			return true;
 		break;
 	case UP:
-		if (Map[pos.y - 1][pos.x].Tile_ID != NONE && Map[pos.y - 1][pos.x].Tile_ID != WALL && Map[pos.y - 1][pos.x].Tile_ID != FLOOR && Map[pos.y - 1][pos.x].Tile_ID != SKILL_Barricade)
+		if (Map[pos.y - 1][pos.x].Tile_ID != NONE && Map[pos.y - 1][pos.x].Tile_ID != WALL && Map[pos.y - 1][pos.x].Tile_ID != FLOOR && Map[pos.y - 1][pos.x].Tile_ID != SKILL_Barricade && Map[pos.y - 1][pos.x].Tile_ID != ALTAR)
 			return true;
 		break;
 	case DOWN:
-		if (Map[pos.y + 1][pos.x].Tile_ID != NONE && Map[pos.y + 1][pos.x].Tile_ID != WALL && Map[pos.y + 1][pos.x].Tile_ID != FLOOR && Map[pos.y + 1][pos.x].Tile_ID != SKILL_Barricade)
+		if (Map[pos.y + 1][pos.x].Tile_ID != NONE && Map[pos.y + 1][pos.x].Tile_ID != WALL && Map[pos.y + 1][pos.x].Tile_ID != FLOOR && Map[pos.y + 1][pos.x].Tile_ID != SKILL_Barricade && Map[pos.y + 1][pos.x].Tile_ID != ALTAR)
 			return true;
 		break;
 	}
