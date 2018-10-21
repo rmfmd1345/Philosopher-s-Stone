@@ -34,6 +34,8 @@ class Entity		: protected A_Star
 private:
 	int type;		//엔티티 타입
 	POINT pos;		//엔티티 위치
+	POINT old_pos;
+	int PosStack;
 
 	static POINT spawnPosition;
 	static bool isSteal;
@@ -54,7 +56,7 @@ private:
 	int health;
 
 public:
-	void Init(HWND hWnd, int x, int y, int type, int hp, COLORREF sprite = RGB(255, 0, 255));
+	void Init(HWND hWnd, int x, int y, int t, int hp, COLORREF sprite = RGB(255, 0, 255));
 	void Draw(HDC hMemDC, int x, int y);
 	void Ternimate();
 

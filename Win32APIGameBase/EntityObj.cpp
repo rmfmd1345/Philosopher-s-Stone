@@ -10,10 +10,12 @@ int Entity::StackRoad[MAX_TILE_Y][MAX_TILE_X] = { 0 };
 bool Entity::isAllSearch = false;
 POINT Entity::PlayerPos = { 0,0 };
 
-void Entity::Init(HWND hWnd, int x, int y, int type, int hp, COLORREF sprite)
+void Entity::Init(HWND hWnd, int x, int y, int t, int hp, COLORREF sprite)
 {
-	this->type = type;
-	this->pos = { x, y };
+	type = t;
+	pos = { x, y };
+	old_pos = { x, y };
+	PosStack = 0;
 
 	nowState = FINDWAY;
 	stateFrame = 0;
@@ -279,6 +281,7 @@ void Entity::UpdateState()
 				pos.x++;
 				break;
 			}
+
 			nowAnimation = STAND;
 			nowState = FINDWAY;
 			stateFrame = 0;
@@ -411,6 +414,40 @@ void Entity::UpdateState()
 	if (nowState == FINDWAY)
 	{
 		{
+			if (old_pos.x == pos.x && old_pos.y == pos.y)
+			{
+				PosStack++;
+			}
+			old_pos = pos;
+
+			if (PosStack > 50)
+			{
+				int BlockedRoadNum = 0;
+				int BlockedRoad[4] = { 0 };
+				for (int i = 0; i < 4; i++)
+				{
+					if (!isRoadBlocked(i) && !isMonsterRoadOverlap(i) && nowDirection != i)
+					{
+						BlockedRoad[BlockedRoadNum] = { i };
+						BlockedRoadNum++;
+					}
+				}
+
+				if (BlockedRoadNum > 0)
+				{
+					srand((unsigned)time(NULL));
+					SetDirection(BlockedRoad[rand() % BlockedRoadNum]);
+
+					nowAnimation = WALK;
+					nowState = WALK;
+					ObjPool->debug = 1;
+					return;
+				}
+			}
+		}
+		//교통제층 방지1
+
+		{
 			switch (nowDirection)
 			{
 			case UP:
@@ -532,6 +569,68 @@ void Entity::UpdateState()
 		//트랩발견시 행동(플레이어 서치보다 우선순위 <<<허수아비때문에!!)
 
 		{}
+
+		{
+			for (auto it = ObjPool->MonsterPool.ePool.begin(); it != ObjPool->MonsterPool.ePool.end(); it++)
+			{
+				switch (nowDirection)
+				{
+				case UP:
+					if (it->pos.x == pos.x && it->pos.y == pos.y - 1)
+					{
+						if (nowDirection == returnReverseDirection(it->nowDirection))
+						{
+							srand((unsigned)time(NULL));
+							if (rand() % 2)
+								RotateClockwise();
+							else
+								RotateCounterclockwise();
+						}
+					}
+					break;
+				case DOWN:
+					if (it->pos.x == pos.x && it->pos.y == pos.y + 1)
+					{
+						if (nowDirection == returnReverseDirection(it->nowDirection))
+						{
+							srand((unsigned)time(NULL));
+							if (rand() % 2)
+								RotateClockwise();
+							else
+								RotateCounterclockwise();
+						}
+					}
+					break;
+				case LEFT:
+					if (it->pos.x == pos.x - 1 && it->pos.y == pos.y)
+					{
+						if (nowDirection == returnReverseDirection(it->nowDirection))
+						{
+							srand((unsigned)time(NULL));
+							if (rand() % 2)
+								RotateClockwise();
+							else
+								RotateCounterclockwise();
+						}
+					}
+					break;
+				case RIGHT:
+					if (it->pos.x == pos.x + 1 && it->pos.y == pos.y)
+					{
+						if (nowDirection == returnReverseDirection(it->nowDirection))
+						{
+							srand((unsigned)time(NULL));
+							if (rand() % 2)
+								RotateClockwise();
+							else
+								RotateCounterclockwise();
+						}
+					}
+					break;
+				}
+			}
+		}
+		//몬스터끼리 서로 마주보고 있어서 교통체증 방지2
 
 		{
 			if (isSearchFind(ObjPool->Player.GetPosition().x, ObjPool->Player.GetPosition().y))
@@ -729,68 +828,6 @@ void Entity::UpdateState()
 		//막다른 길이거나 / 스택 쌓아서 일정정도가 넘으면 밴
 
 		{
-			for (auto it = ObjPool->MonsterPool.ePool.begin(); it != ObjPool->MonsterPool.ePool.end(); it++)
-			{
-				switch (nowDirection)
-				{
-				case UP:
-					if (it->pos.x == pos.x && it->pos.y == pos.y - 1)
-					{
-						if (nowDirection == returnReverseDirection(it->nowDirection))
-						{
-							srand((unsigned)time(NULL));
-							if (rand() % 2)
-								RotateClockwise();
-							else
-								RotateCounterclockwise();
-						}
-					}
-					break;
-				case DOWN:
-					if (it->pos.x == pos.x && it->pos.y == pos.y + 1)
-					{
-						if (nowDirection == returnReverseDirection(it->nowDirection))
-						{
-							srand((unsigned)time(NULL));
-							if (rand() % 2)
-								RotateClockwise();
-							else
-								RotateCounterclockwise();
-						}
-					}
-						break;
-				case LEFT:
-					if (it->pos.x == pos.x - 1 && it->pos.y == pos.y)
-					{
-						if (nowDirection == returnReverseDirection(it->nowDirection))
-						{
-							srand((unsigned)time(NULL));
-							if (rand() % 2)
-								RotateClockwise();
-							else
-								RotateCounterclockwise();
-						}
-					}
-						break;
-				case RIGHT:
-					if (it->pos.x == pos.x + 1 && it->pos.y == pos.y)
-					{
-						if (nowDirection == returnReverseDirection(it->nowDirection))
-						{
-							srand((unsigned)time(NULL));
-							if (rand() % 2)
-								RotateClockwise();
-							else
-								RotateCounterclockwise();
-						}
-					}
-						break;
-				}
-			}
-		}
-		//몬스터끼리 서로 마주보고 있어서 교통체증 방지
-
-		{
 			int BlockedRoadNum = 0;
 			int BlockedRoad[4] = { 0 };
 			for (int i = 0; i < 4; i++)
@@ -903,7 +940,6 @@ void Entity::UpdateState()
 				SetDirection(UP);
 
 			SpinSpeed += 0.2; //도는 속도 서서히 낮추기
-			//ObjPool->SoundPool.Play(TRAP_HOLESPIN);
 			if (SpinSpeed >= 9) //충분히 엔티티가 돌았으면
 			{
 				stateFrame = 0;
