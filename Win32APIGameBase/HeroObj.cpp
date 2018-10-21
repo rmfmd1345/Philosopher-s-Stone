@@ -7,10 +7,10 @@ void Hero::Init(HWND hWnd, int x, int y, COLORREF sprite)
 	this->type = type;
 	this->pos = { x, y };
 
-	nowState = STAND;
+	nowState = WALK;
 	stateFrame_Hero = 0;
 
-	nowAnimation = STAND;
+	nowAnimation = WALK;
 	nowDirection = RIGHT;
 
 	nowFrame = 0;

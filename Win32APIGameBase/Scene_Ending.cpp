@@ -32,13 +32,17 @@ void Ending::OnMouseLButtonUp(HWND hWnd, int x, int y)
 {
 	ObjPool->System.SetScene(SCENE_TITLE);
 	ObjPool->Player.AddHealth(1);
-	ObjPool->Player.SetPosition(3, 5);
+	ObjPool->Player.SetPosition(2, 5);
+	ObjPool->Player.SetDirection(RIGHT);
 
 	ObjPool->MonsterPool.ePool.clear();
 	ObjPool->MonsterPool.ePool_Next.clear();
 	ObjPool->MonsterTimer = 0;
 
 	ObjPool->Maps.ResetMap();
+
+	ObjPool->Sounds.Push(BGM_TITLE, 1);
+	ObjPool->Sounds.Pop(0);
 
 	//초기화 해야할 것 추가
 }

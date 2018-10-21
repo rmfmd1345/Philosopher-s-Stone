@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 ﻿  InputManager.cpp
   ObjectPool.cpp
   코드를 생성하고 있습니다...
   Win32APIGameBase.vcxproj -> C:\Users\hp\Documents\GitHub\Philosopher-s-Stone\Win32APIGameBase\Debug\Win32APIGameBase.exe
+=======
+﻿  Scene_Ending.cpp
+  Win32APIGameBase.vcxproj -> C:\Users\World Famous Star\Desktop\프로젝트\API 팀 프로젝트\Philosopher-s-Stone\Win32APIGameBase\Debug\Win32APIGameBase.exe
+>>>>>>> 09ec2c21f6f6a3daf76fb2150e4967150fa18b61
