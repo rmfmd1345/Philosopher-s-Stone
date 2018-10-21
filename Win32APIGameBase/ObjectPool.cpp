@@ -47,6 +47,7 @@ void ObjectPool::CreateObject(HWND hWnd)	//객체의 초기 설정을 적는 곳
 	Maps.ResetMap();
 
 	MonsterPool.Init(hWnd);
+	StoneEffect.Init(hWnd, 0, 0, 20, 26, L"./Image/UI/Ingame/stone.bmp");
 
 	MonsterPool.Init(hWnd);
 	Player.Init(hWnd, 2, 5);
@@ -77,5 +78,6 @@ void ObjectPool::DeleteObject()				//비트맵객체는 반드시 종료해주기
 	Maps.DestroyMap();
 
 	MonsterPool.Ternimate();
+	StoneEffect.Ternimate();
 	FindEffect.Ternimate();
 }

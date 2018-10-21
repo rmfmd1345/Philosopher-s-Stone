@@ -36,7 +36,7 @@ private:
 	POINT pos;		//엔티티 위치
 
 	static POINT spawnPosition;
-	static bool isStill;
+	static bool isSteal;
 
 	int nowState;
 	int stateFrame;
@@ -118,6 +118,7 @@ public:
 	bool GetAllSearch();
 	bool GetSearch();
 	void SetAllSearch(bool is);
+	void ResetSteal();
 
 };
 
@@ -158,6 +159,7 @@ public:
 	bool CheckHealth(Entity* ent);
 
 	void SetDirection(int dire);
+	void ResetSteal();
 
 private:
 	void DrawMap(HDC hMemDC, int x, int y);

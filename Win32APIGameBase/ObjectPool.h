@@ -90,6 +90,7 @@ public:
 	Monster MonsterPool;
 	SpriteHelper FindEffect;
 	SpriteHelper ConfuseEffect;
+	Bitmap StoneEffect;
 	int debug = 0;
 
 	Hero Player;

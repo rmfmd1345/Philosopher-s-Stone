@@ -3,7 +3,7 @@
 #include "EntityObj.h"
 
 POINT Entity::spawnPosition = { 2, 5 };
-bool Entity::isStill = false;
+bool Entity::isSteal = false;
 
 vector<POINT> Entity::BanRoad;
 int Entity::StackRoad[MAX_TILE_Y][MAX_TILE_X] = { 0 };
@@ -198,66 +198,37 @@ void Entity::Draw(HDC hMemDC, int x, int y)
 	case STAND:
 		Ani_stand[nowDirection].SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y - 40);
 		Ani_stand[nowDirection].Draw(hMemDC);
-		for (int i = 0; i < health; i++)
-		{
-			Health_UI.SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40 + (Ani_stand[nowDirection].w / 2) - (20 * health / 2) + (20 * i), ((pos.y - Map_y) - 1) * 80 + Term_y - 40 - 20);
-			Health_UI.Draw(hMemDC);
-		}
 		break;
 	case WALK:
 		Ani_walk[nowDirection].SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y - 40);
 		Ani_walk[nowDirection].Draw(hMemDC);
-		for (int i = 0; i < health; i++)
-		{
-			Health_UI.SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40 + (Ani_stand[nowDirection].w / 2) - (20 * health / 2) + (20 * i), ((pos.y - Map_y) - 1) * 80 + Term_y - 40 - 20);
-			Health_UI.Draw(hMemDC);
-		}
 		break;
 	case ATTACK:
 		Ani_attack[nowDirection].SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y - 40);
 		Ani_attack[nowDirection].Draw(hMemDC);
-
-		for (int i = 0; i < health; i++)
-		{
-			Health_UI.SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40 + (Ani_stand[nowDirection].w / 2) - (20 * health / 2) + (20 * i), ((pos.y - Map_y) - 1) * 80 + Term_y - 40 - 18);
-			Health_UI.Draw(hMemDC);
-		}
 		break;
-	case MARKFORFIND:
-		Ani_stand[nowDirection].SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40, ((pos.y - Map_y) - 1) * 80 + Term_y - 40);
-		Ani_stand[nowDirection].Draw(hMemDC);
+	}
 
-		switch (nowDirection)
-		{
-		case UP:
-			ObjPool->FindEffect.SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x, ((pos.y - Map_y) - 1) * 80 + Term_y - 70);
-			break;
-		case DOWN:
-			ObjPool->FindEffect.SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 10, ((pos.y - Map_y) - 1) * 80 + Term_y - 70);
-			break;
-		case LEFT:
-			ObjPool->FindEffect.SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x + 10, ((pos.y - Map_y) - 1) * 80 + Term_y - 70);
-			break;
-		case RIGHT:
-			ObjPool->FindEffect.SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 25, ((pos.y - Map_y) - 1) * 80 + Term_y - 70);
-			break;
-		}
-		ObjPool->FindEffect.Draw(hMemDC);
-
-		break;
+	for (int i = 0; i < health; i++)
+	{
+		Health_UI.SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 40 + (Ani_stand[nowDirection].w / 2) - (20 * health / 2) + (20 * i), ((pos.y - Map_y) - 1) * 80 + Term_y - 60);
+		Health_UI.Draw(hMemDC);
 	}
 
 	switch (nowState)
 	{
+		case MARKFORFIND:
+			ObjPool->FindEffect.SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 10, ((pos.y - Map_y) - 1) * 80 + Term_y - 90);
+			ObjPool->FindEffect.Draw(hMemDC);
+		break;
 		case CONFUSE:
-			ObjPool->ConfuseEffect.SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 25, ((pos.y - Map_y) - 1) * 80 + Term_y - 70);
+			ObjPool->ConfuseEffect.SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 10, ((pos.y - Map_y) - 1) * 80 + Term_y - 90);
 			ObjPool->ConfuseEffect.Draw(hMemDC);
 			break;
 		case STILLSTONE_FIND:
 		case STILLSTONE_WALK:
-			TCHAR str[5];
-			wsprintf(str, L"↓");
-			ObjPool->Gdi.Text(hMemDC, ((pos.x - Map_x) - 1) * 80 + Term_x - 25, ((pos.y - Map_y) - 1) * 80 + Term_y - 110, str, 36);
+			ObjPool->StoneEffect.SetPosition(((pos.x - Map_x) - 1) * 80 + Term_x - 10, ((pos.y - Map_y) - 1) * 80 + Term_y - 90);
+			ObjPool->StoneEffect.Draw(hMemDC);
 			break;
 	}
 }
@@ -343,13 +314,13 @@ void Entity::UpdateState()
 
 			if (ObjPool->Player.GetPosition().x == Temp_X && ObjPool->Player.GetPosition().y == Temp_Y)
 			{
-				if (!isStill)
+				if (!isSteal)
 				{
 					nowAnimation = STAND;
 					nowState = STILLSTONE_FIND;
 					stateFrame = 0;
 
-					isStill = true;
+					isSteal = true;
 					m_pathList.clear();
 					return;
 				}
@@ -367,15 +338,15 @@ void Entity::UpdateState()
 				}
 				//ObjPool->Sounds.Push(칼에 찔리는 소리);
 			}
-			//else if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == SKILL_Barricade)
-			//{
-			//	ObjPool->Maps.Map[Temp_Y][Temp_X].hp--;
-			//	if (ObjPool->Maps.Map[Temp_Y][Temp_X].hp <= 0)
-			//	{
-			//		ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, Temp_X, Temp_Y);
-			//	}
-			//	//ObjPool->Sounds.Push(칼이 튕겨나는 소리);
-			//}
+			else if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == SKILL_Barricade)
+			{
+				ObjPool->Maps.Map[Temp_Y][Temp_X].hp--;
+				if (ObjPool->Maps.Map[Temp_Y][Temp_X].hp <= 0)
+				{
+					ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, Temp_X, Temp_Y);
+				}
+				//ObjPool->Sounds.Push(칼이 튕겨나는 소리);
+			}
 			else if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == TRAP_ScareCrow)
 			{
 				if(ObjPool->Maps.Map[Temp_Y][Temp_X].TrapHp_Now > 0)
@@ -419,10 +390,11 @@ void Entity::UpdateState()
 				break;
 			}
 			
-			if ((ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == TRAP_Niddle
+			if (ObjPool->Maps.Map[Temp_Y][Temp_X].TrapHp_Now != 0 && type == WIZARD &&
+				(ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == TRAP_Niddle
 				|| ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == TRAP_Hole
 				|| ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == TRAP_Confusion
-				|| ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == TRAP_Grab) && type == WIZARD)
+				|| ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == TRAP_Grab))
 			{
 				ObjPool->Maps.Map[Temp_Y][Temp_X].TrapHp_Now = 0;
 				//ObjPool->Sounds.Push(칼이 튕겨나는 소리);
@@ -475,49 +447,11 @@ void Entity::UpdateState()
 			{
 				for (int j = 0; j < MAX_TILE_X; j++)
 				{
-					if (ObjPool->Maps.Map[i][j].TrapHp_Now != 0 && ObjPool->Maps.GetTileID(j, i) == TRAP_ScareCrow)
-						if (isSearchFind(j, i))
-						{
-							if (SearchDirection == UP || SearchDirection == DOWN || SearchDirection == LEFT || SearchDirection == RIGHT)
-							{
-								SetDirection(SearchDirection);
-							}
-							else if ((SearchDirection == UPnLEFT || SearchDirection == UPnRIGHT) && !isRoadBlocked(UP))
-							{
-								SetDirection(UP);
-							}
-							else if ((SearchDirection == DOWNnLEFT || SearchDirection == DOWNnRIGHT) && !isRoadBlocked(DOWN))
-							{
-								SetDirection(DOWN);
-							}
-							else if ((SearchDirection == UPnLEFT || SearchDirection == DOWNnLEFT) && !isRoadBlocked(LEFT))
-							{
-								SetDirection(LEFT);
-							}
-							else if ((SearchDirection == UPnRIGHT || SearchDirection == DOWNnRIGHT) && !isRoadBlocked(RIGHT))
-							{
-								SetDirection(RIGHT);
-							}
-
-							if (SearchGap == 1)
-							{
-								nowAnimation = ATTACK;
-								nowState = ATTACK;
-								return;
-							}
-							else
-							{
-								nowAnimation = WALK;
-								nowState = WALK;
-								return;
-							}
-						}
-
-					if (ObjPool->Maps.Map[i][j].TrapHp_Now != 0 && (type == WIZARD || type == TANKER) 
+					if (ObjPool->Maps.Map[i][j].TrapHp_Now != 0 && (type == WIZARD || type == TANKER)
 						&& (ObjPool->Maps.GetTileID(j, i) == TRAP_Niddle
-						|| ObjPool->Maps.GetTileID(j, i) == TRAP_Hole
-						|| ObjPool->Maps.GetTileID(j, i) == TRAP_Confusion
-						|| ObjPool->Maps.GetTileID(j, i) == TRAP_Grab))
+							|| ObjPool->Maps.GetTileID(j, i) == TRAP_Hole
+							|| ObjPool->Maps.GetTileID(j, i) == TRAP_Confusion
+							|| ObjPool->Maps.GetTileID(j, i) == TRAP_Grab))
 						if (isSearchFind(j, i) && SearchGap <= 2)
 						{
 							if (SearchDirection == UP || SearchDirection == DOWN || SearchDirection == LEFT || SearchDirection == RIGHT)
@@ -545,6 +479,44 @@ void Entity::UpdateState()
 							{
 								nowAnimation = ATTACK;
 								nowState = DISMANTLETRAP;
+								return;
+							}
+							else
+							{
+								nowAnimation = WALK;
+								nowState = WALK;
+								return;
+							}
+						}
+
+					if (ObjPool->Maps.GetTileID(j, i) == TRAP_ScareCrow)
+						if (isSearchFind(j, i))
+						{
+							if (SearchDirection == UP || SearchDirection == DOWN || SearchDirection == LEFT || SearchDirection == RIGHT)
+							{
+								SetDirection(SearchDirection);
+							}
+							else if ((SearchDirection == UPnLEFT || SearchDirection == UPnRIGHT) && !isRoadBlocked(UP))
+							{
+								SetDirection(UP);
+							}
+							else if ((SearchDirection == DOWNnLEFT || SearchDirection == DOWNnRIGHT) && !isRoadBlocked(DOWN))
+							{
+								SetDirection(DOWN);
+							}
+							else if ((SearchDirection == UPnLEFT || SearchDirection == DOWNnLEFT) && !isRoadBlocked(LEFT))
+							{
+								SetDirection(LEFT);
+							}
+							else if ((SearchDirection == UPnRIGHT || SearchDirection == DOWNnRIGHT) && !isRoadBlocked(RIGHT))
+							{
+								SetDirection(RIGHT);
+							}
+
+							if (SearchGap == 1)
+							{
+								nowAnimation = ATTACK;
+								nowState = ATTACK;
 								return;
 							}
 							else
@@ -609,7 +581,7 @@ void Entity::UpdateState()
 
 					ObjPool->FindEffect.SetFrameSprite(0);
 
-					nowAnimation = MARKFORFIND;
+					nowAnimation = STAND;
 					nowState = MARKFORFIND;
 					//플레이어가 있는 방향만 보고 끝낸다(걷기x)
 					return;
@@ -967,7 +939,7 @@ void Entity::UpdateState()
 			ObjPool->System.SetScene(SCENE_ENDING);
 		}
 		
-		if (!isStill)
+		if (!isSteal)
 		{
 			nowAnimation = STAND;
 			nowState = FINDWAY;
@@ -1041,7 +1013,7 @@ void Entity::UpdateState()
 			ObjPool->System.SetScene(SCENE_ENDING);
 		}
 
-		if (!isStill)
+		if (!isSteal)
 		{
 			nowAnimation = STAND;
 			nowState = FINDWAY;
@@ -1490,7 +1462,7 @@ void Entity::AddHealth(int a)
 
 	if (health <= 0 && (nowState == STILLSTONE_FIND || nowState == STILLSTONE_WALK))
 	{
-		isStill = false;
+		isSteal = false;
 	}
 }
 
@@ -1538,6 +1510,11 @@ int Entity::returnReverseDirection(int dire)
 
 		break;
 	}
+}
+
+void Entity::ResetSteal()
+{
+	isSteal = false;
 }
 
 void Monster::Init(HWND hWnd)
@@ -1814,4 +1791,9 @@ void Monster::DrawMap(HDC hMemDC, int x, int y)
 			ObjPool->Gdi.Text(hMemDC, ((j - Map_Start_x) - 1) * 80 + Term_x - 40 + 30, ((i - Map_Start_y) - 2) * 80 + Term_y + 40, str, 36);
 		}
 	}
+}
+
+void Monster::ResetSteal()
+{
+	Dealer.ResetSteal();
 }
