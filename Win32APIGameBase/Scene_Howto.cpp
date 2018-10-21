@@ -3,8 +3,7 @@
 
 void Howto::Draw(HDC hMemDC)
 {
-	if (ObjPool->howtonum % 2)
-		ObjPool->creditBg.Draw(hMemDC);
+	ObjPool->howto[ObjPool->howtonum].Draw(hMemDC);
 }
 
 void Howto::OnTimer(HWND hWnd, int timer)
@@ -30,7 +29,7 @@ void Howto::OnMouseLButtonUp(HWND hWnd, int x, int y)
 	else
 	{
 		ObjPool->System.SetScene(SCENE_INGAME);	//¾ÀÀ» ¹Ù²Û´Ù
-		ObjPool->SoundPool.Play(BGM_CAVE);
+		ObjPool->SoundPool.Play(BGM_SAFE);
 		ObjPool->SoundPool.Stop(BGM_TITLE);
 	}
 }

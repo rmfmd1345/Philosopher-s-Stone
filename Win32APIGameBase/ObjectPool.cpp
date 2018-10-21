@@ -17,6 +17,11 @@ void ObjectPool::CreateObject(HWND hWnd)	//객체의 초기 설정을 적는 곳
 	//credit Scene
 	creditBg.Init(hWnd, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, L"./Image/Background/Credit_Bg.bmp");
 
+	//howto Scene
+	howto[0].Init(hWnd, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, L"./Image/Background/how_to_1.bmp");
+	howto[1].Init(hWnd, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, L"./Image/Background/how_to_2.bmp");
+	howto[2].Init(hWnd, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, L"./Image/Background/how_to_3.bmp");
+
 	//ingame Scene
 	ingameBtn_Option.Init(hWnd, 1200, 30, 56, 56, L"./Image/UI/Ingame/ui_option.bmp", L"./Image/UI/Ingame/ui_option_down.bmp", L"./Image/UI/Ingame/ui_option_up_empty.bmp");
 	
@@ -37,9 +42,9 @@ void ObjectPool::CreateObject(HWND hWnd)	//객체의 초기 설정을 적는 곳
 	ingameUI_Time.Init(hWnd, 475, 0, 320, 134, L"./Image/UI/Ingame/ui_time.bmp");
 
 	//Ending Scene
-	EndingBg_Dead.Init(hWnd, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, L"./Image/Background/Ending_Bg.bmp");
+	badendingBg.Init(hWnd, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, L"./Image/Background/Ending_Bg.bmp");
 
-	EndingBg_Clear.Init(hWnd, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, L"./Image/Background/Clear_Bg.bmp");
+	happyendingBg.Init(hWnd, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, L"./Image/Background/Clear_Bg.bmp");
 
 	//STATE ANI
 	FindEffect.Init(hWnd, 0, 0, 84, 32, 6, L"./Image/Skill/findeffect.bmp");
@@ -65,13 +70,28 @@ void ObjectPool::DeleteObject()				//비트맵객체는 반드시 종료해주기
 {
 	SoundPool.Terminate();
 
-	titleBg.Ternimate();
-	titleBtn_Start.Ternimate();
+	FindEffect.Ternimate();
+	ConfuseEffect.Ternimate();
+	StoneEffect.Ternimate();
+
+	//title Scene
+	titleBtn_Start.Ternimate();	//버튼
 	titleBtn_Credit.Ternimate();
 	titleBtn_Exit.Ternimate();
 
+	titleBg.Ternimate();
+	badendingBg.Ternimate();
+	happyendingBg.Ternimate();
+
+	//credit Scene
 	creditBg.Ternimate();
 
+	//howto Scene
+	howto[0].Ternimate();
+	howto[1].Ternimate();
+	howto[2].Ternimate();
+
+	Maps.DestroyMap();
 	ingameBtn_Option.Ternimate();
 	ingameSprite_Option.Ternimate();
 	ingameUI_Stone.Ternimate();
@@ -81,9 +101,5 @@ void ObjectPool::DeleteObject()				//비트맵객체는 반드시 종료해주기
 	ingameUI_Stage_Steal.Ternimate();
 	ingameUI_Time.Ternimate();
 
-	Maps.DestroyMap();
-
-	MonsterPool.Ternimate();
-	StoneEffect.Ternimate();
-	FindEffect.Ternimate();
+	ingameUI_SelectedTrap.Ternimate();
 }

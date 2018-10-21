@@ -11,6 +11,9 @@
 #include "HeroObj.h"
 #include "EntityObj.h"
 
+#define BADENDING 1
+#define HAPPYENDING 2
+
 enum Tile_ID_List  // 식별 번호 리스트
 {
 	NONE,
@@ -112,17 +115,23 @@ public:
 	POINT EndingPos;
 
 public:
+	int Endingnum = 0;
+
 	//title Scene
 	Button titleBtn_Start;	//버튼
 	Button titleBtn_Credit;
 	Button titleBtn_Exit;
 
 	Bitmap titleBg;		//비트맵
-	Bitmap EndingBg_Dead;
-	Bitmap EndingBg_Clear;
+	Bitmap badendingBg;
+	Bitmap happyendingBg;
+
 
 	//credit Scene
 	Bitmap creditBg;		
+
+	//howto Scene
+	Bitmap howto[3];
 
 	//ingame Scene
 	CMap Maps;

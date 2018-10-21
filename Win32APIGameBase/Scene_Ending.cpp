@@ -3,13 +3,13 @@
 
 void Ending::Draw(HDC hMemDC)
 {
-	if (ObjPool->Player.Checkending)
+	if (ObjPool->Endingnum == HAPPYENDING)
 	{
-		ObjPool->EndingBg_Clear.Draw(hMemDC);
+		ObjPool->happyendingBg.Draw(hMemDC);
 	}
 	else
 	{
-		ObjPool->EndingBg_Dead.Draw(hMemDC);
+		ObjPool->badendingBg.Draw(hMemDC);
 	}
 }
 
@@ -47,7 +47,8 @@ void Ending::OnMouseLButtonUp(HWND hWnd, int x, int y)
 	ObjPool->Maps.ResetMap();
 
 	ObjPool->SoundPool.Play(BGM_TITLE);
-	ObjPool->SoundPool.Stop(BGM_CAVE);
+	ObjPool->SoundPool.Stop(BGM_HAPPY);
+	ObjPool->SoundPool.Stop(BGM_BAD);
 
 	ObjPool->Wave = -1;
 	ObjPool->MonsterPool.ResetSteal();
@@ -55,6 +56,8 @@ void Ending::OnMouseLButtonUp(HWND hWnd, int x, int y)
 	ObjPool->howtonum = 0;
 	ObjPool->Player.Checkending = false;
 	ObjPool->aniEnding = 0;
+	ObjPool->Endingnum = 0;
+	ObjPool->CheckMonster = false;
 
 	//초기화 해야할 것 추가
 }

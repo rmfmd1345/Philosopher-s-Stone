@@ -237,11 +237,11 @@ void CMap::ResetMap()
 			Map[i][j].Tile_ID = MENTLE;
 		}
 	}
-
-
 	
-	int AltarY = rand() % (MAX_TILE_Y - 6) + 3;
+	int AltarX = rand() % (MAX_TILE_X - 16) + 13;
+	int AltarY = rand() % (MAX_TILE_Y - 16) + 13;
 
+	/*
 	SetTileOnMap(ObjPool->Maps.Altar, MAX_TILE_X - 3, AltarY);
 	SetTileOnMap(ObjPool->Maps.Floor, MAX_TILE_X - 3, AltarY - 1);
 	SetTileOnMap(ObjPool->Maps.Floor, MAX_TILE_X - 3, AltarY + 1);
@@ -249,19 +249,18 @@ void CMap::ResetMap()
 	SetTileOnMap(ObjPool->Maps.Floor, MAX_TILE_X - 4, AltarY);
 	SetTileOnMap(ObjPool->Maps.Floor, MAX_TILE_X - 4, AltarY + 1);
 	ObjPool->EndingPos = { MAX_TILE_X - 3, AltarY };
-	
-	/*
-	SetTileOnMap(ObjPool->Maps.Altar, 4, 4);
-	SetTileOnMap(ObjPool->Maps.Floor, 4, 4 - 1);
-	SetTileOnMap(ObjPool->Maps.Floor, 4, 4 + 1);
-	SetTileOnMap(ObjPool->Maps.Floor, 4 - 1, 4);
-	SetTileOnMap(ObjPool->Maps.Floor, 4 + 1, 4);
-	SetTileOnMap(ObjPool->Maps.Floor, 4 - 1, 4 - 1);
-	SetTileOnMap(ObjPool->Maps.Floor, 4 + 1, 4 - 1);
-	SetTileOnMap(ObjPool->Maps.Floor, 4 - 1, 4 + 1);
-	SetTileOnMap(ObjPool->Maps.Floor, 4 + 1, 4 + 1);
-	ObjPool->EndingPos = { 4,4 };
 	*/
+	
+	SetTileOnMap(ObjPool->Maps.Altar, AltarX, AltarY);
+	SetTileOnMap(ObjPool->Maps.Floor, AltarX, AltarY - 1);
+	SetTileOnMap(ObjPool->Maps.Floor, AltarX, AltarY + 1);
+	SetTileOnMap(ObjPool->Maps.Floor, AltarX - 1, AltarY);
+	SetTileOnMap(ObjPool->Maps.Floor, AltarX + 1, AltarY);
+	SetTileOnMap(ObjPool->Maps.Floor, AltarX - 1, AltarY - 1);
+	SetTileOnMap(ObjPool->Maps.Floor, AltarX + 1, AltarY - 1);
+	SetTileOnMap(ObjPool->Maps.Floor, AltarX - 1, AltarY + 1);
+	SetTileOnMap(ObjPool->Maps.Floor, AltarX + 1, AltarY + 1);
+	ObjPool->EndingPos = { AltarX,AltarY };
 
 	for (int i = 0; i < 3; i++)
 		for (int j = 0; j < 3; j++)

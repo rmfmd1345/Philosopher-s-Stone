@@ -130,10 +130,19 @@ void Sounds::Init()
 		switch (i)
 		{
 		case BGM_TITLE:
-			temp.Init(L"./Sound/_title.wav", (60 * 1) + 37, true);
+			temp.Init(L"./Sound/_title.wav", (60 * 3) + 1, true);
 			break;
-		case BGM_CAVE:
-			temp.Init(L"./Sound/_cave.wav", (60 * 0) + 58, true);
+		case BGM_SAFE:
+			temp.Init(L"./Sound/_cave_safe.wav", (60 * 1) + 50, true);
+			break;
+		case BGM_DANGER:
+			temp.Init(L"./Sound/_cave_danger.wav", (60 * 1) + 55, true);
+			break;
+		case BGM_BAD:
+			temp.Init(L"./Sound/_bad.wav", (60 * 1) + 55, true);
+			break;
+		case BGM_HAPPY:
+			temp.Init(L"./Sound/_happy.wav", (60 * 1) + 6, true);
 			break;
 		case EFFECT_WALLBREAK:
 			temp.Init(L"./Sound/_wallbreak.wav", 1, false);

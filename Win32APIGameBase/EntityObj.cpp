@@ -319,8 +319,6 @@ void Entity::UpdateState()
 
 			if (ObjPool->Player.GetPosition().x == Temp_X && ObjPool->Player.GetPosition().y == Temp_Y)
 			{
-				ObjPool->SoundPool.Play(EFFECT_SWORD);
-				ObjPool->SoundPool.Play(EFFECT_STAB);
 				if (!isSteal)
 				{
 					nowAnimation = STAND;
@@ -341,6 +339,7 @@ void Entity::UpdateState()
 
 					nowAnimation = ATTACK;
 					nowState = ATTACK;
+					ObjPool->SoundPool.Play(EFFECT_SWORD);
 					stateFrame = 0;
 					return;
 				}
@@ -352,7 +351,6 @@ void Entity::UpdateState()
 				{
 					ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, Temp_X, Temp_Y);
 				}
-				ObjPool->SoundPool.Play(EFFECT_SWORD);
 			}
 			else if (ObjPool->Maps.Map[Temp_Y][Temp_X].Tile_ID == TRAP_ScareCrow)
 			{
@@ -360,11 +358,6 @@ void Entity::UpdateState()
 					ObjPool->Maps.Map[Temp_Y][Temp_X].TrapHp_Now = 0;
 				else
 					ObjPool->Maps.SetTileOnMap(ObjPool->Maps.Floor, Temp_X, Temp_Y);
-				ObjPool->SoundPool.Play(EFFECT_SWORD);
-			}
-			else
-			{
-				ObjPool->SoundPool.Play(EFFECT_SWORD);
 			}
 
 			nowAnimation = STAND;
@@ -468,6 +461,7 @@ void Entity::UpdateState()
 				{
 					nowAnimation = ATTACK;
 					nowState = ATTACK;
+					ObjPool->SoundPool.Play(EFFECT_SWORD);
 					return;
 				}
 			case DOWN:
@@ -475,6 +469,7 @@ void Entity::UpdateState()
 				{
 					nowAnimation = ATTACK;
 					nowState = ATTACK;
+					ObjPool->SoundPool.Play(EFFECT_SWORD);
 					return;
 				}
 			case LEFT:
@@ -482,6 +477,7 @@ void Entity::UpdateState()
 				{
 					nowAnimation = ATTACK;
 					nowState = ATTACK;
+					ObjPool->SoundPool.Play(EFFECT_SWORD);
 					return;
 				}
 			case RIGHT:
@@ -489,6 +485,7 @@ void Entity::UpdateState()
 				{
 					nowAnimation = ATTACK;
 					nowState = ATTACK;
+					ObjPool->SoundPool.Play(EFFECT_SWORD);
 					return;
 				}
 			}
@@ -567,6 +564,7 @@ void Entity::UpdateState()
 							{
 								nowAnimation = ATTACK;
 								nowState = ATTACK;
+								ObjPool->SoundPool.Play(EFFECT_SWORD);
 								return;
 							}
 							else
@@ -680,6 +678,7 @@ void Entity::UpdateState()
 
 				nowAnimation = ATTACK;
 				nowState = ATTACK;
+				ObjPool->SoundPool.Play(EFFECT_SWORD);
 				return;
 			}
 			//АјАн
@@ -985,6 +984,10 @@ void Entity::UpdateState()
 	{
 		if (pos.x == spawnPosition.x && pos.y == spawnPosition.y)
 		{
+			ObjPool->Endingnum = BADENDING;
+			ObjPool->SoundPool.Stop(BGM_SAFE);
+			ObjPool->SoundPool.Stop(BGM_DANGER);
+			ObjPool->SoundPool.Play(BGM_BAD);
 			ObjPool->System.SetScene(SCENE_ENDING);
 		}
 		
@@ -1059,6 +1062,10 @@ void Entity::UpdateState()
 	{
 		if (pos.x == spawnPosition.x && pos.y == spawnPosition.y)
 		{
+			ObjPool->Endingnum = BADENDING;
+			ObjPool->SoundPool.Stop(BGM_SAFE);
+			ObjPool->SoundPool.Stop(BGM_DANGER);
+			ObjPool->SoundPool.Play(BGM_BAD);
 			ObjPool->System.SetScene(SCENE_ENDING);
 		}
 

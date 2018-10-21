@@ -101,11 +101,21 @@ void Ingame::OnTimer(HWND hWnd, int timer)
 		if (ObjPool->MonsterPool.ePool.empty() && ObjPool->MonsterTimer > 0)
 		{
 			ObjPool->MonsterTimer--;
-			ObjPool->CheckMonster = false;
+			if (ObjPool->CheckMonster)
+			{
+				ObjPool->CheckMonster = false;
+				ObjPool->SoundPool.Stop(BGM_DANGER);
+				ObjPool->SoundPool.Play(BGM_SAFE);
+			}
 		}
 		else
 		{
-			ObjPool->CheckMonster = true;
+			if (!ObjPool->CheckMonster)
+			{
+				ObjPool->CheckMonster = true;
+				ObjPool->SoundPool.Stop(BGM_SAFE);
+				ObjPool->SoundPool.Play(BGM_DANGER);
+			}
 		}
 
 		if (ObjPool->Player.ATK_Skill.Cooltime > 0)
@@ -127,6 +137,10 @@ void Ingame::OnTimer(HWND hWnd, int timer)
 		}
 		if (ObjPool->aniEnding > 10)
 		{
+			ObjPool->Endingnum = HAPPYENDING;
+			ObjPool->SoundPool.Stop(BGM_SAFE);
+			ObjPool->SoundPool.Stop(BGM_DANGER);
+			ObjPool->SoundPool.Play(BGM_HAPPY);
 			ObjPool->System.SetScene(SCENE_ENDING);
 		}
 	}
